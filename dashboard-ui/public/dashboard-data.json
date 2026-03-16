@@ -1,0 +1,444 @@
+{
+  "metadata": {
+    "asOf": "2026-03-15 19:53:35 UTC",
+    "latestDate": "2026-03-06",
+    "region": "GB",
+    "scenario": "Conservative Hedge Posture",
+    "table": "curated_dataset_electricity",
+    "bucket": "energy-market-lake-464975959576-20260306",
+    "dataFreshness": "Daily snapshot (45/48 settlement rows)"
+  },
+  "navItems": [
+    "Overview",
+    "Portfolio Risk",
+    "Market Context",
+    "Data Quality"
+  ],
+  "overview": {
+    "alerts": [
+      {
+        "label": "Books Breaching Limits",
+        "value": "1",
+        "detail": "One or more books are outside policy limits.",
+        "status": "investigate"
+      },
+      {
+        "label": "Loss-Making Books",
+        "value": "0",
+        "detail": "Current portfolio view shows no loss-making books.",
+        "status": "healthy"
+      },
+      {
+        "label": "Settlement Completeness",
+        "value": "45/48",
+        "detail": "One or more settlement periods are missing in the latest snapshot.",
+        "status": "watch"
+      },
+      {
+        "label": "Open Exposure Above Limit",
+        "value": "No",
+        "detail": "Portfolio open exposure remains below the 25% control threshold.",
+        "status": "healthy"
+      }
+    ],
+    "summaryCards": [
+      {
+        "label": "Portfolio Gross Margin",
+        "value": "\u00a36.65m",
+        "trend": "5/5 books profitable",
+        "detail": "Driven by strong hedge carry on the fixed and industrial books."
+      },
+      {
+        "label": "Open Exposure",
+        "value": "13.5%",
+        "trend": "Limit 25%",
+        "detail": "Comfortable headroom against the portfolio open exposure ceiling."
+      },
+      {
+        "label": "Weighted Hedge Cover",
+        "value": "86.5%",
+        "trend": "Conservative posture retained",
+        "detail": "High forward coverage across the major books."
+      },
+      {
+        "label": "Market Price vs 7D Avg",
+        "value": "+23.5%",
+        "trend": "Latest \u00a3110.51/MWh",
+        "detail": "Spot market remains above the trailing 7-day average."
+      },
+      {
+        "label": "Peak Demand vs 7D Avg",
+        "value": "+2.0%",
+        "trend": "Latest 45,478 MW",
+        "detail": "Demand is firm but still within a plausible seasonal band."
+      },
+      {
+        "label": "Data Freshness",
+        "value": "2026-03-06",
+        "trend": "Athena daily snapshot",
+        "detail": "Dashboard values are generated from the latest curated dataset date."
+      }
+    ],
+    "pnlDrivers": [
+      {
+        "label": "Residential Fixed South",
+        "value": 3304697.0,
+        "tone": "default"
+      },
+      {
+        "label": "Industrial Flex",
+        "value": 1640943.0,
+        "tone": "default"
+      },
+      {
+        "label": "Public Sector Framework",
+        "value": 823779.0,
+        "tone": "default"
+      },
+      {
+        "label": "SME Indexed Midlands",
+        "value": 817062.0,
+        "tone": "default"
+      },
+      {
+        "label": "EV Flex Portfolio",
+        "value": 63908.0,
+        "tone": "default"
+      }
+    ],
+    "coveragePoints": [
+      {
+        "label": "Residential Fixed South",
+        "value": 92.0,
+        "targetMin": 85.0,
+        "targetMax": 97.0,
+        "flagged": false
+      },
+      {
+        "label": "SME Indexed Midlands",
+        "value": 84.0,
+        "targetMin": 80.0,
+        "targetMax": 92.0,
+        "flagged": false
+      },
+      {
+        "label": "Industrial Flex",
+        "value": 90.0,
+        "targetMin": 85.0,
+        "targetMax": 98.0,
+        "flagged": false
+      },
+      {
+        "label": "Public Sector Framework",
+        "value": 82.0,
+        "targetMin": 80.0,
+        "targetMax": 92.0,
+        "flagged": false
+      },
+      {
+        "label": "EV Flex Portfolio",
+        "value": 76.0,
+        "targetMin": 75.0,
+        "targetMax": 90.0,
+        "flagged": true
+      }
+    ],
+    "exposurePoints": [
+      {
+        "label": "Residential Fixed South",
+        "hedged": 92.0,
+        "open": 8.0
+      },
+      {
+        "label": "SME Indexed Midlands",
+        "hedged": 84.0,
+        "open": 16.0
+      },
+      {
+        "label": "Industrial Flex",
+        "hedged": 90.0,
+        "open": 10.0
+      },
+      {
+        "label": "Public Sector Framework",
+        "hedged": 82.0,
+        "open": 18.0
+      },
+      {
+        "label": "EV Flex Portfolio",
+        "hedged": 76.0,
+        "open": 24.0
+      }
+    ],
+    "exceptionRows": [
+      {
+        "book": "EV Flex Portfolio",
+        "segment": "EV",
+        "grossMargin": "\u00a30.06m",
+        "marginPerMwh": "\u00a31.60",
+        "hedgeCover": "76%",
+        "targetBand": "75% - 90%",
+        "openExposure": "24%",
+        "riskStatus": "breach",
+        "breachReason": "low-margin",
+        "tone": "critical"
+      },
+      {
+        "book": "SME Indexed Midlands",
+        "segment": "SME",
+        "grossMargin": "\u00a30.82m",
+        "marginPerMwh": "\u00a39.08",
+        "hedgeCover": "84%",
+        "targetBand": "80% - 92%",
+        "openExposure": "16%",
+        "riskStatus": "within limits",
+        "breachReason": "none",
+        "tone": "warning"
+      },
+      {
+        "book": "Public Sector Framework",
+        "segment": "Public Sector",
+        "grossMargin": "\u00a30.82m",
+        "marginPerMwh": "\u00a311.77",
+        "hedgeCover": "82%",
+        "targetBand": "80% - 92%",
+        "openExposure": "18%",
+        "riskStatus": "within limits",
+        "breachReason": "none",
+        "tone": "warning"
+      },
+      {
+        "book": "Residential Fixed South",
+        "segment": "Residential",
+        "grossMargin": "\u00a33.30m",
+        "marginPerMwh": "\u00a324.48",
+        "hedgeCover": "92%",
+        "targetBand": "85% - 97%",
+        "openExposure": "8%",
+        "riskStatus": "within limits",
+        "breachReason": "none",
+        "tone": null
+      },
+      {
+        "book": "Industrial Flex",
+        "segment": "Industrial",
+        "grossMargin": "\u00a31.64m",
+        "marginPerMwh": "\u00a327.35",
+        "hedgeCover": "90%",
+        "targetBand": "85% - 98%",
+        "openExposure": "10%",
+        "riskStatus": "within limits",
+        "breachReason": "none",
+        "tone": null
+      }
+    ],
+    "marketPanels": [
+      {
+        "title": "Price Trend",
+        "legend": [
+          {
+            "label": "Sell",
+            "tone": "teal"
+          },
+          {
+            "label": "Buy",
+            "tone": "amber"
+          }
+        ],
+        "note": "Latest sell price \u00a3110.51/MWh against trailing market range.",
+        "series": [
+          {
+            "label": "Sell",
+            "tone": "teal",
+            "values": [
+              75.93272558723986,
+              47.41324784390349,
+              63.73291050872936,
+              74.59553090107703,
+              79.3166924871823,
+              41.732605352803965,
+              73.08536026259529,
+              77.98918571201702,
+              37.696138911892284,
+              60.9692831837426,
+              100.67395833333332,
+              136.12547237556598,
+              102.24159605529992,
+              110.50958038576013
+            ]
+          },
+          {
+            "label": "Buy",
+            "tone": "amber",
+            "values": [
+              75.93272558723986,
+              47.41324784390349,
+              63.73291050872936,
+              74.59553090107703,
+              79.3166924871823,
+              41.732605352803965,
+              73.08536026259529,
+              77.98918571201702,
+              37.696138911892284,
+              60.9692831837426,
+              100.67395833333332,
+              136.12547237556598,
+              102.24159605529992,
+              110.50958038576013
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Demand Trend",
+        "legend": [
+          {
+            "label": "Demand",
+            "tone": "blue"
+          }
+        ],
+        "note": "Demand trend provides context for current market conditions without driving the main page.",
+        "series": [
+          {
+            "label": "Demand",
+            "tone": "blue",
+            "values": [
+              1774688.0,
+              1591643.0,
+              1770951.0,
+              1561257.0,
+              1631998.0,
+              1858866.0,
+              1896293.0,
+              1725446.0,
+              1612923.0,
+              1710296.0,
+              1808376.0,
+              1816952.0,
+              1809299.0,
+              1685128.0
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Intraday Profile Preview",
+        "legend": [
+          {
+            "label": "Demand",
+            "tone": "blue"
+          },
+          {
+            "label": "Price",
+            "tone": "amber"
+          }
+        ],
+        "note": "Latest-day intraday profile for 2026-03-06.",
+        "series": [
+          {
+            "label": "Demand",
+            "tone": "blue",
+            "values": [
+              32116.0,
+              32730.0,
+              32278.0,
+              31524.0,
+              30573.0,
+              29864.0,
+              27653.0,
+              27145.0,
+              25492.0,
+              25623.0,
+              24404.0,
+              25089.0,
+              27182.0,
+              29450.0,
+              34484.0,
+              36403.0,
+              41173.0,
+              42286.0,
+              43538.0,
+              44262.0,
+              43406.0,
+              44099.0,
+              45247.0,
+              45328.0,
+              45360.0,
+              45478.0,
+              45136.0,
+              44683.0,
+              44058.0,
+              43285.0,
+              39565.0,
+              39510.0,
+              38884.0,
+              39247.0,
+              38266.0,
+              39220.0,
+              41113.0,
+              40865.0,
+              43757.0,
+              42961.0,
+              40953.0,
+              40298.0,
+              38755.0,
+              37190.0,
+              35195.0
+            ]
+          },
+          {
+            "label": "Price",
+            "tone": "amber",
+            "values": [
+              85.0,
+              98.56,
+              100.42,
+              85.93,
+              81.65,
+              63.41,
+              81.65,
+              81.65,
+              81.65,
+              81.65,
+              109.33,
+              82.1,
+              82.0,
+              82.2,
+              82.2,
+              126.54,
+              82.5,
+              82.0,
+              82.52,
+              120.0,
+              145.8,
+              84.25,
+              84.13,
+              84.28,
+              120.0,
+              89.065759099054,
+              91.31,
+              85.01,
+              86.08,
+              88.87178533623339,
+              139.6,
+              134.09,
+              149.87,
+              178.0,
+              178.0,
+              185.45,
+              178.0,
+              185.45,
+              98.15003499956578,
+              140.32,
+              140.0,
+              105.54,
+              135.75,
+              142.95353792435372,
+              150.0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+flowchart TD
+    User["Analyst / Demo Queries"] --> Athena[Athena]
+    Athena --> S3Curated["S3 Curated (Parquet)"]
+
+    S3Raw["S3 Raw (JSON/CSV)"] --> GlueCrawler[Glue Crawler]
+    GlueCrawler --> GlueCatalog[Glue Data Catalog]
+    GlueETL[Glue ETL Job] --> S3Curated
+
+    EventBridge["EventBridge Schedule"] --> Lambda["Lambda Ingestion"]
+    Lambda --> S3Raw
+
+    Elexon["Elexon API (UK power)"] --> Lambda
+    Entsoe["ENTSO-E API (EU power)"] --> Lambda
+    Entsog["ENTSOG API (EU gas)"] --> Lambda

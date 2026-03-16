@@ -1,0 +1,33 @@
+.DS_Store
+.env
+.env.*
+*.pyc
+*.pyo
+*.swp
+*.tmp
+__pycache__/
+
+# Terraform state should never be committed.
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Python caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / frontend build artifacts
+dashboard-ui/node_modules/
+dashboard-ui/dist/
+dashboard-ui/.vite/
+
+# Local demo outputs
+docs/evidence/*.html
+docs/evidence/run-*.md
+docs/evidence/run-summary-*.md
+docs/evidence/athena-run-*.md
+
+# IDE files
+.idea/
+.vscode/
