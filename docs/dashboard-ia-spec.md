@@ -43,7 +43,7 @@ Persistent across all pages.
 
 Contents:
 
-- title: `UK Power Market & Portfolio Control Center`
+- title: `Energy Market Data Lake & Analytics Platform`
 - last refresh timestamp
 - market region
 - scenario badge, for example `Conservative Hedge Posture`
