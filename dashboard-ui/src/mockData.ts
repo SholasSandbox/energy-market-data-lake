@@ -199,6 +199,38 @@ export const marketPanels: MarketPanel[] = [
       { label: "Price", tone: "amber", values: [88, 84, 82, 81, 83, 89, 96, 104, 118, 112, 106, 101] },
     ],
   },
+  {
+    title: "ENTSO-E GB Day-Ahead",
+    legend: [{ label: "Day-Ahead", tone: "teal" }],
+    note: "Day-ahead context for GB from the ENTSO-E feed.",
+    series: [
+      { label: "Day-Ahead", tone: "teal", values: [91, 95, 99, 102, 98, 96, 97, 100, 104, 108, 106, 103] },
+    ],
+  },
+  {
+    title: "ENTSO-E France Day-Ahead",
+    legend: [{ label: "Day-Ahead", tone: "amber" }],
+    note: "French day-ahead prices provide cross-market context for the UK view.",
+    series: [
+      { label: "Day-Ahead", tone: "amber", values: [84, 86, 88, 91, 90, 89, 87, 92, 95, 97, 96, 94] },
+    ],
+  },
+  {
+    title: "ENTSO-E Germany Day-Ahead",
+    legend: [{ label: "Day-Ahead", tone: "blue" }],
+    note: "German price movement is useful directional context for continental power conditions.",
+    series: [
+      { label: "Day-Ahead", tone: "blue", values: [79, 82, 85, 88, 86, 84, 83, 89, 93, 96, 94, 92] },
+    ],
+  },
+  {
+    title: "ENTSO-E Netherlands Day-Ahead",
+    legend: [{ label: "Day-Ahead", tone: "teal" }],
+    note: "Dutch prices round out the regional picture without changing the main page hierarchy.",
+    series: [
+      { label: "Day-Ahead", tone: "teal", values: [83, 85, 87, 89, 88, 87, 86, 90, 93, 95, 94, 91] },
+    ],
+  },
 ];
 
 export const sampleDashboardData: DashboardData = {

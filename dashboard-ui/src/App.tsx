@@ -164,8 +164,8 @@ function App() {
             <SectionHeader
               eyebrow="Section E"
               title="Market Context Footer"
-              note="Market context should support the portfolio narrative. It stays on the page, but below the operating story rather than competing with it above the fold."
-              chip="12 cols / 3 compact panels"
+              note="Market context should support the portfolio narrative. Keep UK operating signals visible, then add ENTSO-E price context without letting the footer overtake the main risk story."
+              chip="12 cols / context panels"
             />
             <div className="market-grid">
               {data.overview.marketPanels.map((panel) => (

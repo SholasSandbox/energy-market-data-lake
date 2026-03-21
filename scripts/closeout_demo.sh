@@ -17,12 +17,67 @@ CURATED_CRAWLER_NAME="${PROJECT_PREFIX}-curated-crawler"
 GLUE_JOB_NAME="${PROJECT_PREFIX}-etl-raw-to-parquet"
 ATHENA_RESULTS_PREFIX="athena-results/"
 BACKFILL_DAYS="${BACKFILL_DAYS:-30}"
+ELEXON_BASE_URL="${ELEXON_BASE_URL:-https://data.elexon.co.uk/bmrs/api/v1}"
+HTTP_TIMEOUT_SECONDS="${HTTP_TIMEOUT_SECONDS:-30}"
+
+ENTSOE_BASE_URL="${ENTSOE_BASE_URL:-https://web-api.tp.entsoe.eu/api}"
+ENTSOE_TOKEN="${ENTSOE_TOKEN:-}"
+ENTSOE_ZONES="${ENTSOE_ZONES:-GB,FR,DE,NL}"
+
+ENTSOG_BASE_URL="${ENTSOG_BASE_URL:-https://transparency.entsog.eu/api/v1}"
+ENTSOG_POINT_DIRECTIONS="${ENTSOG_POINT_DIRECTIONS:-}"
+ENTSOG_FLOW_INDICATOR="${ENTSOG_FLOW_INDICATOR:-Physical Flow}"
+ENTSOG_DEMAND_INDICATOR="${ENTSOG_DEMAND_INDICATOR:-Allocation}"
+ENTSOG_PERIOD_TYPE="${ENTSOG_PERIOD_TYPE:-day}"
+ENTSOG_TIMEZONE="${ENTSOG_TIMEZONE:-WET}"
+ENTSOG_LIMIT="${ENTSOG_LIMIT:-1000}"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMP_DIR="/tmp/${PROJECT_PREFIX}-closeout"
 mkdir -p "${TMP_DIR}"
 
 echo "Using bucket: ${BUCKET}"
+
+export BUCKET
+export ELEXON_BASE_URL
+export BACKFILL_DAYS
+export HTTP_TIMEOUT_SECONDS
+export ENTSOE_BASE_URL
+export ENTSOE_TOKEN
+export ENTSOE_ZONES
+export ENTSOG_BASE_URL
+export ENTSOG_POINT_DIRECTIONS
+export ENTSOG_FLOW_INDICATOR
+export ENTSOG_DEMAND_INDICATOR
+export ENTSOG_PERIOD_TYPE
+export ENTSOG_TIMEZONE
+export ENTSOG_LIMIT
+
+python3 - <<'PY' > "${TMP_DIR}/lambda-environment.json"
+import json
+import os
+
+environment = {
+    "Variables": {
+        "S3_BUCKET": os.environ["BUCKET"],
+        "ELEXON_BASE_URL": os.environ["ELEXON_BASE_URL"],
+        "BACKFILL_DAYS": os.environ["BACKFILL_DAYS"],
+        "HTTP_TIMEOUT_SECONDS": os.environ["HTTP_TIMEOUT_SECONDS"],
+        "ENTSOE_BASE_URL": os.environ["ENTSOE_BASE_URL"],
+        "ENTSOE_TOKEN": os.environ["ENTSOE_TOKEN"],
+        "ENTSOE_ZONES": os.environ["ENTSOE_ZONES"],
+        "ENTSOG_BASE_URL": os.environ["ENTSOG_BASE_URL"],
+        "ENTSOG_POINT_DIRECTIONS": os.environ["ENTSOG_POINT_DIRECTIONS"],
+        "ENTSOG_FLOW_INDICATOR": os.environ["ENTSOG_FLOW_INDICATOR"],
+        "ENTSOG_DEMAND_INDICATOR": os.environ["ENTSOG_DEMAND_INDICATOR"],
+        "ENTSOG_PERIOD_TYPE": os.environ["ENTSOG_PERIOD_TYPE"],
+        "ENTSOG_TIMEZONE": os.environ["ENTSOG_TIMEZONE"],
+        "ENTSOG_LIMIT": os.environ["ENTSOG_LIMIT"],
+    }
+}
+
+print(json.dumps(environment))
+PY
 
 if ! aws s3api head-bucket --bucket "${BUCKET}" 2>/dev/null; then
   aws s3api create-bucket \
@@ -121,7 +176,7 @@ if aws lambda get-function --function-name "${LAMBDA_FUNCTION_NAME}" --region "$
     --handler ingest_elexon.lambda_handler \
     --timeout 900 \
     --memory-size 256 \
-    --environment "Variables={S3_BUCKET=${BUCKET},ELEXON_BASE_URL=https://data.elexon.co.uk/bmrs/api/v1,BACKFILL_DAYS=${BACKFILL_DAYS},HTTP_TIMEOUT_SECONDS=30}" \
+    --environment "file://${TMP_DIR}/lambda-environment.json" \
     --region "${REGION}" >/dev/null
 else
   aws lambda create-function \
@@ -132,7 +187,7 @@ else
     --timeout 900 \
     --memory-size 256 \
     --zip-file "fileb://${TMP_DIR}/ingest_elexon.zip" \
-    --environment "Variables={S3_BUCKET=${BUCKET},ELEXON_BASE_URL=https://data.elexon.co.uk/bmrs/api/v1,BACKFILL_DAYS=${BACKFILL_DAYS},HTTP_TIMEOUT_SECONDS=30}" \
+    --environment "file://${TMP_DIR}/lambda-environment.json" \
     --region "${REGION}" >/dev/null
 fi
 
@@ -237,7 +292,7 @@ if aws glue get-crawler --name "${RAW_CRAWLER_NAME}" --region "${REGION}" >/dev/
     --name "${RAW_CRAWLER_NAME}" \
     --role "${GLUE_ROLE_ARN}" \
     --database-name "${GLUE_DATABASE_NAME}" \
-    --targets "S3Targets=[{Path=s3://${BUCKET}/raw/source=elexon/}]" \
+    --targets "S3Targets=[{Path=s3://${BUCKET}/raw/}]" \
     --table-prefix "raw_" \
     --region "${REGION}" >/dev/null
 else
@@ -245,7 +300,7 @@ else
     --name "${RAW_CRAWLER_NAME}" \
     --role "${GLUE_ROLE_ARN}" \
     --database-name "${GLUE_DATABASE_NAME}" \
-    --targets "S3Targets=[{Path=s3://${BUCKET}/raw/source=elexon/}]" \
+    --targets "S3Targets=[{Path=s3://${BUCKET}/raw/}]" \
     --table-prefix "raw_" \
     --region "${REGION}" >/dev/null
 fi
@@ -302,6 +357,19 @@ done
 
 mkdir -p "${ROOT_DIR}/docs/evidence"
 EVIDENCE_FILE="${ROOT_DIR}/docs/evidence/run-$(date +%Y%m%d-%H%M%S).md"
+SCHEMA_EVIDENCE_FILE="${ROOT_DIR}/docs/evidence/athena-schema-$(date +%Y%m%d-%H%M%S).md"
+EXPECTED_SOURCES="elexon"
+if [[ -n "${ENTSOE_TOKEN}" ]]; then
+  EXPECTED_SOURCES="${EXPECTED_SOURCES},entsoe"
+fi
+
+python3 "${ROOT_DIR}/scripts/validate_athena_schema.py" \
+  --region "${REGION}" \
+  --database "${GLUE_DATABASE_NAME}" \
+  --table "curated_dataset_electricity" \
+  --output-location "s3://${BUCKET}/${ATHENA_RESULTS_PREFIX}" \
+  --expected-sources "${EXPECTED_SOURCES}" \
+  --output-file "${SCHEMA_EVIDENCE_FILE}"
 
 {
   echo "# Demo Run Evidence"
@@ -313,12 +381,22 @@ EVIDENCE_FILE="${ROOT_DIR}/docs/evidence/run-$(date +%Y%m%d-%H%M%S).md"
   echo "- Glue DB: ${GLUE_DATABASE_NAME}"
   echo "- Glue Job: ${GLUE_JOB_NAME}"
   echo "- Glue Job Run ID: ${JOB_RUN_ID}"
+  echo "- Athena schema validation: ${SCHEMA_EVIDENCE_FILE}"
   echo
   echo "## Ingestion Result"
   cat "${TMP_DIR}/ingest-result.json"
   echo
+  echo "## Raw Prefix Count (All Sources)"
+  aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "raw/" --query 'length(Contents)' --output text
+  echo
   echo "## Raw Prefix Count (Elexon)"
   aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "raw/source=elexon/" --query 'length(Contents)' --output text
+  echo
+  echo "## Raw Prefix Count (ENTSO-E)"
+  aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "raw/source=entsoe/" --query 'length(Contents)' --output text
+  echo
+  echo "## Raw Prefix Count (ENTSOG)"
+  aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "raw/source=entsog/" --query 'length(Contents)' --output text
   echo
   echo "## Curated Prefix Count (Electricity)"
   aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "curated/dataset=electricity/" --query 'length(Contents)' --output text
