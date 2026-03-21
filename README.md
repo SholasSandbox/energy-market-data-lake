@@ -72,6 +72,7 @@ s3://<bucket>/
         date=YYYY-MM-DD/
   curated/
     dataset=electricity/
+      source=elexon|entsoe/
       region=gb|fr|de|nl/
       date=YYYY-MM-DD/
     dataset=gas/

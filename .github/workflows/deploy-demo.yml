@@ -30,6 +30,18 @@ jobs:
         env:
           AWS_REGION: ${{ vars.AWS_REGION || 'eu-west-2' }}
           BACKFILL_DAYS: ${{ inputs.backfill_days }}
+          ELEXON_BASE_URL: ${{ vars.ELEXON_BASE_URL || 'https://data.elexon.co.uk/bmrs/api/v1' }}
+          HTTP_TIMEOUT_SECONDS: ${{ vars.HTTP_TIMEOUT_SECONDS || '30' }}
+          ENTSOE_BASE_URL: ${{ vars.ENTSOE_BASE_URL || 'https://web-api.tp.entsoe.eu/api' }}
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
+          ENTSOE_ZONES: ${{ vars.ENTSOE_ZONES || 'GB,FR,DE,NL' }}
+          ENTSOG_BASE_URL: ${{ vars.ENTSOG_BASE_URL || 'https://transparency.entsog.eu/api/v1' }}
+          ENTSOG_POINT_DIRECTIONS: ${{ vars.ENTSOG_POINT_DIRECTIONS || '' }}
+          ENTSOG_FLOW_INDICATOR: ${{ vars.ENTSOG_FLOW_INDICATOR || 'Physical Flow' }}
+          ENTSOG_DEMAND_INDICATOR: ${{ vars.ENTSOG_DEMAND_INDICATOR || 'Allocation' }}
+          ENTSOG_PERIOD_TYPE: ${{ vars.ENTSOG_PERIOD_TYPE || 'day' }}
+          ENTSOG_TIMEZONE: ${{ vars.ENTSOG_TIMEZONE || 'WET' }}
+          ENTSOG_LIMIT: ${{ vars.ENTSOG_LIMIT || '1000' }}
         run: ./scripts/closeout_demo.sh
 
       - name: Upload demo evidence
