@@ -302,11 +302,65 @@ def _book_segment(book: str) -> str:
     return "Other"
 
 
+def _build_entsoe_price_panels(entsoe_price_rows: List[Dict[str, str]]) -> List[Dict[str, object]]:
+    region_labels = {
+        "gb": "GB",
+        "fr": "France",
+        "de": "Germany",
+        "nl": "Netherlands",
+    }
+    tone_map = {
+        "gb": "teal",
+        "fr": "amber",
+        "de": "blue",
+        "nl": "teal",
+    }
+
+    rows_by_region: Dict[str, List[Dict[str, str]]] = {}
+    for row in entsoe_price_rows:
+        region = row.get("region", "").lower()
+        if not region:
+            continue
+        rows_by_region.setdefault(region, []).append(row)
+
+    panels: List[Dict[str, object]] = []
+    for region in ["gb", "fr", "de", "nl"]:
+        region_rows = rows_by_region.get(region, [])
+        if not region_rows:
+            continue
+
+        last_rows = region_rows[-14:]
+        latest_price = _to_float(last_rows[-1]["avg_day_ahead_price_eur_mwh"])
+        tone = tone_map.get(region, "blue")
+        panels.append(
+            {
+                "title": f"ENTSO-E {region_labels.get(region, region.upper())} Day-Ahead",
+                "legend": [{"label": "Day-Ahead", "tone": tone}],
+                "note": (
+                    f"Latest day-ahead average for {region_labels.get(region, region.upper())}: "
+                    f"EUR {latest_price:.2f}/MWh."
+                ),
+                "series": [
+                    {
+                        "label": "Day-Ahead",
+                        "tone": tone,
+                        "values": [
+                            _to_float(row["avg_day_ahead_price_eur_mwh"]) for row in last_rows
+                        ],
+                    }
+                ],
+            }
+        )
+
+    return panels
+
+
 def _build_dashboard_context(
     bucket: str,
     table: str,
     daily_rows: List[Dict[str, str]],
     intraday_rows: List[Dict[str, str]],
+    entsoe_price_rows: List[Dict[str, str]],
 ):
     if not daily_rows:
         raise RuntimeError("No daily rows returned; cannot build dashboard")
@@ -389,6 +443,7 @@ def _build_dashboard_context(
             -b["unhedged_pct"],
         ),
     )
+    entsoe_panels = _build_entsoe_price_panels(entsoe_price_rows)
 
     dashboard_model = {
         "metadata": {
@@ -571,7 +626,7 @@ def _build_dashboard_context(
                         {"label": "Price", "tone": "amber", "values": intraday_sell},
                     ],
                 },
-            ],
+            ] + entsoe_panels,
         },
     }
 
@@ -1219,7 +1274,8 @@ def main():
       MAX(demand_mw) AS peak_demand_mw,
       COUNT(*) AS settlement_rows
     FROM {args.table}
-    WHERE region = 'gb'
+    WHERE source = 'elexon'
+      AND region = 'gb'
     GROUP BY date
     ORDER BY date
     """
@@ -1228,7 +1284,8 @@ def main():
     WITH latest AS (
       SELECT MAX(date) AS d
       FROM {args.table}
-      WHERE region = 'gb'
+      WHERE source = 'elexon'
+        AND region = 'gb'
     )
     SELECT
       settlement_period,
@@ -1236,9 +1293,20 @@ def main():
       system_sell_price,
       system_buy_price
     FROM {args.table}
-    WHERE region = 'gb'
+    WHERE source = 'elexon'
+      AND region = 'gb'
       AND date = (SELECT d FROM latest)
     ORDER BY settlement_period
+    """
+    entsoe_price_query = f"""
+    SELECT
+      region,
+      date,
+      AVG(day_ahead_price_eur_mwh) AS avg_day_ahead_price_eur_mwh
+    FROM {args.table}
+    WHERE source = 'entsoe'
+    GROUP BY region, date
+    ORDER BY region, date
     """
 
     daily_rows = _run_athena_query(
@@ -1246,6 +1314,9 @@ def main():
     )
     intraday_rows = _run_athena_query(
         intraday_query, args.database, output_location, args.region
+    )
+    entsoe_price_rows = _run_athena_query(
+        entsoe_price_query, args.database, output_location, args.region
     )
 
     if args.output_file:
@@ -1260,7 +1331,9 @@ def main():
         )
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
-    context = _build_dashboard_context(bucket, args.table, daily_rows, intraday_rows)
+    context = _build_dashboard_context(
+        bucket, args.table, daily_rows, intraday_rows, entsoe_price_rows
+    )
     _render_html(output_file, bucket, args.table, context)
 
     if args.output_json:
