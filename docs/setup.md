@@ -170,6 +170,7 @@ Post-run S3 checklist:
 
 Partition by:
 
+- `source`
 - `region`
 - `date`
 
