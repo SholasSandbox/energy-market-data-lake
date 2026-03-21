@@ -163,6 +163,24 @@ def _run_athena_query(
     return _fetch_athena_rows(qid, region)
 
 
+def _get_table_columns(
+    database: str, table: str, output_location: str, region: str
+) -> Dict[str, str]:
+    schema_query = f"""
+    SELECT column_name, data_type
+    FROM information_schema.columns
+    WHERE table_schema = '{database}'
+      AND table_name = '{table}'
+    ORDER BY ordinal_position
+    """
+    rows = _run_athena_query(schema_query, database, output_location, region)
+    return {
+        row["column_name"]: row["data_type"]
+        for row in rows
+        if row.get("column_name")
+    }
+
+
 def _to_float(value: str, default: float = 0.0) -> float:
     try:
         return float(value)
@@ -1264,6 +1282,15 @@ def main():
 
     bucket = _discover_bucket_name()
     output_location = args.output_location or f"s3://{bucket}/athena-results/"
+    table_columns = _get_table_columns(
+        args.database, args.table, output_location, args.region
+    )
+    has_source_column = "source" in table_columns
+    has_entsoe_price_column = "day_ahead_price_eur_mwh" in table_columns
+
+    base_filter = "region = 'gb'"
+    if has_source_column:
+        base_filter = "source = 'elexon' AND region = 'gb'"
 
     daily_query = f"""
     SELECT
@@ -1274,8 +1301,7 @@ def main():
       MAX(demand_mw) AS peak_demand_mw,
       COUNT(*) AS settlement_rows
     FROM {args.table}
-    WHERE source = 'elexon'
-      AND region = 'gb'
+    WHERE {base_filter}
     GROUP BY date
     ORDER BY date
     """
@@ -1284,8 +1310,7 @@ def main():
     WITH latest AS (
       SELECT MAX(date) AS d
       FROM {args.table}
-      WHERE source = 'elexon'
-        AND region = 'gb'
+      WHERE {base_filter}
     )
     SELECT
       settlement_period,
@@ -1293,20 +1318,9 @@ def main():
       system_sell_price,
       system_buy_price
     FROM {args.table}
-    WHERE source = 'elexon'
-      AND region = 'gb'
+    WHERE {base_filter}
       AND date = (SELECT d FROM latest)
     ORDER BY settlement_period
-    """
-    entsoe_price_query = f"""
-    SELECT
-      region,
-      date,
-      AVG(day_ahead_price_eur_mwh) AS avg_day_ahead_price_eur_mwh
-    FROM {args.table}
-    WHERE source = 'entsoe'
-    GROUP BY region, date
-    ORDER BY region, date
     """
 
     daily_rows = _run_athena_query(
@@ -1315,9 +1329,21 @@ def main():
     intraday_rows = _run_athena_query(
         intraday_query, args.database, output_location, args.region
     )
-    entsoe_price_rows = _run_athena_query(
-        entsoe_price_query, args.database, output_location, args.region
-    )
+    entsoe_price_rows: List[Dict[str, str]] = []
+    if has_source_column and has_entsoe_price_column:
+        entsoe_price_query = f"""
+        SELECT
+          region,
+          date,
+          AVG(day_ahead_price_eur_mwh) AS avg_day_ahead_price_eur_mwh
+        FROM {args.table}
+        WHERE source = 'entsoe'
+        GROUP BY region, date
+        ORDER BY region, date
+        """
+        entsoe_price_rows = _run_athena_query(
+            entsoe_price_query, args.database, output_location, args.region
+        )
 
     if args.output_file:
         output_file = pathlib.Path(args.output_file)

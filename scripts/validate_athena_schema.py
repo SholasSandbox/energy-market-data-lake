@@ -203,32 +203,14 @@ def main():
       AND table_name = '{args.table}'
     ORDER BY ordinal_position
     """
-    source_query = f"""
-    SELECT source, COUNT(*) AS row_count
-    FROM {args.table}
-    GROUP BY source
-    ORDER BY source
-    """
-    freshness_query = f"""
-    SELECT source, region, MAX(date) AS latest_date
-    FROM {args.table}
-    GROUP BY source, region
-    ORDER BY source, region
-    """
-
     schema_rows = _run_athena_query(
         schema_query, args.database, output_location, args.region
-    )
-    source_rows = _run_athena_query(
-        source_query, args.database, output_location, args.region
-    )
-    freshness_rows = _run_athena_query(
-        freshness_query, args.database, output_location, args.region
     )
 
     actual_columns = {
         row["column_name"]: row["data_type"] for row in schema_rows if row.get("column_name")
     }
+    has_source_column = "source" in actual_columns
     missing_columns = [
         name for name in REQUIRED_COLUMNS if name not in actual_columns
     ]
@@ -237,6 +219,39 @@ def main():
         for name, expected in REQUIRED_COLUMNS.items()
         if name in actual_columns and not _athena_type_matches(expected, actual_columns[name])
     ]
+
+    if has_source_column:
+        source_query = f"""
+        SELECT source, COUNT(*) AS row_count
+        FROM {args.table}
+        GROUP BY source
+        ORDER BY source
+        """
+        freshness_query = f"""
+        SELECT source, region, MAX(date) AS latest_date
+        FROM {args.table}
+        GROUP BY source, region
+        ORDER BY source, region
+        """
+        source_rows = _run_athena_query(
+            source_query, args.database, output_location, args.region
+        )
+        freshness_rows = _run_athena_query(
+            freshness_query, args.database, output_location, args.region
+        )
+    else:
+        source_rows = []
+        freshness_rows = _run_athena_query(
+            f"""
+            SELECT region, MAX(date) AS latest_date
+            FROM {args.table}
+            GROUP BY region
+            ORDER BY region
+            """,
+            args.database,
+            output_location,
+            args.region,
+        )
 
     actual_sources = {
         row["source"].lower(): int(float(row["row_count"]))
@@ -277,8 +292,11 @@ def main():
             "",
         ]
     )
-    for row in source_rows:
-        report.append(f"- `{row['source']}`: {row['row_count']} rows")
+    if source_rows:
+        for row in source_rows:
+            report.append(f"- `{row['source']}`: {row['row_count']} rows")
+    else:
+        report.append("- Source coverage unavailable because the table is on the legacy schema.")
 
     report.extend(
         [
@@ -288,7 +306,10 @@ def main():
         ]
     )
     for row in freshness_rows:
-        report.append(f"- `{row['source']}` / `{row['region']}`: {row['latest_date']}")
+        if row.get("source"):
+            report.append(f"- `{row['source']}` / `{row['region']}`: {row['latest_date']}")
+        else:
+            report.append(f"- `{row['region']}`: {row['latest_date']}")
 
     if missing_columns or type_mismatches or missing_sources:
         report.extend(["", "## Validation Errors", ""])
