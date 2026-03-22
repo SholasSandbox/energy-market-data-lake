@@ -407,6 +407,10 @@ button {
   font-weight: 800;
 }
 
+.pnl-driver-share-value.is-negative {
+  color: var(--red);
+}
+
 .pnl-driver-share-label {
   color: var(--muted);
   font-size: 11px;
