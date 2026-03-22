@@ -16,10 +16,11 @@ function App() {
 
   useEffect(() => {
     let cancelled = false;
+    const dashboardDataUrl = `${import.meta.env.BASE_URL}dashboard-data.json`;
 
     async function loadData() {
       try {
-        const response = await fetch("/dashboard-data.json", { cache: "no-store" });
+        const response = await fetch(dashboardDataUrl, { cache: "no-store" });
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }
