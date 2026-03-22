@@ -60,6 +60,46 @@ def _discover_bucket_name() -> str:
     return sorted(data)[-1]
 
 
+def _resolve_table_name(database: str, table: str, bucket: str, region: str) -> str:
+    tables = _run_aws(
+        [
+            "glue",
+            "get-tables",
+            "--database-name",
+            database,
+            "--region",
+            region,
+        ]
+    ).get("TableList", [])
+
+    candidates = [
+        item
+        for item in tables
+        if item.get("Name") == table
+        or item.get("Name", "").startswith(f"{table}_")
+    ]
+    if not candidates:
+        return table
+
+    target_location = f"s3://{bucket}/curated/dataset=electricity/"
+
+    def _score(item: Dict[str, object]):
+        name = str(item.get("Name", ""))
+        location = (
+            item.get("StorageDescriptor", {}) or {}
+        ).get("Location", "")
+        update_time = str(item.get("UpdateTime") or item.get("CreateTime") or "")
+        if name == table and location == target_location:
+            return (3, update_time)
+        if location == target_location:
+            return (2, update_time)
+        if name == table:
+            return (1, update_time)
+        return (0, update_time)
+
+    return max(candidates, key=_score).get("Name", table)
+
+
 def _start_athena_query(
     query: str, database: str, output_location: str, region: str
 ) -> str:
@@ -179,6 +219,8 @@ def _athena_type_matches(expected: str, actual: str) -> bool:
         return actual_lower in {"varchar", "string"}
     if expected == "int":
         return actual_lower in {"integer", "int", "bigint"}
+    if expected == "timestamp":
+        return actual_lower.startswith("timestamp")
     return actual_lower == expected
 
 
@@ -194,13 +236,16 @@ def main():
 
     bucket = _discover_bucket_name()
     output_location = args.output_location or f"s3://{bucket}/athena-results/"
+    resolved_table = _resolve_table_name(
+        args.database, args.table, bucket, args.region
+    )
     expected_sources = [s.strip().lower() for s in args.expected_sources.split(",") if s.strip()]
 
     schema_query = f"""
     SELECT column_name, data_type
     FROM information_schema.columns
     WHERE table_schema = '{args.database}'
-      AND table_name = '{args.table}'
+      AND table_name = '{resolved_table}'
     ORDER BY ordinal_position
     """
     schema_rows = _run_athena_query(
@@ -223,13 +268,13 @@ def main():
     if has_source_column:
         source_query = f"""
         SELECT source, COUNT(*) AS row_count
-        FROM {args.table}
+        FROM {resolved_table}
         GROUP BY source
         ORDER BY source
         """
         freshness_query = f"""
         SELECT source, region, MAX(date) AS latest_date
-        FROM {args.table}
+        FROM {resolved_table}
         GROUP BY source, region
         ORDER BY source, region
         """
@@ -244,7 +289,7 @@ def main():
         freshness_rows = _run_athena_query(
             f"""
             SELECT region, MAX(date) AS latest_date
-            FROM {args.table}
+            FROM {resolved_table}
             GROUP BY region
             ORDER BY region
             """,
@@ -272,7 +317,8 @@ def main():
         f"- Timestamp (UTC): {dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}",
         f"- Region: {args.region}",
         f"- Database: {args.database}",
-        f"- Table: {args.table}",
+        f"- Requested table: {args.table}",
+        f"- Resolved table: {resolved_table}",
         f"- Output location: {output_location}",
         f"- Status: **{status.upper()}**",
         "",

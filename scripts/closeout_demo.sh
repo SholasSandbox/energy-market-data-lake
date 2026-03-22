@@ -348,6 +348,21 @@ else
     --region "${REGION}" >/dev/null
 fi
 
+mapfile -t CURATED_TABLES < <(
+  aws glue get-tables \
+    --database-name "${GLUE_DATABASE_NAME}" \
+    --region "${REGION}" \
+    --query "TableList[?starts_with(Name, \`curated_dataset_electricity\`)].Name" \
+    --output text
+)
+for CURATED_TABLE in "${CURATED_TABLES[@]}"; do
+  [[ -z "${CURATED_TABLE}" ]] && continue
+  aws glue delete-table \
+    --database-name "${GLUE_DATABASE_NAME}" \
+    --name "${CURATED_TABLE}" \
+    --region "${REGION}" >/dev/null 2>&1 || true
+done
+
 aws glue start-crawler --name "${CURATED_CRAWLER_NAME}" --region "${REGION}" >/dev/null 2>&1 || true
 while true; do
   CRAWLER_STATE="$(aws glue get-crawler --name "${CURATED_CRAWLER_NAME}" --region "${REGION}" --query 'Crawler.State' --output text)"
