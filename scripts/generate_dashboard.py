@@ -613,20 +613,20 @@ def _build_dashboard_context(
                 {
                     "label": "Portfolio Gross Margin",
                     "value": _format_currency_millions(total_margin),
-                    "trend": f"{profit_books}/{len(utility_books)} books profitable",
-                    "detail": "Driven by strong hedge carry on the fixed and industrial books.",
+                    "trend": f"{profit_books}/{len(utility_books)} books margin-positive",
+                    "detail": "Margin is concentrated in the fixed and industrial books.",
                 },
                 {
                     "label": "Open Exposure",
                     "value": _format_pct(open_exposure_pct),
-                    "trend": f"Limit {utility_limits['max_portfolio_unhedged_pct']:.0f}%",
-                    "detail": "Comfortable headroom against the portfolio open exposure ceiling.",
+                    "trend": f"Policy limit {utility_limits['max_portfolio_unhedged_pct']:.0f}%",
+                    "detail": "Open volume remains inside portfolio risk appetite.",
                 },
                 {
                     "label": "Weighted Hedge Cover",
                     "value": _format_pct(weighted_coverage),
-                    "trend": "Conservative posture retained",
-                    "detail": "High forward coverage across the major books.",
+                    "trend": "Conservative hedge posture",
+                    "detail": "Major books remain heavily forward-covered.",
                 },
                 {
                     "label": market_price_summary["label"],
@@ -643,8 +643,8 @@ def _build_dashboard_context(
                 {
                     "label": "Data Freshness",
                     "value": latest_date,
-                    "trend": "Athena daily snapshot",
-                    "detail": "Dashboard values are generated from the latest curated dataset date.",
+                    "trend": "Latest curated daily snapshot",
+                    "detail": "Dashboard values reflect the latest validated dataset date.",
                 },
             ],
             "pnlDrivers": [
