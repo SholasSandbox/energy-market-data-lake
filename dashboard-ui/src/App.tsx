@@ -322,17 +322,19 @@ function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
 function CoverageChart({ points }: { points: CoveragePoint[] }) {
   return (
     <div className="chart-box">
-      <div className="line-band line-band-top" />
-      <div className="line-band line-band-mid" />
-      <div className="line-band line-band-bottom" />
-      <div className="bar-chart coverage-bars">
+      <div className="coverage-chart">
         {points.map((point) => (
-          <div key={point.label} className="bar-group">
-            <div
-              className={`bar ${point.flagged ? "bar-loss" : ""}`}
-              style={{ height: `${Math.max(point.value, 6)}%` }}
-            />
-            <span>{point.label}</span>
+          <div key={point.label} className="coverage-row">
+            <div className="coverage-label">{point.label}</div>
+            <div className="coverage-track">
+              <div className="coverage-band-marker coverage-band-min" style={{ left: `${point.targetMin}%` }} />
+              <div className="coverage-band-marker coverage-band-max" style={{ left: `${point.targetMax}%` }} />
+              <div
+                className={`coverage-fill ${point.flagged ? "coverage-fill-flagged" : ""}`}
+                style={{ width: `${Math.max(point.value, 6)}%` }}
+              />
+            </div>
+            <div className="coverage-value">{point.value.toFixed(0)}%</div>
           </div>
         ))}
       </div>
