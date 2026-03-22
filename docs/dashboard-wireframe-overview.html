@@ -513,6 +513,79 @@
       letter-spacing: 0.08em;
     }
 
+    .coverage-chart {
+      padding: 22px 18px 56px;
+    }
+
+    .coverage-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 12px;
+    }
+
+    .coverage-row {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr) 48px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .coverage-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .coverage-track {
+      position: relative;
+      height: 18px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(159, 178, 195, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(159, 178, 195, 0.16);
+    }
+
+    .coverage-band-low,
+    .coverage-band-high {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      width: 2px;
+      border-radius: 999px;
+      z-index: 2;
+    }
+
+    .coverage-band-low {
+      background: var(--amber);
+    }
+
+    .coverage-band-high {
+      background: var(--primary);
+    }
+
+    .coverage-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(20, 138, 123, 0.9), rgba(14, 79, 138, 0.78));
+      z-index: 1;
+    }
+
+    .coverage-fill.flagged {
+      background: linear-gradient(90deg, rgba(175, 62, 58, 0.9), rgba(182, 114, 21, 0.82));
+    }
+
+    .coverage-value {
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 800;
+      text-align: right;
+    }
+
     .table-wrap {
       overflow: auto;
       border: 1px dashed var(--line-strong);
@@ -650,6 +723,10 @@
         gap: 8px;
         align-items: baseline;
       }
+
+      .coverage-row {
+        grid-template-columns: 72px minmax(0, 1fr) 42px;
+      }
     }
 
     @media (max-width: 640px) {
@@ -767,39 +844,39 @@
           <div class="kpi-grid">
             <article class="kpi-card">
               <div class="kpi-label">Portfolio Gross Margin</div>
-              <div class="kpi-value">£6.65m</div>
-              <div class="kpi-trend">+4.2% vs prior run</div>
-              <div class="kpi-detail">Driven by strong fixed-book hedge carry.</div>
+              <div class="kpi-value">£5.78m</div>
+              <div class="kpi-trend">4/5 books margin-positive</div>
+              <div class="kpi-detail">Margin is concentrated in the fixed and industrial books.</div>
             </article>
             <article class="kpi-card">
               <div class="kpi-label">Open Exposure</div>
               <div class="kpi-value">13.5%</div>
-              <div class="kpi-trend">Below 25% limit</div>
-              <div class="kpi-detail">Comfortable headroom against policy ceiling.</div>
+              <div class="kpi-trend">Policy limit 25%</div>
+              <div class="kpi-detail">Open volume remains inside portfolio risk appetite.</div>
             </article>
             <article class="kpi-card">
               <div class="kpi-label">Weighted Hedge Cover</div>
               <div class="kpi-value">86.5%</div>
-              <div class="kpi-trend">Stable vs 7D</div>
-              <div class="kpi-detail">Conservative posture retained across major books.</div>
+              <div class="kpi-trend">Conservative hedge posture</div>
+              <div class="kpi-detail">Major books remain heavily forward-covered.</div>
             </article>
             <article class="kpi-card">
-              <div class="kpi-label">Market Price vs 7D Avg</div>
-              <div class="kpi-value">+8.1%</div>
-              <div class="kpi-trend">Elevated regime</div>
-              <div class="kpi-detail">Higher spot market strengthens hedge value.</div>
+              <div class="kpi-label">Market Price</div>
+              <div class="kpi-value">£126.72/MWh</div>
+              <div class="kpi-trend">Complete-day baseline pending</div>
+              <div class="kpi-detail">Prior history is incomplete, so the comparison is withheld rather than overstated.</div>
             </article>
             <article class="kpi-card">
-              <div class="kpi-label">Peak Demand vs 7D Avg</div>
-              <div class="kpi-value">+3.6%</div>
-              <div class="kpi-trend">Within seasonal band</div>
-              <div class="kpi-detail">Demand is firm but not yet stress-level.</div>
+              <div class="kpi-label">Peak Demand</div>
+              <div class="kpi-value">39,788 MW</div>
+              <div class="kpi-trend">Complete-day baseline pending</div>
+              <div class="kpi-detail">Prior history is incomplete, so the comparison is withheld rather than overstated.</div>
             </article>
             <article class="kpi-card">
               <div class="kpi-label">Data Freshness</div>
-              <div class="kpi-value">15m</div>
-              <div class="kpi-trend">Ingestion on schedule</div>
-              <div class="kpi-detail">Latest snapshot is suitable for portfolio review.</div>
+              <div class="kpi-value">2026-03-21</div>
+              <div class="kpi-trend">Latest curated daily snapshot</div>
+              <div class="kpi-detail">Dashboard values reflect the latest validated dataset date.</div>
             </article>
           </div>
         </section>
@@ -887,17 +964,53 @@
                 </div>
                 <span class="layout-chip">4 / 12 columns</span>
               </div>
-              <div class="wire-chart">
-                <div class="line-track">
-                  <div class="line amber"></div>
-                  <div class="line blue"></div>
-                  <div class="line red"></div>
-                </div>
-                <div class="bars">
-                  <div class="bar" style="height: 78%;"></div>
-                  <div class="bar" style="height: 72%;"></div>
-                  <div class="bar" style="height: 76%;"></div>
-                  <div class="bar loss" style="height: 63%;"></div>
+              <div class="wire-chart coverage-chart">
+                <div class="coverage-grid">
+                  <div class="coverage-row">
+                    <div class="coverage-label">Residential<br />Fixed South</div>
+                    <div class="coverage-track">
+                      <div class="coverage-band-low" style="left: 85%;"></div>
+                      <div class="coverage-band-high" style="left: 97%;"></div>
+                      <div class="coverage-fill" style="width: 92%;"></div>
+                    </div>
+                    <div class="coverage-value">92%</div>
+                  </div>
+                  <div class="coverage-row">
+                    <div class="coverage-label">SME Indexed<br />Midlands</div>
+                    <div class="coverage-track">
+                      <div class="coverage-band-low" style="left: 80%;"></div>
+                      <div class="coverage-band-high" style="left: 92%;"></div>
+                      <div class="coverage-fill" style="width: 84%;"></div>
+                    </div>
+                    <div class="coverage-value">84%</div>
+                  </div>
+                  <div class="coverage-row">
+                    <div class="coverage-label">Industrial Flex</div>
+                    <div class="coverage-track">
+                      <div class="coverage-band-low" style="left: 85%;"></div>
+                      <div class="coverage-band-high" style="left: 98%;"></div>
+                      <div class="coverage-fill" style="width: 90%;"></div>
+                    </div>
+                    <div class="coverage-value">90%</div>
+                  </div>
+                  <div class="coverage-row">
+                    <div class="coverage-label">Public Sector<br />Framework</div>
+                    <div class="coverage-track">
+                      <div class="coverage-band-low" style="left: 80%;"></div>
+                      <div class="coverage-band-high" style="left: 92%;"></div>
+                      <div class="coverage-fill" style="width: 82%;"></div>
+                    </div>
+                    <div class="coverage-value">82%</div>
+                  </div>
+                  <div class="coverage-row">
+                    <div class="coverage-label">EV Flex Portfolio</div>
+                    <div class="coverage-track">
+                      <div class="coverage-band-low" style="left: 75%;"></div>
+                      <div class="coverage-band-high" style="left: 90%;"></div>
+                      <div class="coverage-fill flagged" style="width: 76%;"></div>
+                    </div>
+                    <div class="coverage-value">76%</div>
+                  </div>
                 </div>
                 <div class="chart-caption">One exception should be obvious without reading the table.</div>
               </div>
