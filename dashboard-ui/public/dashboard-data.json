@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "asOf": "2026-03-22 00:21:54 UTC",
+    "asOf": "2026-03-22 10:53:55 UTC",
     "latestDate": "2026-03-21",
     "region": "GB",
     "scenario": "Conservative Hedge Posture",
@@ -61,16 +61,16 @@
         "detail": "High forward coverage across the major books."
       },
       {
-        "label": "Market Price vs 7D Avg",
-        "value": "+100.0%",
-        "trend": "Latest \u00a3126.72/MWh",
-        "detail": "Spot market remains above the trailing 7-day average."
+        "label": "Market Price",
+        "value": "\u00a3126.72/MWh",
+        "trend": "Complete-day baseline pending",
+        "detail": "Prior history is incomplete, so the comparison is withheld rather than overstated."
       },
       {
-        "label": "Peak Demand vs 7D Avg",
-        "value": "+13.6%",
-        "trend": "Latest 39,788 MW",
-        "detail": "Demand is firm but still within a plausible seasonal band."
+        "label": "Peak Demand",
+        "value": "39,788 MW",
+        "trend": "Complete-day baseline pending",
+        "detail": "Prior history is incomplete, so the comparison is withheld rather than overstated."
       },
       {
         "label": "Data Freshness",

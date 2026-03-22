@@ -346,6 +346,50 @@ def _format_signed_pct(value: float) -> str:
     return f"{value:+.1f}%"
 
 
+def _build_baseline_summary(
+    label: str,
+    latest_value: float,
+    latest_display: str,
+    rows: List[Dict[str, str]],
+    value_key: str,
+    settlement_threshold: int = 40,
+) -> Dict[str, str]:
+    comparable_rows = []
+    for row in rows:
+        value = row.get(value_key, "")
+        if not value:
+            continue
+        if _to_int(row.get("settlement_rows", "0")) < settlement_threshold:
+            continue
+        comparable_rows.append(row)
+
+    prior_rows = [
+        row for row in comparable_rows[:-1]
+        if row.get(value_key, "")
+    ]
+
+    if prior_rows:
+        baseline_values = [_to_float(row[value_key]) for row in prior_rows[-7:]]
+        baseline_avg = sum(baseline_values) / len(baseline_values)
+        delta_pct = ((latest_value - baseline_avg) / baseline_avg) * 100 if baseline_avg else 0.0
+        return {
+            "label": label,
+            "value": latest_display,
+            "trend": f"{_format_signed_pct(delta_pct)} vs trailing complete-day avg",
+            "detail": (
+                f"Comparison excludes incomplete days and uses the last {len(baseline_values)} "
+                "near-complete observations."
+            ),
+        }
+
+    return {
+        "label": label,
+        "value": latest_display,
+        "trend": "Complete-day baseline pending",
+        "detail": "Prior history is incomplete, so the comparison is withheld rather than overstated.",
+    }
+
+
 def _book_segment(book: str) -> str:
     if "Residential" in book:
         return "Residential"
@@ -454,15 +498,19 @@ def _build_dashboard_context(
     weighted_coverage = (1 - (total_unhedged / total_volume)) * 100 if total_volume else 0.0
     open_exposure_pct = (total_unhedged / total_volume) * 100 if total_volume else 0.0
 
-    recent_sell = avg_sell[-7:] if len(avg_sell) >= 7 else avg_sell
-    recent_peaks = peaks[-7:] if len(peaks) >= 7 else peaks
-    recent_sell_avg = sum(recent_sell) / len(recent_sell) if recent_sell else 0.0
-    recent_peak_avg = sum(recent_peaks) / len(recent_peaks) if recent_peaks else 0.0
-    market_price_vs_7d = (
-        ((latest_avg_sell - recent_sell_avg) / recent_sell_avg) * 100 if recent_sell_avg else 0.0
+    market_price_summary = _build_baseline_summary(
+        label="Market Price",
+        latest_value=latest_avg_sell,
+        latest_display=f"£{latest_avg_sell:.2f}/MWh",
+        rows=daily_rows,
+        value_key="avg_system_sell_price",
     )
-    peak_vs_7d = (
-        ((latest_peak - recent_peak_avg) / recent_peak_avg) * 100 if recent_peak_avg else 0.0
+    peak_demand_summary = _build_baseline_summary(
+        label="Peak Demand",
+        latest_value=latest_peak,
+        latest_display=f"{latest_peak:,.0f} MW",
+        rows=daily_rows,
+        value_key="peak_demand_mw",
     )
 
     market_payload = {
@@ -581,16 +629,16 @@ def _build_dashboard_context(
                     "detail": "High forward coverage across the major books.",
                 },
                 {
-                    "label": "Market Price vs 7D Avg",
-                    "value": _format_signed_pct(market_price_vs_7d),
-                    "trend": f"Latest £{latest_avg_sell:.2f}/MWh",
-                    "detail": "Spot market remains above the trailing 7-day average.",
+                    "label": market_price_summary["label"],
+                    "value": market_price_summary["value"],
+                    "trend": market_price_summary["trend"],
+                    "detail": market_price_summary["detail"],
                 },
                 {
-                    "label": "Peak Demand vs 7D Avg",
-                    "value": _format_signed_pct(peak_vs_7d),
-                    "trend": f"Latest {latest_peak:,.0f} MW",
-                    "detail": "Demand is firm but still within a plausible seasonal band.",
+                    "label": peak_demand_summary["label"],
+                    "value": peak_demand_summary["value"],
+                    "trend": peak_demand_summary["trend"],
+                    "detail": peak_demand_summary["detail"],
                 },
                 {
                     "label": "Data Freshness",
