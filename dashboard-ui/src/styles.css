@@ -324,6 +324,115 @@ button {
   min-height: 360px;
 }
 
+.pnl-driver-list {
+  display: grid;
+  gap: 14px;
+  padding: 22px 22px 74px;
+  position: relative;
+  z-index: 1;
+}
+
+.pnl-driver-row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 72px;
+  gap: 14px;
+  align-items: center;
+}
+
+.pnl-driver-rank {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.pnl-driver-copy {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pnl-driver-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pnl-driver-label {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 0;
+}
+
+.pnl-driver-value {
+  color: var(--primary-strong);
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.pnl-driver-value.is-loss {
+  color: var(--red);
+}
+
+.pnl-driver-track {
+  height: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(157, 179, 198, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(157, 179, 198, 0.16);
+}
+
+.pnl-driver-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(15, 138, 121, 0.92), rgba(15, 79, 136, 0.82));
+}
+
+.pnl-driver-fill-loss {
+  background: linear-gradient(90deg, rgba(174, 61, 56, 0.92), rgba(184, 113, 19, 0.82));
+}
+
+.pnl-driver-share {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+}
+
+.pnl-driver-share-value {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.pnl-driver-share-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.chart-kicker {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 0 22px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+.chart-kicker-label {
+  color: var(--primary-strong);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .bar-chart {
   position: absolute;
   inset: auto 20px 18px 20px;
@@ -619,6 +728,18 @@ th {
   .chart-box--primary {
     min-height: 320px;
   }
+
+  .pnl-driver-row {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .pnl-driver-share {
+    grid-column: 2;
+    justify-items: start;
+    grid-auto-flow: column;
+    gap: 8px;
+    align-items: baseline;
+  }
 }
 
 @media (max-width: 640px) {
@@ -653,5 +774,11 @@ th {
 
   .metric {
     font-size: 28px;
+  }
+
+  .pnl-driver-title-row,
+  .chart-kicker {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

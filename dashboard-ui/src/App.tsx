@@ -265,23 +265,55 @@ function AlertCard({ alert }: { alert: AlertItem }) {
 }
 
 function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
-  const maxValue = Math.max(...bars.map((bar) => bar.value), 1);
+  const rankedBars = [...bars].sort((left, right) => right.value - left.value);
+  const maxValue = Math.max(...rankedBars.map((bar) => Math.abs(bar.value)), 1);
+  const totalValue = rankedBars.reduce((sum, bar) => sum + Math.max(bar.value, 0), 0);
+
+  function formatMillions(value: number) {
+    const prefix = value < 0 ? "-£" : "£";
+    return `${prefix}${(Math.abs(value) / 1_000_000).toFixed(2)}m`;
+  }
 
   return (
     <div className="chart-box chart-box--primary">
-      <div className="bar-chart">
-        {bars.map((bar) => (
-          <div key={bar.label} className="bar-group">
-            <div
-              className={`bar ${bar.tone === "loss" ? "bar-loss" : ""}`}
-              style={{ height: `${Math.max((bar.value / maxValue) * 100, 8)}%` }}
-            />
-            <span>{bar.label}</span>
-          </div>
-        ))}
+      <div className="pnl-driver-list">
+        {rankedBars.map((bar, index) => {
+          const widthPct = Math.max((Math.abs(bar.value) / maxValue) * 100, 6);
+          const contributionPct = totalValue > 0 ? (Math.max(bar.value, 0) / totalValue) * 100 : 0;
+
+          return (
+            <div key={bar.label} className="pnl-driver-row">
+              <div className="pnl-driver-rank">{String(index + 1).padStart(2, "0")}</div>
+              <div className="pnl-driver-copy">
+                <div className="pnl-driver-title-row">
+                  <span className="pnl-driver-label">{bar.label}</span>
+                  <span className={`pnl-driver-value ${bar.tone === "loss" ? "is-loss" : ""}`}>
+                    {formatMillions(bar.value)}
+                  </span>
+                </div>
+                <div className="pnl-driver-track">
+                  <div
+                    className={`pnl-driver-fill ${bar.tone === "loss" ? "pnl-driver-fill-loss" : ""}`}
+                    style={{ width: `${widthPct}%` }}
+                  />
+                </div>
+              </div>
+              <div className="pnl-driver-share">
+                <span className="pnl-driver-share-value">{contributionPct.toFixed(1)}%</span>
+                <span className="pnl-driver-share-label">share</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="chart-kicker">
+        <span className="chart-kicker-label">Readout</span>
+        <span className="chart-kicker-text">
+          Ranked by gross margin contribution so the largest books explain portfolio outcome first.
+        </span>
       </div>
       <div className="chart-caption">
-        Sorted by contribution. Clicking a bar should filter the investigation table below.
+        Clicking a row should filter the investigation table below. Use the share column to separate material drivers from noise.
       </div>
     </div>
   );
