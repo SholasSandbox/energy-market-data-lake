@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "asOf": "2026-03-22 11:11:52 UTC",
+    "asOf": "2026-03-22 23:02:35 UTC",
     "latestDate": "2026-03-21",
     "region": "GB",
     "scenario": "Conservative Hedge Posture",
@@ -63,14 +63,14 @@
       {
         "label": "Market Price",
         "value": "\u00a3126.72/MWh",
-        "trend": "Complete-day baseline pending",
-        "detail": "Prior history is incomplete, so the comparison is withheld rather than overstated."
+        "trend": "7-day avg pending (0/7 complete prior days)",
+        "detail": "Prior history is incomplete, so the 7-day comparison is withheld rather than overstated."
       },
       {
         "label": "Peak Demand",
         "value": "39,788 MW",
-        "trend": "Complete-day baseline pending",
-        "detail": "Prior history is incomplete, so the comparison is withheld rather than overstated."
+        "trend": "7-day avg pending (0/7 complete prior days)",
+        "detail": "Prior history is incomplete, so the 7-day comparison is withheld rather than overstated."
       },
       {
         "label": "Data Freshness",
@@ -140,7 +140,7 @@
         "value": 76.0,
         "targetMin": 75.0,
         "targetMax": 90.0,
-        "flagged": true
+        "flagged": false
       }
     ],
     "exposurePoints": [
@@ -234,32 +234,30 @@
     ],
     "marketPanels": [
       {
-        "title": "Price Trend",
+        "title": "Spot vs 7-Day Average",
         "legend": [
           {
-            "label": "Sell",
+            "label": "Spot",
             "tone": "teal"
           },
           {
-            "label": "Buy",
+            "label": "7-Day Avg",
             "tone": "amber"
           }
         ],
-        "note": "Latest sell price \u00a3126.72/MWh against trailing market range.",
+        "note": "Current spot is \u00a3126.72/MWh. The 7-day average will stabilise once seven complete days are available.",
         "series": [
           {
-            "label": "Sell",
+            "label": "Spot",
             "tone": "teal",
             "values": [
-              0.0,
               126.7181397825974
             ]
           },
           {
-            "label": "Buy",
+            "label": "7-Day Avg",
             "tone": "amber",
             "values": [
-              0.0,
               126.7181397825974
             ]
           }

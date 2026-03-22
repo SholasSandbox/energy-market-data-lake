@@ -66,14 +66,14 @@ export const summaryCards: SummaryCard[] = [
   {
     label: "Market Price",
     value: "£101.40/MWh",
-    trend: "+8.1% vs trailing complete-day avg",
-    detail: "Comparison excludes incomplete days and uses only near-complete observations.",
+    trend: "7-day avg £93.80/MWh",
+    detail: "Current level is +8.1% versus the trailing 7-day complete-day average.",
   },
   {
     label: "Peak Demand",
     value: "28,990 MW",
-    trend: "+3.6% vs trailing complete-day avg",
-    detail: "Demand is firm but still within a plausible seasonal band.",
+    trend: "7-day avg 27,980 MW",
+    detail: "Current level is +3.6% versus the trailing 7-day complete-day average.",
   },
   {
     label: "Data Freshness",
@@ -88,7 +88,7 @@ export const driverBars: DriverBar[] = [
   { label: "SME Indexed Midlands", value: 817_062 },
   { label: "Industrial Flex", value: 1_640_943 },
   { label: "Public Sector Framework", value: 823_779 },
-  { label: "EV Flex Portfolio", value: 63_908, tone: "loss" },
+  { label: "EV Flex Portfolio", value: -63_908, tone: "loss" },
 ];
 
 export const coveragePoints: CoveragePoint[] = [
@@ -96,7 +96,7 @@ export const coveragePoints: CoveragePoint[] = [
   { label: "SME", value: 84, targetMin: 80, targetMax: 92 },
   { label: "Industrial", value: 90, targetMin: 85, targetMax: 98 },
   { label: "Public Sector", value: 82, targetMin: 80, targetMax: 92 },
-  { label: "EV Flex", value: 76, targetMin: 75, targetMax: 90, flagged: true },
+  { label: "EV Flex", value: 76, targetMin: 75, targetMax: 90, flagged: false },
 ];
 
 export const exposurePoints: ExposurePoint[] = [
@@ -168,15 +168,15 @@ export const exceptionRows: ExceptionRow[] = [
 
 export const marketPanels: MarketPanel[] = [
   {
-    title: "Price Trend",
+    title: "Spot vs 7-Day Average",
     legend: [
-      { label: "Sell", tone: "teal" },
-      { label: "Buy", tone: "amber" },
+      { label: "Spot", tone: "teal" },
+      { label: "7-Day Avg", tone: "amber" },
     ],
-    note: "Compact context, not the lead visual.",
+    note: "Current spot sits above the trailing 7-day complete-day average.",
     series: [
-      { label: "Sell", tone: "teal", values: [94, 96, 98, 99, 101, 100, 102, 104, 103, 105, 107, 109] },
-      { label: "Buy", tone: "amber", values: [90, 92, 94, 95, 96, 97, 98, 99, 100, 101, 101, 102] },
+      { label: "Spot", tone: "teal", values: [94, 96, 98, 99, 101, 100, 102, 104, 103, 105, 107, 109] },
+      { label: "7-Day Avg", tone: "amber", values: [94, 95, 96, 96.8, 97.6, 98, 98.6, 100, 101, 102, 103.1, 104.3] },
     ],
   },
   {

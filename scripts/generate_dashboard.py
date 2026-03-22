@@ -346,47 +346,50 @@ def _format_signed_pct(value: float) -> str:
     return f"{value:+.1f}%"
 
 
-def _build_baseline_summary(
-    label: str,
-    latest_value: float,
-    latest_display: str,
+def _complete_day_rows(
     rows: List[Dict[str, str]],
     value_key: str,
     settlement_threshold: int = 40,
-) -> Dict[str, str]:
-    comparable_rows = []
+) -> List[Dict[str, str]]:
+    complete_rows: List[Dict[str, str]] = []
     for row in rows:
         value = row.get(value_key, "")
         if not value:
             continue
         if _to_int(row.get("settlement_rows", "0")) < settlement_threshold:
             continue
-        comparable_rows.append(row)
+        complete_rows.append(row)
+    return complete_rows
 
-    prior_rows = [
-        row for row in comparable_rows[:-1]
-        if row.get(value_key, "")
-    ]
 
-    if prior_rows:
+def _build_level_vs_7d_summary(
+    label: str,
+    latest_value: float,
+    latest_display: str,
+    rows: List[Dict[str, str]],
+    value_key: str,
+    baseline_formatter,
+    settlement_threshold: int = 40,
+) -> Dict[str, str]:
+    comparable_rows = _complete_day_rows(rows, value_key, settlement_threshold)
+    prior_rows = comparable_rows[:-1]
+
+    if len(prior_rows) >= 7:
         baseline_values = [_to_float(row[value_key]) for row in prior_rows[-7:]]
         baseline_avg = sum(baseline_values) / len(baseline_values)
         delta_pct = ((latest_value - baseline_avg) / baseline_avg) * 100 if baseline_avg else 0.0
         return {
             "label": label,
             "value": latest_display,
-            "trend": f"{_format_signed_pct(delta_pct)} vs trailing complete-day avg",
-            "detail": (
-                f"Comparison excludes incomplete days and uses the last {len(baseline_values)} "
-                "near-complete observations."
-            ),
+            "trend": f"7-day avg {baseline_formatter(baseline_avg)}",
+            "detail": f"Current level is {_format_signed_pct(delta_pct)} versus the trailing 7-day complete-day average.",
         }
 
     return {
         "label": label,
         "value": latest_display,
-        "trend": "Complete-day baseline pending",
-        "detail": "Prior history is incomplete, so the comparison is withheld rather than overstated.",
+        "trend": f"7-day avg pending ({len(prior_rows)}/7 complete prior days)",
+        "detail": "Prior history is incomplete, so the 7-day comparison is withheld rather than overstated.",
     }
 
 
@@ -457,6 +460,16 @@ def _build_entsoe_price_panels(entsoe_price_rows: List[Dict[str, str]]) -> List[
     return panels
 
 
+def _rolling_average(values: List[float], window: int) -> List[float]:
+    result: List[float] = []
+    recent: List[float] = []
+    for value in values:
+        recent.append(value)
+        recent = recent[-window:]
+        result.append(sum(recent) / len(recent))
+    return result
+
+
 def _build_dashboard_context(
     bucket: str,
     table: str,
@@ -498,20 +511,27 @@ def _build_dashboard_context(
     weighted_coverage = (1 - (total_unhedged / total_volume)) * 100 if total_volume else 0.0
     open_exposure_pct = (total_unhedged / total_volume) * 100 if total_volume else 0.0
 
-    market_price_summary = _build_baseline_summary(
+    market_price_summary = _build_level_vs_7d_summary(
         label="Market Price",
         latest_value=latest_avg_sell,
         latest_display=f"£{latest_avg_sell:.2f}/MWh",
         rows=daily_rows,
         value_key="avg_system_sell_price",
+        baseline_formatter=lambda value: f"£{value:.2f}/MWh",
     )
-    peak_demand_summary = _build_baseline_summary(
+    peak_demand_summary = _build_level_vs_7d_summary(
         label="Peak Demand",
         latest_value=latest_peak,
         latest_display=f"{latest_peak:,.0f} MW",
         rows=daily_rows,
         value_key="peak_demand_mw",
+        baseline_formatter=lambda value: f"{value:,.0f} MW",
     )
+
+    complete_price_rows = _complete_day_rows(daily_rows, "avg_system_sell_price")
+    price_progression_rows = complete_price_rows[-14:]
+    spot_progression = [_to_float(row["avg_system_sell_price"]) for row in price_progression_rows]
+    spot_7d_average = _rolling_average(spot_progression, 7) if spot_progression else []
 
     market_payload = {
         "dates": dates,
@@ -661,7 +681,10 @@ def _build_dashboard_context(
                     "value": float(b["hedge_coverage_pct"]),
                     "targetMin": float(b["target_min_hedge_pct"]),
                     "targetMax": float(b["target_max_hedge_pct"]),
-                    "flagged": b["risk_status"] == "Breach",
+                    "flagged": (
+                        float(b["hedge_coverage_pct"]) < float(b["target_min_hedge_pct"])
+                        or float(b["hedge_coverage_pct"]) > float(b["target_max_hedge_pct"])
+                    ),
                 }
                 for b in utility_books
             ],
@@ -701,15 +724,22 @@ def _build_dashboard_context(
             ],
             "marketPanels": [
                 {
-                    "title": "Price Trend",
+                    "title": "Spot vs 7-Day Average",
                     "legend": [
-                        {"label": "Sell", "tone": "teal"},
-                        {"label": "Buy", "tone": "amber"},
+                        {"label": "Spot", "tone": "teal"},
+                        {"label": "7-Day Avg", "tone": "amber"},
                     ],
-                    "note": f"Latest sell price £{latest_avg_sell:.2f}/MWh against trailing market range.",
+                    "note": (
+                        f"Current spot is £{latest_avg_sell:.2f}/MWh. "
+                        + (
+                            "The 7-day average will stabilise once seven complete days are available."
+                            if len(complete_price_rows[:-1]) < 7
+                            else "The amber line shows the trailing 7-day average of complete days."
+                        )
+                    ),
                     "series": [
-                        {"label": "Sell", "tone": "teal", "values": avg_sell[-14:]},
-                        {"label": "Buy", "tone": "amber", "values": avg_buy[-14:]},
+                        {"label": "Spot", "tone": "teal", "values": spot_progression},
+                        {"label": "7-Day Avg", "tone": "amber", "values": spot_7d_average},
                     ],
                 },
                 {

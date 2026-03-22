@@ -102,7 +102,7 @@ function App() {
                 <SectionHeader
                   eyebrow="Section C2"
                   title="Coverage vs Policy Band"
-                  note="Use this to see which book is drifting outside the target hedge range."
+                  note="This panel is hedge-band compliance only. Margin or P&L exceptions should surface elsewhere."
                   chip="4 / 12 columns"
                 />
                 <CoverageChart points={data.overview.coveragePoints} />
@@ -267,7 +267,7 @@ function AlertCard({ alert }: { alert: AlertItem }) {
 function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
   const rankedBars = [...bars].sort((left, right) => right.value - left.value);
   const maxValue = Math.max(...rankedBars.map((bar) => Math.abs(bar.value)), 1);
-  const totalValue = rankedBars.reduce((sum, bar) => sum + Math.max(bar.value, 0), 0);
+  const totalImpact = rankedBars.reduce((sum, bar) => sum + Math.abs(bar.value), 0);
 
   function formatMillions(value: number) {
     const prefix = value < 0 ? "-£" : "£";
@@ -279,7 +279,7 @@ function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
       <div className="pnl-driver-list">
         {rankedBars.map((bar, index) => {
           const widthPct = Math.max((Math.abs(bar.value) / maxValue) * 100, 6);
-          const contributionPct = totalValue > 0 ? (Math.max(bar.value, 0) / totalValue) * 100 : 0;
+          const impactPct = totalImpact > 0 ? (bar.value / totalImpact) * 100 : 0;
 
           return (
             <div key={bar.label} className="pnl-driver-row">
@@ -299,8 +299,10 @@ function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
                 </div>
               </div>
               <div className="pnl-driver-share">
-                <span className="pnl-driver-share-value">{contributionPct.toFixed(1)}%</span>
-                <span className="pnl-driver-share-label">share</span>
+                <span className={`pnl-driver-share-value ${impactPct < 0 ? "is-negative" : ""}`}>
+                  {impactPct.toFixed(1)}%
+                </span>
+                <span className="pnl-driver-share-label">impact</span>
               </div>
             </div>
           );
@@ -313,7 +315,7 @@ function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
         </span>
       </div>
       <div className="chart-caption">
-        Clicking a row should filter the investigation table below. Use the share column to separate material drivers from noise.
+        Clicking a row should filter the investigation table below. The impact column is signed so loss-making books show as drag, not zero.
       </div>
     </div>
   );
@@ -339,7 +341,7 @@ function CoverageChart({ points }: { points: CoveragePoint[] }) {
         ))}
       </div>
       <div className="chart-caption">
-        One exception should be obvious without reading the table.
+        Band markers show minimum and maximum hedge policy. Only true hedge-band breaches are highlighted.
       </div>
     </div>
   );
