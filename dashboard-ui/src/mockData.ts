@@ -48,20 +48,20 @@ export const summaryCards: SummaryCard[] = [
   {
     label: "Portfolio Gross Margin",
     value: "£6.65m",
-    trend: "4/5 books profitable",
-    detail: "Driven by strong hedge carry across the fixed and industrial books.",
+    trend: "4/5 books margin-positive",
+    detail: "Margin is concentrated in the fixed and industrial books.",
   },
   {
     label: "Open Exposure",
     value: "13.5%",
-    trend: "Limit 25%",
-    detail: "Comfortable headroom against the portfolio open exposure ceiling.",
+    trend: "Policy limit 25%",
+    detail: "Open volume remains inside portfolio risk appetite.",
   },
   {
     label: "Weighted Hedge Cover",
     value: "86.5%",
-    trend: "Conservative posture retained",
-    detail: "High forward coverage across the major books.",
+    trend: "Conservative hedge posture",
+    detail: "Major books remain heavily forward-covered.",
   },
   {
     label: "Market Price",
@@ -78,8 +78,8 @@ export const summaryCards: SummaryCard[] = [
   {
     label: "Data Freshness",
     value: "2026-03-10",
-    trend: "Athena daily snapshot",
-    detail: "Dashboard values are generated from the latest curated dataset date.",
+    trend: "Latest curated daily snapshot",
+    detail: "Dashboard values reflect the latest validated dataset date.",
   },
 ];
 
