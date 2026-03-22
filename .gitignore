@@ -21,12 +21,14 @@ __pycache__/
 dashboard-ui/node_modules/
 dashboard-ui/dist/
 dashboard-ui/.vite/
+*.tsbuildinfo
 
 # Local demo outputs
 docs/evidence/*.html
 docs/evidence/run-*.md
 docs/evidence/run-summary-*.md
 docs/evidence/athena-run-*.md
+docs/evidence/athena-schema-*.md
 
 # IDE files
 .idea/
