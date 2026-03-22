@@ -50,6 +50,46 @@ def _discover_bucket_name() -> str:
     return sorted(data)[-1]
 
 
+def _resolve_table_name(database: str, table: str, bucket: str, region: str) -> str:
+    tables = _run_aws(
+        [
+            "glue",
+            "get-tables",
+            "--database-name",
+            database,
+            "--region",
+            region,
+        ]
+    ).get("TableList", [])
+
+    candidates = [
+        item
+        for item in tables
+        if item.get("Name") == table
+        or item.get("Name", "").startswith(f"{table}_")
+    ]
+    if not candidates:
+        return table
+
+    target_location = f"s3://{bucket}/curated/dataset=electricity/"
+
+    def _score(item: Dict[str, object]):
+        name = str(item.get("Name", ""))
+        location = (
+            item.get("StorageDescriptor", {}) or {}
+        ).get("Location", "")
+        update_time = str(item.get("UpdateTime") or item.get("CreateTime") or "")
+        if name == table and location == target_location:
+            return (3, update_time)
+        if location == target_location:
+            return (2, update_time)
+        if name == table:
+            return (1, update_time)
+        return (0, update_time)
+
+    return max(candidates, key=_score).get("Name", table)
+
+
 def _start_athena_query(
     query: str, database: str, output_location: str, region: str
 ) -> str:
@@ -1282,8 +1322,11 @@ def main():
 
     bucket = _discover_bucket_name()
     output_location = args.output_location or f"s3://{bucket}/athena-results/"
+    resolved_table = _resolve_table_name(
+        args.database, args.table, bucket, args.region
+    )
     table_columns = _get_table_columns(
-        args.database, args.table, output_location, args.region
+        args.database, resolved_table, output_location, args.region
     )
     has_source_column = "source" in table_columns
     has_entsoe_price_column = "day_ahead_price_eur_mwh" in table_columns
@@ -1300,7 +1343,7 @@ def main():
       AVG(system_buy_price) AS avg_system_buy_price,
       MAX(demand_mw) AS peak_demand_mw,
       COUNT(*) AS settlement_rows
-    FROM {args.table}
+    FROM {resolved_table}
     WHERE {base_filter}
     GROUP BY date
     ORDER BY date
@@ -1309,7 +1352,7 @@ def main():
     intraday_query = f"""
     WITH latest AS (
       SELECT MAX(date) AS d
-      FROM {args.table}
+      FROM {resolved_table}
       WHERE {base_filter}
     )
     SELECT
@@ -1317,7 +1360,7 @@ def main():
       demand_mw,
       system_sell_price,
       system_buy_price
-    FROM {args.table}
+    FROM {resolved_table}
     WHERE {base_filter}
       AND date = (SELECT d FROM latest)
     ORDER BY settlement_period
@@ -1336,7 +1379,7 @@ def main():
           region,
           date,
           AVG(day_ahead_price_eur_mwh) AS avg_day_ahead_price_eur_mwh
-        FROM {args.table}
+        FROM {resolved_table}
         WHERE source = 'entsoe'
         GROUP BY region, date
         ORDER BY region, date
@@ -1358,9 +1401,9 @@ def main():
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
     context = _build_dashboard_context(
-        bucket, args.table, daily_rows, intraday_rows, entsoe_price_rows
+        bucket, resolved_table, daily_rows, intraday_rows, entsoe_price_rows
     )
-    _render_html(output_file, bucket, args.table, context)
+    _render_html(output_file, bucket, resolved_table, context)
 
     if args.output_json:
         output_json = pathlib.Path(args.output_json)
