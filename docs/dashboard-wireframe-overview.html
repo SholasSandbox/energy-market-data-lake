@@ -401,6 +401,118 @@
       font-weight: 700;
     }
 
+    .driver-chart {
+      padding: 18px 18px 72px;
+    }
+
+    .driver-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 14px;
+    }
+
+    .driver-row {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) 74px;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .driver-rank {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .driver-copy {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .driver-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .driver-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .driver-value {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .driver-value.loss {
+      color: var(--red);
+    }
+
+    .driver-track {
+      height: 14px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(159, 178, 195, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(159, 178, 195, 0.14);
+    }
+
+    .driver-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(20, 138, 123, 0.9), rgba(14, 79, 138, 0.8));
+    }
+
+    .driver-fill.loss {
+      background: linear-gradient(90deg, rgba(175, 62, 58, 0.9), rgba(182, 114, 21, 0.82));
+    }
+
+    .driver-share {
+      display: grid;
+      justify-items: end;
+      gap: 2px;
+    }
+
+    .driver-share strong {
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .driver-share span {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
+
+    .driver-readout {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 34px;
+      z-index: 2;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .driver-readout strong {
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
     .table-wrap {
       overflow: auto;
       border: 1px dashed var(--line-strong);
@@ -526,6 +638,18 @@
       .notes {
         grid-template-columns: 1fr;
       }
+
+      .driver-row {
+        grid-template-columns: 30px minmax(0, 1fr);
+      }
+
+      .driver-share {
+        grid-column: 2;
+        justify-items: start;
+        grid-auto-flow: column;
+        gap: 8px;
+        align-items: baseline;
+      }
     }
 
     @media (max-width: 640px) {
@@ -552,6 +676,12 @@
       .nav-pill,
       .action {
         width: 100%;
+      }
+
+      .driver-title,
+      .driver-readout {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -684,15 +814,66 @@
               </div>
               <span class="layout-chip">8 / 12 columns</span>
             </div>
-            <div class="wire-chart">
-              <div class="bars">
-                <div class="bar" style="height: 86%;"></div>
-                <div class="bar" style="height: 44%;"></div>
-                <div class="bar" style="height: 68%;"></div>
-                <div class="bar" style="height: 48%;"></div>
-                <div class="bar loss" style="height: 16%;"></div>
+            <div class="wire-chart driver-chart">
+              <div class="driver-list">
+                <div class="driver-row">
+                  <div class="driver-rank">01</div>
+                  <div class="driver-copy">
+                    <div class="driver-title">
+                      <span class="driver-label">Residential Fixed South</span>
+                      <span class="driver-value">£3.30m</span>
+                    </div>
+                    <div class="driver-track"><div class="driver-fill" style="width: 100%;"></div></div>
+                  </div>
+                  <div class="driver-share"><strong>49.7%</strong><span>share</span></div>
+                </div>
+                <div class="driver-row">
+                  <div class="driver-rank">02</div>
+                  <div class="driver-copy">
+                    <div class="driver-title">
+                      <span class="driver-label">Industrial Flex</span>
+                      <span class="driver-value">£1.64m</span>
+                    </div>
+                    <div class="driver-track"><div class="driver-fill" style="width: 49.7%;"></div></div>
+                  </div>
+                  <div class="driver-share"><strong>24.7%</strong><span>share</span></div>
+                </div>
+                <div class="driver-row">
+                  <div class="driver-rank">03</div>
+                  <div class="driver-copy">
+                    <div class="driver-title">
+                      <span class="driver-label">Public Sector Framework</span>
+                      <span class="driver-value">£0.82m</span>
+                    </div>
+                    <div class="driver-track"><div class="driver-fill" style="width: 24.9%;"></div></div>
+                  </div>
+                  <div class="driver-share"><strong>12.4%</strong><span>share</span></div>
+                </div>
+                <div class="driver-row">
+                  <div class="driver-rank">04</div>
+                  <div class="driver-copy">
+                    <div class="driver-title">
+                      <span class="driver-label">SME Indexed Midlands</span>
+                      <span class="driver-value">£0.82m</span>
+                    </div>
+                    <div class="driver-track"><div class="driver-fill" style="width: 24.7%;"></div></div>
+                  </div>
+                  <div class="driver-share"><strong>12.3%</strong><span>share</span></div>
+                </div>
+                <div class="driver-row">
+                  <div class="driver-rank">05</div>
+                  <div class="driver-copy">
+                    <div class="driver-title">
+                      <span class="driver-label">EV Flex Portfolio</span>
+                      <span class="driver-value loss">£0.06m</span>
+                    </div>
+                    <div class="driver-track"><div class="driver-fill loss" style="width: 6%;"></div></div>
+                  </div>
+                  <div class="driver-share"><strong>1.0%</strong><span>share</span></div>
+                </div>
               </div>
-              <div class="chart-caption">Sorted by contribution. Clicking a bar should filter the investigation table below.</div>
+              <div class="driver-readout"><strong>Readout</strong><span>Ranked by gross margin contribution so the largest books explain portfolio outcome first.</span></div>
+              <div class="chart-caption">Clicking a row should filter the investigation table below. Use the share column to separate material drivers from noise.</div>
             </div>
           </article>
 
