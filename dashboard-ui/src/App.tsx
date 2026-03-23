@@ -14,6 +14,7 @@ function App() {
   const [data, setData] = useState<DashboardData>(sampleDashboardData);
   const [sourceLabel, setSourceLabel] = useState("Fallback sample");
   const [marketRegion, setMarketRegion] = useState("ALL");
+  const [showHeaderNarrative, setShowHeaderNarrative] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -68,6 +69,8 @@ function App() {
         <Header
           data={data}
           sourceLabel={sourceLabel}
+          showHeaderNarrative={showHeaderNarrative}
+          onToggleHeaderNarrative={() => setShowHeaderNarrative((current) => !current)}
         />
         <main className="content-grid">
           <section className="panel">
@@ -212,18 +215,34 @@ function App() {
 function Header({
   data,
   sourceLabel,
+  showHeaderNarrative,
+  onToggleHeaderNarrative,
 }: {
   data: DashboardData;
   sourceLabel: string;
+  showHeaderNarrative: boolean;
+  onToggleHeaderNarrative: () => void;
 }) {
   return (
     <header className="topbar">
       <div className="hero-copy">
-        <h1>Power Market Data Lake &amp; Analytics Platform</h1>
-        <p>
-          React + TypeScript overview page wired to generated dashboard JSON. The page is
-          arranged to answer health, change, risk source, and next investigation step in one scan.
-        </p>
+        <div className="hero-title-row">
+          <h1>Power Market Data Lake &amp; Analytics Platform</h1>
+          <button
+            type="button"
+            className="hero-toggle"
+            onClick={onToggleHeaderNarrative}
+            aria-expanded={showHeaderNarrative}
+          >
+            {showHeaderNarrative ? "Hide context" : "Show context"}
+          </button>
+        </div>
+        {showHeaderNarrative ? (
+          <p>
+            React + TypeScript overview page wired to generated dashboard JSON. The page is
+            arranged to answer health, change, risk source, and next investigation step in one scan.
+          </p>
+        ) : null}
         <div className="meta-row">
           <span className="tag">As of {data.metadata.asOf}</span>
           <span className="tag">Latest Date: {data.metadata.latestDate}</span>
