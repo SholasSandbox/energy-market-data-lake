@@ -429,6 +429,44 @@ def _build_entsoe_price_panels(entsoe_price_rows: List[Dict[str, str]]) -> List[
         rows_by_region.setdefault(region, []).append(row)
 
     panels: List[Dict[str, object]] = []
+    composite_rows = entsoe_price_rows[-14:]
+    if composite_rows:
+        rows_by_date: Dict[str, List[float]] = {}
+        for row in composite_rows:
+            region = row.get("region", "").lower()
+            if region == "gb":
+                continue
+            date = row.get("date")
+            price = _to_float(row.get("avg_day_ahead_price_eur_mwh"))
+            if not date or price <= 0:
+                continue
+            rows_by_date.setdefault(date, []).append(price)
+
+        composite_values = [
+            sum(values) / len(values)
+            for _, values in sorted(rows_by_date.items())
+            if values
+        ]
+        if composite_values:
+            panels.append(
+                {
+                    "title": "ENTSO-E Regional Day-Ahead Composite",
+                    "legend": [{"label": "Day-Ahead", "tone": "teal"}],
+                    "note": (
+                        "Composite day-ahead context across available continental ENTSO-E regions."
+                    ),
+                    "region": "ALL",
+                    "source": "ENTSO-E",
+                    "series": [
+                        {
+                            "label": "Day-Ahead",
+                            "tone": "teal",
+                            "values": composite_values,
+                        }
+                    ],
+                }
+            )
+
     for region in ["gb", "fr", "de", "nl"]:
         region_rows = rows_by_region.get(region, [])
         if not region_rows:
@@ -445,6 +483,8 @@ def _build_entsoe_price_panels(entsoe_price_rows: List[Dict[str, str]]) -> List[
                     f"Latest day-ahead average for {region_labels.get(region, region.upper())}: "
                     f"EUR {latest_price:.2f}/MWh."
                 ),
+                "region": region.upper(),
+                "source": "ENTSO-E",
                 "series": [
                     {
                         "label": "Day-Ahead",
@@ -724,39 +764,45 @@ def _build_dashboard_context(
             ],
             "marketPanels": [
                 {
-                    "title": "Spot vs 7-Day Average",
+                    "title": "GB Elexon Spot vs 7-Day Average",
                     "legend": [
                         {"label": "Spot", "tone": "teal"},
                         {"label": "7-Day Avg", "tone": "amber"},
                     ],
                     "note": (
-                        f"Current spot is £{latest_avg_sell:.2f}/MWh. "
+                        f"Current GB Elexon spot is £{latest_avg_sell:.2f}/MWh. "
                         + (
                             "The 7-day average will stabilise once seven complete days are available."
                             if len(complete_price_rows[:-1]) < 7
                             else "The amber line shows the trailing 7-day average of complete days."
                         )
                     ),
+                    "region": "GB",
+                    "source": "Elexon",
                     "series": [
                         {"label": "Spot", "tone": "teal", "values": spot_progression},
                         {"label": "7-Day Avg", "tone": "amber", "values": spot_7d_average},
                     ],
                 },
                 {
-                    "title": "Demand Trend",
+                    "title": "GB Elexon Demand Trend",
                     "legend": [{"label": "Demand", "tone": "blue"}],
-                    "note": "Demand trend provides context for current market conditions without driving the main page.",
+                    "note": "GB Elexon demand trend provides operating context without driving the main page.",
+                    "region": "GB",
+                    "source": "Elexon",
                     "series": [
                         {"label": "Demand", "tone": "blue", "values": total_demand[-14:]},
                     ],
                 },
                 {
-                    "title": "Intraday Profile Preview",
+                    "title": "GB Elexon Intraday Profile",
                     "legend": [
                         {"label": "Demand", "tone": "blue"},
                         {"label": "Price", "tone": "amber"},
                     ],
-                    "note": f"Latest-day intraday profile for {latest_date}.",
+                    "note": f"Latest-day GB Elexon intraday demand and system price profile for {latest_date}.",
+                    "region": "GB",
+                    "source": "Elexon",
                     "series": [
                         {"label": "Demand", "tone": "blue", "values": intraday_demand},
                         {"label": "Price", "tone": "amber", "values": intraday_sell},

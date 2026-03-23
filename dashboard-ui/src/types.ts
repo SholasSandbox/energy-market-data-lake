@@ -57,6 +57,8 @@ export interface MarketPanel {
   title: string;
   legend: Array<{ label: string; tone: "blue" | "teal" | "amber" }>;
   note: string;
+  region: string;
+  source: string;
   series: MarketSeries[];
 }
 

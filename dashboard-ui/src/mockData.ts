@@ -168,41 +168,49 @@ export const exceptionRows: ExceptionRow[] = [
 
 export const marketPanels: MarketPanel[] = [
   {
-    title: "Spot vs 7-Day Average",
+    title: "GB Elexon Spot vs 7-Day Average",
     legend: [
       { label: "Spot", tone: "teal" },
       { label: "7-Day Avg", tone: "amber" },
     ],
-    note: "Current spot sits above the trailing 7-day complete-day average.",
+    note: "GB Elexon spot remains above the trailing 7-day complete-day average.",
+    region: "GB",
+    source: "Elexon",
     series: [
       { label: "Spot", tone: "teal", values: [94, 96, 98, 99, 101, 100, 102, 104, 103, 105, 107, 109] },
       { label: "7-Day Avg", tone: "amber", values: [94, 95, 96, 96.8, 97.6, 98, 98.6, 100, 101, 102, 103.1, 104.3] },
     ],
   },
   {
-    title: "Demand Trend",
+    title: "GB Elexon Demand Trend",
     legend: [{ label: "Demand", tone: "blue" }],
-    note: "Placed lower because it explains, not decides.",
+    note: "GB demand context supports the operating story without leading the page.",
+    region: "GB",
+    source: "Elexon",
     series: [
       { label: "Demand", tone: "blue", values: [26200, 26750, 26980, 27100, 27440, 27620, 27910, 28220, 28130, 28540, 28810, 28990] },
     ],
   },
   {
-    title: "Intraday Profile Preview",
+    title: "GB Elexon Intraday Profile",
     legend: [
       { label: "Demand", tone: "blue" },
       { label: "Price", tone: "amber" },
     ],
-    note: "Useful for drill-down without taking main-story prominence.",
+    note: "Latest-day GB intraday demand and system price profile from Elexon.",
+    region: "GB",
+    source: "Elexon",
     series: [
       { label: "Demand", tone: "blue", values: [21000, 20500, 20200, 20100, 20400, 21200, 22800, 24400, 26100, 27400, 28300, 27900] },
       { label: "Price", tone: "amber", values: [88, 84, 82, 81, 83, 89, 96, 104, 118, 112, 106, 101] },
     ],
   },
   {
-    title: "ENTSO-E GB Day-Ahead",
+    title: "ENTSO-E Regional Day-Ahead Composite",
     legend: [{ label: "Day-Ahead", tone: "teal" }],
-    note: "Day-ahead context for GB from the ENTSO-E feed.",
+    note: "Simple cross-market ENTSO-E composite across continental regions.",
+    region: "ALL",
+    source: "ENTSO-E",
     series: [
       { label: "Day-Ahead", tone: "teal", values: [91, 95, 99, 102, 98, 96, 97, 100, 104, 108, 106, 103] },
     ],
@@ -211,6 +219,8 @@ export const marketPanels: MarketPanel[] = [
     title: "ENTSO-E France Day-Ahead",
     legend: [{ label: "Day-Ahead", tone: "amber" }],
     note: "French day-ahead prices provide cross-market context for the UK view.",
+    region: "FR",
+    source: "ENTSO-E",
     series: [
       { label: "Day-Ahead", tone: "amber", values: [84, 86, 88, 91, 90, 89, 87, 92, 95, 97, 96, 94] },
     ],
@@ -219,6 +229,8 @@ export const marketPanels: MarketPanel[] = [
     title: "ENTSO-E Germany Day-Ahead",
     legend: [{ label: "Day-Ahead", tone: "blue" }],
     note: "German price movement is useful directional context for continental power conditions.",
+    region: "DE",
+    source: "ENTSO-E",
     series: [
       { label: "Day-Ahead", tone: "blue", values: [79, 82, 85, 88, 86, 84, 83, 89, 93, 96, 94, 92] },
     ],
@@ -227,6 +239,8 @@ export const marketPanels: MarketPanel[] = [
     title: "ENTSO-E Netherlands Day-Ahead",
     legend: [{ label: "Day-Ahead", tone: "teal" }],
     note: "Dutch prices round out the regional picture without changing the main page hierarchy.",
+    region: "NL",
+    source: "ENTSO-E",
     series: [
       { label: "Day-Ahead", tone: "teal", values: [83, 85, 87, 89, 88, 87, 86, 90, 93, 95, 94, 91] },
     ],
