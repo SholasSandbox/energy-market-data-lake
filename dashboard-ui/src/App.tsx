@@ -190,7 +190,7 @@ function Header({
   return (
     <header className="topbar">
       <div className="hero-copy">
-        <h1>Energy Market Data Lake &amp; Analytics Platform</h1>
+        <h1>Power Market Data Lake &amp; Analytics Platform</h1>
         <p>
           React + TypeScript overview page wired to generated dashboard JSON. The page is
           arranged to answer health, change, risk source, and next investigation step in one scan.
