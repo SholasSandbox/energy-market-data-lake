@@ -43,7 +43,7 @@ Persistent across all pages.
 
 Contents:
 
-- title: `Energy Market Data Lake & Analytics Platform`
+- title: `Power Market Data Lake & Analytics Platform`
 - last refresh timestamp
 - market region
 - scenario badge, for example `Conservative Hedge Posture`
