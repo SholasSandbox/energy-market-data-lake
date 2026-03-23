@@ -38,6 +38,16 @@ mkdir -p "${TMP_DIR}"
 
 echo "Using bucket: ${BUCKET}"
 
+wait_for_crawler_ready() {
+  local crawler_name="$1"
+  while true; do
+    local crawler_state
+    crawler_state="$(aws glue get-crawler --name "${crawler_name}" --region "${REGION}" --query 'Crawler.State' --output text 2>/dev/null || echo 'MISSING')"
+    [[ "${crawler_state}" == "READY" || "${crawler_state}" == "MISSING" ]] && break
+    sleep 10
+  done
+}
+
 export BUCKET
 export ELEXON_BASE_URL
 export BACKFILL_DAYS
@@ -288,6 +298,7 @@ else
 fi
 
 if aws glue get-crawler --name "${RAW_CRAWLER_NAME}" --region "${REGION}" >/dev/null 2>&1; then
+  wait_for_crawler_ready "${RAW_CRAWLER_NAME}"
   aws glue update-crawler \
     --name "${RAW_CRAWLER_NAME}" \
     --role "${GLUE_ROLE_ARN}" \
@@ -306,11 +317,7 @@ else
 fi
 
 aws glue start-crawler --name "${RAW_CRAWLER_NAME}" --region "${REGION}" >/dev/null 2>&1 || true
-while true; do
-  CRAWLER_STATE="$(aws glue get-crawler --name "${RAW_CRAWLER_NAME}" --region "${REGION}" --query 'Crawler.State' --output text)"
-  [[ "${CRAWLER_STATE}" == "READY" ]] && break
-  sleep 10
-done
+wait_for_crawler_ready "${RAW_CRAWLER_NAME}"
 
 JOB_RUN_ID="$(aws glue start-job-run \
   --job-name "${GLUE_JOB_NAME}" \
@@ -331,6 +338,7 @@ while true; do
 done
 
 if aws glue get-crawler --name "${CURATED_CRAWLER_NAME}" --region "${REGION}" >/dev/null 2>&1; then
+  wait_for_crawler_ready "${CURATED_CRAWLER_NAME}"
   aws glue update-crawler \
     --name "${CURATED_CRAWLER_NAME}" \
     --role "${GLUE_ROLE_ARN}" \
@@ -364,11 +372,7 @@ for CURATED_TABLE in "${CURATED_TABLES[@]}"; do
 done
 
 aws glue start-crawler --name "${CURATED_CRAWLER_NAME}" --region "${REGION}" >/dev/null 2>&1 || true
-while true; do
-  CRAWLER_STATE="$(aws glue get-crawler --name "${CURATED_CRAWLER_NAME}" --region "${REGION}" --query 'Crawler.State' --output text)"
-  [[ "${CRAWLER_STATE}" == "READY" ]] && break
-  sleep 10
-done
+wait_for_crawler_ready "${CURATED_CRAWLER_NAME}"
 
 mkdir -p "${ROOT_DIR}/docs/evidence"
 EVIDENCE_FILE="${ROOT_DIR}/docs/evidence/run-$(date +%Y%m%d-%H%M%S).md"
@@ -377,6 +381,14 @@ EXPECTED_SOURCES="elexon"
 if [[ -n "${ENTSOE_TOKEN}" ]]; then
   EXPECTED_SOURCES="${EXPECTED_SOURCES},entsoe"
 fi
+
+s3_prefix_count() {
+  aws s3api list-objects-v2 \
+    --bucket "${BUCKET}" \
+    --prefix "$1" \
+    --query 'length(Contents || `[]`)' \
+    --output text
+}
 
 python3 "${ROOT_DIR}/scripts/validate_athena_schema.py" \
   --region "${REGION}" \
@@ -402,19 +414,19 @@ python3 "${ROOT_DIR}/scripts/validate_athena_schema.py" \
   cat "${TMP_DIR}/ingest-result.json"
   echo
   echo "## Raw Prefix Count (All Sources)"
-  aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "raw/" --query 'length(Contents)' --output text
+  s3_prefix_count "raw/"
   echo
   echo "## Raw Prefix Count (Elexon)"
-  aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "raw/source=elexon/" --query 'length(Contents)' --output text
+  s3_prefix_count "raw/source=elexon/"
   echo
   echo "## Raw Prefix Count (ENTSO-E)"
-  aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "raw/source=entsoe/" --query 'length(Contents)' --output text
+  s3_prefix_count "raw/source=entsoe/"
   echo
   echo "## Raw Prefix Count (ENTSOG)"
-  aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "raw/source=entsog/" --query 'length(Contents)' --output text
+  s3_prefix_count "raw/source=entsog/"
   echo
   echo "## Curated Prefix Count (Electricity)"
-  aws s3api list-objects-v2 --bucket "${BUCKET}" --prefix "curated/dataset=electricity/" --query 'length(Contents)' --output text
+  s3_prefix_count "curated/dataset=electricity/"
 } > "${EVIDENCE_FILE}"
 
 echo "Closeout complete. Evidence file:"
