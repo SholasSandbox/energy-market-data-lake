@@ -19,6 +19,7 @@ ATHENA_RESULTS_PREFIX="athena-results/"
 BACKFILL_DAYS="${BACKFILL_DAYS:-30}"
 ELEXON_BASE_URL="${ELEXON_BASE_URL:-https://data.elexon.co.uk/bmrs/api/v1}"
 HTTP_TIMEOUT_SECONDS="${HTTP_TIMEOUT_SECONDS:-30}"
+LAMBDA_INVOKE_READ_TIMEOUT_SECONDS="${LAMBDA_INVOKE_READ_TIMEOUT_SECONDS:-0}"
 
 ENTSOE_BASE_URL="${ENTSOE_BASE_URL:-https://web-api.tp.entsoe.eu/api}"
 ENTSOE_TOKEN="${ENTSOE_TOKEN:-}"
@@ -45,6 +46,32 @@ wait_for_crawler_ready() {
     crawler_state="$(aws glue get-crawler --name "${crawler_name}" --region "${REGION}" --query 'Crawler.State' --output text 2>/dev/null || echo 'MISSING')"
     [[ "${crawler_state}" == "READY" || "${crawler_state}" == "MISSING" ]] && break
     sleep 10
+  done
+}
+
+wait_for_lambda_ready() {
+  local function_name="$1"
+  while true; do
+    local state
+    local update_status
+    state="$(aws lambda get-function-configuration --function-name "${function_name}" --region "${REGION}" --query 'State' --output text 2>/dev/null || echo 'MISSING')"
+    update_status="$(aws lambda get-function-configuration --function-name "${function_name}" --region "${REGION}" --query 'LastUpdateStatus' --output text 2>/dev/null || echo 'MISSING')"
+    if [[ "${state}" == "MISSING" ]]; then
+      sleep 5
+      continue
+    fi
+    if [[ "${state}" == "Active" && "${update_status}" == "Successful" ]]; then
+      break
+    fi
+    if [[ "${state}" == "Failed" || "${update_status}" == "Failed" ]]; then
+      aws lambda get-function-configuration \
+        --function-name "${function_name}" \
+        --region "${REGION}" \
+        --query '{State: State, StateReason: StateReason, LastUpdateStatus: LastUpdateStatus, LastUpdateStatusReason: LastUpdateStatusReason}' \
+        --output json
+      return 1
+    fi
+    sleep 5
   done
 }
 
@@ -179,6 +206,8 @@ if aws lambda get-function --function-name "${LAMBDA_FUNCTION_NAME}" --region "$
     --zip-file "fileb://${TMP_DIR}/ingest_elexon.zip" \
     --region "${REGION}" >/dev/null
 
+  wait_for_lambda_ready "${LAMBDA_FUNCTION_NAME}"
+
   aws lambda update-function-configuration \
     --function-name "${LAMBDA_FUNCTION_NAME}" \
     --role "${LAMBDA_ROLE_ARN}" \
@@ -188,6 +217,8 @@ if aws lambda get-function --function-name "${LAMBDA_FUNCTION_NAME}" --region "$
     --memory-size 256 \
     --environment "file://${TMP_DIR}/lambda-environment.json" \
     --region "${REGION}" >/dev/null
+
+  wait_for_lambda_ready "${LAMBDA_FUNCTION_NAME}"
 else
   aws lambda create-function \
     --function-name "${LAMBDA_FUNCTION_NAME}" \
@@ -199,6 +230,8 @@ else
     --zip-file "fileb://${TMP_DIR}/ingest_elexon.zip" \
     --environment "file://${TMP_DIR}/lambda-environment.json" \
     --region "${REGION}" >/dev/null
+
+  wait_for_lambda_ready "${LAMBDA_FUNCTION_NAME}"
 fi
 
 aws events put-rule \
@@ -224,6 +257,7 @@ aws lambda invoke \
   --function-name "${LAMBDA_FUNCTION_NAME}" \
   --payload '{}' \
   --cli-binary-format raw-in-base64-out \
+  --cli-read-timeout "${LAMBDA_INVOKE_READ_TIMEOUT_SECONDS}" \
   --region "${REGION}" \
   "${TMP_DIR}/ingest-result.json" >/dev/null
 
