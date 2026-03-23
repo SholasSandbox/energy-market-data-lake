@@ -660,12 +660,43 @@ th {
   gap: 14px;
 }
 
+.market-region-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -2px 0 14px;
+}
+
+.market-region-pill {
+  cursor: pointer;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: rgba(244, 248, 251, 0.9);
+  color: var(--muted);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.market-region-pill.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
 .panel-market {
   min-height: 236px;
 }
 
 .section-header-market {
   margin-bottom: 12px;
+}
+
+.market-panel-meta {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .legend {

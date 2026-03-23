@@ -13,6 +13,7 @@ import type {
 function App() {
   const [data, setData] = useState<DashboardData>(sampleDashboardData);
   const [sourceLabel, setSourceLabel] = useState("Fallback sample");
+  const [marketRegion, setMarketRegion] = useState("ALL");
 
   useEffect(() => {
     let cancelled = false;
@@ -44,6 +45,22 @@ function App() {
       cancelled = true;
     };
   }, []);
+
+  const availableMarketRegions = [
+    "ALL",
+    ...Array.from(
+      new Set(
+        data.overview.marketPanels
+          .map((panel) => panel.region)
+          .filter((region) => region && region !== "ALL"),
+      ),
+    ),
+  ];
+
+  const visibleMarketPanels =
+    marketRegion === "ALL"
+      ? data.overview.marketPanels
+      : data.overview.marketPanels.filter((panel) => panel.region === marketRegion);
 
   return (
     <div className="page-shell">
@@ -165,11 +182,23 @@ function App() {
             <SectionHeader
               eyebrow="Section E"
               title="Market Context Footer"
-              note="Market context should support the portfolio narrative. Keep UK operating signals visible, then add ENTSO-E price context without letting the footer overtake the main risk story."
+              note="Keep GB operating signals explicit, then switch into continental ENTSO-E context by region without muddling the portfolio view."
               chip="12 cols / context panels"
             />
+            <div className="market-region-row" role="tablist" aria-label="Market context regions">
+              {availableMarketRegions.map((region) => (
+                <button
+                  key={region}
+                  type="button"
+                  className={`market-region-pill ${marketRegion === region ? "active" : ""}`}
+                  onClick={() => setMarketRegion(region)}
+                >
+                  {region === "ALL" ? "All Regions" : region}
+                </button>
+              ))}
+            </div>
             <div className="market-grid">
-              {data.overview.marketPanels.map((panel) => (
+              {visibleMarketPanels.map((panel) => (
                 <MarketPanelCard key={panel.title} panel={panel} />
               ))}
             </div>
@@ -198,7 +227,7 @@ function Header({
         <div className="meta-row">
           <span className="tag">As of {data.metadata.asOf}</span>
           <span className="tag">Latest Date: {data.metadata.latestDate}</span>
-          <span className="tag">Region: {data.metadata.region}</span>
+          <span className="tag">Portfolio Region: {data.metadata.region}</span>
           <span className="tag">Scenario: {data.metadata.scenario}</span>
           <span className="tag">Data Freshness: {data.metadata.dataFreshness}</span>
           <span className="tag">Source: {sourceLabel}</span>
@@ -374,6 +403,9 @@ function MarketPanelCard({ panel }: { panel: MarketPanel }) {
       <div className="section-header section-header-market">
         <div>
           <h3>{panel.title}</h3>
+          <p className="market-panel-meta">
+            {panel.region === "ALL" ? "Cross-market view" : `Region ${panel.region}`} · {panel.source}
+          </p>
         </div>
         <div className="legend">
           {panel.legend.map((item) => (

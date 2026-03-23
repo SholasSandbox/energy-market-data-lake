@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "asOf": "2026-03-23 19:50:28 UTC",
+    "asOf": "2026-03-23 21:56:40 UTC",
     "latestDate": "2026-03-23",
     "region": "GB",
     "scenario": "Conservative Hedge Posture",
@@ -234,7 +234,7 @@
     ],
     "marketPanels": [
       {
-        "title": "Spot vs 7-Day Average",
+        "title": "GB Elexon Spot vs 7-Day Average",
         "legend": [
           {
             "label": "Spot",
@@ -245,7 +245,9 @@
             "tone": "amber"
           }
         ],
-        "note": "Current spot is \u00a3127.05/MWh. The amber line shows the trailing 7-day average of complete days.",
+        "note": "Current GB Elexon spot is \u00a3127.05/MWh. The amber line shows the trailing 7-day average of complete days.",
+        "region": "GB",
+        "source": "Elexon",
         "series": [
           {
             "label": "Spot",
@@ -290,14 +292,16 @@
         ]
       },
       {
-        "title": "Demand Trend",
+        "title": "GB Elexon Demand Trend",
         "legend": [
           {
             "label": "Demand",
             "tone": "blue"
           }
         ],
-        "note": "Demand trend provides context for current market conditions without driving the main page.",
+        "note": "GB Elexon demand trend provides operating context without driving the main page.",
+        "region": "GB",
+        "source": "Elexon",
         "series": [
           {
             "label": "Demand",
@@ -322,7 +326,7 @@
         ]
       },
       {
-        "title": "Intraday Profile Preview",
+        "title": "GB Elexon Intraday Profile",
         "legend": [
           {
             "label": "Demand",
@@ -333,7 +337,9 @@
             "tone": "amber"
           }
         ],
-        "note": "Latest-day intraday profile for 2026-03-23.",
+        "note": "Latest-day GB Elexon intraday demand and system price profile for 2026-03-23.",
+        "region": "GB",
+        "source": "Elexon",
         "series": [
           {
             "label": "Demand",
@@ -426,6 +432,40 @@
         ]
       },
       {
+        "title": "ENTSO-E Regional Day-Ahead Composite",
+        "legend": [
+          {
+            "label": "Day-Ahead",
+            "tone": "teal"
+          }
+        ],
+        "note": "Composite day-ahead context across available continental ENTSO-E regions.",
+        "region": "ALL",
+        "source": "ENTSO-E",
+        "series": [
+          {
+            "label": "Day-Ahead",
+            "tone": "teal",
+            "values": [
+              82.83572916666664,
+              65.29052631578946,
+              78.81916666666663,
+              125.08020833333332,
+              91.72979166666669,
+              76.67458333333333,
+              120.99499999999979,
+              90.78791666666667,
+              109.21666666666665,
+              131.2627083333334,
+              105.41239583333333,
+              78.81947916666662,
+              135.05367021276595,
+              76.80087912087913
+            ]
+          }
+        ]
+      },
+      {
         "title": "ENTSO-E France Day-Ahead",
         "legend": [
           {
@@ -434,6 +474,8 @@
           }
         ],
         "note": "Latest day-ahead average for France: EUR 54.76/MWh.",
+        "region": "FR",
+        "source": "ENTSO-E",
         "series": [
           {
             "label": "Day-Ahead",
@@ -466,6 +508,8 @@
           }
         ],
         "note": "Latest day-ahead average for Germany: EUR 71.19/MWh.",
+        "region": "DE",
+        "source": "ENTSO-E",
         "series": [
           {
             "label": "Day-Ahead",
@@ -498,6 +542,8 @@
           }
         ],
         "note": "Latest day-ahead average for Netherlands: EUR 76.80/MWh.",
+        "region": "NL",
+        "source": "ENTSO-E",
         "series": [
           {
             "label": "Day-Ahead",
