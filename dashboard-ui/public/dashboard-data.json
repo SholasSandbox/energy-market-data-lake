@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "asOf": "2026-03-22 23:52:46 UTC",
-    "latestDate": "2026-03-22",
+    "asOf": "2026-03-23 19:50:28 UTC",
+    "latestDate": "2026-03-23",
     "region": "GB",
     "scenario": "Conservative Hedge Posture",
     "table": "curated_dataset_electricity_3d55606ee40ee8a52f504210ea44aa85",
     "bucket": "energy-market-lake-portfolio-sandbox-20260321",
-    "dataFreshness": "Daily snapshot (46/48 settlement rows)"
+    "dataFreshness": "Daily snapshot (38/48 settlement rows)"
   },
   "navItems": [
     "Overview",
@@ -30,7 +30,7 @@
       },
       {
         "label": "Settlement Completeness",
-        "value": "46/48",
+        "value": "38/48",
         "detail": "One or more settlement periods are missing in the latest snapshot.",
         "status": "watch"
       },
@@ -44,7 +44,7 @@
     "summaryCards": [
       {
         "label": "Portfolio Gross Margin",
-        "value": "\u00a36.03m",
+        "value": "\u00a35.77m",
         "trend": "4/5 books margin-positive",
         "detail": "Margin is concentrated in the fixed and industrial books."
       },
@@ -62,19 +62,19 @@
       },
       {
         "label": "Market Price",
-        "value": "\u00a3122.18/MWh",
+        "value": "\u00a3127.05/MWh",
         "trend": "7-day avg \u00a3101.70/MWh",
-        "detail": "Current level is +20.1% versus the trailing 7-day complete-day average."
+        "detail": "Current level is +24.9% versus the trailing 7-day complete-day average."
       },
       {
         "label": "Peak Demand",
-        "value": "41,225 MW",
+        "value": "43,492 MW",
         "trend": "7-day avg 43,703 MW",
-        "detail": "Current level is -5.7% versus the trailing 7-day complete-day average."
+        "detail": "Current level is -0.5% versus the trailing 7-day complete-day average."
       },
       {
         "label": "Data Freshness",
-        "value": "2026-03-22",
+        "value": "2026-03-23",
         "trend": "Latest curated daily snapshot",
         "detail": "Dashboard values reflect the latest validated dataset date."
       }
@@ -82,27 +82,27 @@
     "pnlDrivers": [
       {
         "label": "Residential Fixed South",
-        "value": 3178606.0,
+        "value": 3126069.0,
         "tone": "default"
       },
       {
         "label": "Industrial Flex",
-        "value": 1570892.0,
+        "value": 1541705.0,
         "tone": "default"
       },
       {
         "label": "Public Sector Framework",
-        "value": 676674.0,
+        "value": 615380.0,
         "tone": "default"
       },
       {
         "label": "SME Indexed Midlands",
-        "value": 648942.0,
+        "value": 578892.0,
         "tone": "default"
       },
       {
         "label": "EV Flex Portfolio",
-        "value": -48172.0,
+        "value": -94872.0,
         "tone": "loss"
       }
     ],
@@ -174,8 +174,8 @@
       {
         "book": "EV Flex Portfolio",
         "segment": "EV",
-        "grossMargin": "\u00a3-0.05m",
-        "marginPerMwh": "\u00a3-1.20",
+        "grossMargin": "\u00a3-0.09m",
+        "marginPerMwh": "\u00a3-2.37",
         "hedgeCover": "76%",
         "targetBand": "75% - 90%",
         "openExposure": "24%",
@@ -186,8 +186,8 @@
       {
         "book": "SME Indexed Midlands",
         "segment": "SME",
-        "grossMargin": "\u00a30.65m",
-        "marginPerMwh": "\u00a37.21",
+        "grossMargin": "\u00a30.58m",
+        "marginPerMwh": "\u00a36.43",
         "hedgeCover": "84%",
         "targetBand": "80% - 92%",
         "openExposure": "16%",
@@ -198,8 +198,8 @@
       {
         "book": "Public Sector Framework",
         "segment": "Public Sector",
-        "grossMargin": "\u00a30.68m",
-        "marginPerMwh": "\u00a39.67",
+        "grossMargin": "\u00a30.62m",
+        "marginPerMwh": "\u00a38.79",
         "hedgeCover": "82%",
         "targetBand": "80% - 92%",
         "openExposure": "18%",
@@ -210,8 +210,8 @@
       {
         "book": "Residential Fixed South",
         "segment": "Residential",
-        "grossMargin": "\u00a33.18m",
-        "marginPerMwh": "\u00a323.55",
+        "grossMargin": "\u00a33.13m",
+        "marginPerMwh": "\u00a323.16",
         "hedgeCover": "92%",
         "targetBand": "85% - 97%",
         "openExposure": "8%",
@@ -222,8 +222,8 @@
       {
         "book": "Industrial Flex",
         "segment": "Industrial",
-        "grossMargin": "\u00a31.57m",
-        "marginPerMwh": "\u00a326.18",
+        "grossMargin": "\u00a31.54m",
+        "marginPerMwh": "\u00a325.70",
         "hedgeCover": "90%",
         "targetBand": "85% - 98%",
         "openExposure": "10%",
@@ -245,7 +245,7 @@
             "tone": "amber"
           }
         ],
-        "note": "Current spot is \u00a3122.18/MWh. The amber line shows the trailing 7-day average of complete days.",
+        "note": "Current spot is \u00a3127.05/MWh. The amber line shows the trailing 7-day average of complete days.",
         "series": [
           {
             "label": "Spot",
@@ -264,7 +264,7 @@
               107.46022105306962,
               131.3917151934578,
               127.09796559217953,
-              122.18460095070346
+              122.74982591109081
             ]
           },
           {
@@ -284,7 +284,7 @@
               90.64736200190586,
               98.0931895511611,
               101.70424296124918,
-              112.32812477252273
+              112.4088711954352
             ]
           }
         ]
@@ -303,7 +303,6 @@
             "label": "Demand",
             "tone": "blue",
             "values": [
-              1821799.0,
               1730116.0,
               1645732.0,
               1821020.0,
@@ -316,7 +315,8 @@
               1710125.0,
               1692796.0,
               1623405.0,
-              1610578.0
+              1671890.0,
+              1357834.0
             ]
           }
         ]
@@ -333,110 +333,190 @@
             "tone": "amber"
           }
         ],
-        "note": "Latest-day intraday profile for 2026-03-22.",
+        "note": "Latest-day intraday profile for 2026-03-23.",
         "series": [
           {
             "label": "Demand",
             "tone": "blue",
             "values": [
-              32229.0,
-              32684.0,
-              32202.0,
-              31848.0,
-              30954.0,
-              30041.0,
-              29255.0,
-              28777.0,
-              28264.0,
-              27937.0,
-              27921.0,
-              27707.0,
-              30233.0,
-              29733.0,
-              31166.0,
-              32150.0,
-              33627.0,
-              34864.0,
-              35773.0,
-              35737.0,
-              35818.0,
-              36261.0,
-              36818.0,
-              36787.0,
-              37022.0,
-              37529.0,
-              37436.0,
-              37163.0,
-              37558.0,
-              37664.0,
-              37885.0,
-              38339.0,
-              39023.0,
-              39962.0,
-              40508.0,
-              40598.0,
-              41021.0,
-              41225.0,
-              40888.0,
-              40108.0,
-              39326.0,
-              38418.0,
-              37297.0,
-              35972.0,
-              34306.0,
-              32544.0
+              30643.0,
+              31471.0,
+              31706.0,
+              31228.0,
+              29656.0,
+              29175.0,
+              27635.0,
+              27450.0,
+              25253.0,
+              25298.0,
+              23732.0,
+              24501.0,
+              26067.0,
+              27800.0,
+              36945.0,
+              39279.0,
+              41187.0,
+              41746.0,
+              42697.0,
+              43076.0,
+              43492.0,
+              42827.0,
+              42544.0,
+              42905.0,
+              42948.0,
+              42064.0,
+              41697.0,
+              41469.0,
+              40135.0,
+              39190.0,
+              36836.0,
+              37735.0,
+              38332.0,
+              38647.0,
+              37322.0,
+              37895.0,
+              37883.0,
+              37368.0
             ]
           },
           {
             "label": "Price",
             "tone": "amber",
             "values": [
-              90.0,
-              121.32,
-              106.13,
-              102.77,
-              65.09,
-              104.18,
-              96.93,
-              95.76,
-              95.90658775071753,
-              97.52330419950904,
-              104.56990254961926,
-              90.36887042832537,
-              99.49,
-              85.0,
-              109.03,
-              100.35308790200857,
-              100.69582333643713,
-              97.7130503586072,
-              91.15689904131976,
-              121.54,
-              121.98,
-              92.40282347905912,
-              97.4312946867558,
-              129.6,
-              129.6,
-              131.0,
-              136.0,
-              131.0,
-              129.6,
-              137.5,
-              131.0,
-              137.5,
-              137.5,
-              152.0,
-              163.29,
-              164.95,
-              164.95,
-              164.95,
+              135.0,
+              151.75,
+              142.0,
+              135.0,
+              135.0,
+              135.0,
+              142.0,
+              142.0,
+              147.0,
+              142.0,
+              125.96,
+              147.0,
+              162.79621486877843,
               165.0,
-              163.29,
-              159.9,
-              159.9,
-              148.0,
-              114.87,
-              140.0,
-              141.75
+              165.0,
+              165.0,
+              165.0,
+              142.0,
+              142.0,
+              98.7,
+              99.43,
+              96.65,
+              95.06,
+              96.1,
+              95.82,
+              97.0,
+              87.8024083526435,
+              122.0,
+              85.0,
+              10.0,
+              86.33,
+              103.91,
+              106.73,
+              114.97,
+              152.66,
+              163.3,
+              164.0,
+              165.9
+            ]
+          }
+        ]
+      },
+      {
+        "title": "ENTSO-E France Day-Ahead",
+        "legend": [
+          {
+            "label": "Day-Ahead",
+            "tone": "amber"
+          }
+        ],
+        "note": "Latest day-ahead average for France: EUR 54.76/MWh.",
+        "series": [
+          {
+            "label": "Day-Ahead",
+            "tone": "amber",
+            "values": [
+              59.89098901098895,
+              55.389259259259276,
+              46.01114583333332,
+              110.42020833333329,
+              59.73765957446807,
+              67.70869565217393,
+              81.19835443037974,
+              24.858901098901097,
+              39.64038461538463,
+              56.817362637362606,
+              40.69725274725277,
+              41.18813186813188,
+              88.07462365591395,
+              54.7579012345679
+            ]
+          }
+        ]
+      },
+      {
+        "title": "ENTSO-E Germany Day-Ahead",
+        "legend": [
+          {
+            "label": "Day-Ahead",
+            "tone": "blue"
+          }
+        ],
+        "note": "Latest day-ahead average for Germany: EUR 71.19/MWh.",
+        "series": [
+          {
+            "label": "Day-Ahead",
+            "tone": "blue",
+            "values": [
+              81.63420212765959,
+              64.92099476439792,
+              56.69810810810806,
+              120.75760416666667,
+              91.14761904761912,
+              86.64243386243385,
+              125.99921465968592,
+              91.45612565445028,
+              116.59168421052625,
+              145.92387434554976,
+              114.2442708333334,
+              85.86042105263148,
+              140.02265957446807,
+              71.1860773480663
+            ]
+          }
+        ]
+      },
+      {
+        "title": "ENTSO-E Netherlands Day-Ahead",
+        "legend": [
+          {
+            "label": "Day-Ahead",
+            "tone": "teal"
+          }
+        ],
+        "note": "Latest day-ahead average for Netherlands: EUR 76.80/MWh.",
+        "series": [
+          {
+            "label": "Day-Ahead",
+            "tone": "teal",
+            "values": [
+              82.83572916666664,
+              65.29052631578946,
+              78.81916666666663,
+              125.08020833333332,
+              91.72979166666669,
+              76.67458333333333,
+              120.99499999999979,
+              90.78791666666667,
+              109.21666666666665,
+              131.2627083333334,
+              105.41239583333333,
+              78.81947916666662,
+              135.05367021276595,
+              76.80087912087913
             ]
           }
         ]
