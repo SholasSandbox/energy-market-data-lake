@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "asOf": "2026-03-22 23:02:35 UTC",
-    "latestDate": "2026-03-21",
+    "asOf": "2026-03-22 23:52:46 UTC",
+    "latestDate": "2026-03-22",
     "region": "GB",
     "scenario": "Conservative Hedge Posture",
     "table": "curated_dataset_electricity_3d55606ee40ee8a52f504210ea44aa85",
     "bucket": "energy-market-lake-portfolio-sandbox-20260321",
-    "dataFreshness": "Daily snapshot (45/48 settlement rows)"
+    "dataFreshness": "Daily snapshot (46/48 settlement rows)"
   },
   "navItems": [
     "Overview",
@@ -30,7 +30,7 @@
       },
       {
         "label": "Settlement Completeness",
-        "value": "45/48",
+        "value": "46/48",
         "detail": "One or more settlement periods are missing in the latest snapshot.",
         "status": "watch"
       },
@@ -44,7 +44,7 @@
     "summaryCards": [
       {
         "label": "Portfolio Gross Margin",
-        "value": "\u00a35.78m",
+        "value": "\u00a36.03m",
         "trend": "4/5 books margin-positive",
         "detail": "Margin is concentrated in the fixed and industrial books."
       },
@@ -62,19 +62,19 @@
       },
       {
         "label": "Market Price",
-        "value": "\u00a3126.72/MWh",
-        "trend": "7-day avg pending (0/7 complete prior days)",
-        "detail": "Prior history is incomplete, so the 7-day comparison is withheld rather than overstated."
+        "value": "\u00a3122.18/MWh",
+        "trend": "7-day avg \u00a3101.70/MWh",
+        "detail": "Current level is +20.1% versus the trailing 7-day complete-day average."
       },
       {
         "label": "Peak Demand",
-        "value": "39,788 MW",
-        "trend": "7-day avg pending (0/7 complete prior days)",
-        "detail": "Prior history is incomplete, so the 7-day comparison is withheld rather than overstated."
+        "value": "41,225 MW",
+        "trend": "7-day avg 43,703 MW",
+        "detail": "Current level is -5.7% versus the trailing 7-day complete-day average."
       },
       {
         "label": "Data Freshness",
-        "value": "2026-03-21",
+        "value": "2026-03-22",
         "trend": "Latest curated daily snapshot",
         "detail": "Dashboard values reflect the latest validated dataset date."
       }
@@ -82,27 +82,27 @@
     "pnlDrivers": [
       {
         "label": "Residential Fixed South",
-        "value": 3129644.0,
+        "value": 3178606.0,
         "tone": "default"
       },
       {
         "label": "Industrial Flex",
-        "value": 1543691.0,
+        "value": 1570892.0,
         "tone": "default"
       },
       {
         "label": "Public Sector Framework",
-        "value": 619551.0,
+        "value": 676674.0,
         "tone": "default"
       },
       {
         "label": "SME Indexed Midlands",
-        "value": 583659.0,
+        "value": 648942.0,
         "tone": "default"
       },
       {
         "label": "EV Flex Portfolio",
-        "value": -91694.0,
+        "value": -48172.0,
         "tone": "loss"
       }
     ],
@@ -174,8 +174,8 @@
       {
         "book": "EV Flex Portfolio",
         "segment": "EV",
-        "grossMargin": "\u00a3-0.09m",
-        "marginPerMwh": "\u00a3-2.29",
+        "grossMargin": "\u00a3-0.05m",
+        "marginPerMwh": "\u00a3-1.20",
         "hedgeCover": "76%",
         "targetBand": "75% - 90%",
         "openExposure": "24%",
@@ -186,8 +186,8 @@
       {
         "book": "SME Indexed Midlands",
         "segment": "SME",
-        "grossMargin": "\u00a30.58m",
-        "marginPerMwh": "\u00a36.49",
+        "grossMargin": "\u00a30.65m",
+        "marginPerMwh": "\u00a37.21",
         "hedgeCover": "84%",
         "targetBand": "80% - 92%",
         "openExposure": "16%",
@@ -198,8 +198,8 @@
       {
         "book": "Public Sector Framework",
         "segment": "Public Sector",
-        "grossMargin": "\u00a30.62m",
-        "marginPerMwh": "\u00a38.85",
+        "grossMargin": "\u00a30.68m",
+        "marginPerMwh": "\u00a39.67",
         "hedgeCover": "82%",
         "targetBand": "80% - 92%",
         "openExposure": "18%",
@@ -210,8 +210,8 @@
       {
         "book": "Residential Fixed South",
         "segment": "Residential",
-        "grossMargin": "\u00a33.13m",
-        "marginPerMwh": "\u00a323.18",
+        "grossMargin": "\u00a33.18m",
+        "marginPerMwh": "\u00a323.55",
         "hedgeCover": "92%",
         "targetBand": "85% - 97%",
         "openExposure": "8%",
@@ -222,8 +222,8 @@
       {
         "book": "Industrial Flex",
         "segment": "Industrial",
-        "grossMargin": "\u00a31.54m",
-        "marginPerMwh": "\u00a325.73",
+        "grossMargin": "\u00a31.57m",
+        "marginPerMwh": "\u00a326.18",
         "hedgeCover": "90%",
         "targetBand": "85% - 98%",
         "openExposure": "10%",
@@ -245,20 +245,46 @@
             "tone": "amber"
           }
         ],
-        "note": "Current spot is \u00a3126.72/MWh. The 7-day average will stabilise once seven complete days are available.",
+        "note": "Current spot is \u00a3122.18/MWh. The amber line shows the trailing 7-day average of complete days.",
         "series": [
           {
             "label": "Spot",
             "tone": "teal",
             "values": [
-              126.7181397825974
+              142.41692904278753,
+              83.23471293955195,
+              56.21068143002416,
+              88.14091012934334,
+              79.27092234867115,
+              101.82059172156295,
+              47.81742827178865,
+              103.89869270478586,
+              84.61335758267239,
+              109.6503203307904,
+              107.46022105306962,
+              131.3917151934578,
+              127.09796559217953,
+              122.18460095070346
             ]
           },
           {
             "label": "7-Day Avg",
             "tone": "amber",
             "values": [
-              126.7181397825974
+              142.41692904278753,
+              112.82582099116973,
+              93.95410780412122,
+              92.50080838542675,
+              89.85483117807563,
+              91.84912460199018,
+              85.55888226910426,
+              80.05627707796114,
+              80.25322631269263,
+              87.88746044137353,
+              90.64736200190586,
+              98.0931895511611,
+              101.70424296124918,
+              112.32812477252273
             ]
           }
         ]
@@ -277,8 +303,20 @@
             "label": "Demand",
             "tone": "blue",
             "values": [
-              30283.0,
-              1525361.0
+              1821799.0,
+              1730116.0,
+              1645732.0,
+              1821020.0,
+              1771490.0,
+              1706407.0,
+              1622984.0,
+              1788435.0,
+              1651827.0,
+              1809601.0,
+              1710125.0,
+              1692796.0,
+              1623405.0,
+              1610578.0
             ]
           }
         ]
@@ -295,108 +333,110 @@
             "tone": "amber"
           }
         ],
-        "note": "Latest-day intraday profile for 2026-03-21.",
+        "note": "Latest-day intraday profile for 2026-03-22.",
         "series": [
           {
             "label": "Demand",
             "tone": "blue",
             "values": [
-              31097.0,
-              30423.0,
-              30847.0,
-              30283.0,
-              29397.0,
-              28967.0,
-              28522.0,
-              27917.0,
-              27105.0,
-              27037.0,
-              26784.0,
-              26838.0,
-              29584.0,
-              31024.0,
-              32710.0,
-              34110.0,
-              35473.0,
-              36477.0,
-              36248.0,
-              36560.0,
-              36783.0,
-              37482.0,
-              37822.0,
-              37359.0,
-              36659.0,
-              36049.0,
-              35935.0,
-              35550.0,
-              34636.0,
-              34101.0,
-              33298.0,
-              33608.0,
-              33046.0,
-              33414.0,
-              35509.0,
-              36316.0,
-              38564.0,
-              39519.0,
-              39788.0,
-              39102.0,
-              38160.0,
-              37624.0,
-              37128.0,
-              35994.0,
-              34512.0
+              32229.0,
+              32684.0,
+              32202.0,
+              31848.0,
+              30954.0,
+              30041.0,
+              29255.0,
+              28777.0,
+              28264.0,
+              27937.0,
+              27921.0,
+              27707.0,
+              30233.0,
+              29733.0,
+              31166.0,
+              32150.0,
+              33627.0,
+              34864.0,
+              35773.0,
+              35737.0,
+              35818.0,
+              36261.0,
+              36818.0,
+              36787.0,
+              37022.0,
+              37529.0,
+              37436.0,
+              37163.0,
+              37558.0,
+              37664.0,
+              37885.0,
+              38339.0,
+              39023.0,
+              39962.0,
+              40508.0,
+              40598.0,
+              41021.0,
+              41225.0,
+              40888.0,
+              40108.0,
+              39326.0,
+              38418.0,
+              37297.0,
+              35972.0,
+              34306.0,
+              32544.0
             ]
           },
           {
             "label": "Price",
             "tone": "amber",
             "values": [
-              140.91,
-              143.99989787060204,
-              94.17,
-              140.55,
-              139.42053928136912,
-              138.7,
-              80.58152828858287,
-              144.32,
-              143.94,
-              139.44424564205818,
-              152.07,
-              155.0,
-              157.18,
-              165.0,
-              163.99984415179614,
-              165.0,
-              165.0,
-              165.0,
-              165.0,
-              165.0,
-              154.96,
-              102.0,
-              94.26,
-              100.0,
-              102.03,
-              94.2,
-              139.42043023689214,
-              94.2,
-              94.2,
               90.0,
-              94.26,
-              91.94,
-              89.19034049780193,
-              150.72,
-              163.0,
-              148.99378354197302,
-              112.24,
-              163.0,
-              116.85,
-              111.33413416855174,
-              94.27850706145428,
-              94.26,
-              94.27303947580212,
-              94.26,
-              94.16
+              121.32,
+              106.13,
+              102.77,
+              65.09,
+              104.18,
+              96.93,
+              95.76,
+              95.90658775071753,
+              97.52330419950904,
+              104.56990254961926,
+              90.36887042832537,
+              99.49,
+              85.0,
+              109.03,
+              100.35308790200857,
+              100.69582333643713,
+              97.7130503586072,
+              91.15689904131976,
+              121.54,
+              121.98,
+              92.40282347905912,
+              97.4312946867558,
+              129.6,
+              129.6,
+              131.0,
+              136.0,
+              131.0,
+              129.6,
+              137.5,
+              131.0,
+              137.5,
+              137.5,
+              152.0,
+              163.29,
+              164.95,
+              164.95,
+              164.95,
+              165.0,
+              163.29,
+              159.9,
+              159.9,
+              148.0,
+              114.87,
+              140.0,
+              141.75
             ]
           }
         ]
