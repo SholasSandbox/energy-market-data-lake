@@ -64,6 +64,24 @@ button {
   letter-spacing: -0.04em;
 }
 
+.hero-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-toggle {
+  cursor: pointer;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.1);
+  color: #eef6fd;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .hero-copy p {
   margin: 0;
   max-width: 68ch;
