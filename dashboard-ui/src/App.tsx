@@ -469,6 +469,20 @@ function DataQualityView({ checks }: { checks: QualityCheck[] }) {
           note="Show ingestion completeness explicitly by source, dataset, and region. This page should make missing intervals obvious without forcing a table scan."
           chip={`${checks.length} checks / latest status`}
         />
+        <div className="quality-legend" aria-label="Data quality legend">
+          <span className="quality-legend-item">
+            <span className="quality-legend-swatch quality-legend-healthy" />
+            Healthy: complete or at expected interval count
+          </span>
+          <span className="quality-legend-item">
+            <span className="quality-legend-swatch quality-legend-watch" />
+            Watch: near-complete but missing one or two intervals
+          </span>
+          <span className="quality-legend-item">
+            <span className="quality-legend-swatch quality-legend-investigate" />
+            Investigate: materially incomplete capture
+          </span>
+        </div>
         <div className="quality-grid">
           {checks.map((check) => (
             <article key={check.label} className={`quality-card quality-${check.status}`}>
