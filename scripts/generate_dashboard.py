@@ -500,6 +500,55 @@ def _build_entsoe_price_panels(entsoe_price_rows: List[Dict[str, str]]) -> List[
     return panels
 
 
+def _quality_status(captured: int, expected: int) -> str:
+    if expected <= 0:
+        return "watch"
+    if captured >= expected:
+        return "healthy"
+    if captured >= max(int(expected * 0.9), expected - 2):
+        return "watch"
+    return "investigate"
+
+
+def _build_quality_check(
+    label: str,
+    source: str,
+    dataset: str,
+    region: str,
+    rows: List[Dict[str, str]],
+    expected: Optional[int] = None,
+) -> Optional[Dict[str, object]]:
+    if not rows:
+        return None
+
+    ordered_rows = sorted(rows, key=lambda row: row.get("date", ""))
+    series = [_to_int(row.get("captured_periods")) for row in ordered_rows[-7:]]
+    latest_row = ordered_rows[-1]
+    latest_captured = _to_int(latest_row.get("captured_periods"))
+    expected_count = expected if expected is not None else max(series + [latest_captured, 1])
+    status = _quality_status(latest_captured, expected_count)
+
+    if status == "healthy":
+      detail = f"Latest {dataset.lower()} intervals are complete for {region}."
+    elif status == "watch":
+      detail = f"Latest {dataset.lower()} intervals are almost complete for {region}, but one or two points are still missing."
+    else:
+      detail = f"Latest {dataset.lower()} intervals are materially incomplete for {region} and need investigation."
+
+    return {
+        "label": label,
+        "source": source,
+        "dataset": dataset,
+        "region": region,
+        "latestDate": latest_row.get("date", ""),
+        "captured": latest_captured,
+        "expected": expected_count,
+        "status": status,
+        "detail": detail,
+        "series": series,
+    }
+
+
 def _rolling_average(values: List[float], window: int) -> List[float]:
     result: List[float] = []
     recent: List[float] = []
@@ -516,6 +565,8 @@ def _build_dashboard_context(
     daily_rows: List[Dict[str, str]],
     intraday_rows: List[Dict[str, str]],
     entsoe_price_rows: List[Dict[str, str]],
+    entsoe_load_quality_rows: List[Dict[str, str]],
+    entsoe_price_quality_rows: List[Dict[str, str]],
 ):
     if not daily_rows:
         raise RuntimeError("No daily rows returned; cannot build dashboard")
@@ -610,6 +661,53 @@ def _build_dashboard_context(
         ),
     )
     entsoe_panels = _build_entsoe_price_panels(entsoe_price_rows)
+    quality_checks = []
+    elexon_quality = _build_quality_check(
+        label="GB Elexon Settlement Capture",
+        source="Elexon",
+        dataset="Settlement periods",
+        region="GB",
+        rows=[
+            {"date": row["date"], "captured_periods": row["settlement_rows"]}
+            for row in daily_rows
+        ],
+        expected=48,
+    )
+    if elexon_quality:
+        quality_checks.append(elexon_quality)
+
+    entsoe_regions = ["FR", "DE", "NL", "GB"]
+    for region in entsoe_regions:
+        region_load_rows = [
+            row
+            for row in entsoe_load_quality_rows
+            if row.get("region", "").upper() == region
+        ]
+        region_price_rows = [
+            row
+            for row in entsoe_price_quality_rows
+            if row.get("region", "").upper() == region
+        ]
+
+        load_check = _build_quality_check(
+            label=f"{region} ENTSO-E Actual Load Intervals",
+            source="ENTSO-E",
+            dataset="Actual load",
+            region=region,
+            rows=region_load_rows,
+        )
+        if load_check:
+            quality_checks.append(load_check)
+
+        price_check = _build_quality_check(
+            label=f"{region} ENTSO-E Day-Ahead Intervals",
+            source="ENTSO-E",
+            dataset="Day-ahead price",
+            region=region,
+            rows=region_price_rows,
+        )
+        if price_check:
+            quality_checks.append(price_check)
 
     dashboard_model = {
         "metadata": {
@@ -809,6 +907,9 @@ def _build_dashboard_context(
                     ],
                 },
             ] + entsoe_panels,
+        },
+        "dataQuality": {
+            "checks": quality_checks,
         },
     }
 
@@ -1497,6 +1598,8 @@ def main():
         intraday_query, args.database, output_location, args.region
     )
     entsoe_price_rows: List[Dict[str, str]] = []
+    entsoe_load_quality_rows: List[Dict[str, str]] = []
+    entsoe_price_quality_rows: List[Dict[str, str]] = []
     if has_source_column and has_entsoe_price_column:
         entsoe_price_query = f"""
         SELECT
@@ -1510,6 +1613,34 @@ def main():
         """
         entsoe_price_rows = _run_athena_query(
             entsoe_price_query, args.database, output_location, args.region
+        )
+        entsoe_load_quality_query = f"""
+        SELECT
+          region,
+          date,
+          COUNT(DISTINCT settlement_period) AS captured_periods
+        FROM {resolved_table}
+        WHERE source = 'entsoe'
+          AND demand_mw IS NOT NULL
+        GROUP BY region, date
+        ORDER BY region, date
+        """
+        entsoe_load_quality_rows = _run_athena_query(
+            entsoe_load_quality_query, args.database, output_location, args.region
+        )
+        entsoe_price_quality_query = f"""
+        SELECT
+          region,
+          date,
+          COUNT(DISTINCT settlement_period) AS captured_periods
+        FROM {resolved_table}
+        WHERE source = 'entsoe'
+          AND day_ahead_price_eur_mwh IS NOT NULL
+        GROUP BY region, date
+        ORDER BY region, date
+        """
+        entsoe_price_quality_rows = _run_athena_query(
+            entsoe_price_quality_query, args.database, output_location, args.region
         )
 
     if args.output_file:
@@ -1525,7 +1656,13 @@ def main():
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
     context = _build_dashboard_context(
-        bucket, resolved_table, daily_rows, intraday_rows, entsoe_price_rows
+        bucket,
+        resolved_table,
+        daily_rows,
+        intraday_rows,
+        entsoe_price_rows,
+        entsoe_load_quality_rows,
+        entsoe_price_quality_rows,
     )
     _render_html(output_file, bucket, resolved_table, context)
 

@@ -672,6 +672,75 @@ th {
   background: rgba(184, 113, 19, 0.05);
 }
 
+.row-healthy td {
+  background: rgba(15, 138, 121, 0.05);
+}
+
+.quality-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quality-card {
+  border-radius: 18px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 248, 251, 0.94));
+}
+
+.quality-watch {
+  border-color: rgba(184, 113, 19, 0.28);
+}
+
+.quality-investigate {
+  border-color: rgba(174, 61, 56, 0.28);
+}
+
+.quality-healthy {
+  border-color: rgba(15, 138, 121, 0.28);
+}
+
+.quality-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+}
+
+.quality-meta {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.quality-metric {
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.quality-track {
+  display: flex;
+  align-items: end;
+  gap: 6px;
+  height: 72px;
+  margin-top: 14px;
+}
+
+.quality-bar {
+  flex: 1;
+  border-radius: 8px 8px 2px 2px;
+  background: linear-gradient(180deg, rgba(15, 138, 121, 0.84), rgba(15, 79, 136, 0.72));
+}
+
+.quality-bar-gap {
+  background: linear-gradient(180deg, rgba(184, 113, 19, 0.84), rgba(174, 61, 56, 0.72));
+}
+
 .market-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -825,6 +894,10 @@ th {
   .market-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .quality-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 980px) {
@@ -839,7 +912,8 @@ th {
 
   .alert-grid,
   .summary-grid,
-  .market-grid {
+  .market-grid,
+  .quality-grid {
     grid-template-columns: 1fr;
   }
 

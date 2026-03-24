@@ -8,6 +8,8 @@ import type {
   ExposurePoint,
   MarketPanel,
   MarketSeries,
+  NavItem,
+  QualityCheck,
 } from "./types";
 
 function App() {
@@ -15,6 +17,7 @@ function App() {
   const [sourceLabel, setSourceLabel] = useState("Fallback sample");
   const [marketRegion, setMarketRegion] = useState("ALL");
   const [showHeaderNarrative, setShowHeaderNarrative] = useState(false);
+  const [activeNav, setActiveNav] = useState<NavItem>("Overview");
 
   useEffect(() => {
     let cancelled = false;
@@ -69,143 +72,151 @@ function App() {
         <Header
           data={data}
           sourceLabel={sourceLabel}
+          activeNav={activeNav}
+          onSelectNav={setActiveNav}
           showHeaderNarrative={showHeaderNarrative}
           onToggleHeaderNarrative={() => setShowHeaderNarrative((current) => !current)}
         />
         <main className="content-grid">
-          <section className="panel">
-            <SectionHeader
-              eyebrow="Section A"
-              title="Alert Strip"
-              note="Show only what needs attention. These cards should be the fastest route to exceptions, not another KPI row."
-              chip="12 cols / 4 alerts"
-            />
-            <div className="alert-grid">
-              {data.overview.alerts.map((alert) => (
-                <AlertCard key={alert.label} alert={alert} />
-              ))}
-            </div>
-          </section>
-
-          <section className="panel">
-            <SectionHeader
-              eyebrow="Section B"
-              title="Executive Summary"
-              note="Every card needs current value, comparison, and a status interpretation. This keeps the summary decision-first rather than decorative."
-              chip="12 cols / 6 cards"
-            />
-            <div className="summary-grid">
-              {data.overview.summaryCards.map((card) => (
-                <article key={card.label} className="summary-card">
-                  <div className="label">{card.label}</div>
-                  <div className="metric">{card.value}</div>
-                  <div className="trend">{card.trend}</div>
-                  <p>{card.detail}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="story-grid">
-            <article className="panel panel-primary">
-              <SectionHeader
-                eyebrow="Section C1"
-                title="Portfolio P&L Drivers"
-                note="This is the primary chart on the page. The largest visual area should explain where money is made or lost before anything else."
-                chip="8 / 12 columns"
-              />
-              <PnlDriversChart bars={data.overview.pnlDrivers} />
-            </article>
-
-            <div className="side-stack">
-              <article className="panel panel-compact">
+          {activeNav === "Data Quality" ? (
+            <DataQualityView checks={data.dataQuality.checks} />
+          ) : (
+            <>
+              <section className="panel">
                 <SectionHeader
-                  eyebrow="Section C2"
-                  title="Coverage vs Policy Band"
-                  note="This panel is hedge-band compliance only. Margin or P&L exceptions should surface elsewhere."
-                  chip="4 / 12 columns"
+                  eyebrow="Section A"
+                  title="Alert Strip"
+                  note="Show only what needs attention. These cards should be the fastest route to exceptions, not another KPI row."
+                  chip="12 cols / 4 alerts"
                 />
-                <CoverageChart points={data.overview.coveragePoints} />
-              </article>
-
-              <article className="panel panel-compact">
-                <SectionHeader
-                  eyebrow="Section C3"
-                  title="Hedged vs Open Exposure"
-                  note="Secondary risk panel. Smaller than the P&L story because it supports the decision rather than leading it."
-                  chip="4 / 12 columns"
-                />
-                <ExposureChart points={data.overview.exposurePoints} />
-              </article>
-            </div>
-          </section>
-
-          <section className="panel">
-            <SectionHeader
-              eyebrow="Section D"
-              title="Exception-First Investigation Table"
-              note="Default sorting should be breaches first, then weakest margin, then largest unhedged exposure. The table should help confirm what the charts suggested."
-              chip="12 cols / sticky header"
-            />
-            <div className="table-shell">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Book</th>
-                    <th>Segment</th>
-                    <th>Gross Margin</th>
-                    <th>Margin / MWh</th>
-                    <th>Hedge Cover</th>
-                    <th>Target Band</th>
-                    <th>Open Exposure</th>
-                    <th>Risk Status</th>
-                    <th>Breach Reason</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.overview.exceptionRows.map((row) => (
-                    <tr key={row.book} className={row.tone ? `row-${row.tone}` : undefined}>
-                      <td>{row.book}</td>
-                      <td>{row.segment}</td>
-                      <td>{row.grossMargin}</td>
-                      <td>{row.marginPerMwh}</td>
-                      <td>{row.hedgeCover}</td>
-                      <td>{row.targetBand}</td>
-                      <td>{row.openExposure}</td>
-                      <td>{row.riskStatus}</td>
-                      <td>{row.breachReason}</td>
-                    </tr>
+                <div className="alert-grid">
+                  {data.overview.alerts.map((alert) => (
+                    <AlertCard key={alert.label} alert={alert} />
                   ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+                </div>
+              </section>
 
-          <section className="panel">
-            <SectionHeader
-              eyebrow="Section E"
-              title="Market Context Footer"
-              note="Keep GB operating signals explicit, then switch into continental ENTSO-E context by region without muddling the portfolio view."
-              chip="12 cols / context panels"
-            />
-            <div className="market-region-row" role="tablist" aria-label="Market context regions">
-              {availableMarketRegions.map((region) => (
-                <button
-                  key={region}
-                  type="button"
-                  className={`market-region-pill ${marketRegion === region ? "active" : ""}`}
-                  onClick={() => setMarketRegion(region)}
-                >
-                  {region === "ALL" ? "All Regions" : region}
-                </button>
-              ))}
-            </div>
-            <div className="market-grid">
-              {visibleMarketPanels.map((panel) => (
-                <MarketPanelCard key={panel.title} panel={panel} />
-              ))}
-            </div>
-          </section>
+              <section className="panel">
+                <SectionHeader
+                  eyebrow="Section B"
+                  title="Executive Summary"
+                  note="Every card needs current value, comparison, and a status interpretation. This keeps the summary decision-first rather than decorative."
+                  chip="12 cols / 6 cards"
+                />
+                <div className="summary-grid">
+                  {data.overview.summaryCards.map((card) => (
+                    <article key={card.label} className="summary-card">
+                      <div className="label">{card.label}</div>
+                      <div className="metric">{card.value}</div>
+                      <div className="trend">{card.trend}</div>
+                      <p>{card.detail}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+
+              <section className="story-grid">
+                <article className="panel panel-primary">
+                  <SectionHeader
+                    eyebrow="Section C1"
+                    title="Portfolio P&L Drivers"
+                    note="This is the primary chart on the page. The largest visual area should explain where money is made or lost before anything else."
+                    chip="8 / 12 columns"
+                  />
+                  <PnlDriversChart bars={data.overview.pnlDrivers} />
+                </article>
+
+                <div className="side-stack">
+                  <article className="panel panel-compact">
+                    <SectionHeader
+                      eyebrow="Section C2"
+                      title="Coverage vs Policy Band"
+                      note="This panel is hedge-band compliance only. Margin or P&L exceptions should surface elsewhere."
+                      chip="4 / 12 columns"
+                    />
+                    <CoverageChart points={data.overview.coveragePoints} />
+                  </article>
+
+                  <article className="panel panel-compact">
+                    <SectionHeader
+                      eyebrow="Section C3"
+                      title="Hedged vs Open Exposure"
+                      note="Secondary risk panel. Smaller than the P&L story because it supports the decision rather than leading it."
+                      chip="4 / 12 columns"
+                    />
+                    <ExposureChart points={data.overview.exposurePoints} />
+                  </article>
+                </div>
+              </section>
+
+              <section className="panel">
+                <SectionHeader
+                  eyebrow="Section D"
+                  title="Exception-First Investigation Table"
+                  note="Default sorting should be breaches first, then weakest margin, then largest unhedged exposure. The table should help confirm what the charts suggested."
+                  chip="12 cols / sticky header"
+                />
+                <div className="table-shell">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Book</th>
+                        <th>Segment</th>
+                        <th>Gross Margin</th>
+                        <th>Margin / MWh</th>
+                        <th>Hedge Cover</th>
+                        <th>Target Band</th>
+                        <th>Open Exposure</th>
+                        <th>Risk Status</th>
+                        <th>Breach Reason</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.overview.exceptionRows.map((row) => (
+                        <tr key={row.book} className={row.tone ? `row-${row.tone}` : undefined}>
+                          <td>{row.book}</td>
+                          <td>{row.segment}</td>
+                          <td>{row.grossMargin}</td>
+                          <td>{row.marginPerMwh}</td>
+                          <td>{row.hedgeCover}</td>
+                          <td>{row.targetBand}</td>
+                          <td>{row.openExposure}</td>
+                          <td>{row.riskStatus}</td>
+                          <td>{row.breachReason}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section className="panel">
+                <SectionHeader
+                  eyebrow="Section E"
+                  title="Market Context Footer"
+                  note="Keep GB operating signals explicit, then switch into continental ENTSO-E context by region without muddling the portfolio view."
+                  chip="12 cols / context panels"
+                />
+                <div className="market-region-row" role="tablist" aria-label="Market context regions">
+                  {availableMarketRegions.map((region) => (
+                    <button
+                      key={region}
+                      type="button"
+                      className={`market-region-pill ${marketRegion === region ? "active" : ""}`}
+                      onClick={() => setMarketRegion(region)}
+                    >
+                      {region === "ALL" ? "All Regions" : region}
+                    </button>
+                  ))}
+                </div>
+                <div className="market-grid">
+                  {visibleMarketPanels.map((panel) => (
+                    <MarketPanelCard key={panel.title} panel={panel} />
+                  ))}
+                </div>
+              </section>
+            </>
+          )}
         </main>
       </div>
     </div>
@@ -215,11 +226,15 @@ function App() {
 function Header({
   data,
   sourceLabel,
+  activeNav,
+  onSelectNav,
   showHeaderNarrative,
   onToggleHeaderNarrative,
 }: {
   data: DashboardData;
   sourceLabel: string;
+  activeNav: NavItem;
+  onSelectNav: (item: NavItem) => void;
   showHeaderNarrative: boolean;
   onToggleHeaderNarrative: () => void;
 }) {
@@ -258,7 +273,8 @@ function Header({
             <button
               key={item}
               type="button"
-              className={`nav-pill ${item === "Overview" ? "active" : ""}`}
+              className={`nav-pill ${item === activeNav ? "active" : ""}`}
+              onClick={() => onSelectNav(item)}
             >
               {item}
             </button>
@@ -440,6 +456,94 @@ function MarketPanelCard({ panel }: { panel: MarketPanel }) {
         <div className="chart-caption">{panel.note}</div>
       </div>
     </article>
+  );
+}
+
+function DataQualityView({ checks }: { checks: QualityCheck[] }) {
+  return (
+    <>
+      <section className="panel">
+        <SectionHeader
+          eyebrow="Section Q1"
+          title="Data Quality Status"
+          note="Show ingestion completeness explicitly by source, dataset, and region. This page should make missing intervals obvious without forcing a table scan."
+          chip={`${checks.length} checks / latest status`}
+        />
+        <div className="quality-grid">
+          {checks.map((check) => (
+            <article key={check.label} className={`quality-card quality-${check.status}`}>
+              <div className="quality-card-top">
+                <div>
+                  <div className="label">{check.label}</div>
+                  <div className="quality-meta">
+                    {check.source} · {check.dataset} · {check.region}
+                  </div>
+                </div>
+                <span className={`status-pill status-${check.status}`}>
+                  {check.status}
+                </span>
+              </div>
+              <div className="quality-metric">
+                {check.captured}/{check.expected}
+              </div>
+              <div className="trend">Latest date {check.latestDate}</div>
+              <p>{check.detail}</p>
+              <div className="quality-track">
+                {check.series.map((value, index) => (
+                  <div
+                    key={`${check.label}-${index}`}
+                    className={`quality-bar ${
+                      value < check.expected ? "quality-bar-gap" : ""
+                    }`}
+                    style={{ height: `${Math.max((value / Math.max(check.expected, 1)) * 100, 12)}%` }}
+                    title={`${value}/${check.expected}`}
+                  />
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel">
+        <SectionHeader
+          eyebrow="Section Q2"
+          title="Source Completeness Table"
+          note="Keep one sortable, audit-friendly view of what was captured, what was expected, and where the gap is."
+          chip="source / dataset / region"
+        />
+        <div className="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>Label</th>
+                <th>Source</th>
+                <th>Dataset</th>
+                <th>Region</th>
+                <th>Latest Date</th>
+                <th>Captured</th>
+                <th>Expected</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {checks.map((check) => (
+                <tr key={`${check.label}-row`} className={`row-${check.status === "healthy" ? "healthy" : check.status === "watch" ? "warning" : "critical"}`}>
+                  <td>{check.label}</td>
+                  <td>{check.source}</td>
+                  <td>{check.dataset}</td>
+                  <td>{check.region}</td>
+                  <td>{check.latestDate}</td>
+                  <td>{check.captured}</td>
+                  <td>{check.expected}</td>
+                  <td>{check.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </>
   );
 }
 
