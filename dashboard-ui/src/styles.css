@@ -682,6 +682,40 @@ th {
   gap: 12px;
 }
 
+.quality-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  margin: -2px 0 14px;
+}
+
+.quality-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.quality-legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.quality-legend-healthy {
+  background: var(--teal);
+}
+
+.quality-legend-watch {
+  background: var(--amber);
+}
+
+.quality-legend-investigate {
+  background: var(--red);
+}
+
 .quality-card {
   border-radius: 18px;
   padding: 14px;
