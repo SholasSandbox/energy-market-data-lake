@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "asOf": "2026-03-23 21:56:40 UTC",
+    "asOf": "2026-03-24 00:16:39 UTC",
     "latestDate": "2026-03-23",
     "region": "GB",
     "scenario": "Conservative Hedge Posture",
@@ -565,6 +565,150 @@
               76.80087912087913
             ]
           }
+        ]
+      }
+    ]
+  },
+  "dataQuality": {
+    "checks": [
+      {
+        "label": "GB Elexon Settlement Capture",
+        "source": "Elexon",
+        "dataset": "Settlement periods",
+        "region": "GB",
+        "latestDate": "2026-03-23",
+        "captured": 38,
+        "expected": 48,
+        "status": "investigate",
+        "detail": "Latest settlement periods intervals are materially incomplete for GB and need investigation.",
+        "series": [
+          48,
+          48,
+          48,
+          47,
+          48,
+          48,
+          38
+        ]
+      },
+      {
+        "label": "FR ENTSO-E Actual Load Intervals",
+        "source": "ENTSO-E",
+        "dataset": "Actual load",
+        "region": "FR",
+        "latestDate": "2026-03-23",
+        "captured": 72,
+        "expected": 96,
+        "status": "investigate",
+        "detail": "Latest actual load intervals are materially incomplete for FR and need investigation.",
+        "series": [
+          96,
+          96,
+          96,
+          96,
+          96,
+          96,
+          72
+        ]
+      },
+      {
+        "label": "FR ENTSO-E Day-Ahead Intervals",
+        "source": "ENTSO-E",
+        "dataset": "Day-ahead price",
+        "region": "FR",
+        "latestDate": "2026-03-24",
+        "captured": 81,
+        "expected": 95,
+        "status": "investigate",
+        "detail": "Latest day-ahead price intervals are materially incomplete for FR and need investigation.",
+        "series": [
+          91,
+          78,
+          91,
+          91,
+          91,
+          95,
+          81
+        ]
+      },
+      {
+        "label": "DE ENTSO-E Actual Load Intervals",
+        "source": "ENTSO-E",
+        "dataset": "Actual load",
+        "region": "DE",
+        "latestDate": "2026-03-23",
+        "captured": 68,
+        "expected": 96,
+        "status": "investigate",
+        "detail": "Latest actual load intervals are materially incomplete for DE and need investigation.",
+        "series": [
+          96,
+          96,
+          96,
+          96,
+          96,
+          96,
+          68
+        ]
+      },
+      {
+        "label": "DE ENTSO-E Day-Ahead Intervals",
+        "source": "ENTSO-E",
+        "dataset": "Day-ahead price",
+        "region": "DE",
+        "latestDate": "2026-03-24",
+        "captured": 92,
+        "expected": 96,
+        "status": "investigate",
+        "detail": "Latest day-ahead price intervals are materially incomplete for DE and need investigation.",
+        "series": [
+          96,
+          96,
+          96,
+          96,
+          96,
+          96,
+          92
+        ]
+      },
+      {
+        "label": "NL ENTSO-E Actual Load Intervals",
+        "source": "ENTSO-E",
+        "dataset": "Actual load",
+        "region": "NL",
+        "latestDate": "2026-03-23",
+        "captured": 72,
+        "expected": 96,
+        "status": "investigate",
+        "detail": "Latest actual load intervals are materially incomplete for NL and need investigation.",
+        "series": [
+          96,
+          96,
+          96,
+          96,
+          96,
+          96,
+          72
+        ]
+      },
+      {
+        "label": "NL ENTSO-E Day-Ahead Intervals",
+        "source": "ENTSO-E",
+        "dataset": "Day-ahead price",
+        "region": "NL",
+        "latestDate": "2026-03-24",
+        "captured": 91,
+        "expected": 96,
+        "status": "investigate",
+        "detail": "Latest day-ahead price intervals are materially incomplete for NL and need investigation.",
+        "series": [
+          96,
+          96,
+          96,
+          96,
+          96,
+          96,
+          91
         ]
       }
     ]

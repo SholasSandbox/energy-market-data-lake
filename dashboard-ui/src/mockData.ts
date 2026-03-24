@@ -6,6 +6,7 @@ import type {
   ExposurePoint,
   MarketPanel,
   NavItem,
+  QualityCheck,
   SummaryCard,
   DriverBar,
 } from "./types";
@@ -247,6 +248,57 @@ export const marketPanels: MarketPanel[] = [
   },
 ];
 
+export const qualityChecks: QualityCheck[] = [
+  {
+    label: "GB Elexon Settlement Capture",
+    source: "Elexon",
+    dataset: "Settlement periods",
+    region: "GB",
+    latestDate: "2026-03-10",
+    captured: 47,
+    expected: 48,
+    status: "watch",
+    detail: "One settlement period is missing on the latest GB operating day.",
+    series: [48, 48, 48, 48, 47, 48, 48],
+  },
+  {
+    label: "FR ENTSO-E Day-Ahead Intervals",
+    source: "ENTSO-E",
+    dataset: "Day-ahead price",
+    region: "FR",
+    latestDate: "2026-03-11",
+    captured: 24,
+    expected: 24,
+    status: "healthy",
+    detail: "French day-ahead intervals are complete for the latest delivery date.",
+    series: [24, 24, 24, 24, 24, 24, 24],
+  },
+  {
+    label: "DE ENTSO-E Day-Ahead Intervals",
+    source: "ENTSO-E",
+    dataset: "Day-ahead price",
+    region: "DE",
+    latestDate: "2026-03-11",
+    captured: 24,
+    expected: 24,
+    status: "healthy",
+    detail: "German day-ahead intervals are complete for the latest delivery date.",
+    series: [24, 24, 24, 24, 24, 24, 24],
+  },
+  {
+    label: "NL ENTSO-E Day-Ahead Intervals",
+    source: "ENTSO-E",
+    dataset: "Day-ahead price",
+    region: "NL",
+    latestDate: "2026-03-11",
+    captured: 23,
+    expected: 24,
+    status: "watch",
+    detail: "Dutch day-ahead intervals are almost complete but still missing one hourly point.",
+    series: [24, 24, 24, 24, 24, 23, 23],
+  },
+];
+
 export const sampleDashboardData: DashboardData = {
   metadata: {
     asOf: "2026-03-10 22:40:38 UTC",
@@ -266,5 +318,8 @@ export const sampleDashboardData: DashboardData = {
     exposurePoints,
     exceptionRows,
     marketPanels,
+  },
+  dataQuality: {
+    checks: qualityChecks,
   },
 };

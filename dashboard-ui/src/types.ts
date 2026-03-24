@@ -62,6 +62,19 @@ export interface MarketPanel {
   series: MarketSeries[];
 }
 
+export interface QualityCheck {
+  label: string;
+  source: string;
+  dataset: string;
+  region: string;
+  latestDate: string;
+  captured: number;
+  expected: number;
+  status: "healthy" | "watch" | "investigate";
+  detail: string;
+  series: number[];
+}
+
 export interface DashboardMetadata {
   asOf: string;
   latestDate: string;
@@ -86,4 +99,7 @@ export interface DashboardData {
   metadata: DashboardMetadata;
   navItems: NavItem[];
   overview: OverviewData;
+  dataQuality: {
+    checks: QualityCheck[];
+  };
 }
