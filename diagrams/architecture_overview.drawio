@@ -1,0 +1,201 @@
+<mxfile host="app.diagrams.net" modified="2026-03-28" version="21.0.0">
+  <diagram name="Architecture Overview" id="architecture-overview">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- EXTERNAL DATA SOURCES                                       -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="grp-apis" value="External Data Sources (Public APIs)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_general;strokeColor=#232F3E;fillColor=#FFFFFF;verticalLabelPosition=top;verticalAlign=bottom;align=center;spacingBottom=0;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="420" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="elexon" value="Elexon API&#xa;(UK Power)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#232F3E;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.general;" vertex="1" parent="grp-apis">
+          <mxGeometry x="30" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="entsoe" value="ENTSO-E API&#xa;(EU Power)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#232F3E;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.general;" vertex="1" parent="grp-apis">
+          <mxGeometry x="180" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="entsog" value="ENTSOG API&#xa;(EU Gas)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#232F3E;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.general;" vertex="1" parent="grp-apis">
+          <mxGeometry x="330" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- ORCHESTRATION                                               -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="grp-orch" value="Orchestration" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_management_console;strokeColor=#E7157B;fillColor=#F4F4F4;verticalLabelPosition=top;verticalAlign=bottom;align=center;spacingBottom=0;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="60" y="290" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="eventbridge" value="EventBridge&#xa;Schedule&#xa;(Daily 02:00 UTC)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.eventbridge;" vertex="1" parent="grp-orch">
+          <mxGeometry x="30" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cloudwatch" value="CloudWatch&#xa;Logs &amp; Alarms" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#E7157B;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudwatch;" vertex="1" parent="grp-orch">
+          <mxGeometry x="180" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- INGESTION LAYER                                             -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="grp-ingest" value="Ingestion Layer" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_lambda;strokeColor=#ED7100;fillColor=#FEF9F4;verticalLabelPosition=top;verticalAlign=bottom;align=center;spacingBottom=0;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="560" y="60" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="lambda" value="Lambda&#xa;Ingest Function&#xa;(Python 3.x)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="grp-ingest">
+          <mxGeometry x="30" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lambda-role" value="Lambda&#xa;Execution Role" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#DD344C;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.role;" vertex="1" parent="grp-ingest">
+          <mxGeometry x="180" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- S3 DATA LAKE                                                -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="grp-s3" value="Amazon S3 – Data Lake" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_s3;strokeColor=#3F8624;fillColor=#F2F9EE;verticalLabelPosition=top;verticalAlign=bottom;align=center;spacingBottom=0;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="560" y="290" width="440" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-raw" value="S3 Raw Zone&#xa;JSON / XML&#xa;Partitioned by&#xa;source / dataset / date" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3F8624;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="grp-s3">
+          <mxGeometry x="30" y="60" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-curated" value="S3 Curated Zone&#xa;Parquet (Snappy)&#xa;Partitioned by&#xa;source / region / date" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3F8624;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="grp-s3">
+          <mxGeometry x="350" y="60" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- TRANSFORMATION & CATALOGUING                                -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="grp-glue" value="Transformation &amp; Cataloguing" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_analytics;strokeColor=#8C4FFF;fillColor=#F5F1FF;verticalLabelPosition=top;verticalAlign=bottom;align=center;spacingBottom=0;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="560" y="560" width="580" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="crawler" value="Glue Crawler&#xa;(Schema Discovery)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.glue_crawlers;" vertex="1" parent="grp-glue">
+          <mxGeometry x="30" y="60" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog" value="Glue Data Catalog&#xa;(Metastore)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.glue_data_catalog;" vertex="1" parent="grp-glue">
+          <mxGeometry x="180" y="60" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="etl" value="Glue ETL Job&#xa;(PySpark)&#xa;Raw → Parquet" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.glue;" vertex="1" parent="grp-glue">
+          <mxGeometry x="330" y="60" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="glue-role" value="Glue&#xa;Execution Role" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#DD344C;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.role;" vertex="1" parent="grp-glue">
+          <mxGeometry x="480" y="60" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- QUERY & ANALYTICS                                           -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="grp-query" value="Query &amp; Analytics" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_analytics;strokeColor=#8C4FFF;fillColor=#F5F1FF;verticalLabelPosition=top;verticalAlign=bottom;align=center;spacingBottom=0;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="560" y="830" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="athena" value="Amazon Athena&#xa;(Serverless SQL)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.athena;" vertex="1" parent="grp-query">
+          <mxGeometry x="30" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-results" value="S3 Query&#xa;Results Bucket" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3F8624;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="grp-query">
+          <mxGeometry x="180" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- CONSUMPTION                                                 -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="grp-consume" value="Consumption" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_general;strokeColor=#232F3E;fillColor=#FFFFFF;verticalLabelPosition=top;verticalAlign=bottom;align=center;spacingBottom=0;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="960" y="830" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="analyst" value="Energy Market&#xa;Analyst" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#232F3E;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.user;" vertex="1" parent="grp-consume">
+          <mxGeometry x="30" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="dashboard" value="React Dashboard&#xa;(GitHub Pages)" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#232F3E;labelBackgroundColor=#ffffff;align=center;fontStyle=1;fontSize=11;shape=mxgraph.aws4.traditional_server;" vertex="1" parent="grp-consume">
+          <mxGeometry x="180" y="50" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- EDGES                                                       -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+
+        <!-- EventBridge → Lambda -->
+        <mxCell id="e1" value="triggers daily" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=11;" edge="1" source="eventbridge" target="lambda" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- External APIs → Lambda -->
+        <mxCell id="e2" value="HTTPS pull" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="elexon" target="lambda" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="HTTPS pull" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="entsoe" target="lambda" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="HTTPS pull" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="entsog" target="lambda" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda → S3 Raw -->
+        <mxCell id="e5" value="writes JSON/XML" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="lambda" target="s3-raw" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda → CloudWatch -->
+        <mxCell id="e6" value="logs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#ED7100;fontSize=11;" edge="1" source="lambda" target="cloudwatch" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Raw → Glue Crawler -->
+        <mxCell id="e7" value="crawls schema" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="s3-raw" target="crawler" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Glue Crawler → Catalog -->
+        <mxCell id="e8" value="registers tables" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="crawler" target="catalog" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Raw → Glue ETL -->
+        <mxCell id="e9" value="reads raw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="s3-raw" target="etl" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Glue ETL → S3 Curated -->
+        <mxCell id="e10" value="writes Parquet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="etl" target="s3-curated" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Catalog → Glue ETL -->
+        <mxCell id="e11" value="schema" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#8C4FFF;fontSize=11;" edge="1" source="catalog" target="etl" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Curated → Athena -->
+        <mxCell id="e12" value="scans partitions" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="s3-curated" target="athena" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Catalog → Athena -->
+        <mxCell id="e13" value="table metadata" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#8C4FFF;fontSize=11;" edge="1" source="catalog" target="athena" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Athena → S3 Results -->
+        <mxCell id="e14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;fontSize=11;" edge="1" source="athena" target="s3-results" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Athena → Analyst -->
+        <mxCell id="e15" value="SQL results" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="athena" target="analyst" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Athena → Dashboard -->
+        <mxCell id="e16" value="JSON export" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" edge="1" source="athena" target="dashboard" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Lambda Role → Lambda -->
+        <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#DD344C;fontSize=11;" edge="1" source="lambda-role" target="lambda" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Glue Role → Glue ETL -->
+        <mxCell id="e18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#DD344C;fontSize=11;" edge="1" source="glue-role" target="etl" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
