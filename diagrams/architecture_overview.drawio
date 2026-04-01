@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Architecture Overview" id="architecture-overview">
-    <mxGraphModel dx="2066" dy="1099" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1653" dy="879" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -109,7 +109,12 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e10" edge="1" parent="1" source="etl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" target="s3-curated" value="writes Parquet">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="920" y="540" />
+              <mxPoint x="940" y="540" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e11" edge="1" parent="1" source="catalog" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#8C4FFF;fontSize=11;" target="etl" value="schema">
           <mxGeometry relative="1" as="geometry" />
@@ -117,8 +122,13 @@
         <mxCell id="e12" edge="1" parent="1" source="s3-curated" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=11;" target="athena" value="scans partitions">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e13" edge="1" parent="1" source="catalog" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#8C4FFF;fontSize=11;" target="athena" value="table metadata">
+        <mxCell id="e13" edge="1" parent="1" source="catalog" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#8C4FFF;fontSize=11;" target="athena" value="">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ye-mCIEUsQEnJML-09bt-2" connectable="0" parent="e13" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" value="table metadata" vertex="1">
+          <mxGeometry relative="1" x="0.3724" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="e14" edge="1" parent="1" source="athena" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;fontSize=11;" target="s3-results" value="">
           <mxGeometry relative="1" as="geometry" />
