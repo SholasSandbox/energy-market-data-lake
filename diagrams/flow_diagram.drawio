@@ -61,9 +61,6 @@
         <mxCell id="elexon" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#006EAF;strokeColor=#005a8e;fontColor=#ffffff;fontStyle=1;fontSize=11;arcSize=20;verticalAlign=middle;" value="Elexon&#xa;UK Demand &amp; Prices" vertex="1">
           <mxGeometry height="50" width="155" x="202" y="78" as="geometry" />
         </mxCell>
-        <mxCell id="hTqvL5yyGI73Dv_lG7Z6-11" edge="1" parent="1" source="entsoe" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="lambda" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="entsoe" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#006EAF;strokeColor=#005a8e;fontColor=#ffffff;fontStyle=1;fontSize=11;arcSize=20;verticalAlign=middle;" value="ENTSO-E&#xa;EU Load &amp; DA Prices" vertex="1">
           <mxGeometry height="50" width="155" x="202" y="148" as="geometry" />
         </mxCell>
@@ -85,7 +82,7 @@
         <mxCell id="raw-entsoe" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3F8624;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;verticalLabelPosition=bottom;verticalAlign=top;" value="source=entsoe&#xa;dataset=load|prices" vertex="1">
           <mxGeometry height="60" width="60" x="466" y="388" as="geometry" />
         </mxCell>
-        <mxCell id="raw-entsog" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3F8624;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;verticalLabelPosition=bottom;verticalAlign=top;" value="source=entsog&#xa;dataset=gas_flows †" vertex="1">
+        <mxCell id="raw-entsog" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#3F8624;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;verticalLabelPosition=bottom;verticalAlign=top;" value="source=entsog&#xa;dataset=gas_flows" vertex="1">
           <mxGeometry height="60" width="60" x="466" y="548" as="geometry" />
         </mxCell>
         <mxCell id="crawler" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#8C4FFF;labelBackgroundColor=#ffffff;align=center;html=1;fontSize=11;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.glue;verticalLabelPosition=bottom;verticalAlign=top;" value="Glue&#xa;Crawler" vertex="1">
@@ -136,10 +133,10 @@
         <mxCell id="leg-dash-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=10;fontColor=#666666;" value="— — —  metadata / config" vertex="1">
           <mxGeometry height="20" width="140" x="1730" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="leg-note" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=10;fontColor=#c62828;fontStyle=2;" value="† not yet ETL&#39;d" vertex="1">
+        <mxCell id="leg-note" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=10;fontColor=#c62828;fontStyle=2;" value="† target model path" vertex="1">
           <mxGeometry height="20" width="140" x="1730" y="362" as="geometry" />
         </mxCell>
-        <mxCell id="footnote" parent="1" style="text;html=1;strokeColor=#cccccc;fillColor=#fffde7;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontColor=#555555;rounded=1;spacingLeft=6;" value="† ENTSOG gas data is ingested to the S3 raw zone by Lambda but a dedicated Gas ETL pipeline is not yet implemented. Gas data is excluded from the curated zone and Athena query layer." vertex="1">
+        <mxCell id="footnote" parent="1" style="text;html=1;strokeColor=#cccccc;fillColor=#fffde7;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontColor=#555555;rounded=1;spacingLeft=6;" value="† ENTSOG gas data is part of the target model alongside electricity. This simplified view highlights the raw landing path explicitly; the README describes the downstream Glue and Athena lakehouse pattern for curated datasets." vertex="1">
           <mxGeometry height="40" width="870" x="20" y="762" as="geometry" />
         </mxCell>
         <mxCell id="e1" edge="1" parent="1" source="eventbridge" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;strokeColor=#E7157B;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="lambda" value="invoke">
@@ -220,15 +217,6 @@
         </mxCell>
         <mxCell id="e20" edge="1" parent="1" source="athena" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="react-dash" value="JSON export">
           <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="hTqvL5yyGI73Dv_lG7Z6-2" edge="1" parent="1" source="entsoe" style="html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#006EAF;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;" target="lambda" value="">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="280" y="254" />
-            </Array>
-            <mxPoint x="280" y="198" as="sourcePoint" />
-            <mxPoint x="279" y="310" as="targetPoint" />
-          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
