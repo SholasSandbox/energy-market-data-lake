@@ -192,6 +192,13 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
+        <!-- EventBridge ➜ Crawler -->
+        <mxCell id="e-eb-crl" value="triggers daily"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;"
+          edge="1" source="eventbridge" target="crawler" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
         <!-- APIs ➜ Lambda -->
         <mxCell id="e-el-lmb" value="HTTPS pull"
           style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;"
@@ -279,6 +286,13 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
+        <!-- S3 Curated ➜ Crawler -->
+        <mxCell id="e-cur-crl" value="crawls schema"
+          style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;"
+          edge="1" source="s3curated" target="crawler" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
         <!-- Catalog ➜ Athena (dashed, metadata) -->
         <mxCell id="e-cat-ath" value="table metadata"
           style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;dashed=1;strokeColor=#8C4FFF;"
@@ -287,7 +301,7 @@
         </mxCell>
 
         <!-- Athena ➜ S3 Results (dashed) -->
-        <mxCell id="e-ath-res" value="query results"
+        <mxCell id="e-ath-res" value="writes results"
           style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;"
           edge="1" source="athena" target="s3results" parent="1">
           <mxGeometry relative="1" as="geometry"/>
