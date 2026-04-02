@@ -192,13 +192,6 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
-        <!-- EventBridge ➜ Crawler -->
-        <mxCell id="e-eb-crl" value="triggers daily"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;"
-          edge="1" source="eventbridge" target="crawler" parent="1">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-
         <!-- APIs ➜ Lambda -->
         <mxCell id="e-el-lmb" value="HTTPS pull"
           style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;"
@@ -283,13 +276,6 @@
         <mxCell id="e-cur-ath" value="scans partitions"
           style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;"
           edge="1" source="s3curated" target="athena" parent="1">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-
-        <!-- S3 Curated ➜ Crawler -->
-        <mxCell id="e-cur-crl" value="crawls schema"
-          style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;"
-          edge="1" source="s3curated" target="crawler" parent="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
