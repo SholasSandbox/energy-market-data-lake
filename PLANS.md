@@ -116,7 +116,7 @@ The React app already treats `Data Quality` as a distinct view. After ingestion 
 
 ## Suggested Immediate Next Steps
 
-1. Finish the current diagram and PR cleanup so docs match README reality.
+1. Validate the clean run path end-to-end so README, evidence, and diagrams stay grounded in reproducible platform behavior.
 2. Confirm the ingestion + crawler + ETL evidence path is still reproducible from a clean run.
 3. Define the gas curated schema and Athena exposure as the next substantive platform feature.
 4. Keep `Portfolio Risk` and `Market Context` as explicitly planned React follow-ons after gas and ingestion stability are in place.

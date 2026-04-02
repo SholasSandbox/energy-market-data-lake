@@ -142,7 +142,7 @@
         <mxCell id="e1" edge="1" parent="1" source="eventbridge" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;strokeColor=#E7157B;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="lambda" value="invoke">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e2" edge="1" parent="1" source="elexon" style="html=1;entryX=0.15;entryY=0;entryDx=0;entryDy=0;strokeColor=#006EAF;strokeWidth=2;exitX=0.366;exitY=1.033;exitDx=0;exitDy=0;exitPerimeter=0;rounded=0;curved=0;" target="lambda" value="">
+        <mxCell id="e2" edge="1" parent="1" source="elexon" style="html=1;entryX=0.15;entryY=0;entryDx=0;entryDy=0;strokeColor=#006EAF;exitX=0.366;exitY=1.033;exitDx=0;exitDy=0;exitPerimeter=0;rounded=0;curved=0;" target="lambda" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="258" y="140" />
@@ -152,15 +152,21 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e3" edge="1" parent="1" source="entsoe" style="html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#006EAF;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;" target="lambda" value="">
+        <mxCell id="e3" edge="1" parent="1" source="entsoe" style="html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.82;entryY=0;entryDx=0;entryDy=0;strokeColor=#006EAF;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;" target="lambda" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="280" y="254" />
+              <mxPoint x="390" y="173" />
+              <mxPoint x="390" y="292" />
+              <mxPoint x="299" y="292" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e4" edge="1" parent="1" source="entsog-api" style="html=1;entryX=0.85;entryY=0;entryDx=0;entryDy=0;strokeColor=#006EAF;strokeWidth=2;exitX=0.645;exitY=1.02;exitDx=0;exitDy=0;exitPerimeter=0;" target="lambda" value="">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e4" edge="1" parent="1" source="entsog-api" style="html=1;entryX=0.58;entryY=0;entryDx=0;entryDy=0;strokeColor=#006EAF;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="lambda" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="280" y="286" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e5" edge="1" parent="1" source="lambda" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeColor=#ED7100;fontStyle=1;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="raw-atl" value="PUT JSON">
           <mxGeometry relative="1" as="geometry" />
