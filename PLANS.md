@@ -29,6 +29,8 @@ The current implementation is still uneven across domains and UI depth:
 
 Goal: make the ingestion and transformation flow dependable before expanding the analytical surface area.
 
+Working checklist: `docs/phase-1-stabilize-ingestion-lakehouse.md`
+
 Focus:
 
 - keep scheduled ingestion reliable and repeatable
