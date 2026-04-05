@@ -97,7 +97,7 @@ See `docs/setup.md` for step-by-step build instructions.
 Run this from the project folder:
 
 ```bash
-cd /home/shola/cert-revision/energy-market-data-lake
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
 BACKFILL_DAYS=30 ./scripts/closeout_demo.sh
 ```
 
@@ -130,7 +130,7 @@ See `athena/queries.sql` for sample Athena queries and expected outputs.
 Generate a polished HTML dashboard from Athena curated data:
 
 ```bash
-cd /home/shola/cert-revision/energy-market-data-lake
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
 python3 scripts/generate_dashboard.py
 ```
 
@@ -147,7 +147,7 @@ For the next iteration, see the redesign blueprint in `docs/dashboard-ia-spec.md
 React + TypeScript scaffold:
 
 ```bash
-cd /home/shola/cert-revision/energy-market-data-lake/dashboard-ui
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui
 npm install
 npm run dev
 ```
@@ -155,9 +155,9 @@ npm run dev
 Generate JSON for the React app from Athena-backed dashboard data:
 
 ```bash
-cd /home/shola/cert-revision/energy-market-data-lake
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
 python3 scripts/generate_dashboard.py \
-  --output-json /home/shola/cert-revision/energy-market-data-lake/dashboard-ui/public/dashboard-data.json
+  --output-json /Users/shola/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui/public/dashboard-data.json
 ```
 
 ## Diagram

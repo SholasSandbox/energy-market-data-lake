@@ -31,7 +31,7 @@ BACKFILL_DAYS=30 ./scripts/closeout_demo.sh
 python3 scripts/validate_athena_schema.py --help
 python3 scripts/generate_dashboard.py
 python3 scripts/generate_dashboard.py \
-  --output-json /home/shola/cert-revision/energy-market-data-lake/dashboard-ui/public/dashboard-data.json
+  --output-json dashboard-ui/public/dashboard-data.json
 ```
 
 ## Evidence To Check

@@ -8,7 +8,7 @@ you need additional scale.
 If you want a full demo-ready deployment in one go:
 
 ```bash
-cd /home/shola/cert-revision/energy-market-data-lake
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
 BACKFILL_DAYS=30 ./scripts/closeout_demo.sh
 ```
 
