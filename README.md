@@ -179,6 +179,13 @@ Validate the JSON schema contracts:
 python scripts/validate_contracts.py
 ```
 
+Generate and validate local news summary evidence:
+
+```bash
+python scripts/ingest_news_local.py
+python scripts/validate_contracts.py --include-evidence
+```
+
 Run the full demo closeout flow:
 
 ```bash

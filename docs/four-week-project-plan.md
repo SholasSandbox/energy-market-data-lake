@@ -42,7 +42,7 @@ By the end of 4 weeks, the project should show:
 
 Goal: create the minimum working structure for the expanded project without breaking the existing energy lakehouse demo.
 
-### Outcomes
+### Week 1 Outcomes
 
 - Active docs explain implemented baseline vs target extension.
 - Schemas exist for the core contracts.
@@ -50,7 +50,7 @@ Goal: create the minimum working structure for the expanded project without brea
 - Dashboard can load a safe sample snapshot.
 - Architecture diagrams show trust boundaries.
 
-### Work Items
+### Week 1 Work Items
 
 1. Create schema contracts:
    - `energy_input_v1.json`
@@ -63,6 +63,13 @@ Goal: create the minimum working structure for the expanded project without brea
    - read 1-3 RSS feeds
    - extract title, URL, publisher, timestamp, summary, and topic tags
    - write local JSON first, then S3 later
+   - local check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/ingest_news_local.py
+     python scripts/validate_contracts.py --include-evidence
+     ```
 
 3. Define private/public storage boundaries:
    - private: `raw/`, `curated/`, `audit/`, `failed/`
@@ -77,14 +84,14 @@ Goal: create the minimum working structure for the expanded project without brea
    - React app still starts locally
    - existing diagrams and README remain consistent
 
-### Acceptance Gate
+### Week 1 Acceptance Gate
 
 - Existing dashboard flow still works.
 - News ingest skeleton produces valid sample JSON.
 - Public dashboard path does not read raw or curated private data.
 - README and diagrams clearly say what is implemented and what is target.
 
-### Avoid
+### Week 1 Avoid
 
 - polishing UI
 - adding many feeds
@@ -95,7 +102,7 @@ Goal: create the minimum working structure for the expanded project without brea
 
 Goal: make energy and news data move through a dependable private pipeline with validation and failure handling.
 
-### Outcomes
+### Week 2 Outcomes
 
 - Energy data can be exported or normalized into `energy_input_v1.json`.
 - News data can be normalized into `news_summary_v1.json`.
@@ -103,7 +110,7 @@ Goal: make energy and news data move through a dependable private pipeline with 
 - Bad records move to failed output.
 - Dashboard publisher can produce a basic safe snapshot.
 
-### Work Items
+### Week 2 Work Items
 
 1. Build validation helpers:
    - validate required fields
@@ -129,7 +136,7 @@ Goal: make energy and news data move through a dependable private pipeline with 
    - writes `dashboard_snapshot_v1.json`
    - keeps only public-safe fields
 
-### Acceptance Gate
+### Week 2 Acceptance Gate
 
 - A full local/demo run produces:
   - energy input JSON
@@ -140,7 +147,7 @@ Goal: make energy and news data move through a dependable private pipeline with 
 - Failure evidence is visible.
 - Dashboard reads approved snapshot JSON only.
 
-### Avoid
+### Week 2 Avoid
 
 - perfect classification
 - real-time ingestion
@@ -151,7 +158,7 @@ Goal: make energy and news data move through a dependable private pipeline with 
 
 Goal: merge energy and news into traceable, validated insights without allowing malformed AI output downstream.
 
-### Outcomes
+### Week 3 Outcomes
 
 - Local OpenClaw/manual-reviewed AI path reads curated inputs.
 - AI output follows `ai_insight_v1.json`.
@@ -159,7 +166,7 @@ Goal: merge energy and news into traceable, validated insights without allowing 
 - Valid AI output is converted into dashboard snapshot data.
 - Every insight has confidence, risk level, and source references.
 
-### Work Items
+### Week 3 Work Items
 
 1. Create the AI input bundle:
    - latest energy facts
@@ -188,7 +195,7 @@ Goal: merge energy and news into traceable, validated insights without allowing 
    - convert valid `ai_insight_v1.json` into `dashboard_snapshot_v1.json`
    - include insight headline, explanation, confidence, risk, sources, and timestamp
 
-### Acceptance Gate
+### Week 3 Acceptance Gate
 
 - Valid AI output reaches dashboard snapshot JSON.
 - Invalid AI output does not reach dashboard snapshot JSON.
@@ -202,7 +209,7 @@ Only after local validation works:
 - Bedrock `InvokeModel`
 - or managed compute running OpenClaw
 
-### Avoid
+### Week 3 Avoid
 
 - multi-agent orchestration
 - fine-tuning
@@ -213,7 +220,14 @@ Only after local validation works:
 
 Goal: turn the project into a clear hiring/demo artifact with visible business value.
 
-### Outcomes
+### Week 4 Early Gate
+
+- Dashboard renders without errors.
+- All metrics pull from local snapshot JSON.
+- Demo script runs in < 5 minutes.
+- README is current and clear.
+
+### Week 4 Outcomes
 
 - Dashboard has energy metrics, news-linked insights, and data quality.
 - README tells the story cleanly.
@@ -221,7 +235,7 @@ Goal: turn the project into a clear hiring/demo artifact with visible business v
 - Screenshots and demo script exist.
 - Cost, security, and failure-handling story is explicit.
 
-### Work Items
+### Week 4 Work Items
 
 1. Dashboard polish:
    - insight panel
@@ -256,7 +270,7 @@ Goal: turn the project into a clear hiring/demo artifact with visible business v
    - no always-on infrastructure
    - AWS Budget alert before live demo
 
-### Acceptance Gate
+### Week 4 Acceptance Gate
 
 - Demo walkthrough takes less than 10 minutes.
 - The repo explains what is implemented, what is target, and what is stretch.
@@ -264,7 +278,7 @@ Goal: turn the project into a clear hiring/demo artifact with visible business v
 - Failure behavior is documented and demonstrable.
 - README, diagrams, and plan agree.
 
-### Avoid
+### Week 4 Avoid
 
 - redesigning the whole UI
 - adding auth/admin workflows
@@ -331,4 +345,3 @@ Not required for MVP:
 - real-time ingestion
 - enterprise auth
 - high-availability multi-region design
-
