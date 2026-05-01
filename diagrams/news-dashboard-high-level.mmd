@@ -1,0 +1,38 @@
+flowchart LR
+    subgraph External["External Sources"]
+        EnergyAPI["Energy APIs\nElexon / ENTSO-E / ENTSOG"]
+        NewsRSS["News RSS feeds"]
+    end
+
+    subgraph AWS["AWS Account Boundary"]
+        subgraph Private["Private Processing Boundary"]
+            Schedule["EventBridge Scheduler"]
+            Ingest["Lambda ingest jobs"]
+            DataLake["S3 data bucket\nraw / curated / audit / failed"]
+            Transform["Glue + Athena\ncurated outputs"]
+            InputGate["Input schema validation"]
+            PublishGate["AI output validation + publisher"]
+            Observability["CloudWatch logs, metrics, alarms\nAWS Budget alert"]
+        end
+
+        subgraph Public["Public Delivery Boundary"]
+            StaticHost["Static dashboard hosting\nGitHub Pages or CloudFront/S3"]
+            DashboardJSON["Public dashboard JSON\napproved fields only"]
+        end
+    end
+
+    LocalAI["MVP local OpenClaw\nmanual-reviewed merge"]
+    Viewer["Dashboard user"]
+
+    EnergyAPI --> Schedule
+    NewsRSS --> Schedule
+    Schedule --> Ingest
+    Ingest --> DataLake
+    DataLake --> InputGate
+    InputGate --> Transform
+    Transform --> LocalAI
+    LocalAI --> PublishGate
+    PublishGate --> DashboardJSON
+    Ingest --> Observability
+    StaticHost --> DashboardJSON
+    Viewer --> StaticHost

@@ -15,6 +15,40 @@ BACKFILL_DAYS=30 ./scripts/closeout_demo.sh
 This script provisions S3 + Lambda + EventBridge + Glue + crawlers and stores
 run evidence in `docs/evidence/`.
 
+## Local Python Setup
+
+Use a virtual environment for local helper scripts. This keeps project
+dependencies separate from your Mac's global Python installation.
+
+Start here after restarting your terminal:
+
+```bash
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements-dev.txt
+```
+
+If `.venv` already exists, you only need:
+
+```bash
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
+source .venv/bin/activate
+```
+
+Validate the JSON schema contracts:
+
+```bash
+python scripts/validate_contracts.py
+```
+
+Expected result:
+
+```text
+All contracts are valid.
+```
+
 ## 1) S3 Buckets
 
 Create one bucket:

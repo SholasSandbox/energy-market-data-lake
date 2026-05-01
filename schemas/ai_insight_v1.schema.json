@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai_insight_v1.schema.json",
+  "title": "AI Insight v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "insights"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "ai_insight_v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "insights": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "region",
+          "risk_level",
+          "confidence",
+          "time_window",
+          "energy_references",
+          "news_references",
+          "validation_notes"
+        ],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 },
+          "region": { "type": "string" },
+          "risk_level": { "type": "string", "enum": ["low", "watch", "high"] },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "time_window": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["start", "end"],
+            "properties": {
+              "start": { "type": "string", "format": "date-time" },
+              "end": { "type": "string", "format": "date-time" }
+            }
+          },
+          "energy_references": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["source", "metric", "reference"],
+              "properties": {
+                "source": { "type": "string" },
+                "metric": { "type": "string" },
+                "reference": { "type": "string" }
+              }
+            }
+          },
+          "news_references": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["publisher", "title", "url"],
+              "properties": {
+                "publisher": { "type": "string" },
+                "title": { "type": "string" },
+                "url": { "type": "string", "format": "uri" }
+              }
+            }
+          },
+          "validation_notes": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
+

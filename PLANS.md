@@ -3,6 +3,7 @@
 Source of truth for this plan:
 
 - `README.md` for current platform scope and target model
+- `docs/four-week-project-plan.md` for the delivery-focused 4-week MVP plan
 - `dashboard-ui/src/App.tsx` for current React implementation reality
 - `docs/dashboard-ia-spec.md` for the next dashboard design direction
 
@@ -122,6 +123,7 @@ The React app already treats `Data Quality` as a distinct view. After ingestion 
 2. Confirm the ingestion + crawler + ETL evidence path is still reproducible from a clean run.
 3. Define the gas curated schema and Athena exposure as the next substantive platform feature.
 4. Keep `Portfolio Risk` and `Market Context` as explicitly planned React follow-ons after gas and ingestion stability are in place.
+5. Use `docs/four-week-project-plan.md` when executing the news summaries, AI merge, and insight dashboard MVP.
 
 ## Planning Rule
 
