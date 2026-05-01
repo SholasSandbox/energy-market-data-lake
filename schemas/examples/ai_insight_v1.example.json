@@ -1,0 +1,33 @@
+{
+  "schema_version": "ai_insight_v1",
+  "generated_at": "2026-05-01T00:00:00Z",
+  "insights": [
+    {
+      "id": "insight-20260405-gb-power-001",
+      "title": "GB power prices elevated alongside gas supply concern",
+      "summary": "GB market prices were above the recent average while news coverage pointed to gas supply concerns as a possible driver.",
+      "region": "gb",
+      "risk_level": "watch",
+      "confidence": 0.78,
+      "time_window": {
+        "start": "2026-04-05T00:00:00Z",
+        "end": "2026-04-05T23:59:59Z"
+      },
+      "energy_references": [
+        {
+          "source": "elexon",
+          "metric": "system_buy_price_gbp_mwh",
+          "reference": "s3://bucket/curated/dataset=electricity/source=elexon/region=gb/date=2026-04-05/"
+        }
+      ],
+      "news_references": [
+        {
+          "publisher": "Example Energy News",
+          "title": "UK power prices rise after gas supply concern",
+          "url": "https://example.com/article"
+        }
+      ],
+      "validation_notes": []
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+flowchart TD
+    subgraph External["External Sources - outside AWS trust boundary"]
+        Elexon["Elexon API"]
+        Entsoe["ENTSO-E API"]
+        Entsog["ENTSOG API"]
+        RSS["RSS feeds"]
+    end
+
+    subgraph AWS["AWS Account Boundary"]
+        Secrets["Secrets Manager / SSM\nAPI tokens and runtime config"]
+
+        subgraph Private["Private Processing Boundary"]
+            EventBridge["EventBridge Scheduler"]
+
+            subgraph Ingest["Parallel ingest"]
+                EnergyLambda["Energy ingest Lambda\nrole: energy-ingest-role"]
+                NewsLambda["News ingest Lambda\nrole: news-ingest-role"]
+            end
+
+            subgraph DataBucket["S3 data bucket - private"]
+                Raw["raw/\nsource payloads"]
+                Curated["curated/\nnormalized datasets"]
+                Audit["audit/\nappend-only snapshots"]
+                Failed["failed/\nvalidation and runtime failures"]
+            end
+
+            Glue["Glue crawler + ETL"]
+            Athena["Athena curated queries"]
+            Normalize["Validate + normalize\nenergy_input_v1\nnews_summary_v1"]
+            AIMerge["AI merge boundary\nai_insight_v1"]
+            CloudAI["Optional cloud AI path\nBedrock InvokeModel\nor managed compute\nrole: ai-merge-role"]
+            AIValidate["Validate AI output schema"]
+            Publish["Publisher\nrole: publisher-role"]
+
+            subgraph Observability["Observability"]
+                Logs["CloudWatch Logs"]
+                Metrics["CloudWatch Metrics"]
+                Alarms["CloudWatch Alarms"]
+                Budget["AWS Budget alert"]
+            end
+
+            SNS["SNS notification\ninvalid AI output or high risk insight"]
+        end
+
+        subgraph Public["Public Delivery Boundary"]
+            DashboardData["Public dashboard JSON\napproved fields only"]
+        end
+    end
+
+    subgraph Local["MVP local boundary"]
+        OpenClaw["OpenClaw/local model\nmanual-reviewed merge"]
+    end
+
+    StaticSite["React dashboard\nGitHub Pages or CloudFront/S3"]
+    Viewer["Dashboard user"]
+
+    Elexon --> EnergyLambda
+    Entsoe --> EnergyLambda
+    Entsog --> EnergyLambda
+    RSS --> NewsLambda
+    Secrets --> EnergyLambda
+
+    EventBridge --> EnergyLambda
+    EventBridge --> NewsLambda
+    EnergyLambda --> Raw
+    NewsLambda --> Raw
+
+    Raw --> Normalize
+    Normalize -->|success| Curated
+    Normalize -->|failure| Failed
+    Normalize -->|failure| Alarms
+
+    Curated --> Glue
+    Glue --> Athena
+    Athena --> OpenClaw
+    OpenClaw --> AIMerge
+    EventBridge -. "Optional cloud AI path" .-> CloudAI
+    CloudAI -.-> AIMerge
+
+    AIMerge --> AIValidate
+    AIValidate -->|valid| Publish
+    AIValidate -->|invalid| Failed
+    AIValidate -->|invalid| SNS
+
+    Publish --> Audit
+    Publish --> DashboardData
+
+    EnergyLambda --> Logs
+    NewsLambda --> Logs
+    Publish --> Metrics
+    Alarms --> SNS
+
+    Viewer --> StaticSite
+    StaticSite --> DashboardData
