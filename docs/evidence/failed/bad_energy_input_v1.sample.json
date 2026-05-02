@@ -1,0 +1,23 @@
+{
+  "schema_version": "energy_input_v1",
+  "generated_at": "2026-05-01T00:00:00Z",
+  "records": [
+    {
+      "source": "elexon",
+      "dataset": "electricity",
+      "region": "gb",
+      "timestamp_utc": "2026-04-05T12:00:00Z",
+      "date": "2026-04-05",
+      "settlement_period": 24,
+      "demand_mw": 43120.5,
+      "system_sell_price_gbp_mwh": 120.4,
+      "consumption_mw": 43120.5,
+      "system_sell_price_gbp_mwh": 120.4,
+      "system_buy_price_gbp_mwh": 125.1,
+      "day_ahead_price_eur_mwh": null,
+      "source_reference": "s3://bucket/curated/dataset=electricity/source=elexon/region=gb/date=2026-04-05/"
+    }
+  ]
+}
+
+

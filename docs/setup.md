@@ -43,11 +43,31 @@ Validate the JSON schema contracts:
 python scripts/validate_contracts.py
 ```
 
-Generate and validate the local news summary evidence:
+Generate and validate the curated local news summary evidence:
 
 ```bash
 python scripts/ingest_news_local.py
 python scripts/validate_contracts.py --include-evidence
+```
+
+Generate and validate the local energy input evidence:
+
+```bash
+python scripts/export_energy_input_local.py
+python scripts/validate_contracts.py --include-evidence
+```
+
+Publish a public-safe local dashboard snapshot:
+
+```bash
+python scripts/publish_dashboard_snapshot_local.py
+python scripts/validate_contracts.py --include-evidence
+```
+
+Confirm known-bad samples are rejected:
+
+```bash
+python scripts/validate_contracts.py --include-evidence --check-failures
 ```
 
 Expected result:
