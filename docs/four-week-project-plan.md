@@ -121,20 +121,49 @@ Goal: make energy and news data move through a dependable private pipeline with 
 2. Normalize energy inputs:
    - use current Athena/dashboard data as the first energy source
    - map market price, demand, region, source, and timestamp into `energy_input_v1.json`
+   - local check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/export_energy_input_local.py
+     python scripts/validate_contracts.py --include-evidence
+     ```
 
 3. Normalize news summaries:
    - keep summaries short and source-linked
    - attach publisher, URL, timestamp, topic, and extracted market entities
+   - write curated local evidence to `docs/evidence/curated/news_summary_v1.sample.json`
+   - local check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/ingest_news_local.py
+     python scripts/validate_contracts.py --include-evidence
+     ```
 
 4. Add failure routing:
-   - invalid input writes to `failed/` or local `docs/evidence/failed-*`
+   - invalid input writes to `failed/` or local `docs/evidence/failed/`
    - failures are visible in logs or evidence
    - no invalid record is published
+   - failed sample naming: `docs/evidence/failed/bad_<contract_name>.sample.json`
+   - local check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/validate_contracts.py --include-evidence --check-failures
+     ```
 
 5. Add a basic publisher:
    - reads curated energy/news samples
    - writes `dashboard_snapshot_v1.json`
    - keeps only public-safe fields
+   - local check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/publish_dashboard_snapshot_local.py
+     python scripts/validate_contracts.py --include-evidence
+     ```
 
 ### Week 2 Acceptance Gate
 

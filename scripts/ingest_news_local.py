@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch a few RSS feeds and write a local news_summary_v1 JSON file."""
+"""Fetch RSS feeds and write a curated-style news_summary_v1 JSON file."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ import feedparser
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = ROOT / "docs" / "evidence" / "news_summary_v1.sample.json"
+DEFAULT_OUTPUT = ROOT / "docs" / "evidence" / "curated" / "news_summary_v1.sample.json"
 
 DEFAULT_FEEDS = [
     "https://www.energyvoice.com/feed/",

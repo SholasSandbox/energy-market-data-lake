@@ -1,0 +1,46 @@
+{
+  "schema_version": "news_summary_v1",
+  "generated_at": "2026-05-02T00:32:02Z",
+  "articles": [
+    {
+      "source": "rss",
+      "publisher": "Energy Voice",
+      "title": "Power Moves: Nexos adds two senior leaders",
+      "url": "https://www.energyvoice.com/renewables-energy-transition/596884/power-moves-nexos-senior-leaders/",
+      "published_at": "2026-05-01T15:24:41Z",
+      "summary": "Appointments and departures abound in this week\u2019s edition.",
+      "topics": [],
+      "regions": [],
+      "entities": [],
+      "source_reference": "https://www.energyvoice.com/renewables-energy-transition/596884/power-moves-nexos-senior-leaders/"
+    },
+    {
+      "source": "rss",
+      "publisher": "Energy Voice",
+      "title": "Accelerating cleantech: what technologies are overlooked?",
+      "url": "https://www.energyvoice.com/renewables-energy-transition/596804/accelerating-cleantech-what-technologies-are-overlooked/",
+      "published_at": "2026-05-01T13:03:03Z",
+      "summary": "The battle for cleaner power may have almost been won, but the landscape is shifting toward the grid and user adoption in reaching net zero.",
+      "topics": [
+        "grid"
+      ],
+      "regions": [],
+      "entities": [],
+      "source_reference": "https://www.energyvoice.com/renewables-energy-transition/596804/accelerating-cleantech-what-technologies-are-overlooked/"
+    },
+    {
+      "source": "rss",
+      "publisher": "Energy Voice",
+      "title": "20 North Sea workers to strike after Ithaca bonus snub",
+      "url": "https://www.energyvoice.com/oilandgas/north-sea/596875/20-north-sea-workers-to-strike-after-ithaca-bonus-snub/",
+      "published_at": "2026-05-01T12:27:10Z",
+      "summary": "Unite claims the Bilfinger workers are being denied a payment which other companies are paying.",
+      "topics": [
+        "oil_gas"
+      ],
+      "regions": [],
+      "entities": [],
+      "source_reference": "https://www.energyvoice.com/oilandgas/north-sea/596875/20-north-sea-workers-to-strike-after-ithaca-bonus-snub/"
+    }
+  ]
+}

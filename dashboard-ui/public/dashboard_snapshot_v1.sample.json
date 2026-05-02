@@ -1,46 +1,68 @@
 {
   "schema_version": "dashboard_snapshot_v1",
-  "generated_at": "2026-05-01T00:00:00Z",
+  "generated_at": "2026-05-02T00:32:02Z",
   "metadata": {
     "region": "gb",
-    "latest_date": "2026-04-05",
-    "data_freshness": "Daily snapshot",
+    "latest_date": "2026-03-23",
+    "data_freshness": "Local validated evidence snapshot",
     "status": "ok"
   },
   "summary_cards": [
     {
       "label": "Market Price",
-      "value": "£125.10/MWh",
-      "trend": "Above recent average",
+      "value": "127.05 GBP/MWh",
+      "trend": "From validated energy_input_v1 evidence",
       "status": "watch"
+    },
+    {
+      "label": "Demand",
+      "value": "43,492.00 MW",
+      "trend": "From validated energy_input_v1 evidence",
+      "status": "ok"
+    },
+    {
+      "label": "News Articles",
+      "value": "3",
+      "trend": "Curated RSS summaries available",
+      "status": "ok"
     }
   ],
   "insights": [
     {
-      "id": "insight-20260405-gb-power-001",
-      "title": "GB power prices elevated alongside gas supply concern",
-      "summary": "GB market prices were above the recent average while news coverage pointed to gas supply concerns as a possible driver.",
-      "risk_level": "watch",
-      "confidence": 0.78,
+      "id": "local-2026-03-23-gb-news-energy-001",
+      "title": "Power Moves: Nexos adds two senior leaders",
+      "summary": "Appointments and departures abound in this week\u2019s edition. Energy context: demand 43,492.00 MW, market price 127.05 GBP/MWh.",
+      "risk_level": "low",
+      "confidence": 0.65,
       "sources": [
         {
-          "label": "Elexon curated electricity data",
-          "url": "s3://bucket/curated/dataset=electricity/source=elexon/region=gb/date=2026-04-05/"
+          "label": "Validated energy evidence",
+          "url": "s3://energy-market-lake-sholasandbox-20260321/curated/curated_dataset_electricity_3d55606ee40ee8a52f504210ea44aa85/date=2026-03-23/"
         },
         {
-          "label": "Example Energy News",
-          "url": "https://example.com/article"
+          "label": "Energy Voice",
+          "url": "https://www.energyvoice.com/renewables-energy-transition/596884/power-moves-nexos-senior-leaders/"
         }
       ]
     }
   ],
   "data_quality": {
-    "status": "watch",
+    "status": "ok",
     "checks": [
       {
-        "label": "Settlement completeness",
-        "status": "watch",
-        "detail": "38 of 48 settlement periods available."
+        "label": "Energy contract",
+        "status": "ok",
+        "detail": "Publisher input came from energy_input_v1 evidence."
+      },
+      {
+        "label": "News contract",
+        "status": "ok",
+        "detail": "Publisher input came from curated news_summary_v1 evidence."
+      },
+      {
+        "label": "Public fields",
+        "status": "ok",
+        "detail": "Snapshot includes only dashboard-safe fields."
       }
     ]
   }
