@@ -1,0 +1,47 @@
+{
+  "schema_version": "dashboard_snapshot_v1",
+  "generated_at": "2026-05-01T00:00:00Z",
+  "metadata": {
+    "region": "gb",
+    "latest_date": "2026-04-05",
+    "data_freshness": "Daily snapshot",
+    "status": "ok"
+  },
+  "summary_cards": [
+    {
+      "label": "Market Price",
+      "value": "£125.10/MWh",
+      "trend": "Above recent average",
+      "status": "watch"
+    }
+  ],
+  "insights": [
+    {
+      "id": "insight-20260405-gb-power-001",
+      "title": "GB power prices elevated alongside gas supply concern",
+      "summary": "GB market prices were above the recent average while news coverage pointed to gas supply concerns as a possible driver.",
+      "risk_level": "watch",
+      "confidence": 0.78,
+      "sources": [
+        {
+          "label": "Elexon curated electricity data",
+          "url": "s3://bucket/curated/dataset=electricity/source=elexon/region=gb/date=2026-04-05/"
+        },
+        {
+          "label": "Example Energy News",
+          "url": "https://example.com/article"
+        }
+      ]
+    }
+  ],
+  "data_quality": {
+    "status": "watch",
+    "checks": [
+      {
+        "label": "Settlement completeness",
+        "status": "watch",
+        "detail": "38 of 48 settlement periods available."
+      }
+    ]
+  }
+}
