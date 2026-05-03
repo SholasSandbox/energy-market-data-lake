@@ -123,6 +123,10 @@ public dashboard_snapshot_v1.sample.json
 React dashboard
 ```
 
+## Screenshot
+
+- `docs/evidence/screenshots/dashboard-week4-local-mvp.png`: current Week 4 local MVP dashboard screenshot.
+
 ## Repository Layout
 
 ```text
@@ -133,6 +137,8 @@ diagrams/              Mermaid, SVG, PNG, and generated architecture diagrams
 docs/                  Active documentation and implementation plans
 docs/archive/          Historical completed plans and old demo artifacts
 docs/evidence/         Generated run, schema, and dashboard evidence
+docs/evidence/screenshots/
+                       Dashboard screenshots for portfolio/demo use
 glue/                  Glue ETL code
 lambda/                Lambda ingestion code
 scripts/               Local/demo helper scripts

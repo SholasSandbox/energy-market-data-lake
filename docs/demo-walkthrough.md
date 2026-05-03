@@ -112,6 +112,10 @@ Show the `AI Insight Snapshot` section:
 - data-quality checks
 - freshness warning for old local demo data
 
+Screenshot artifact:
+
+- `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
+
 Say:
 
 ```text
