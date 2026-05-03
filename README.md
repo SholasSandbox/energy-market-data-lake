@@ -123,9 +123,32 @@ public dashboard_snapshot_v1.sample.json
 React dashboard
 ```
 
-## Screenshot
+## Demo Evidence
 
-- `docs/evidence/screenshots/dashboard-week4-local-mvp.png`: current Week 4 local MVP dashboard screenshot.
+Use these artifacts to review or present the local MVP:
+
+- Walkthrough: `docs/demo-walkthrough.md`
+- Screenshot: `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
+- Public dashboard snapshot: `dashboard-ui/public/dashboard_snapshot_v1.sample.json`
+- Curated AI insight evidence: `docs/evidence/curated/ai_insight_v1.sample.json`
+
+Run the local evidence pipeline:
+
+```bash
+source .venv/bin/activate
+python scripts/ingest_news_local.py
+python scripts/export_energy_input_local.py
+python scripts/create_ai_input_bundle_local.py
+python scripts/merge_ai_insight_local.py
+python scripts/publish_dashboard_snapshot_local.py
+python scripts/validate_contracts.py --include-evidence --check-failures
+```
+
+Expected result:
+
+```text
+All contracts are valid.
+```
 
 ## Repository Layout
 
