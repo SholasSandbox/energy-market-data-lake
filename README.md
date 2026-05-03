@@ -1,6 +1,6 @@
 # Energy Market Data Lake + News Insight Dashboard
 
-A budget-conscious AWS portfolio project for ingesting energy market data, transforming it into a queryable lakehouse, and presenting decision-ready dashboard outputs. The current implementation is a serverless energy data lake using Lambda, S3, Glue, Athena, EventBridge, and a React dashboard scaffold. The next planned extension adds news summaries and an AI merge step so energy movements can be connected to external market context.
+A budget-conscious AWS portfolio project for ingesting energy market data, transforming it into a queryable lakehouse, and presenting decision-ready dashboard outputs. The implemented baseline is a serverless energy data lake using Lambda, S3, Glue, Athena, EventBridge, and a React dashboard. The local MVP now extends that baseline with RSS news summaries, strict JSON contracts, a deterministic AI-style merge, failure samples, and a public-safe dashboard snapshot.
 
 Region: **eu-west-2 (London)**
 
@@ -14,15 +14,21 @@ Region: **eu-west-2 (London)**
 - Athena query layer over curated Parquet data.
 - Evidence generation under `docs/evidence/`.
 - HTML dashboard generation from Athena-backed data.
-- React + TypeScript dashboard scaffold under `dashboard-ui/`.
+- React + TypeScript dashboard under `dashboard-ui/`.
+- Local RSS/news ingestion evidence.
+- JSON schema contracts for energy, news, AI insight, and dashboard snapshot outputs.
+- Local AI input bundle and deterministic AI insight merge.
+- Validator checks for good evidence and intentionally bad failure samples.
+- Public-safe dashboard snapshot loaded by the React app.
+- Visible data freshness warning for old local demo evidence.
 
-### Planned Target Extension
+### Target AWS Extension
 
-- RSS/news ingestion for energy-market-relevant articles.
-- Curated news summaries with source references.
-- AI merge path using local OpenClaw first, with Bedrock or managed compute as an optional later cloud path.
-- Strict JSON schema validation before dashboard publishing.
-- Public-safe dashboard snapshot JSON.
+- Move local news ingestion into Lambda or another scheduled AWS runtime.
+- Add Step Functions orchestration for ingest, validation, AI merge, and publish steps.
+- Run OpenClaw in a clear runtime, or use Bedrock `InvokeModel` as the managed cloud AI path.
+- Publish dashboard snapshot JSON to a CloudFront-fronted static site bucket.
+- Add SNS notifications and CloudWatch alarms for validation failures.
 - Trust-boundary-aware architecture with private raw/curated/audit/failed zones and public dashboard-only output.
 
 ## Current Data Scope
@@ -30,7 +36,7 @@ Region: **eu-west-2 (London)**
 - **UK electricity (Elexon)**: demand by bidding zone (GSP proxy) and system prices (SBP/SSP).
 - **EU electricity (ENTSO-E)**: actual load and day-ahead prices for GB, FR, DE-LU, and NL.
 - **EU gas (ENTSOG)**: target extension for physical flows and demand proxy using selected pointDirection IDs.
-- **News summaries**: target extension for RSS/news context linked to energy market movements.
+- **News summaries**: local RSS evidence linked to energy market movements.
 
 ## Current Architecture
 
@@ -92,6 +98,30 @@ Local OpenClaw MVP or optional Bedrock/managed compute
 ```
 
 The public dashboard must never read directly from raw, curated, audit, or failed lake data.
+
+## Local MVP Flow
+
+```text
+Local energy evidence + RSS feeds
+        |
+        v
+validated energy_input_v1 + curated news_summary_v1
+        |
+        v
+AI input bundle
+        |
+        v
+deterministic local AI merge
+        |
+        v
+validated ai_insight_v1
+        |
+        v
+public dashboard_snapshot_v1.sample.json
+        |
+        v
+React dashboard
+```
 
 ## Repository Layout
 
@@ -179,11 +209,21 @@ Validate the JSON schema contracts:
 python scripts/validate_contracts.py
 ```
 
-Generate and validate local news summary evidence:
+Run the local news + energy + AI insight pipeline:
 
 ```bash
 python scripts/ingest_news_local.py
-python scripts/validate_contracts.py --include-evidence
+python scripts/export_energy_input_local.py
+python scripts/create_ai_input_bundle_local.py
+python scripts/merge_ai_insight_local.py
+python scripts/publish_dashboard_snapshot_local.py
+python scripts/validate_contracts.py --include-evidence --check-failures
+```
+
+Expected result:
+
+```text
+All contracts are valid.
 ```
 
 Run the full demo closeout flow:
@@ -213,7 +253,14 @@ Run the React dashboard locally:
 ```bash
 cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui
 npm install
-npm run dev
+npm run dev -- --host 127.0.0.1
+```
+
+Verify the app and public snapshot are served:
+
+```bash
+curl -I http://127.0.0.1:5173/
+curl -I http://127.0.0.1:5173/dashboard_snapshot_v1.sample.json
 ```
 
 Find ENTSOG pointDirection IDs:
@@ -233,6 +280,7 @@ python scripts/entsog_point_directions.py --countries GB,FR,DE,NL --save-env
 - `docs/gas-implementation-checklist.md`: ENTSOG gas implementation checklist.
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
+- `docs/demo-walkthrough.md`: concise demo script for the local MVP and target architecture story.
 - `docs/news-dashboard-merged-execution-model.md`: 4-week news + AI + dashboard expansion plan.
 
 ## Diagrams
@@ -258,11 +306,12 @@ These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Stabilize the existing ingestion and lakehouse flow.
-2. Operationalize ENTSO-E electricity more reliably.
-3. Implement ENTSOG gas end-to-end.
-4. Expand the React dashboard after the data layer is trustworthy.
-5. Add news summaries and AI insight merging using the 4-week plan.
+1. Polish Week 4 portfolio evidence: README, plan, demo walkthrough, and screenshots.
+2. Keep the local pipeline reproducible with schema validation and failure checks.
+3. Keep the React dashboard focused on approved `dashboard_snapshot_v1.sample.json`.
+4. Operationalize ENTSO-E electricity more reliably.
+5. Implement ENTSOG gas end-to-end.
+6. Move the local news + AI merge flow into AWS orchestration only after the local MVP stays stable.
 
 ## Notes
 
