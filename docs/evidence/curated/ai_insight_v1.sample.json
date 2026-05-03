@@ -1,6 +1,6 @@
 {
   "schema_version": "ai_insight_v1",
-  "generated_at": "2026-05-03T13:46:20Z",
+  "generated_at": "2026-05-03T21:15:46Z",
   "insights": [
     {
       "id": "insight-2026-03-23-gb-001",
@@ -11,7 +11,7 @@
       "confidence": 0.85,
       "time_window": {
         "start": "2026-05-01T10:52:22Z",
-        "end": "2026-05-03T13:46:20Z"
+        "end": "2026-05-03T21:15:45Z"
       },
       "energy_references": [
         {

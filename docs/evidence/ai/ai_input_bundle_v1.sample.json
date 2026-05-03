@@ -1,6 +1,6 @@
 {
   "bundle_version": "ai_input_bundle_v1",
-  "generated_at": "2026-05-03T13:46:20Z",
+  "generated_at": "2026-05-03T21:15:45Z",
   "purpose": "Merge validated energy facts with curated news summaries.",
   "expected_output_schema": "schemas/ai_insight_v1.schema.json",
   "instructions": [
@@ -31,7 +31,7 @@
   },
   "news_summary": {
     "schema_version": "news_summary_v1",
-    "generated_at": "2026-05-03T13:46:20Z",
+    "generated_at": "2026-05-03T21:15:45Z",
     "articles": [
       {
         "source": "rss",
