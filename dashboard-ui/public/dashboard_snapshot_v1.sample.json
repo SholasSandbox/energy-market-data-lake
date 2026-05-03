@@ -1,10 +1,10 @@
 {
   "schema_version": "dashboard_snapshot_v1",
-  "generated_at": "2026-05-03T13:46:20Z",
+  "generated_at": "2026-05-03T16:06:03Z",
   "metadata": {
     "region": "gb",
     "latest_date": "2026-03-23",
-    "data_freshness": "Local validated evidence snapshot",
+    "data_freshness": "Local demo evidence snapshot; not live market freshness",
     "status": "watch"
   },
   "summary_cards": [
@@ -52,22 +52,22 @@
       {
         "label": "Energy contract",
         "status": "ok",
-        "detail": "Publisher input came from energy_input_v1 evidence."
+        "detail": "Publisher input came from local demo energy_input_v1 evidence."
       },
       {
         "label": "News contract",
         "status": "ok",
-        "detail": "Publisher input came from curated news_summary_v1 evidence."
+        "detail": "Publisher input came from local demo curated news_summary_v1 evidence."
       },
       {
         "label": "AI insight contract",
         "status": "ok",
-        "detail": "Publisher insight came from validated ai_insight_v1 evidence."
+        "detail": "Publisher insight came from local demo validated ai_insight_v1 evidence."
       },
       {
         "label": "Public fields",
         "status": "ok",
-        "detail": "Snapshot includes only dashboard-safe fields."
+        "detail": "Local demo snapshot includes only dashboard-safe fields."
       }
     ]
   }
