@@ -3,9 +3,27 @@
 This is a lightweight, budget-conscious setup. Use the default settings unless
 you need additional scale.
 
-## Fast Path (Automated Closeout)
+## Current Demo Scope
 
-If you want a full demo-ready deployment in one go:
+The local MVP is implemented and is the recommended path for demos and learning.
+It proves:
+
+- energy input evidence
+- curated RSS/news evidence
+- AI input bundle evidence
+- deterministic local AI insight output
+- schema validation for good samples
+- rejection of known-bad samples
+- public-safe dashboard snapshot JSON
+- React dashboard display from `dashboard_snapshot_v1.sample.json`
+
+The AWS/serverless extension remains the target deployment path for Step
+Functions, CloudFront, SNS alerts, and a managed OpenClaw or Bedrock runtime.
+
+## AWS Closeout Script (Optional)
+
+If you have AWS credentials configured and want to run the existing serverless
+energy lakehouse closeout flow:
 
 ```bash
 cd /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake
@@ -13,7 +31,8 @@ BACKFILL_DAYS=30 ./scripts/closeout_demo.sh
 ```
 
 This script provisions S3 + Lambda + EventBridge + Glue + crawlers and stores
-run evidence in `docs/evidence/`.
+run evidence in `docs/evidence/`. It is separate from the local news + AI MVP
+pipeline below.
 
 ## Local Python Setup
 
@@ -42,6 +61,40 @@ Validate the JSON schema contracts:
 ```bash
 python scripts/validate_contracts.py
 ```
+
+## Local MVP Fast Path
+
+Run this from the repo root when resuming work or preparing the demo:
+
+```bash
+cd /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake
+source .venv/bin/activate
+python scripts/ingest_news_local.py
+python scripts/export_energy_input_local.py
+python scripts/create_ai_input_bundle_local.py
+python scripts/merge_ai_insight_local.py
+python scripts/publish_dashboard_snapshot_local.py
+python scripts/validate_contracts.py --include-evidence --check-failures
+```
+
+Expected result:
+
+```text
+All contracts are valid.
+```
+
+This command sequence creates or refreshes:
+
+- `docs/evidence/energy_input_v1.sample.json`
+- `docs/evidence/curated/news_summary_v1.sample.json`
+- `docs/evidence/ai/ai_input_bundle_v1.sample.json`
+- `docs/evidence/curated/ai_insight_v1.sample.json`
+- `dashboard-ui/public/dashboard_snapshot_v1.sample.json`
+
+It also confirms these known-bad files are rejected:
+
+- `docs/evidence/failed/bad_energy_input_v1.sample.json`
+- `docs/evidence/failed/bad_ai_insight_v1.sample.json`
 
 Generate and validate the curated local news summary evidence:
 
@@ -83,6 +136,38 @@ Expected result:
 ```text
 All contracts are valid.
 ```
+
+## React Dashboard Setup
+
+Start the dashboard from a second terminal:
+
+```bash
+cd /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui
+npm install
+npm run dev -- --host 127.0.0.1
+```
+
+Open:
+
+```text
+http://127.0.0.1:5173/
+```
+
+Verify the dashboard and public snapshot JSON are served:
+
+```bash
+curl -I http://127.0.0.1:5173/
+curl -I http://127.0.0.1:5173/dashboard_snapshot_v1.sample.json
+```
+
+Expected result for both:
+
+```text
+HTTP/1.1 200 OK
+```
+
+The dashboard should read only `dashboard_snapshot_v1.sample.json`, not raw,
+curated, failed, or audit evidence directly.
 
 ## 1) S3 Buckets
 

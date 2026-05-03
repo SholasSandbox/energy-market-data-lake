@@ -4,6 +4,32 @@
 
 Ship a portfolio-ready MVP that extends the existing serverless energy data lake into a news-aware insight dashboard. The plan keeps the current Lambda, S3, Glue, Athena, and React foundation, then adds news ingestion, strict data contracts, an AI merge step, and a polished dashboard story.
 
+## Current Status
+
+Weeks 1, 2, and 3 are complete for the local MVP. Week 4 is in progress.
+
+Implemented locally:
+
+- schema contracts and examples
+- local RSS/news ingestion evidence
+- local energy input export
+- curated evidence and failed evidence paths
+- AI input bundle
+- deterministic local AI insight merge
+- validation of good and intentionally bad samples
+- dashboard snapshot publisher
+- React dashboard section that loads `dashboard_snapshot_v1.sample.json`
+- data freshness warning for old local demo evidence
+- concise demo walkthrough
+
+Still target/future:
+
+- Step Functions orchestration
+- cloud-hosted OpenClaw or Bedrock `InvokeModel`
+- SNS failure notifications
+- CloudFront-hosted production dashboard
+- fresh live data refresh before a public demo
+
 ## Delivery Principle
 
 Build the ugly-but-solid version first, then polish. Completed evidence matters more than architectural elegance.
@@ -15,7 +41,7 @@ Scope rule:
 - Week 3 proves AI output can be controlled.
 - Week 4 makes it demo-ready.
 
-## Target MVP
+## Local MVP Target
 
 By the end of 4 weeks, the project should show:
 
@@ -41,6 +67,8 @@ By the end of 4 weeks, the project should show:
 ## Week 1 - Skeleton First
 
 Goal: create the minimum working structure for the expanded project without breaking the existing energy lakehouse demo.
+
+Status: complete.
 
 ### Week 1 Outcomes
 
@@ -101,6 +129,8 @@ Goal: create the minimum working structure for the expanded project without brea
 ## Week 2 - Data Pipeline
 
 Goal: make energy and news data move through a dependable private pipeline with validation and failure handling.
+
+Status: complete.
 
 ### Week 2 Outcomes
 
@@ -187,9 +217,11 @@ Goal: make energy and news data move through a dependable private pipeline with 
 
 Goal: merge energy and news into traceable, validated insights without allowing malformed AI output downstream.
 
+Status: complete for the deterministic local MVP path.
+
 ### Week 3 Outcomes
 
-- Local OpenClaw/manual-reviewed AI path reads curated inputs.
+- Local deterministic AI path reads curated inputs.
 - AI output follows `ai_insight_v1.json`.
 - Invalid AI output is rejected.
 - Valid AI output is converted into dashboard snapshot data.
@@ -210,7 +242,8 @@ Goal: merge energy and news into traceable, validated insights without allowing 
      ```
 
 2. Add AI merge workflow:
-   - local OpenClaw first
+   - deterministic local merge first
+   - local OpenClaw later if needed
    - deterministic sample fixture for tests/demos
    - no cloud AI until local validation works
    - local deterministic merge check:
@@ -267,12 +300,23 @@ Only after local validation works:
 
 Goal: turn the project into a clear hiring/demo artifact with visible business value.
 
+Status: in progress.
+
 ### Week 4 Early Gate
 
 - Dashboard renders without errors.
 - All metrics pull from local snapshot JSON.
 - Demo script runs in < 5 minutes.
 - README is current and clear.
+
+Current Week 4 progress:
+
+- React dashboard loads and displays `dashboard_snapshot_v1.sample.json`.
+- AI insight section is visible in the app.
+- Dashboard labels the output as local demo evidence.
+- Old data shows a visible freshness warning.
+- Demo walkthrough exists at `docs/demo-walkthrough.md`.
+- README, this plan, and the walkthrough have been aligned around implemented local MVP vs target AWS extension.
 
 ### Week 4 Outcomes
 
@@ -296,6 +340,17 @@ Goal: turn the project into a clear hiring/demo artifact with visible business v
    - sample dashboard JSON
    - demo script
    - latest evidence run
+   - local check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/ingest_news_local.py
+     python scripts/export_energy_input_local.py
+     python scripts/create_ai_input_bundle_local.py
+     python scripts/merge_ai_insight_local.py
+     python scripts/publish_dashboard_snapshot_local.py
+     python scripts/validate_contracts.py --include-evidence --check-failures
+     ```
 
 3. Documentation polish:
    - README current scope
@@ -334,40 +389,25 @@ Goal: turn the project into a clear hiring/demo artifact with visible business v
 
 ## Final Demo Script
 
-1. Explain the business problem:
-   - energy market teams need to connect price/demand movement with external news context
+Use `docs/demo-walkthrough.md` as the live demo script.
 
-2. Show architecture:
-   - private ingestion and lakehouse
-   - public dashboard boundary
-   - AI validation gate
+Short version:
 
-3. Run or show ingestion evidence:
-   - energy data
-   - news summaries
-
-4. Show AI merge:
-   - valid insight with confidence and sources
-   - invalid output rejected
-
-5. Show dashboard:
-   - energy metrics
-   - news-linked insight
-   - data quality
-
-6. Close with cost/security:
-   - serverless schedule
-   - no public raw data
-   - no always-on database or VM
+1. Explain the business problem: energy market teams need to connect price/demand movement with external news context.
+2. Show architecture: private ingestion and lakehouse, public dashboard boundary, AI validation gate.
+3. Run or show ingestion evidence: energy input and curated news summaries.
+4. Show AI merge: valid insight with confidence and sources, invalid output rejected.
+5. Show dashboard: energy metrics, news-linked insight, data quality, freshness warning.
+6. Close with cost/security: serverless schedule, no public raw data, no always-on database or VM.
 
 ## Weekly Done Checklist
 
 | Week | Done Means |
 | --- | --- |
-| Week 1 | Structure, schemas, news skeleton, sample snapshot, diagrams |
-| Week 2 | Energy/news normalization, validation, failure path, basic publisher |
-| Week 3 | AI merge, schema validation, confidence, source references, reject bad output |
-| Week 4 | Dashboard polish, README, screenshots, demo script, cost/security notes |
+| Week 1 | Complete: structure, schemas, news skeleton, sample snapshot, diagrams |
+| Week 2 | Complete: energy/news normalization, validation, failure path, basic publisher |
+| Week 3 | Complete: AI merge, schema validation, confidence, source references, reject bad output |
+| Week 4 | In progress: dashboard polish, README, screenshots, demo script, cost/security notes |
 
 ## Success Criteria
 
