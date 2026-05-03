@@ -64,6 +64,14 @@ python scripts/publish_dashboard_snapshot_local.py
 python scripts/validate_contracts.py --include-evidence
 ```
 
+Create and validate local AI merge evidence:
+
+```bash
+python scripts/create_ai_input_bundle_local.py
+python scripts/merge_ai_insight_local.py
+python scripts/validate_contracts.py --include-evidence
+```
+
 Confirm known-bad samples are rejected:
 
 ```bash

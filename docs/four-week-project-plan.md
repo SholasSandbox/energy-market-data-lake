@@ -202,11 +202,23 @@ Goal: merge energy and news into traceable, validated insights without allowing 
    - relevant news summaries
    - explicit expected output schema
    - instruction to cite source IDs/URLs
+   - local check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/create_ai_input_bundle_local.py
+     ```
 
 2. Add AI merge workflow:
    - local OpenClaw first
    - deterministic sample fixture for tests/demos
    - no cloud AI until local validation works
+   - local deterministic merge check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/merge_ai_insight_local.py
+     ```
 
 3. Validate AI output:
    - required fields
@@ -214,6 +226,12 @@ Goal: merge energy and news into traceable, validated insights without allowing 
    - confidence score range
    - risk level enum
    - dashboard-safe content only
+   - local check:
+
+     ```bash
+     source .venv/bin/activate
+     python scripts/validate_contracts.py --include-evidence
+     ```
 
 4. Add quarantine behavior:
    - invalid AI output goes to `failed/`
