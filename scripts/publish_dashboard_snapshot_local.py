@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ENERGY_INPUT = ROOT / "docs" / "evidence" / "energy_input_v1.sample.json"
 DEFAULT_NEWS_INPUT = ROOT / "docs" / "evidence" / "curated" / "news_summary_v1.sample.json"
+DEFAULT_AI_INSIGHT_INPUT = ROOT / "docs" / "evidence" / "curated" / "ai_insight_v1.sample.json"
 DEFAULT_OUTPUT = ROOT / "dashboard-ui" / "public" / "dashboard_snapshot_v1.sample.json"
 
 
@@ -44,24 +45,49 @@ def first_article(payload: dict) -> dict:
     return articles[0]
 
 
-def risk_from_article(article: dict) -> str:
-    topics = set(article.get("topics", []))
-    if {"gas_supply", "oil_gas"} & topics:
-        return "watch"
-    return "low"
+def first_insight(payload: dict) -> dict:
+    insights = payload.get("insights", [])
+    if not insights:
+        raise ValueError("AI insight input contains no insights")
+    return insights[0]
 
 
-def build_snapshot(energy_input: dict, news_summary: dict) -> dict:
+def dashboard_sources(ai_insight: dict) -> list[dict]:
+    """Flatten AI source references into dashboard-safe label/url objects."""
+    sources: list[dict] = []
+
+    for reference in ai_insight.get("energy_references", []):
+        label = f"{reference.get('source', 'Energy')} - {reference.get('metric', 'metric')}"
+        sources.append(
+            {
+                "label": label,
+                "url": reference.get("reference", "local://energy_input_v1.sample.json"),
+            }
+        )
+
+    for reference in ai_insight.get("news_references", []):
+        sources.append(
+            {
+                "label": reference.get("publisher", "Curated news source"),
+                "url": reference.get("url", "local://news_summary_v1.sample.json"),
+            }
+        )
+
+    return sources
+
+
+def build_snapshot(energy_input: dict, news_summary: dict, ai_insight_input: dict) -> dict:
     """Create only the public fields allowed by dashboard_snapshot_v1."""
     energy = first_record(energy_input)
     article = first_article(news_summary)
-    risk_level = risk_from_article(article)
+    ai_insight = first_insight(ai_insight_input)
 
-    region = str(energy.get("region", "gb")).lower()
+    region = str(ai_insight.get("region") or energy.get("region", "gb")).lower()
     latest_date = energy.get("date", utc_now()[:10])
     demand_mw = energy.get("demand_mw")
     price = energy.get("system_buy_price_gbp_mwh")
     article_count = len(news_summary.get("articles", []))
+    snapshot_status = "watch" if ai_insight.get("risk_level") in {"watch", "high"} else "ok"
 
     return {
         "schema_version": "dashboard_snapshot_v1",
@@ -70,7 +96,7 @@ def build_snapshot(energy_input: dict, news_summary: dict) -> dict:
             "region": region,
             "latest_date": latest_date,
             "data_freshness": "Local validated evidence snapshot",
-            "status": "watch" if risk_level == "watch" else "ok",
+            "status": snapshot_status,
         },
         "summary_cards": [
             {
@@ -94,25 +120,12 @@ def build_snapshot(energy_input: dict, news_summary: dict) -> dict:
         ],
         "insights": [
             {
-                "id": f"local-{latest_date}-{region}-news-energy-001",
-                "title": article.get("title", "Energy market news context"),
-                "summary": (
-                    f"{article.get('summary', 'No summary available')} "
-                    f"Energy context: demand {format_optional_number(demand_mw, ' MW')}, "
-                    f"market price {format_optional_number(price, ' GBP/MWh')}."
-                ),
-                "risk_level": risk_level,
-                "confidence": 0.65,
-                "sources": [
-                    {
-                        "label": "Validated energy evidence",
-                        "url": energy.get("source_reference", "local://energy_input_v1.sample.json"),
-                    },
-                    {
-                        "label": article.get("publisher", "Curated news source"),
-                        "url": article.get("url", article.get("source_reference", "local://news_summary_v1.sample.json")),
-                    },
-                ],
+                "id": ai_insight.get("id", f"local-{latest_date}-{region}-ai-001"),
+                "title": ai_insight.get("title", article.get("title", "Energy market insight")),
+                "summary": ai_insight.get("summary", article.get("summary", "No summary available")),
+                "risk_level": ai_insight.get("risk_level", "watch"),
+                "confidence": ai_insight.get("confidence", 0.5),
+                "sources": dashboard_sources(ai_insight),
             }
         ],
         "data_quality": {
@@ -129,6 +142,11 @@ def build_snapshot(energy_input: dict, news_summary: dict) -> dict:
                     "detail": "Publisher input came from curated news_summary_v1 evidence.",
                 },
                 {
+                    "label": "AI insight contract",
+                    "status": "ok",
+                    "detail": "Publisher insight came from validated ai_insight_v1 evidence.",
+                },
+                {
                     "label": "Public fields",
                     "status": "ok",
                     "detail": "Snapshot includes only dashboard-safe fields.",
@@ -142,6 +160,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Publish local dashboard_snapshot_v1 JSON")
     parser.add_argument("--energy-input", type=Path, default=DEFAULT_ENERGY_INPUT)
     parser.add_argument("--news-input", type=Path, default=DEFAULT_NEWS_INPUT)
+    parser.add_argument("--ai-insight", type=Path, default=DEFAULT_AI_INSIGHT_INPUT)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     return parser.parse_args()
 
@@ -150,7 +169,8 @@ def main() -> int:
     args = parse_args()
     energy_input = load_json(args.energy_input)
     news_summary = load_json(args.news_input)
-    snapshot = build_snapshot(energy_input, news_summary)
+    ai_insight = load_json(args.ai_insight)
+    snapshot = build_snapshot(energy_input, news_summary, ai_insight)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf-8")

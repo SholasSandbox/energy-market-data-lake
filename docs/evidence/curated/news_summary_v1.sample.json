@@ -1,7 +1,23 @@
 {
   "schema_version": "news_summary_v1",
-  "generated_at": "2026-05-02T00:32:02Z",
+  "generated_at": "2026-05-03T13:46:20Z",
   "articles": [
+    {
+      "source": "rss",
+      "publisher": "Energy Voice",
+      "title": "BP mulls North Sea sale",
+      "url": "https://www.energyvoice.com/oilandgas/north-sea/596906/bp-mulls-north-sea-sale/",
+      "published_at": "2026-05-02T21:54:04Z",
+      "summary": "One of the last remaining super major operators in the UK continental shelf is considering options after UK energy minster Ed Miliband steps back from accusations BP is 'morally wrong'.",
+      "topics": [
+        "oil_gas"
+      ],
+      "regions": [
+        "gb"
+      ],
+      "entities": [],
+      "source_reference": "https://www.energyvoice.com/oilandgas/north-sea/596906/bp-mulls-north-sea-sale/"
+    },
     {
       "source": "rss",
       "publisher": "Energy Voice",
@@ -27,20 +43,6 @@
       "regions": [],
       "entities": [],
       "source_reference": "https://www.energyvoice.com/renewables-energy-transition/596804/accelerating-cleantech-what-technologies-are-overlooked/"
-    },
-    {
-      "source": "rss",
-      "publisher": "Energy Voice",
-      "title": "20 North Sea workers to strike after Ithaca bonus snub",
-      "url": "https://www.energyvoice.com/oilandgas/north-sea/596875/20-north-sea-workers-to-strike-after-ithaca-bonus-snub/",
-      "published_at": "2026-05-01T12:27:10Z",
-      "summary": "Unite claims the Bilfinger workers are being denied a payment which other companies are paying.",
-      "topics": [
-        "oil_gas"
-      ],
-      "regions": [],
-      "entities": [],
-      "source_reference": "https://www.energyvoice.com/oilandgas/north-sea/596875/20-north-sea-workers-to-strike-after-ithaca-bonus-snub/"
     }
   ]
 }

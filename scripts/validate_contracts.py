@@ -30,12 +30,14 @@ CONTRACTS = [
 EVIDENCE_CONTRACTS = [
     ("energy_input_v1.schema.json", EVIDENCE_DIR / "energy_input_v1.sample.json"),
     ("news_summary_v1.schema.json", CURATED_EVIDENCE_DIR / "news_summary_v1.sample.json"),
+    ("ai_insight_v1.schema.json", CURATED_EVIDENCE_DIR / "ai_insight_v1.sample.json"),
     ("dashboard_snapshot_v1.schema.json", DASHBOARD_PUBLIC_DIR / "dashboard_snapshot_v1.sample.json"),
 ]
 
 # Known-bad samples prove the failure path catches malformed payloads.
 FAILURE_CONTRACTS = [
     ("energy_input_v1.schema.json", EVIDENCE_DIR / "failed" / "bad_energy_input_v1.sample.json"),
+    ("ai_insight_v1.schema.json", EVIDENCE_DIR / "failed" / "bad_ai_insight_v1.sample.json"),
 ]
 
 

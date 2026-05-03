@@ -1,0 +1,80 @@
+{
+  "bundle_version": "ai_input_bundle_v1",
+  "generated_at": "2026-05-03T13:46:20Z",
+  "purpose": "Merge validated energy facts with curated news summaries.",
+  "expected_output_schema": "schemas/ai_insight_v1.schema.json",
+  "instructions": [
+    "Return only JSON that follows ai_insight_v1.schema.json.",
+    "Use confidence between 0 and 1.",
+    "Use risk_level as one of low, watch, or high.",
+    "Cite at least one energy reference and one news reference.",
+    "Do not include raw RSS payloads or private fields in the output."
+  ],
+  "energy_input": {
+    "schema_version": "energy_input_v1",
+    "generated_at": "2026-05-01T10:52:22Z",
+    "records": [
+      {
+        "source": "elexon",
+        "dataset": "electricity_dashboard_snapshot",
+        "region": "gb",
+        "timestamp_utc": "2026-05-01T10:52:22Z",
+        "date": "2026-03-23",
+        "settlement_period": null,
+        "demand_mw": 43492.0,
+        "system_sell_price_gbp_mwh": null,
+        "system_buy_price_gbp_mwh": 127.05,
+        "day_ahead_price_eur_mwh": null,
+        "source_reference": "s3://energy-market-lake-sholasandbox-20260321/curated/curated_dataset_electricity_3d55606ee40ee8a52f504210ea44aa85/date=2026-03-23/"
+      }
+    ]
+  },
+  "news_summary": {
+    "schema_version": "news_summary_v1",
+    "generated_at": "2026-05-03T13:46:20Z",
+    "articles": [
+      {
+        "source": "rss",
+        "publisher": "Energy Voice",
+        "title": "BP mulls North Sea sale",
+        "url": "https://www.energyvoice.com/oilandgas/north-sea/596906/bp-mulls-north-sea-sale/",
+        "published_at": "2026-05-02T21:54:04Z",
+        "summary": "One of the last remaining super major operators in the UK continental shelf is considering options after UK energy minster Ed Miliband steps back from accusations BP is 'morally wrong'.",
+        "topics": [
+          "oil_gas"
+        ],
+        "regions": [
+          "gb"
+        ],
+        "entities": [],
+        "source_reference": "https://www.energyvoice.com/oilandgas/north-sea/596906/bp-mulls-north-sea-sale/"
+      },
+      {
+        "source": "rss",
+        "publisher": "Energy Voice",
+        "title": "Power Moves: Nexos adds two senior leaders",
+        "url": "https://www.energyvoice.com/renewables-energy-transition/596884/power-moves-nexos-senior-leaders/",
+        "published_at": "2026-05-01T15:24:41Z",
+        "summary": "Appointments and departures abound in this week\u2019s edition.",
+        "topics": [],
+        "regions": [],
+        "entities": [],
+        "source_reference": "https://www.energyvoice.com/renewables-energy-transition/596884/power-moves-nexos-senior-leaders/"
+      },
+      {
+        "source": "rss",
+        "publisher": "Energy Voice",
+        "title": "Accelerating cleantech: what technologies are overlooked?",
+        "url": "https://www.energyvoice.com/renewables-energy-transition/596804/accelerating-cleantech-what-technologies-are-overlooked/",
+        "published_at": "2026-05-01T13:03:03Z",
+        "summary": "The battle for cleaner power may have almost been won, but the landscape is shifting toward the grid and user adoption in reaching net zero.",
+        "topics": [
+          "grid"
+        ],
+        "regions": [],
+        "entities": [],
+        "source_reference": "https://www.energyvoice.com/renewables-energy-transition/596804/accelerating-cleantech-what-technologies-are-overlooked/"
+      }
+    ]
+  }
+}
