@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dashboard_snapshot_v1.schema.json",
+  "title": "Dashboard Snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "metadata", "summary_cards", "insights", "data_quality"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "dashboard_snapshot_v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["region", "latest_date", "data_freshness", "status"],
+      "properties": {
+        "region": { "type": "string" },
+        "latest_date": { "type": "string", "format": "date" },
+        "data_freshness": { "type": "string" },
+        "status": { "type": "string", "enum": ["ok", "watch", "error"] }
+      }
+    },
+    "summary_cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "value", "trend", "status"],
+        "properties": {
+          "label": { "type": "string" },
+          "value": { "type": "string" },
+          "trend": { "type": "string" },
+          "status": { "type": "string", "enum": ["ok", "watch", "error"] }
+        }
+      }
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "summary", "risk_level", "confidence", "sources"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "summary": { "type": "string" },
+          "risk_level": { "type": "string", "enum": ["low", "watch", "high"] },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "url"],
+              "properties": {
+                "label": { "type": "string" },
+                "url": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "data_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "checks"],
+      "properties": {
+        "status": { "type": "string", "enum": ["ok", "watch", "error"] },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "status", "detail"],
+            "properties": {
+              "label": { "type": "string" },
+              "status": { "type": "string", "enum": ["ok", "watch", "error"] },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

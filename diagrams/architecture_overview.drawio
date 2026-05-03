@@ -287,7 +287,7 @@
         </mxCell>
 
         <!-- Athena ➜ S3 Results (dashed) -->
-        <mxCell id="e-ath-res" value="query results"
+        <mxCell id="e-ath-res" value="writes results"
           style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;"
           edge="1" source="athena" target="s3results" parent="1">
           <mxGeometry relative="1" as="geometry"/>

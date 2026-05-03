@@ -1,52 +1,175 @@
-# Energy Market Data Lake (UK + EU) - Cost-Optimized
+# Energy Market Data Lake + News Insight Dashboard
 
-A small, budget-friendly data lake that ingests **UK electricity data (Elexon)**
-plus **EU electricity and gas (ENTSO-E / ENTSOG)**, stores raw data in S3 with
-lifecycle policies, transforms to Parquet with Glue, and queries with Athena.
+A budget-conscious AWS portfolio project for ingesting energy market data, transforming it into a queryable lakehouse, and presenting decision-ready dashboard outputs. The implemented baseline is a serverless energy data lake using Lambda, S3, Glue, Athena, EventBridge, and a React dashboard. The local MVP now extends that baseline with RSS news summaries, strict JSON contracts, a deterministic AI-style merge, failure samples, and a public-safe dashboard snapshot.
 
 Region: **eu-west-2 (London)**
 
-## Goals
+## Project Scope
 
-- Practice SAA-C03 core services: **S3, Lambda, Glue, Athena, EventBridge, IAM**
-- Demonstrate **cost-optimized storage** (lifecycle + Parquet + partitions)
-- Create a **portfolio-ready** project with README + diagram + demo queries
+### Implemented Today
 
-## Data Scope
+- Scheduled ingestion path using EventBridge and Lambda.
+- Raw S3 landing zone for energy market payloads.
+- Glue crawler and Glue ETL pattern for raw-to-curated transformation.
+- Athena query layer over curated Parquet data.
+- Evidence generation under `docs/evidence/`.
+- HTML dashboard generation from Athena-backed data.
+- React + TypeScript dashboard under `dashboard-ui/`.
+- Local RSS/news ingestion evidence.
+- JSON schema contracts for energy, news, AI insight, and dashboard snapshot outputs.
+- Local AI input bundle and deterministic AI insight merge.
+- Validator checks for good evidence and intentionally bad failure samples.
+- Public-safe dashboard snapshot loaded by the React app.
+- Visible data freshness warning for old local demo evidence.
 
-- **UK electricity (Elexon)**: demand by bidding zone (GSP proxy) +
-  system prices (SBP/SSP)
-- **EU electricity (ENTSO-E)**: actual load + day-ahead prices (GB, FR, DE-LU, NL)
-- **EU gas (ENTSOG)**: physical flows + demand proxy (allocation) for selected points
-- **Backfill**: short (30 days, half-hourly)
+### Target AWS Extension
 
-## Architecture (Two Apps)
+- Move local news ingestion into Lambda or another scheduled AWS runtime.
+- Add Step Functions orchestration for ingest, validation, AI merge, and publish steps.
+- Run OpenClaw in a clear runtime, or use Bedrock `InvokeModel` as the managed cloud AI path.
+- Publish dashboard snapshot JSON to a CloudFront-fronted static site bucket.
+- Add SNS notifications and CloudWatch alarms for validation failures.
+- Trust-boundary-aware architecture with private raw/curated/audit/failed zones and public dashboard-only output.
 
-### App 1 - Ingestion (Lambda)
+## Current Data Scope
 
-- EventBridge schedule triggers Lambda
-- Pulls data from Elexon + ENTSO-E + ENTSOG
-- Writes raw files to S3
+- **UK electricity (Elexon)**: demand by bidding zone (GSP proxy) and system prices (SBP/SSP).
+- **EU electricity (ENTSO-E)**: actual load and day-ahead prices for GB, FR, DE-LU, and NL.
+- **EU gas (ENTSOG)**: target extension for physical flows and demand proxy using selected pointDirection IDs.
+- **News summaries**: local RSS evidence linked to energy market movements.
 
-### App 2 - Lakehouse (Glue + Athena)
-
-- Glue Crawler catalogs raw data
-- Glue ETL job converts raw -> Parquet in curated zone
-- Athena queries curated data
+## Current Architecture
 
 ```text
-Users -> Athena -> S3 (curated parquet)
-                  ^
-                  | Glue ETL
-S3 (raw) <--------+
-  ^
-  | Lambda ingestion (EventBridge schedule)
-  +-- Elexon API (UK)
-  +-- ENTSO-E API (EU electricity)
-  +-- ENTSOG API (EU gas)
+External Energy APIs
+  |-- Elexon
+  |-- ENTSO-E
+  `-- ENTSOG
+        |
+        v
+EventBridge Scheduler
+        |
+        v
+Lambda Ingestion
+        |
+        v
+S3 Raw Zone
+        |
+        v
+Glue Crawler + Glue ETL
+        |
+        v
+S3 Curated Zone
+        |
+        v
+Athena
+        |
+        v
+Dashboard JSON / HTML / React Dashboard
+```
+
+## Target News + AI Architecture
+
+```text
+Energy APIs + RSS Feeds
+        |
+        v
+Private AWS Processing Boundary
+  EventBridge -> Lambda ingest -> S3 raw/
+                         |
+                         v
+                  validate + normalize
+                         |
+                         v
+                    S3 curated/
+                         |
+                         v
+Local OpenClaw MVP or optional Bedrock/managed compute
+                         |
+                         v
+             validate ai_insight_v1.json
+                         |
+              +----------+----------+
+              |                     |
+            valid                invalid
+              |                     |
+              v                     v
+ public dashboard JSON        S3 failed/ + alert
+```
+
+The public dashboard must never read directly from raw, curated, audit, or failed lake data.
+
+## Local MVP Flow
+
+```text
+Local energy evidence + RSS feeds
+        |
+        v
+validated energy_input_v1 + curated news_summary_v1
+        |
+        v
+AI input bundle
+        |
+        v
+deterministic local AI merge
+        |
+        v
+validated ai_insight_v1
+        |
+        v
+public dashboard_snapshot_v1.sample.json
+        |
+        v
+React dashboard
+```
+
+## Demo Evidence
+
+Use these artifacts to review or present the local MVP:
+
+- Walkthrough: `docs/demo-walkthrough.md`
+- Screenshot: `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
+- Public dashboard snapshot: `dashboard-ui/public/dashboard_snapshot_v1.sample.json`
+- Curated AI insight evidence: `docs/evidence/curated/ai_insight_v1.sample.json`
+
+Run the local evidence pipeline:
+
+```bash
+source .venv/bin/activate
+python scripts/ingest_news_local.py
+python scripts/export_energy_input_local.py
+python scripts/create_ai_input_bundle_local.py
+python scripts/merge_ai_insight_local.py
+python scripts/publish_dashboard_snapshot_local.py
+python scripts/validate_contracts.py --include-evidence --check-failures
+```
+
+Expected result:
+
+```text
+All contracts are valid.
+```
+
+## Repository Layout
+
+```text
+athena/                Athena demo queries
+config/                Sample environment settings
+dashboard-ui/          React + TypeScript dashboard scaffold
+diagrams/              Mermaid, SVG, PNG, and generated architecture diagrams
+docs/                  Active documentation and implementation plans
+docs/archive/          Historical completed plans and old demo artifacts
+docs/evidence/         Generated run, schema, and dashboard evidence
+docs/evidence/screenshots/
+                       Dashboard screenshots for portfolio/demo use
+glue/                  Glue ETL code
+lambda/                Lambda ingestion code
+scripts/               Local/demo helper scripts
 ```
 
 ## S3 Layout
+
+Current and target storage layout:
 
 ```text
 s3://<bucket>/
@@ -70,6 +193,9 @@ s3://<bucket>/
       dataset=gas_demand/
         point_direction=<id>/
         date=YYYY-MM-DD/
+    source=news/
+      dataset=rss_summary/
+        date=YYYY-MM-DD/
   curated/
     dataset=electricity/
       source=elexon|entsoe/
@@ -78,95 +204,147 @@ s3://<bucket>/
     dataset=gas/
       region=eu/
       date=YYYY-MM-DD/
+    dataset=news/
+      date=YYYY-MM-DD/
+  audit/
+  failed/
   archive/
 ```
 
-## Cost Controls (Target < $10/month)
+## Cost Controls
 
-- **S3 Lifecycle**: raw -> IA -> Glacier (short backfill only)
-- **Parquet + partitioning** to reduce Athena scan costs
-- Glue jobs run **daily or weekly** only
-- Lambda uses free tier (small payloads)
+- Keep ingestion scheduled rather than always on.
+- Use S3 lifecycle rules for raw data.
+- Store curated data as partitioned Parquet to reduce Athena scan costs.
+- Run Glue jobs daily, weekly, or manually for demo needs.
+- Keep Lambda payloads and runtimes small.
+- Avoid NAT Gateway, RDS, and always-on EC2 for the MVP.
+- Add AWS Budget alerts before any live demo period.
 
-## Setup Guide
+## Local And Demo Commands
 
-See `docs/setup.md` for step-by-step build instructions.
-
-## One-Command Closeout (Demo Ready)
-
-Run this from the project folder:
+Set up the local Python helper environment:
 
 ```bash
-cd /home/shola/cert-revision/energy-market-data-lake
-BACKFILL_DAYS=30 ./scripts/closeout_demo.sh
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
 ```
 
-What it does:
+Validate the JSON schema contracts:
 
-- creates/configures S3 bucket + lifecycle + encryption + block public access
-- deploys ingestion Lambda + EventBridge schedule
-- invokes ingestion to load raw Elexon ATL + system prices
-- creates Glue database/crawlers
-- runs Glue ETL job (`raw -> curated parquet`)
-- writes run evidence into `docs/evidence/`
+```bash
+python scripts/validate_contracts.py
+```
 
-## Demo Status (Completed on 2026-03-06)
+Run the local news + energy + AI insight pipeline:
 
-- Bucket: `energy-market-lake-464975959576-20260306`
-- Glue database: `energy_market_lake`
-- Raw tables: `raw_dataset_atl`, `raw_dataset_system_prices`
-- Curated table: `curated_dataset_electricity`
-- Evidence files:
-  - `docs/evidence/run-20260306-231751.md`
-  - `docs/evidence/run-summary-20260306-232202.md`
-  - `docs/evidence/athena-run-20260306-231854.md`
+```bash
+python scripts/ingest_news_local.py
+python scripts/export_energy_input_local.py
+python scripts/create_ai_input_bundle_local.py
+python scripts/merge_ai_insight_local.py
+python scripts/publish_dashboard_snapshot_local.py
+python scripts/validate_contracts.py --include-evidence --check-failures
+```
 
-## Demo Queries
+Expected result:
 
-See `athena/queries.sql` for sample Athena queries and expected outputs.
+```text
+All contracts are valid.
+```
 
-## Professional Dashboard
+Run the full demo closeout flow:
+
+```bash
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
+BACKFILL_DAYS=30 ./scripts/closeout_demo.sh
+```
 
 Generate a polished HTML dashboard from Athena curated data:
 
 ```bash
-cd /home/shola/cert-revision/energy-market-data-lake
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
 python3 scripts/generate_dashboard.py
 ```
 
-The script writes an output file under `docs/evidence/dashboard-*.html`.
-Open the generated file in your browser to present your demo visually.
-
-Dashboard tabs:
-
-- `Market Analytics`: demand, prices, settlement completeness, intraday profile.
-- `NorthGrid Utilities (Fictional)`: electricity positions, hedge coverage, and book-level profit/loss view.
-
-For the next iteration, see the redesign blueprint in `docs/dashboard-ia-spec.md`.
-
-React + TypeScript scaffold:
+Generate JSON for the React app:
 
 ```bash
-cd /home/shola/cert-revision/energy-market-data-lake/dashboard-ui
-npm install
-npm run dev
-```
-
-Generate JSON for the React app from Athena-backed dashboard data:
-
-```bash
-cd /home/shola/cert-revision/energy-market-data-lake
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
 python3 scripts/generate_dashboard.py \
-  --output-json /home/shola/cert-revision/energy-market-data-lake/dashboard-ui/public/dashboard-data.json
+  --output-json dashboard-ui/public/dashboard-data.json
 ```
 
-## Diagram
+Run the React dashboard locally:
 
-- Mermaid diagram in `diagrams/architecture.mmd`
-- PNG export optional
+```bash
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui
+npm install
+npm run dev -- --host 127.0.0.1
+```
+
+Verify the app and public snapshot are served:
+
+```bash
+curl -I http://127.0.0.1:5173/
+curl -I http://127.0.0.1:5173/dashboard_snapshot_v1.sample.json
+```
+
+Find ENTSOG pointDirection IDs:
+
+```bash
+python scripts/entsog_point_directions.py --countries GB,FR,DE,NL
+python scripts/entsog_point_directions.py --countries GB,FR,DE,NL --ids-only
+python scripts/entsog_point_directions.py --countries GB,FR,DE,NL --save-env
+```
+
+## Active Documentation
+
+- `PLANS.md`: current delivery sequence and implementation guardrails.
+- `docs/setup.md`: setup guide for the serverless energy lakehouse path.
+- `docs/phase-1-stabilize-ingestion-lakehouse.md`: active stabilization checklist.
+- `docs/entsoe-operationalization-checklist.md`: ENTSO-E reliability checklist.
+- `docs/gas-implementation-checklist.md`: ENTSOG gas implementation checklist.
+- `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
+- `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
+- `docs/demo-walkthrough.md`: concise demo script for the local MVP and target architecture story.
+- `docs/news-dashboard-merged-execution-model.md`: 4-week news + AI + dashboard expansion plan.
+
+## Diagrams
+
+- `diagrams/architecture.mmd`: compact current architecture.
+- `diagrams/architecture_overview.png`: rendered AWS overview diagram.
+- `diagrams/flow_diagram.png`: older data-flow diagram; useful as reference, but lower priority than current plans.
+- `diagrams/news-dashboard-high-level.mmd`: high-level target diagram for news + dashboard.
+- `diagrams/news-dashboard-high-level.svg`: rendered high-level target diagram.
+- `diagrams/news-dashboard-detailed.mmd`: detailed target diagram with trust boundaries and failure paths.
+- `diagrams/news-dashboard-detailed.svg`: rendered detailed target diagram.
+
+## Archived Documentation
+
+Older completed plans and demo artifacts have been moved to `docs/archive/`:
+
+- `closeout-summary.md`
+- `dashboard-wireframe-overview.html`
+- `demo-checklist.md`
+- `project-plan.md`
+
+These are historical references, not the current delivery path.
+
+## Current Delivery Priorities
+
+1. Polish Week 4 portfolio evidence: README, plan, demo walkthrough, and screenshots.
+2. Keep the local pipeline reproducible with schema validation and failure checks.
+3. Keep the React dashboard focused on approved `dashboard_snapshot_v1.sample.json`.
+4. Operationalize ENTSO-E electricity more reliably.
+5. Implement ENTSOG gas end-to-end.
+6. Move the local news + AI merge flow into AWS orchestration only after the local MVP stays stable.
 
 ## Notes
 
-- Elexon base URL: `https://data.elexon.co.uk/bmrs/api/v1` (no API key)
-- ENTSO-E requires registration + API token (stored in SSM or Secrets Manager)
-- ENTSOG is public; choose pointDirection IDs and indicators before running
+- Elexon base URL: `https://data.elexon.co.uk/bmrs/api/v1` (no API key).
+- ENTSO-E requires registration and an API token stored in SSM or Secrets Manager.
+- ENTSOG is public; choose pointDirection IDs and indicators before running.
+- OpenClaw/local model execution is outside AWS unless moved into Bedrock or managed compute.

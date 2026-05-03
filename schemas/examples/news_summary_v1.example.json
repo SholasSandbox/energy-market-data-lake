@@ -1,0 +1,18 @@
+{
+  "schema_version": "news_summary_v1",
+  "generated_at": "2026-05-01T00:00:00Z",
+  "articles": [
+    {
+      "source": "rss",
+      "publisher": "Example Energy News",
+      "title": "UK power prices rise after gas supply concern",
+      "url": "https://example.com/article",
+      "published_at": "2026-04-05T09:30:00Z",
+      "summary": "UK power prices rose as gas supply concerns affected short-term market expectations.",
+      "topics": ["power_prices", "gas_supply"],
+      "regions": ["gb"],
+      "entities": ["UK power", "gas supply"],
+      "source_reference": "https://example.com/article"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": "ai_insight_v1",
+  "generated_at": "2026-05-03T21:15:46Z",
+  "insights": [
+    {
+      "id": "insight-2026-03-23-gb-001",
+      "title": "GB energy context linked to: BP mulls North Sea sale",
+      "summary": "Validated energy evidence shows demand at 43,492 MW and market price at 127.05 GBP/MWh. Relevant curated news: One of the last remaining super major operators in the UK continental shelf is considering options after UK energy minster Ed Miliband steps back from accusations BP is 'morally wrong'.",
+      "region": "gb",
+      "risk_level": "watch",
+      "confidence": 0.85,
+      "time_window": {
+        "start": "2026-05-01T10:52:22Z",
+        "end": "2026-05-03T21:15:45Z"
+      },
+      "energy_references": [
+        {
+          "source": "elexon",
+          "metric": "system_buy_price_gbp_mwh",
+          "reference": "s3://energy-market-lake-sholasandbox-20260321/curated/curated_dataset_electricity_3d55606ee40ee8a52f504210ea44aa85/date=2026-03-23/"
+        }
+      ],
+      "news_references": [
+        {
+          "publisher": "Energy Voice",
+          "title": "BP mulls North Sea sale",
+          "url": "https://www.energyvoice.com/oilandgas/north-sea/596906/bp-mulls-north-sea-sale/"
+        }
+      ],
+      "validation_notes": [
+        "Deterministic local merge output for Week 3 validation.",
+        "Replace with local OpenClaw/manual-reviewed output after schema gate is stable."
+      ]
+    }
+  ]
+}

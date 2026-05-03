@@ -4,6 +4,7 @@ import type {
   AlertItem,
   CoveragePoint,
   DashboardData,
+  DashboardSnapshot,
   DriverBar,
   ExposurePoint,
   MarketPanel,
@@ -14,7 +15,9 @@ import type {
 
 function App() {
   const [data, setData] = useState<DashboardData>(sampleDashboardData);
+  const [snapshot, setSnapshot] = useState<DashboardSnapshot | null>(null);
   const [sourceLabel, setSourceLabel] = useState("Fallback sample");
+  const [snapshotSourceLabel, setSnapshotSourceLabel] = useState("No snapshot");
   const [marketRegion, setMarketRegion] = useState("ALL");
   const [showHeaderNarrative, setShowHeaderNarrative] = useState(false);
   const [activeNav, setActiveNav] = useState<NavItem>("Overview");
@@ -22,6 +25,7 @@ function App() {
   useEffect(() => {
     let cancelled = false;
     const dashboardDataUrl = `${import.meta.env.BASE_URL}dashboard-data.json`;
+    const dashboardSnapshotUrl = `${import.meta.env.BASE_URL}dashboard_snapshot_v1.sample.json`;
 
     async function loadData() {
       try {
@@ -43,7 +47,28 @@ function App() {
       }
     }
 
+    async function loadSnapshot() {
+      try {
+        const response = await fetch(dashboardSnapshotUrl, { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const payload = (await response.json()) as DashboardSnapshot;
+        if (!cancelled) {
+          setSnapshot(payload);
+          setSnapshotSourceLabel("AI snapshot");
+        }
+      } catch {
+        if (!cancelled) {
+          setSnapshot(null);
+          setSnapshotSourceLabel("No snapshot");
+        }
+      }
+    }
+
     void loadData();
+    void loadSnapshot();
 
     return () => {
       cancelled = true;
@@ -114,6 +139,10 @@ function App() {
                   ))}
                 </div>
               </section>
+
+              {snapshot ? (
+                <AiSnapshotPanel snapshot={snapshot} sourceLabel={snapshotSourceLabel} />
+              ) : null}
 
               <section className="story-grid">
                 <article className="panel panel-primary">
@@ -313,6 +342,102 @@ function SectionHeader({
       <span className="layout-chip">{chip}</span>
     </div>
   );
+}
+
+function AiSnapshotPanel({
+  snapshot,
+  sourceLabel,
+}: {
+  snapshot: DashboardSnapshot;
+  sourceLabel: string;
+}) {
+  const primaryInsight = snapshot.insights[0];
+  const freshnessAgeDays = getFreshnessAgeDays(snapshot.metadata.latest_date);
+  const isStale = freshnessAgeDays !== null && freshnessAgeDays > 14;
+
+  return (
+    <section className="panel snapshot-panel">
+      <SectionHeader
+        eyebrow="Section AI"
+        title="AI Insight Snapshot"
+        note={`Validated ${snapshot.schema_version} output generated ${snapshot.generated_at}.`}
+        chip={`${sourceLabel} / ${snapshot.metadata.status}`}
+      />
+      {isStale ? (
+        <div className="snapshot-freshness-warning">
+          <strong>Freshness warning:</strong> latest energy date is {snapshot.metadata.latest_date}
+          {freshnessAgeDays !== null ? ` (${freshnessAgeDays} days old)` : ""}. This panel is local
+          demo evidence, not a live market snapshot.
+        </div>
+      ) : null}
+      <div className="snapshot-grid">
+        <div className="snapshot-card-grid">
+          {snapshot.summary_cards.map((card) => (
+            <article key={card.label} className={`snapshot-card snapshot-${card.status}`}>
+              <div className="label">{card.label}</div>
+              <div className="snapshot-value">{card.value}</div>
+              <div className="trend">{card.trend}</div>
+            </article>
+          ))}
+        </div>
+
+        {primaryInsight ? (
+          <article className={`snapshot-insight insight-${primaryInsight.risk_level}`}>
+            <div className="snapshot-insight-top">
+              <div>
+                <div className="label">Validated Insight</div>
+                <h3>{primaryInsight.title}</h3>
+              </div>
+              <div className="snapshot-badges">
+                <span className={`risk-badge risk-${primaryInsight.risk_level}`}>
+                  {primaryInsight.risk_level}
+                </span>
+                <span className="confidence-badge">
+                  {(primaryInsight.confidence * 100).toFixed(0)}% confidence
+                </span>
+              </div>
+            </div>
+            <p>{primaryInsight.summary}</p>
+            <div className="snapshot-source-list">
+              {primaryInsight.sources.map((source) => (
+                <a
+                  key={`${primaryInsight.id}-${source.label}-${source.url}`}
+                  href={source.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {source.label}
+                </a>
+              ))}
+            </div>
+          </article>
+        ) : null}
+      </div>
+
+      <div className="snapshot-quality-row">
+        {snapshot.data_quality.checks.map((check) => (
+          <article key={check.label} className={`snapshot-quality snapshot-${check.status}`}>
+            <div className="snapshot-quality-title">
+              <span>{check.label}</span>
+              <span>{check.status}</span>
+            </div>
+            <p>{check.detail}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function getFreshnessAgeDays(latestDate: string): number | null {
+  const parsed = new Date(`${latestDate}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+
+  const now = new Date();
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  return Math.max(0, Math.floor((now.getTime() - parsed.getTime()) / millisecondsPerDay));
 }
 
 function AlertCard({ alert }: { alert: AlertItem }) {

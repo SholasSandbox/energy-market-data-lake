@@ -1,6 +1,6 @@
 # Project Plan (5-8 hrs/week)
 
-Status: Completed on 2026-03-06. See `docs/closeout-summary.md`.
+Status: Completed on 2026-03-06. See `closeout-summary.md`.
 
 ## Week 1 (3-4 hrs)
 
