@@ -304,6 +304,177 @@ button {
   font-weight: 700;
 }
 
+.snapshot-panel {
+  border-color: rgba(15, 79, 136, 0.22);
+}
+
+.snapshot-freshness-warning {
+  margin: -2px 0 14px;
+  border: 1px solid rgba(184, 113, 19, 0.32);
+  border-radius: 14px;
+  padding: 11px 12px;
+  color: #83510f;
+  background: rgba(255, 249, 239, 0.92);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.snapshot-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.18fr);
+  gap: 14px;
+}
+
+.snapshot-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.snapshot-card {
+  min-height: 136px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  padding: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 248, 251, 0.94));
+}
+
+.snapshot-card.snapshot-watch {
+  border-color: rgba(184, 113, 19, 0.3);
+  background: linear-gradient(180deg, rgba(255, 249, 239, 0.98), rgba(255, 244, 224, 0.9));
+}
+
+.snapshot-card.snapshot-error {
+  border-color: rgba(174, 61, 56, 0.3);
+  background: linear-gradient(180deg, rgba(255, 245, 244, 0.98), rgba(252, 236, 234, 0.9));
+}
+
+.snapshot-value {
+  margin-top: 8px;
+  font-size: clamp(22px, 1.7vw, 30px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.snapshot-insight {
+  min-height: 236px;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 79, 136, 0.2);
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(244, 249, 252, 0.98), rgba(255, 255, 255, 0.96));
+}
+
+.snapshot-insight.insight-watch {
+  border-color: rgba(184, 113, 19, 0.3);
+}
+
+.snapshot-insight.insight-high {
+  border-color: rgba(174, 61, 56, 0.34);
+}
+
+.snapshot-insight-top,
+.snapshot-quality-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+}
+
+.snapshot-insight h3 {
+  margin: 7px 0 0;
+  font-size: 20px;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.snapshot-insight p,
+.snapshot-quality p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.snapshot-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.risk-badge,
+.confidence-badge {
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.risk-low {
+  color: var(--teal);
+  background: rgba(15, 138, 121, 0.1);
+}
+
+.risk-watch {
+  color: var(--amber);
+  background: rgba(184, 113, 19, 0.11);
+}
+
+.risk-high {
+  color: var(--red);
+  background: rgba(174, 61, 56, 0.11);
+}
+
+.confidence-badge {
+  color: var(--primary);
+  background: rgba(15, 79, 136, 0.09);
+}
+
+.snapshot-source-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.snapshot-source-list a {
+  color: var(--primary);
+  border: 1px solid rgba(15, 79, 136, 0.16);
+  border-radius: 999px;
+  padding: 6px 9px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.snapshot-source-list a:hover {
+  background: rgba(15, 79, 136, 0.08);
+}
+
+.snapshot-quality-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.snapshot-quality {
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  padding: 12px;
+  background: rgba(247, 250, 252, 0.92);
+}
+
+.snapshot-quality-title {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .story-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -921,8 +1092,14 @@ th {
   }
 
   .alert-grid,
-  .summary-grid {
+  .summary-grid,
+  .snapshot-card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .snapshot-grid,
+  .snapshot-quality-row {
+    grid-template-columns: 1fr;
   }
 
   .market-grid {
@@ -946,6 +1123,7 @@ th {
 
   .alert-grid,
   .summary-grid,
+  .snapshot-card-grid,
   .market-grid,
   .quality-grid {
     grid-template-columns: 1fr;
@@ -1007,9 +1185,14 @@ th {
   }
 
   .pnl-driver-title-row,
-  .chart-kicker {
+  .chart-kicker,
+  .snapshot-insight-top {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .snapshot-badges {
+    justify-content: flex-start;
   }
 
   .coverage-row {

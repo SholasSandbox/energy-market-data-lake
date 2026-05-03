@@ -1,4 +1,5 @@
 export type NavItem = "Overview" | "Portfolio Risk" | "Market Context" | "Data Quality";
+export type DashboardSnapshotStatus = "ok" | "watch" | "error";
 
 export interface AlertItem {
   label: string;
@@ -101,5 +102,49 @@ export interface DashboardData {
   overview: OverviewData;
   dataQuality: {
     checks: QualityCheck[];
+  };
+}
+
+export interface DashboardSnapshotSummaryCard {
+  label: string;
+  value: string;
+  trend: string;
+  status: DashboardSnapshotStatus;
+}
+
+export interface DashboardSnapshotSource {
+  label: string;
+  url: string;
+}
+
+export interface DashboardSnapshotInsight {
+  id: string;
+  title: string;
+  summary: string;
+  risk_level: "low" | "watch" | "high";
+  confidence: number;
+  sources: DashboardSnapshotSource[];
+}
+
+export interface DashboardSnapshotQualityCheck {
+  label: string;
+  status: DashboardSnapshotStatus;
+  detail: string;
+}
+
+export interface DashboardSnapshot {
+  schema_version: "dashboard_snapshot_v1";
+  generated_at: string;
+  metadata: {
+    region: string;
+    latest_date: string;
+    data_freshness: string;
+    status: DashboardSnapshotStatus;
+  };
+  summary_cards: DashboardSnapshotSummaryCard[];
+  insights: DashboardSnapshotInsight[];
+  data_quality: {
+    status: DashboardSnapshotStatus;
+    checks: DashboardSnapshotQualityCheck[];
   };
 }

@@ -95,7 +95,7 @@ def build_snapshot(energy_input: dict, news_summary: dict, ai_insight_input: dic
         "metadata": {
             "region": region,
             "latest_date": latest_date,
-            "data_freshness": "Local validated evidence snapshot",
+            "data_freshness": "Local demo evidence snapshot; not live market freshness",
             "status": snapshot_status,
         },
         "summary_cards": [
@@ -134,22 +134,22 @@ def build_snapshot(energy_input: dict, news_summary: dict, ai_insight_input: dic
                 {
                     "label": "Energy contract",
                     "status": "ok",
-                    "detail": "Publisher input came from energy_input_v1 evidence.",
+                    "detail": "Publisher input came from local demo energy_input_v1 evidence.",
                 },
                 {
                     "label": "News contract",
                     "status": "ok",
-                    "detail": "Publisher input came from curated news_summary_v1 evidence.",
+                    "detail": "Publisher input came from local demo curated news_summary_v1 evidence.",
                 },
                 {
                     "label": "AI insight contract",
                     "status": "ok",
-                    "detail": "Publisher insight came from validated ai_insight_v1 evidence.",
+                    "detail": "Publisher insight came from local demo validated ai_insight_v1 evidence.",
                 },
                 {
                     "label": "Public fields",
                     "status": "ok",
-                    "detail": "Snapshot includes only dashboard-safe fields.",
+                    "detail": "Local demo snapshot includes only dashboard-safe fields.",
                 },
             ],
         },
