@@ -48,6 +48,33 @@ def first_value(item: dict, *keys: str) -> str:
     return ""
 
 
+def query_point_direction(item: dict) -> str:
+    """Build the pointDirection value accepted by operationaldatas."""
+    explicit = first_value(item, "pointDirection")
+    if explicit:
+        return explicit
+
+    operator_key = first_value(item, "operatorKey")
+    point_key = first_value(item, "fromPointKey", "pointKey")
+    direction_key = first_value(item, "directionKey")
+    if operator_key and point_key and direction_key:
+        return f"{operator_key}{point_key}{direction_key}"
+
+    raw_id = first_value(item, "id")
+    data_set = first_value(item, "dataSet")
+    if raw_id and data_set and raw_id.startswith(data_set):
+        return raw_id[len(data_set) :]
+    return raw_id
+
+
+def expand_country_codes(countries: set[str]) -> set[str]:
+    """Add ENTSOG-specific country aliases used by gas data."""
+    expanded = set(countries)
+    if "GB" in expanded:
+        expanded.add("UK")
+    return expanded
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -71,15 +98,32 @@ def main() -> int:
         help="Print only pointDirection IDs (comma-separated)",
     )
     parser.add_argument(
+        "--has-data-only",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Filter to hasData=true point directions (default: true)",
+    )
+    parser.add_argument(
+        "--max-results",
+        type=int,
+        default=0,
+        help="Maximum matched records to output after filtering (default: all)",
+    )
+    parser.add_argument(
         "--save-env",
         action="store_true",
         help="Write ENTSOG_POINT_DIRECTIONS to config/sample.env",
     )
     args = parser.parse_args()
 
-    countries = {c.strip().upper() for c in args.countries.split(",") if c.strip()}
+    countries = expand_country_codes(
+        {c.strip().upper() for c in args.countries.split(",") if c.strip()}
+    )
     base = f"{args.base_url}/operatorpointdirections"
-    url = build_url(base, {"limit": args.limit})
+    params = {"limit": args.limit}
+    if args.has_data_only:
+        params["hasData"] = "1"
+    url = build_url(base, params)
     payload = fetch_json(url)
 
     items = extract_items(payload)
@@ -87,10 +131,14 @@ def main() -> int:
     for item in items:
         from_country = first_value(item, "fromCountry", "tSOCountry").upper()
         to_country = first_value(item, "toCountry", "adjacentCountry").upper()
+        has_data = item.get("hasData")
+        if args.has_data_only and has_data is not True:
+            continue
         if from_country in countries or to_country in countries:
             matches.append(
                 {
-                    "pointDirection": first_value(item, "pointDirection", "id"),
+                    "pointDirection": query_point_direction(item),
+                    "operatorPointDirectionId": first_value(item, "id"),
                     "fromCountry": from_country,
                     "toCountry": to_country,
                     "directionKey": item.get("directionKey"),
@@ -101,6 +149,8 @@ def main() -> int:
                     "hasData": item.get("hasData"),
                 }
             )
+            if args.max_results and len(matches) >= args.max_results:
+                break
 
     if args.ids_only:
         ids = [m["pointDirection"] for m in matches if m.get("pointDirection")]

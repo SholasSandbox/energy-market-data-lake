@@ -297,6 +297,95 @@ button {
   border: 1px dashed var(--line-strong);
 }
 
+.gas-panel {
+  border-color: rgba(15, 138, 121, 0.24);
+}
+
+.gas-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.gas-summary-card {
+  min-height: 132px;
+  border: 1px solid rgba(15, 138, 121, 0.22);
+  border-radius: 18px;
+  padding: 14px;
+  background: linear-gradient(180deg, rgba(246, 255, 253, 0.98), rgba(237, 248, 246, 0.94));
+}
+
+.gas-summary-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.gas-metric {
+  margin-top: 8px;
+  font-size: clamp(24px, 1.8vw, 32px);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.gas-table-shell table {
+  min-width: 1050px;
+}
+
+.gas-trend-section {
+  margin-top: 14px;
+}
+
+.gas-trend-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: start;
+  margin: 2px 0 12px;
+}
+
+.gas-trend-heading h3 {
+  margin: 4px 0 0;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+}
+
+.gas-trend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.gas-trend-card {
+  border: 1px solid rgba(15, 138, 121, 0.2);
+  border-radius: 18px;
+  padding: 14px;
+  background: linear-gradient(180deg, rgba(252, 255, 254, 0.98), rgba(244, 250, 249, 0.94));
+}
+
+.gas-point-label {
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.gas-point-id {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.gas-delta-positive {
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.gas-delta-negative {
+  color: var(--amber);
+  font-weight: 800;
+}
+
 .trend {
   margin-top: 8px;
   color: var(--muted);
@@ -454,6 +543,90 @@ button {
   background: rgba(15, 79, 136, 0.08);
 }
 
+.market-news-list {
+  margin-top: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 79, 136, 0.18);
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.market-news-list-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+
+.market-news-list-header h3 {
+  margin: 5px 0 0;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.market-news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.market-news-card {
+  min-height: 178px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  padding: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 248, 251, 0.9));
+}
+
+.market-news-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.market-news-card a {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.market-news-card a:hover {
+  color: var(--primary);
+}
+
+.market-news-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.market-news-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.market-news-tags span {
+  border-radius: 999px;
+  padding: 4px 7px;
+  color: var(--primary);
+  background: rgba(15, 79, 136, 0.08);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .snapshot-quality-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -513,10 +686,18 @@ button {
   min-height: 360px;
 }
 
+.chart-box--primary .chart-kicker {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 42px;
+  padding: 0;
+}
+
 .pnl-driver-list {
   display: grid;
   gap: 14px;
-  padding: 22px 22px 74px;
+  padding: 22px 22px 108px;
   position: relative;
   z-index: 1;
 }
@@ -1093,12 +1274,14 @@ th {
 
   .alert-grid,
   .summary-grid,
+  .gas-summary-grid,
   .snapshot-card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .snapshot-grid,
-  .snapshot-quality-row {
+  .snapshot-quality-row,
+  .market-news-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1106,6 +1289,7 @@ th {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .gas-trend-grid,
   .quality-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1123,7 +1307,10 @@ th {
 
   .alert-grid,
   .summary-grid,
+  .gas-summary-grid,
+  .gas-trend-grid,
   .snapshot-card-grid,
+  .market-news-grid,
   .market-grid,
   .quality-grid {
     grid-template-columns: 1fr;
@@ -1186,6 +1373,7 @@ th {
 
   .pnl-driver-title-row,
   .chart-kicker,
+  .market-news-list-header,
   .snapshot-insight-top {
     flex-direction: column;
     align-items: flex-start;

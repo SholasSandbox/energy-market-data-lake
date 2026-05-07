@@ -15,7 +15,10 @@ Region: **eu-west-2 (London)**
 - Evidence generation under `docs/evidence/`.
 - HTML dashboard generation from Athena-backed data.
 - React + TypeScript dashboard under `dashboard-ui/`.
+- ENTSOG gas proof from raw ingestion through curated Parquet, Glue Catalog, Athena query, and validation evidence.
+- ENTSOG gas context cards and selected pointDirection table in the React dashboard.
 - Local RSS/news ingestion evidence.
+- Expanded public-safe market-news article grid for gas and electricity context.
 - JSON schema contracts for energy, news, AI insight, and dashboard snapshot outputs.
 - Local AI input bundle and deterministic AI insight merge.
 - Validator checks for good evidence and intentionally bad failure samples.
@@ -35,7 +38,7 @@ Region: **eu-west-2 (London)**
 
 - **UK electricity (Elexon)**: demand by bidding zone (GSP proxy) and system prices (SBP/SSP).
 - **EU electricity (ENTSO-E)**: actual load and day-ahead prices for GB, FR, DE-LU, and NL.
-- **EU gas (ENTSOG)**: target extension for physical flows and demand proxy using selected pointDirection IDs.
+- **EU gas (ENTSOG)**: raw and curated physical flows plus allocation-based demand proxy using selected pointDirection IDs.
 - **News summaries**: local RSS evidence linked to energy market movements.
 
 ## Current Architecture
@@ -129,8 +132,19 @@ Use these artifacts to review or present the local MVP:
 
 - Walkthrough: `docs/demo-walkthrough.md`
 - Screenshot: `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
+- Tabbed dashboard screenshots:
+  - `docs/evidence/screenshots/dashboard-energy-overview-tabs-20260507.png`
+  - `docs/evidence/screenshots/dashboard-power-tab-20260507.png`
+  - `docs/evidence/screenshots/dashboard-gas-tab-20260507.png`
+  - `docs/evidence/screenshots/dashboard-gas-tab-7day-trends-20260507.png`
 - Public dashboard snapshot: `dashboard-ui/public/dashboard_snapshot_v1.sample.json`
+- Expanded news refresh evidence: `docs/evidence/news-refresh-expanded-20260507.md`
 - Curated AI insight evidence: `docs/evidence/curated/ai_insight_v1.sample.json`
+- ENTSOG gas Phase 5 evidence: `docs/evidence/run-entsog-gas-20260506.md`
+- ENTSOG Athena validation: `docs/evidence/athena-gas-schema-20260506.md`
+- ENTSOG Athena query summary: `docs/evidence/athena-gas-query-summary-20260506.md`
+- ENTSOG dashboard gas evidence: `docs/evidence/phase7-dashboard-gas-20260507.md`
+- ENTSOG 7-day gas trend evidence: `docs/evidence/gas-7day-trend-20260507.md`
 
 Run the local evidence pipeline:
 
@@ -163,6 +177,7 @@ docs/evidence/         Generated run, schema, and dashboard evidence
 docs/evidence/screenshots/
                        Dashboard screenshots for portfolio/demo use
 glue/                  Glue ETL code
+infra/terraform/       Terraform Infrastructure as Code for AWS lakehouse resources
 lambda/                Lambda ingestion code
 scripts/               Local/demo helper scripts
 ```
@@ -241,6 +256,13 @@ python scripts/validate_contracts.py
 Run the local news + energy + AI insight pipeline:
 
 ```bash
+export AWS_REGION=eu-west-2
+export S3_BUCKET=energy-market-lake-464975959576-20260405
+python scripts/generate_dashboard.py \
+  --region "${AWS_REGION}" \
+  --bucket "${S3_BUCKET}" \
+  --output-location "s3://${S3_BUCKET}/athena-results/" \
+  --output-json dashboard-ui/public/dashboard-data.json
 python scripts/ingest_news_local.py
 python scripts/export_energy_input_local.py
 python scripts/create_ai_input_bundle_local.py
@@ -274,6 +296,7 @@ Generate JSON for the React app:
 ```bash
 cd /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake
 python3 scripts/generate_dashboard.py \
+  --bucket energy-market-lake-464975959576-20260405 \
   --output-json dashboard-ui/public/dashboard-data.json
 ```
 
@@ -295,9 +318,38 @@ curl -I http://127.0.0.1:5173/dashboard_snapshot_v1.sample.json
 Find ENTSOG pointDirection IDs:
 
 ```bash
-python scripts/entsog_point_directions.py --countries GB,FR,DE,NL
-python scripts/entsog_point_directions.py --countries GB,FR,DE,NL --ids-only
-python scripts/entsog_point_directions.py --countries GB,FR,DE,NL --save-env
+python3 scripts/entsog_point_directions.py --countries GB,UK,FR,DE,NL
+python3 scripts/entsog_point_directions.py --countries GB,UK,FR,DE,NL --ids-only
+python3 scripts/entsog_point_directions.py --countries GB,UK,FR,DE,NL --ids-only --max-results 4
+python3 scripts/entsog_point_directions.py --countries GB,UK,FR,DE,NL --save-env
+```
+
+Seed set validated on 2026-05-03 for both `Physical Flow` and `Allocation`:
+
+```text
+BE-TSO-0001ITP-00061entry,BE-TSO-0001ITP-00115exit,CZ-TSO-0001ITP-00537entry,BE-TSO-0001ITP-00555exit
+```
+
+ENTSOG uses `UK` in operator-point metadata; the helper treats requested `GB` as `GB,UK` for gas selection.
+
+Live-check a seed set:
+
+```bash
+python3 scripts/check_entsog_seed.py \
+  --point-directions "BE-TSO-0001ITP-00061entry,BE-TSO-0001ITP-00115exit,CZ-TSO-0001ITP-00537entry,BE-TSO-0001ITP-00555exit" \
+  --date 2026-05-03
+```
+
+Validate the curated gas Athena table:
+
+```bash
+python3 scripts/validate_athena_schema.py \
+  --region eu-west-2 \
+  --database energy_market_lake \
+  --table curated_dataset_gas \
+  --output-location s3://energy-market-lake-464975959576-20260405/athena-results/ \
+  --expected-sources entsog \
+  --output-file docs/evidence/athena-gas-schema-$(date +%Y%m%d).md
 ```
 
 ## Active Documentation
@@ -307,6 +359,8 @@ python scripts/entsog_point_directions.py --countries GB,FR,DE,NL --save-env
 - `docs/phase-1-stabilize-ingestion-lakehouse.md`: active stabilization checklist.
 - `docs/entsoe-operationalization-checklist.md`: ENTSO-E reliability checklist.
 - `docs/gas-implementation-checklist.md`: ENTSOG gas implementation checklist.
+- `docs/entsog-gas-build-plan.md`: time-budgeted ENTSOG gas build tracker.
+- `infra/terraform/lakehouse/README.md`: Terraform rebuild path with S3 remote backend and optional data bucket creation.
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
 - `docs/demo-walkthrough.md`: concise demo script for the local MVP and target architecture story.
@@ -335,16 +389,16 @@ These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Polish Week 4 portfolio evidence: README, plan, demo walkthrough, and screenshots.
-2. Keep the local pipeline reproducible with schema validation and failure checks.
-3. Keep the React dashboard focused on approved `dashboard_snapshot_v1.sample.json`.
-4. Operationalize ENTSO-E electricity more reliably.
-5. Implement ENTSOG gas end-to-end.
+1. Keep the local pipeline reproducible with schema validation and failure checks.
+2. Keep the React dashboard focused on approved `dashboard_snapshot_v1.sample.json`.
+3. Operationalize ENTSO-E electricity more reliably.
+4. Decide whether gas metrics should enter the public AI snapshot contract after the React dashboard proof.
+5. Import or recreate the AWS lakehouse resources through Terraform after reviewing the import plan.
 6. Move the local news + AI merge flow into AWS orchestration only after the local MVP stays stable.
 
 ## Notes
 
 - Elexon base URL: `https://data.elexon.co.uk/bmrs/api/v1` (no API key).
 - ENTSO-E requires registration and an API token stored in SSM or Secrets Manager.
-- ENTSOG is public; choose pointDirection IDs and indicators before running.
+- ENTSOG is public; the current gas proof uses a four-point seed and the `Physical Flow` plus `Allocation` indicators.
 - OpenClaw/local model execution is outside AWS unless moved into Bedrock or managed compute.

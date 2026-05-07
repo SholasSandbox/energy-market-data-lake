@@ -61,6 +61,29 @@
         }
       }
     },
+    "news_articles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["publisher", "title", "url", "published_at", "summary", "topics", "regions"],
+        "properties": {
+          "publisher": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" },
+          "published_at": { "type": "string", "format": "date-time" },
+          "summary": { "type": "string", "minLength": 1 },
+          "topics": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "regions": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
     "data_quality": {
       "type": "object",
       "additionalProperties": false,
@@ -84,4 +107,3 @@
     }
   }
 }
-

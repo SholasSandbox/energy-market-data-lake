@@ -1,19 +1,19 @@
 {
   "schema_version": "energy_input_v1",
-  "generated_at": "2026-05-01T10:52:22Z",
+  "generated_at": "2026-05-07T10:03:10Z",
   "records": [
     {
       "source": "elexon",
       "dataset": "electricity_dashboard_snapshot",
       "region": "gb",
-      "timestamp_utc": "2026-05-01T10:52:22Z",
-      "date": "2026-03-23",
+      "timestamp_utc": "2026-05-07T10:03:10Z",
+      "date": "2026-05-07",
       "settlement_period": null,
-      "demand_mw": 43492.0,
+      "demand_mw": 25118.0,
       "system_sell_price_gbp_mwh": null,
-      "system_buy_price_gbp_mwh": 127.05,
+      "system_buy_price_gbp_mwh": 105.17,
       "day_ahead_price_eur_mwh": null,
-      "source_reference": "s3://energy-market-lake-portfolio-sandbox-20260321/curated/curated_dataset_electricity_3d55606ee40ee8a52f504210ea44aa85/date=2026-03-23/"
+      "source_reference": "s3://energy-market-lake-464975959576-20260405/curated/curated_dataset_electricity_e4e5001aa3d13e5189281de35cbc1cb9/date=2026-05-07/"
     }
   ]
 }
