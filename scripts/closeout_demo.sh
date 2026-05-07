@@ -32,6 +32,7 @@ ENTSOG_DEMAND_INDICATOR="${ENTSOG_DEMAND_INDICATOR:-Allocation}"
 ENTSOG_PERIOD_TYPE="${ENTSOG_PERIOD_TYPE:-day}"
 ENTSOG_TIMEZONE="${ENTSOG_TIMEZONE:-WET}"
 ENTSOG_LIMIT="${ENTSOG_LIMIT:-1000}"
+ENTSOG_INCLUDE_EXEMPTIONS="${ENTSOG_INCLUDE_EXEMPTIONS:-0}"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMP_DIR="/tmp/${PROJECT_PREFIX}-closeout"
@@ -89,6 +90,7 @@ export ENTSOG_DEMAND_INDICATOR
 export ENTSOG_PERIOD_TYPE
 export ENTSOG_TIMEZONE
 export ENTSOG_LIMIT
+export ENTSOG_INCLUDE_EXEMPTIONS
 
 python3 - <<'PY' > "${TMP_DIR}/lambda-environment.json"
 import json
@@ -110,6 +112,7 @@ environment = {
         "ENTSOG_PERIOD_TYPE": os.environ["ENTSOG_PERIOD_TYPE"],
         "ENTSOG_TIMEZONE": os.environ["ENTSOG_TIMEZONE"],
         "ENTSOG_LIMIT": os.environ["ENTSOG_LIMIT"],
+        "ENTSOG_INCLUDE_EXEMPTIONS": os.environ["ENTSOG_INCLUDE_EXEMPTIONS"],
     }
 }
 
@@ -377,7 +380,7 @@ if aws glue get-crawler --name "${CURATED_CRAWLER_NAME}" --region "${REGION}" >/
     --name "${CURATED_CRAWLER_NAME}" \
     --role "${GLUE_ROLE_ARN}" \
     --database-name "${GLUE_DATABASE_NAME}" \
-    --targets "S3Targets=[{Path=s3://${BUCKET}/curated/dataset=electricity/}]" \
+    --targets "S3Targets=[{Path=s3://${BUCKET}/curated/}]" \
     --table-prefix "curated_" \
     --region "${REGION}" >/dev/null
 else
@@ -385,7 +388,7 @@ else
     --name "${CURATED_CRAWLER_NAME}" \
     --role "${GLUE_ROLE_ARN}" \
     --database-name "${GLUE_DATABASE_NAME}" \
-    --targets "S3Targets=[{Path=s3://${BUCKET}/curated/dataset=electricity/}]" \
+    --targets "S3Targets=[{Path=s3://${BUCKET}/curated/}]" \
     --table-prefix "curated_" \
     --region "${REGION}" >/dev/null
 fi
@@ -394,7 +397,7 @@ mapfile -t CURATED_TABLES < <(
   aws glue get-tables \
     --database-name "${GLUE_DATABASE_NAME}" \
     --region "${REGION}" \
-    --query "TableList[?starts_with(Name, \`curated_dataset_electricity\`)].Name" \
+    --query "TableList[?starts_with(Name, \`curated_dataset_electricity\`) || starts_with(Name, \`curated_dataset_gas\`)].Name" \
     --output text
 )
 for CURATED_TABLE in "${CURATED_TABLES[@]}"; do
@@ -411,6 +414,7 @@ wait_for_crawler_ready "${CURATED_CRAWLER_NAME}"
 mkdir -p "${ROOT_DIR}/docs/evidence"
 EVIDENCE_FILE="${ROOT_DIR}/docs/evidence/run-$(date +%Y%m%d-%H%M%S).md"
 SCHEMA_EVIDENCE_FILE="${ROOT_DIR}/docs/evidence/athena-schema-$(date +%Y%m%d-%H%M%S).md"
+GAS_SCHEMA_EVIDENCE_FILE="${ROOT_DIR}/docs/evidence/athena-gas-schema-$(date +%Y%m%d-%H%M%S).md"
 EXPECTED_SOURCES="elexon"
 if [[ -n "${ENTSOE_TOKEN}" ]]; then
   EXPECTED_SOURCES="${EXPECTED_SOURCES},entsoe"
@@ -432,6 +436,16 @@ python3 "${ROOT_DIR}/scripts/validate_athena_schema.py" \
   --expected-sources "${EXPECTED_SOURCES}" \
   --output-file "${SCHEMA_EVIDENCE_FILE}"
 
+if [[ -n "${ENTSOG_POINT_DIRECTIONS}" ]]; then
+  python3 "${ROOT_DIR}/scripts/validate_athena_schema.py" \
+    --region "${REGION}" \
+    --database "${GLUE_DATABASE_NAME}" \
+    --table "curated_dataset_gas" \
+    --output-location "s3://${BUCKET}/${ATHENA_RESULTS_PREFIX}" \
+    --expected-sources "entsog" \
+    --output-file "${GAS_SCHEMA_EVIDENCE_FILE}"
+fi
+
 {
   echo "# Demo Run Evidence"
   echo
@@ -443,6 +457,9 @@ python3 "${ROOT_DIR}/scripts/validate_athena_schema.py" \
   echo "- Glue Job: ${GLUE_JOB_NAME}"
   echo "- Glue Job Run ID: ${JOB_RUN_ID}"
   echo "- Athena schema validation: ${SCHEMA_EVIDENCE_FILE}"
+  if [[ -n "${ENTSOG_POINT_DIRECTIONS}" ]]; then
+    echo "- Athena gas schema validation: ${GAS_SCHEMA_EVIDENCE_FILE}"
+  fi
   echo
   echo "## Ingestion Result"
   cat "${TMP_DIR}/ingest-result.json"
@@ -461,6 +478,9 @@ python3 "${ROOT_DIR}/scripts/validate_athena_schema.py" \
   echo
   echo "## Curated Prefix Count (Electricity)"
   s3_prefix_count "curated/dataset=electricity/"
+  echo
+  echo "## Curated Prefix Count (Gas)"
+  s3_prefix_count "curated/dataset=gas/"
 } > "${EVIDENCE_FILE}"
 
 echo "Closeout complete. Evidence file:"

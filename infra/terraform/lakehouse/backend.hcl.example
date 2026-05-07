@@ -1,0 +1,5 @@
+bucket       = "energy-market-terraform-state-464975959576-eu-west-2"
+key          = "energy-market-data-lake/dev/terraform.tfstate"
+region       = "eu-west-2"
+encrypt      = true
+use_lockfile = true

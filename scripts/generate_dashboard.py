@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import pathlib
 import subprocess
 import time
@@ -34,7 +35,13 @@ def _run_aws(args: List[str], expect_json: bool = True):
     return json.loads(out) if out else {}
 
 
-def _discover_bucket_name() -> str:
+def _discover_bucket_name(explicit_bucket: str = "") -> str:
+    if explicit_bucket:
+        return explicit_bucket
+    env_bucket = os.environ.get("S3_BUCKET", "").strip()
+    if env_bucket:
+        return env_bucket
+
     data = _run_aws(
         [
             "s3api",
@@ -50,7 +57,13 @@ def _discover_bucket_name() -> str:
     return sorted(data)[-1]
 
 
-def _resolve_table_name(database: str, table: str, bucket: str, region: str) -> str:
+def _resolve_table_name(
+    database: str,
+    table: str,
+    bucket: str,
+    region: str,
+    dataset: str = "electricity",
+) -> str:
     tables = _run_aws(
         [
             "glue",
@@ -71,7 +84,7 @@ def _resolve_table_name(database: str, table: str, bucket: str, region: str) -> 
     if not candidates:
         return table
 
-    target_location = f"s3://{bucket}/curated/dataset=electricity/"
+    target_location = f"s3://{bucket}/curated/dataset={dataset}/"
 
     def _score(item: Dict[str, object]):
         name = str(item.get("Name", ""))
@@ -346,6 +359,15 @@ def _format_signed_pct(value: float) -> str:
     return f"{value:+.1f}%"
 
 
+def _format_gwh_d(value_kwh_d: float) -> str:
+    return f"{value_kwh_d / 1_000_000:.1f} GWh/d"
+
+
+def _format_signed_gwh_d(value_kwh_d: float) -> str:
+    sign = "+" if value_kwh_d >= 0 else "-"
+    return f"{sign}{abs(value_kwh_d) / 1_000_000:.1f} GWh/d"
+
+
 def _complete_day_rows(
     rows: List[Dict[str, str]],
     value_key: str,
@@ -549,6 +571,118 @@ def _build_quality_check(
     }
 
 
+def _build_gas_context(gas_rows: List[Dict[str, str]]) -> Dict[str, object]:
+    if not gas_rows:
+        return {
+            "latestDate": "",
+            "summaryCards": [],
+            "pointDirections": [],
+            "trendPoints": [],
+        }
+
+    dates = sorted({row.get("date", "") for row in gas_rows if row.get("date")})
+    latest_date = dates[-1] if dates else gas_rows[0].get("date", "")
+    latest_rows = [row for row in gas_rows if row.get("date") == latest_date]
+    total_flow = sum(_to_float(row.get("total_flow_kwh_d")) for row in latest_rows)
+    total_allocation = sum(_to_float(row.get("total_demand_kwh_d")) for row in latest_rows)
+    delta = total_allocation - total_flow
+    delta_pct = (delta / total_flow) * 100 if total_flow else 0.0
+    complete_count = sum(
+        1
+        for row in latest_rows
+        if _to_int(row.get("flow_rows")) > 0 and _to_int(row.get("demand_rows")) > 0
+    )
+    point_count = len(latest_rows)
+    completeness_status = "healthy" if complete_count == point_count else "watch"
+
+    point_rows = []
+    for row in latest_rows:
+        flow = _to_float(row.get("total_flow_kwh_d"))
+        allocation = _to_float(row.get("total_demand_kwh_d"))
+        row_delta = allocation - flow
+        flow_rows = _to_int(row.get("flow_rows"))
+        demand_rows = _to_int(row.get("demand_rows"))
+        status = "complete" if flow_rows > 0 and demand_rows > 0 else "incomplete"
+        point_rows.append(
+            {
+                "pointDirection": row.get("point_direction", ""),
+                "pointLabel": row.get("point_label", "") or row.get("point_direction", ""),
+                "direction": row.get("direction_key", ""),
+                "flowKwhD": flow,
+                "allocationKwhD": allocation,
+                "deltaKwhD": row_delta,
+                "flow": _format_gwh_d(flow),
+                "allocation": _format_gwh_d(allocation),
+                "delta": _format_signed_gwh_d(row_delta),
+                "status": status,
+            }
+        )
+
+    trend_points = []
+    for date in dates[-7:]:
+        date_rows = [row for row in gas_rows if row.get("date") == date]
+        date_flow = sum(_to_float(row.get("total_flow_kwh_d")) for row in date_rows)
+        date_allocation = sum(
+            _to_float(row.get("total_demand_kwh_d")) for row in date_rows
+        )
+        date_complete = sum(
+            1
+            for row in date_rows
+            if _to_int(row.get("flow_rows")) > 0 and _to_int(row.get("demand_rows")) > 0
+        )
+        date_point_count = len(date_rows)
+        trend_points.append(
+            {
+                "date": date,
+                "flowKwhD": date_flow,
+                "allocationKwhD": date_allocation,
+                "deltaKwhD": date_allocation - date_flow,
+                "completenessPct": (
+                    round((date_complete / date_point_count) * 100, 1)
+                    if date_point_count
+                    else 0.0
+                ),
+                "flow": _format_gwh_d(date_flow),
+                "allocation": _format_gwh_d(date_allocation),
+                "delta": _format_signed_gwh_d(date_allocation - date_flow),
+                "complete": f"{date_complete}/{date_point_count}",
+            }
+        )
+
+    return {
+        "latestDate": latest_date,
+        "summaryCards": [
+            {
+                "label": "Gas Data Date",
+                "value": latest_date,
+                "trend": "Latest curated ENTSOG gas day",
+                "detail": "Gas context is sourced from the curated Athena table, not dashboard snapshot mock data.",
+            },
+            {
+                "label": "Total Flow",
+                "value": _format_gwh_d(total_flow),
+                "trend": f"{point_count} selected pointDirections",
+                "detail": "Sum of ENTSOG Physical Flow values for the selected seed set.",
+            },
+            {
+                "label": "Allocation Proxy",
+                "value": _format_gwh_d(total_allocation),
+                "trend": f"{_format_signed_pct(delta_pct)} versus flow",
+                "detail": "Allocation is used as the current demand proxy for the selected gas points.",
+            },
+            {
+                "label": "Completeness",
+                "value": f"{complete_count}/{point_count}",
+                "trend": "flow and allocation rows",
+                "detail": "Each selected pointDirection is expected to have one flow row and one allocation row.",
+            },
+        ],
+        "pointDirections": point_rows,
+        "trendPoints": trend_points,
+        "completenessStatus": completeness_status,
+    }
+
+
 def _rolling_average(values: List[float], window: int) -> List[float]:
     result: List[float] = []
     recent: List[float] = []
@@ -567,6 +701,7 @@ def _build_dashboard_context(
     entsoe_price_rows: List[Dict[str, str]],
     entsoe_load_quality_rows: List[Dict[str, str]],
     entsoe_price_quality_rows: List[Dict[str, str]],
+    gas_rows: List[Dict[str, str]],
 ):
     if not daily_rows:
         raise RuntimeError("No daily rows returned; cannot build dashboard")
@@ -661,6 +796,7 @@ def _build_dashboard_context(
         ),
     )
     entsoe_panels = _build_entsoe_price_panels(entsoe_price_rows)
+    gas_context = _build_gas_context(gas_rows)
     quality_checks = []
     elexon_quality = _build_quality_check(
         label="GB Elexon Settlement Capture",
@@ -719,7 +855,7 @@ def _build_dashboard_context(
             "bucket": bucket,
             "dataFreshness": f"Daily snapshot ({latest_settlements}/48 settlement rows)",
         },
-        "navItems": ["Overview", "Portfolio Risk", "Market Context", "Data Quality"],
+        "navItems": ["Energy Overview", "Power", "Gas", "Data Quality"],
         "overview": {
             "alerts": [
                 {
@@ -907,6 +1043,7 @@ def _build_dashboard_context(
                     ],
                 },
             ] + entsoe_panels,
+            "gasContext": gas_context,
         },
         "dataQuality": {
             "checks": quality_checks,
@@ -1540,12 +1677,13 @@ def main():
     parser.add_argument("--region", default="eu-west-2")
     parser.add_argument("--database", default="energy_market_lake")
     parser.add_argument("--table", default="curated_dataset_electricity")
+    parser.add_argument("--bucket", default="")
     parser.add_argument("--output-location", default="")
     parser.add_argument("--output-file", default="")
     parser.add_argument("--output-json", default="")
     args = parser.parse_args()
 
-    bucket = _discover_bucket_name()
+    bucket = _discover_bucket_name(args.bucket)
     output_location = args.output_location or f"s3://{bucket}/athena-results/"
     resolved_table = _resolve_table_name(
         args.database, args.table, bucket, args.region
@@ -1643,6 +1781,53 @@ def main():
             entsoe_price_quality_query, args.database, output_location, args.region
         )
 
+    gas_rows: List[Dict[str, str]] = []
+    gas_table = _resolve_table_name(
+        args.database,
+        "curated_dataset_gas",
+        bucket,
+        args.region,
+        dataset="gas",
+    )
+    try:
+        gas_columns = _get_table_columns(
+            args.database, gas_table, output_location, args.region
+        )
+    except RuntimeError:
+        gas_columns = {}
+    if {"flow_kwh_d", "demand_kwh_d", "point_direction"}.issubset(gas_columns):
+        gas_query = f"""
+        WITH latest_dates AS (
+          SELECT date
+          FROM (
+            SELECT DISTINCT date
+            FROM {gas_table}
+            WHERE source = 'entsog'
+              AND region = 'eu'
+            ORDER BY date DESC
+            LIMIT 7
+          )
+        )
+        SELECT
+          date,
+          point_direction,
+          point_label,
+          direction_key,
+          SUM(flow_kwh_d) AS total_flow_kwh_d,
+          SUM(demand_kwh_d) AS total_demand_kwh_d,
+          SUM(CASE WHEN flow_kwh_d IS NOT NULL THEN 1 ELSE 0 END) AS flow_rows,
+          SUM(CASE WHEN demand_kwh_d IS NOT NULL THEN 1 ELSE 0 END) AS demand_rows
+        FROM {gas_table}
+        WHERE source = 'entsog'
+          AND region = 'eu'
+          AND date IN (SELECT date FROM latest_dates)
+        GROUP BY date, point_direction, point_label, direction_key
+        ORDER BY date, point_direction
+        """
+        gas_rows = _run_athena_query(
+            gas_query, args.database, output_location, args.region
+        )
+
     if args.output_file:
         output_file = pathlib.Path(args.output_file)
     else:
@@ -1663,6 +1848,7 @@ def main():
         entsoe_price_rows,
         entsoe_load_quality_rows,
         entsoe_price_quality_rows,
+        gas_rows,
     )
     _render_html(output_file, bucket, resolved_table, context)
 

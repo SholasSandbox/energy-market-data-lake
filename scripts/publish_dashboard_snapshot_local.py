@@ -52,6 +52,24 @@ def first_insight(payload: dict) -> dict:
     return insights[0]
 
 
+def public_news_articles(news_summary: dict, max_articles: int = 12) -> list[dict]:
+    """Copy only dashboard-safe article fields into the public snapshot."""
+    articles: list[dict] = []
+    for article in news_summary.get("articles", [])[:max_articles]:
+        articles.append(
+            {
+                "publisher": article.get("publisher", "Curated news source"),
+                "title": article.get("title", "Untitled article"),
+                "url": article.get("url", article.get("source_reference", "")),
+                "published_at": article.get("published_at", news_summary.get("generated_at", utc_now())),
+                "summary": article.get("summary", "No summary available"),
+                "topics": article.get("topics", []),
+                "regions": article.get("regions", []),
+            }
+        )
+    return articles
+
+
 def dashboard_sources(ai_insight: dict) -> list[dict]:
     """Flatten AI source references into dashboard-safe label/url objects."""
     sources: list[dict] = []
@@ -100,21 +118,21 @@ def build_snapshot(energy_input: dict, news_summary: dict, ai_insight_input: dic
         },
         "summary_cards": [
             {
-                "label": "Market Price",
+                "label": "Power Price",
                 "value": format_optional_number(price, " GBP/MWh"),
-                "trend": "From validated energy_input_v1 evidence",
+                "trend": "From validated power evidence",
                 "status": "watch" if price is not None else "error",
             },
             {
-                "label": "Demand",
+                "label": "Power Demand",
                 "value": format_optional_number(demand_mw, " MW"),
-                "trend": "From validated energy_input_v1 evidence",
+                "trend": "From validated power evidence",
                 "status": "ok" if demand_mw is not None else "error",
             },
             {
-                "label": "News Articles",
+                "label": "Energy News",
                 "value": str(article_count),
-                "trend": "Curated RSS summaries available",
+                "trend": "Wider energy-sector RSS context",
                 "status": "ok" if article_count else "error",
             },
         ],
@@ -128,16 +146,17 @@ def build_snapshot(energy_input: dict, news_summary: dict, ai_insight_input: dic
                 "sources": dashboard_sources(ai_insight),
             }
         ],
+        "news_articles": public_news_articles(news_summary),
         "data_quality": {
             "status": "ok",
             "checks": [
                 {
-                    "label": "Energy contract",
+                    "label": "Power evidence contract",
                     "status": "ok",
-                    "detail": "Publisher input came from local demo energy_input_v1 evidence.",
+                    "detail": "Publisher metric input came from local demo power-focused energy_input_v1 evidence.",
                 },
                 {
-                    "label": "News contract",
+                    "label": "Energy news contract",
                     "status": "ok",
                     "detail": "Publisher input came from local demo curated news_summary_v1 evidence.",
                 },

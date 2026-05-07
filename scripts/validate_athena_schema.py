@@ -26,6 +26,24 @@ REQUIRED_COLUMNS = {
     "net_imbalance_volume": "double",
 }
 
+GAS_REQUIRED_COLUMNS = {
+    "source": "string",
+    "region": "string",
+    "date": "string",
+    "point_direction": "string",
+    "operator_key": "string",
+    "point_key": "string",
+    "direction_key": "string",
+    "period_type": "string",
+    "period_from_utc": "timestamp",
+    "period_to_utc": "timestamp",
+    "flow_kwh_d": "double",
+    "demand_kwh_d": "double",
+    "unit": "string",
+    "indicator": "string",
+    "is_na": "boolean",
+}
+
 
 def _run_aws(args: List[str], expect_json: bool = True):
     proc = subprocess.run(
@@ -81,7 +99,8 @@ def _resolve_table_name(database: str, table: str, bucket: str, region: str) -> 
     if not candidates:
         return table
 
-    target_location = f"s3://{bucket}/curated/dataset=electricity/"
+    dataset = "gas" if "gas" in table else "electricity"
+    target_location = f"s3://{bucket}/curated/dataset={dataset}/"
 
     def _score(item: Dict[str, object]):
         name = str(item.get("Name", ""))
@@ -221,6 +240,8 @@ def _athena_type_matches(expected: str, actual: str) -> bool:
         return actual_lower in {"integer", "int", "bigint"}
     if expected == "timestamp":
         return actual_lower.startswith("timestamp")
+    if expected == "boolean":
+        return actual_lower in {"boolean", "bool"}
     return actual_lower == expected
 
 
@@ -240,6 +261,8 @@ def main():
         args.database, args.table, bucket, args.region
     )
     expected_sources = [s.strip().lower() for s in args.expected_sources.split(",") if s.strip()]
+    is_gas_table = "gas" in args.table or "gas" in resolved_table
+    required_columns = GAS_REQUIRED_COLUMNS if is_gas_table else REQUIRED_COLUMNS
 
     schema_query = f"""
     SELECT column_name, data_type
@@ -257,11 +280,11 @@ def main():
     }
     has_source_column = "source" in actual_columns
     missing_columns = [
-        name for name in REQUIRED_COLUMNS if name not in actual_columns
+        name for name in required_columns if name not in actual_columns
     ]
     type_mismatches = [
         f"{name}: expected {expected}, got {actual_columns.get(name)}"
-        for name, expected in REQUIRED_COLUMNS.items()
+        for name, expected in required_columns.items()
         if name in actual_columns and not _athena_type_matches(expected, actual_columns[name])
     ]
 
@@ -298,6 +321,25 @@ def main():
             args.region,
         )
 
+    completeness_rows: List[Dict[str, str]] = []
+    if is_gas_table and not missing_columns:
+        completeness_rows = _run_athena_query(
+            f"""
+            SELECT
+              date,
+              point_direction,
+              SUM(CASE WHEN flow_kwh_d IS NOT NULL THEN 1 ELSE 0 END) AS flow_rows,
+              SUM(CASE WHEN demand_kwh_d IS NOT NULL THEN 1 ELSE 0 END) AS demand_rows
+            FROM {resolved_table}
+            GROUP BY date, point_direction
+            ORDER BY date DESC, point_direction
+            LIMIT 40
+            """,
+            args.database,
+            output_location,
+            args.region,
+        )
+
     actual_sources = {
         row["source"].lower(): int(float(row["row_count"]))
         for row in source_rows
@@ -306,9 +348,15 @@ def main():
     missing_sources = [
         source for source in expected_sources if actual_sources.get(source, 0) <= 0
     ]
+    missing_metrics: List[str] = []
+    if is_gas_table and completeness_rows:
+        if not any(int(float(row.get("flow_rows", "0") or 0)) > 0 for row in completeness_rows):
+            missing_metrics.append("flow_kwh_d has no populated rows")
+        if not any(int(float(row.get("demand_rows", "0") or 0)) > 0 for row in completeness_rows):
+            missing_metrics.append("demand_kwh_d has no populated rows")
 
     status = "pass"
-    if missing_columns or type_mismatches or missing_sources:
+    if missing_columns or type_mismatches or missing_sources or missing_metrics:
         status = "fail"
 
     report = [
@@ -326,7 +374,7 @@ def main():
         "",
     ]
 
-    for name, expected in REQUIRED_COLUMNS.items():
+    for name, expected in required_columns.items():
         actual = actual_columns.get(name, "missing")
         marker = "OK" if name in actual_columns and _athena_type_matches(expected, actual) else "FAIL"
         report.append(f"- {marker} `{name}` -> expected `{expected}`, actual `{actual}`")
@@ -357,7 +405,15 @@ def main():
         else:
             report.append(f"- `{row['region']}`: {row['latest_date']}")
 
-    if missing_columns or type_mismatches or missing_sources:
+    if completeness_rows:
+        report.extend(["", "## Gas Completeness", ""])
+        for row in completeness_rows:
+            report.append(
+                f"- `{row['date']}` / `{row['point_direction']}`: "
+                f"{row['flow_rows']} flow rows, {row['demand_rows']} demand rows"
+            )
+
+    if missing_columns or type_mismatches or missing_sources or missing_metrics:
         report.extend(["", "## Validation Errors", ""])
         for name in missing_columns:
             report.append(f"- Missing required column `{name}`")
@@ -365,6 +421,8 @@ def main():
             report.append(f"- Type mismatch: {item}")
         for source in missing_sources:
             report.append(f"- Expected source `{source}` has no rows")
+        for item in missing_metrics:
+            report.append(f"- Gas completeness failed: {item}")
 
     output_text = "\n".join(report) + "\n"
 

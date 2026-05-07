@@ -56,3 +56,29 @@ WHERE source = 'entsoe'
 GROUP BY region, date
 ORDER BY date DESC, region
 LIMIT 40;
+
+-- Table from curated crawler: curated_dataset_gas
+
+-- 6) ENTSOG gas flow and demand proxy by point direction
+SELECT
+  date,
+  point_direction,
+  point_label,
+  direction_key,
+  SUM(flow_kwh_d) AS total_flow_kwh_d,
+  SUM(demand_kwh_d) AS total_demand_kwh_d
+FROM curated_dataset_gas
+WHERE source = 'entsog'
+  AND region = 'eu'
+GROUP BY date, point_direction, point_label, direction_key
+ORDER BY date DESC, point_direction
+LIMIT 40;
+
+-- 7) ENTSOG freshness and source coverage
+SELECT
+  source,
+  region,
+  MAX(date) AS latest_date,
+  COUNT(*) AS row_count
+FROM curated_dataset_gas
+GROUP BY source, region;

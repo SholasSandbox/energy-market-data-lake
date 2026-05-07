@@ -18,16 +18,21 @@ DEFAULT_OUTPUT = ROOT / "docs" / "evidence" / "curated" / "news_summary_v1.sampl
 
 DEFAULT_FEEDS = [
     "https://www.energyvoice.com/feed/",
-    "https://www.current-news.co.uk/feed/",
-    "https://www.reuters.com/business/energy/rss",
+    "https://www.energylivenews.com/feed/",
+    "https://www.power-technology.com/feed/",
+    "https://www.offshore-energy.biz/feed/",
+    "https://oilprice.com/rss/main",
+    "https://www.renewableenergyworld.com/feed/",
+    "https://www.pv-magazine.com/feed/",
 ]
 
 TOPIC_KEYWORDS = {
-    "power_prices": ["power price", "electricity price", "wholesale price"],
-    "gas_supply": ["gas supply", "lng", "pipeline", "storage"],
-    "oil_gas": ["oil", "gas", "north sea", "offshore worker"],
-    "renewables": ["wind", "solar", "renewable", "offshore wind"],
-    "grid": ["grid", "transmission", "interconnector"],
+    "power_prices": ["power price", "electricity price", "wholesale price", "fuel price"],
+    "power_supply": ["electricity", "power", "generation", "capacity", "load", "data center"],
+    "gas_supply": ["natural gas", "gas supply", "lng", "pipeline", "storage", "fsru"],
+    "oil_gas": ["oil", "gas", "north sea", "offshore worker", "offshore energy"],
+    "renewables": ["wind", "solar", "renewable", "offshore wind", "pv"],
+    "grid": ["grid", "transmission", "interconnector", "nerc"],
     "policy": ["policy", "regulator", "government", "ofgem"],
 }
 
@@ -108,7 +113,55 @@ def article_from_entry(entry: dict, publisher: str) -> dict:
     }
 
 
-def fetch_articles(feed_urls: list[str], limit_per_feed: int) -> list[dict]:
+def topic_bucket(article: dict) -> str:
+    """Group articles so the demo keeps both power and gas context visible."""
+    topics = set(article.get("topics", []))
+    if {"gas_supply", "oil_gas"} & topics:
+        return "gas"
+    if {"power_prices", "power_supply", "grid", "renewables"} & topics:
+        return "power"
+    return "other"
+
+
+def dedupe_articles(articles: list[dict]) -> list[dict]:
+    """Remove duplicate RSS entries across syndicated feeds."""
+    seen_urls: set[str] = set()
+    seen_titles: set[str] = set()
+    deduped: list[dict] = []
+
+    for article in articles:
+        url_key = article["url"].split("?")[0].rstrip("/")
+        title_key = article["title"].casefold()
+        if url_key in seen_urls or title_key in seen_titles:
+            continue
+        seen_urls.add(url_key)
+        seen_titles.add(title_key)
+        deduped.append(article)
+
+    return deduped
+
+
+def balance_articles(articles: list[dict], max_articles: int | None) -> list[dict]:
+    """Interleave gas, power, and wider energy articles for a mixed-energy demo."""
+    if max_articles is None or len(articles) <= max_articles:
+        return articles
+
+    buckets = {
+        "gas": [article for article in articles if topic_bucket(article) == "gas"],
+        "power": [article for article in articles if topic_bucket(article) == "power"],
+        "other": [article for article in articles if topic_bucket(article) == "other"],
+    }
+
+    balanced: list[dict] = []
+    while len(balanced) < max_articles and any(buckets.values()):
+        for bucket_name in ("gas", "power", "other"):
+            if buckets[bucket_name] and len(balanced) < max_articles:
+                balanced.append(buckets[bucket_name].pop(0))
+
+    return balanced
+
+
+def fetch_articles(feed_urls: list[str], limit_per_feed: int, max_articles: int | None) -> list[dict]:
     """Fetch RSS feeds and return normalized article dictionaries."""
     articles: list[dict] = []
 
@@ -121,7 +174,7 @@ def fetch_articles(feed_urls: list[str], limit_per_feed: int) -> list[dict]:
             if article["url"]:
                 articles.append(article)
 
-    return articles
+    return balance_articles(dedupe_articles(articles), max_articles)
 
 
 def write_news_summary(output_path: Path, articles: list[dict]) -> None:
@@ -138,7 +191,8 @@ def write_news_summary(output_path: Path, articles: list[dict]) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Fetch RSS feeds into news_summary_v1 JSON")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--limit-per-feed", type=int, default=3)
+    parser.add_argument("--limit-per-feed", type=int, default=4)
+    parser.add_argument("--max-articles", type=int, default=18)
     parser.add_argument("--feed", action="append", dest="feeds", help="RSS feed URL; can be repeated")
     return parser.parse_args()
 
@@ -146,7 +200,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     feed_urls = args.feeds or DEFAULT_FEEDS
-    articles = fetch_articles(feed_urls, args.limit_per_feed)
+    articles = fetch_articles(feed_urls, args.limit_per_feed, args.max_articles)
 
     if not articles:
         raise SystemExit("No articles were fetched. Check RSS URLs or network access.")

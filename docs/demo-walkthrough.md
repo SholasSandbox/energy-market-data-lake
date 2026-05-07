@@ -1,8 +1,8 @@
 # Demo Walkthrough
 
-Purpose: show a serverless energy data lake extended with validated news and AI insight outputs. Keep the demo under 10 minutes.
+Purpose: show a serverless energy data lake with proven electricity and ENTSOG gas data paths, extended with validated news and AI insight outputs. Keep the demo under 10 minutes.
 
-Current demo state: local MVP evidence is implemented. AWS orchestration for the news + AI extension is target architecture, not yet a live cloud deployment.
+Current demo state: the ENTSOG gas lakehouse path is proven through raw S3, curated Parquet, Glue Catalog, Athena query, and validation evidence. The news + AI extension is implemented as a local MVP; AWS orchestration for that extension remains target architecture.
 
 ## 1. Business Problem
 
@@ -11,7 +11,7 @@ Energy teams need to connect market movement with external context. This project
 Say:
 
 ```text
-This demo connects energy market facts with curated news context, validates every contract, rejects malformed output, and publishes only approved dashboard JSON.
+This demo connects electricity and gas market facts with curated news context, validates every contract, rejects malformed output, and publishes only approved dashboard JSON.
 ```
 
 ## 2. Architecture Story
@@ -64,12 +64,24 @@ Good outputs:
 - `docs/evidence/curated/ai_insight_v1.sample.json`
 - `dashboard-ui/public/dashboard_snapshot_v1.sample.json`
 
+Gas lakehouse proof:
+
+- `docs/evidence/run-entsog-gas-20260506.md`
+- `docs/evidence/athena-gas-schema-20260506.md`
+- `docs/evidence/athena-gas-query-summary-20260506.md`
+
 Failure proof:
 
 - `docs/evidence/failed/bad_energy_input_v1.sample.json`
 - `docs/evidence/failed/bad_ai_insight_v1.sample.json`
 
 The validator should reject bad files as expected.
+
+Say:
+
+```text
+The gas slice is intentionally small: four ENTSOG pointDirections selected for live data, ingested to raw S3, transformed to curated Parquet, cataloged by Glue, and validated through Athena.
+```
 
 ## 5. Show Dashboard
 
@@ -85,6 +97,9 @@ Open:
 
 ```text
 http://127.0.0.1:5173/
+http://127.0.0.1:5173/#overview
+http://127.0.0.1:5173/#power
+http://127.0.0.1:5173/#gas
 ```
 
 Quick checks:
@@ -100,21 +115,59 @@ Expected result:
 HTTP/1.1 200 OK
 ```
 
-Show the `AI Insight Snapshot` section:
+Show the `Energy Overview` tab:
 
-- market price
-- demand
-- news article count
+- cross-energy alert strip
+- power portfolio executive summary
+- compact ENTSOG gas summary
+- energy news insight snapshot
+
+Show the `Energy News Insight Snapshot` section:
+
+- power price
+- power demand
+- wider energy news count from the curated RSS evidence
 - AI insight title and summary
 - risk level
 - confidence score
 - source references
+- curated market-news article grid for gas and electricity movement context
 - data-quality checks
 - freshness warning for old local demo data
+
+Say:
+
+```text
+This panel links validated power-market evidence to curated wider energy news. The article grid gives gas and electricity movement context, while gas flow metrics stay in the separate ENTSOG gas section.
+```
+
+Show the `Power` tab:
+
+- portfolio P&L drivers
+- coverage versus policy band
+- hedged versus open exposure
+- exception-first investigation table
+- electricity-only Elexon and ENTSO-E market context
+
+Show the `Gas` tab:
+
+- gas data date
+- total physical flow for the four selected pointDirections
+- allocation proxy
+- 4/4 completeness badge
+- pointDirection table with flow, allocation proxy, delta, and status
+- rolling 7-day charts for physical flow versus allocation, allocation delta, and completeness
+- boundary note that gas context is separate from portfolio P&L
 
 Screenshot artifact:
 
 - `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
+- `docs/evidence/screenshots/dashboard-phase7-gas-context-20260507.png`
+- `docs/evidence/screenshots/dashboard-energy-overview-tabs-20260507.png`
+- `docs/evidence/screenshots/dashboard-power-tab-20260507.png`
+- `docs/evidence/screenshots/dashboard-gas-tab-20260507.png`
+- `docs/evidence/screenshots/dashboard-gas-tab-7day-trends-20260507.png`
+- `docs/evidence/screenshots/dashboard-news-expanded-20260507.png`
 
 Say:
 
@@ -143,6 +196,8 @@ Hiring signal:
 - clear trust boundaries
 - schema-controlled AI output
 - failure handling evidence
+- gas market data proven from source API to Athena validation
+- gas context rendered in the React dashboard from Athena-backed dashboard data
 - static dashboard delivery path
 - cost-aware AWS architecture
 
@@ -150,5 +205,6 @@ Hiring signal:
 
 - The current AI merge is deterministic local logic, not a live OpenClaw or Bedrock model call.
 - The energy evidence may be stale because it comes from the current local dashboard data.
+- Gas metrics are rendered in the React dashboard context, but not in the public AI snapshot contract.
 - RSS feed results change over time.
-- AWS resources are represented by implemented repo paths and prior evidence unless a live deploy is run.
+- Terraform is scaffolded for the AWS lakehouse, but existing resources still need to be imported before Terraform manages them.

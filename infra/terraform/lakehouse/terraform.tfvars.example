@@ -1,0 +1,24 @@
+aws_region     = "eu-west-2"
+project_prefix = "energy-market"
+environment    = "dev"
+
+# Use the existing data lake bucket by default. Set create_data_bucket = true
+# only when you want Terraform to create a new data lake bucket.
+create_data_bucket = false
+data_bucket_name   = "energy-market-lake-464975959576-20260405"
+
+backfill_days        = 1
+schedule_enabled     = false
+schedule_expression  = "cron(0 2 * * ? *)"
+
+entsog_point_directions = "BE-TSO-0001ITP-00061entry,BE-TSO-0001ITP-00115exit,CZ-TSO-0001ITP-00537entry,BE-TSO-0001ITP-00555exit"
+entsog_flow_indicator   = "Physical Flow"
+entsog_demand_indicator = "Allocation"
+entsog_period_type      = "day"
+entsog_timezone         = "WET"
+entsog_limit            = 1000
+entsog_include_exemptions = 0
+
+tags = {
+  Workload = "energy-market-data-lake"
+}
