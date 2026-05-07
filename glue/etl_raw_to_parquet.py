@@ -6,9 +6,12 @@ Input layout:
   s3://<bucket>/raw/source=elexon/dataset=system_prices/date=YYYY-MM-DD/payload.json
   s3://<bucket>/raw/source=entsoe/dataset=actual_load/zone=<zone>/date=YYYY-MM-DD/payload.xml
   s3://<bucket>/raw/source=entsoe/dataset=day_ahead_prices/zone=<zone>/date=YYYY-MM-DD/payload.xml
+  s3://<bucket>/raw/source=entsog/dataset=gas_flow/point_direction=<id>/date=YYYY-MM-DD/payload.json
+  s3://<bucket>/raw/source=entsog/dataset=gas_demand/point_direction=<id>/date=YYYY-MM-DD/payload.json
 
 Output layout:
   s3://<bucket>/curated/dataset=electricity/source=<source>/region=<region>/date=YYYY-MM-DD/part-*.parquet
+  s3://<bucket>/curated/dataset=gas/region=eu/date=YYYY-MM-DD/part-*.parquet
 """
 import datetime as dt
 import re
@@ -81,6 +84,31 @@ ENTSOE_PRICE_SCHEMA = T.StructType(
         T.StructField("start_time_utc", T.TimestampType(), True),
         T.StructField("day_ahead_price_eur_mwh", T.DoubleType(), True),
         T.StructField("entsoe_price_created_at_utc", T.StringType(), True),
+    ]
+)
+
+GAS_SCHEMA = T.StructType(
+    [
+        T.StructField("source", T.StringType(), False),
+        T.StructField("region", T.StringType(), False),
+        T.StructField("date", T.StringType(), True),
+        T.StructField("point_direction", T.StringType(), True),
+        T.StructField("operator_key", T.StringType(), True),
+        T.StructField("operator_label", T.StringType(), True),
+        T.StructField("point_key", T.StringType(), True),
+        T.StructField("point_label", T.StringType(), True),
+        T.StructField("direction_key", T.StringType(), True),
+        T.StructField("period_type", T.StringType(), True),
+        T.StructField("period_from_utc", T.TimestampType(), True),
+        T.StructField("period_to_utc", T.TimestampType(), True),
+        T.StructField("flow_kwh_d", T.DoubleType(), True),
+        T.StructField("demand_kwh_d", T.DoubleType(), True),
+        T.StructField("unit", T.StringType(), True),
+        T.StructField("indicator", T.StringType(), True),
+        T.StructField("is_na", T.BooleanType(), True),
+        T.StructField("last_update_time_utc", T.StringType(), True),
+        T.StructField("item_remarks", T.StringType(), True),
+        T.StructField("general_remarks", T.StringType(), True),
     ]
 )
 
@@ -165,6 +193,10 @@ def _safe_float(value: str):
 def _extract_region_from_path(path: str):
     match = ZONE_PATTERN.search(path)
     return match.group(1).lower() if match else None
+
+
+def _extract_point_direction_from_path(path_col):
+    return F.regexp_extract(path_col, r"point_direction=([^/]+)", 1)
 
 
 def _read_atl(raw_root, spark_session):
@@ -378,6 +410,70 @@ def _read_entsoe_electricity(raw_root, spark_session):
     )
 
 
+def _read_entsog_metric(raw_root, dataset_name, value_column, spark_session):
+    dataset_root = f"{raw_root.rstrip('/')}/source=entsog/dataset={dataset_name}"
+    if not _path_exists(spark_session, dataset_root):
+        return _empty_df(spark_session, GAS_SCHEMA)
+
+    raw_path = f"{dataset_root}/point_direction=*/date=*/payload.json"
+    raw_df = spark_session.read.option("multiLine", True).json(raw_path)
+    if "operationaldatas" not in raw_df.columns:
+        return _empty_df(spark_session, GAS_SCHEMA)
+
+    value_expr = F.col("row.value").cast("double")
+    flow_expr = value_expr if value_column == "flow_kwh_d" else F.lit(None).cast("double")
+    demand_expr = (
+        value_expr if value_column == "demand_kwh_d" else F.lit(None).cast("double")
+    )
+
+    return (
+        raw_df.select(
+            F.explode_outer(F.col("operationaldatas")).alias("row"),
+            F.input_file_name().alias("_src"),
+        )
+        .select(
+            F.lit("entsog").alias("source"),
+            F.lit("eu").alias("region"),
+            F.coalesce(
+                F.to_date(F.col("row.periodFrom")).cast("string"),
+                _extract_date_from_path(F.col("_src")),
+            ).alias("date"),
+            _extract_point_direction_from_path(F.col("_src")).alias("point_direction"),
+            F.col("row.operatorKey").cast("string").alias("operator_key"),
+            F.col("row.operatorLabel").cast("string").alias("operator_label"),
+            F.col("row.pointKey").cast("string").alias("point_key"),
+            F.col("row.pointLabel").cast("string").alias("point_label"),
+            F.col("row.directionKey").cast("string").alias("direction_key"),
+            F.col("row.periodType").cast("string").alias("period_type"),
+            F.to_timestamp(F.col("row.periodFrom")).alias("period_from_utc"),
+            F.to_timestamp(F.col("row.periodTo")).alias("period_to_utc"),
+            flow_expr.alias("flow_kwh_d"),
+            demand_expr.alias("demand_kwh_d"),
+            F.col("row.unit").cast("string").alias("unit"),
+            F.col("row.indicator").cast("string").alias("indicator"),
+            F.coalesce(
+                F.col("row.isNA").cast("boolean"),
+                F.lit(False),
+            ).alias("is_na"),
+            F.col("row.lastUpdateDateTime").cast("string").alias("last_update_time_utc"),
+            F.col("row.itemRemarks").cast("string").alias("item_remarks"),
+            F.col("row.generalRemarks").cast("string").alias("general_remarks"),
+        )
+        .filter(F.col("date").isNotNull() & F.col("point_direction").isNotNull())
+    )
+
+
+def _read_entsog_gas(raw_root, spark_session):
+    flow_df = _read_entsog_metric(raw_root, "gas_flow", "flow_kwh_d", spark_session)
+    demand_df = _read_entsog_metric(
+        raw_root, "gas_demand", "demand_kwh_d", spark_session
+    )
+
+    if flow_df.rdd.isEmpty() and demand_df.rdd.isEmpty():
+        return _empty_df(spark_session, GAS_SCHEMA)
+    return flow_df.unionByName(demand_df)
+
+
 args = getResolvedOptions(sys.argv, ["JOB_NAME", "RAW_PATH", "CURATED_PATH"])
 
 sc = SparkContext()
@@ -392,19 +488,29 @@ curated_path = args["CURATED_PATH"].rstrip("/")
 elexon_df = _read_elexon_electricity(raw_path, spark)
 entsoe_df = _read_entsoe_electricity(raw_path, spark)
 electricity_df = elexon_df.unionByName(entsoe_df)
+gas_df = _read_entsog_gas(raw_path, spark)
 
-output_path = f"{curated_path}/dataset=electricity"
+electricity_output_path = f"{curated_path}/dataset=electricity"
+gas_output_path = f"{curated_path}/dataset=gas"
 spark.conf.set("spark.sql.sources.partitionOverwriteMode", "dynamic")
 
 (
     electricity_df.repartition("source", "region", "date")
     .write.mode("overwrite")
     .partitionBy("source", "region", "date")
-    .parquet(output_path)
+    .parquet(electricity_output_path)
+)
+
+(
+    gas_df.repartition("region", "date")
+    .write.mode("overwrite")
+    .partitionBy("region", "date")
+    .parquet(gas_output_path)
 )
 
 print(
-    f"Wrote curated electricity parquet to {output_path} "
+    f"Wrote curated electricity parquet to {electricity_output_path} "
     f"(rows={electricity_df.count()})"
 )
+print(f"Wrote curated gas parquet to {gas_output_path} (rows={gas_df.count()})")
 job.commit()

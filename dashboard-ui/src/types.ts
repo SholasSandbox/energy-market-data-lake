@@ -1,4 +1,4 @@
-export type NavItem = "Overview" | "Portfolio Risk" | "Market Context" | "Data Quality";
+export type NavItem = "Energy Overview" | "Power" | "Gas" | "Data Quality";
 export type DashboardSnapshotStatus = "ok" | "watch" | "error";
 
 export interface AlertItem {
@@ -13,6 +13,39 @@ export interface SummaryCard {
   value: string;
   trend: string;
   detail: string;
+}
+
+export interface GasPointDirection {
+  pointDirection: string;
+  pointLabel: string;
+  direction: string;
+  flowKwhD: number;
+  allocationKwhD: number;
+  deltaKwhD: number;
+  flow: string;
+  allocation: string;
+  delta: string;
+  status: "complete" | "incomplete";
+}
+
+export interface GasTrendPoint {
+  date: string;
+  flowKwhD: number;
+  allocationKwhD: number;
+  deltaKwhD: number;
+  completenessPct: number;
+  flow: string;
+  allocation: string;
+  delta: string;
+  complete: string;
+}
+
+export interface GasContext {
+  latestDate: string;
+  summaryCards: SummaryCard[];
+  pointDirections: GasPointDirection[];
+  trendPoints?: GasTrendPoint[];
+  completenessStatus: "healthy" | "watch";
 }
 
 export interface DriverBar {
@@ -89,6 +122,7 @@ export interface DashboardMetadata {
 export interface OverviewData {
   alerts: AlertItem[];
   summaryCards: SummaryCard[];
+  gasContext?: GasContext;
   pnlDrivers: DriverBar[];
   coveragePoints: CoveragePoint[];
   exposurePoints: ExposurePoint[];
@@ -126,6 +160,16 @@ export interface DashboardSnapshotInsight {
   sources: DashboardSnapshotSource[];
 }
 
+export interface DashboardSnapshotNewsArticle {
+  publisher: string;
+  title: string;
+  url: string;
+  published_at: string;
+  summary: string;
+  topics: string[];
+  regions: string[];
+}
+
 export interface DashboardSnapshotQualityCheck {
   label: string;
   status: DashboardSnapshotStatus;
@@ -143,6 +187,7 @@ export interface DashboardSnapshot {
   };
   summary_cards: DashboardSnapshotSummaryCard[];
   insights: DashboardSnapshotInsight[];
+  news_articles?: DashboardSnapshotNewsArticle[];
   data_quality: {
     status: DashboardSnapshotStatus;
     checks: DashboardSnapshotQualityCheck[];

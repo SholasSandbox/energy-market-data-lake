@@ -10,9 +10,9 @@ Energy market teams need to understand not only what changed in price, demand, e
 
 ## Solution
 
-This project extends a serverless energy data lake into a local news-aware insight dashboard MVP. It combines energy evidence, curated RSS news summaries, schema validation, deterministic AI-style insight generation, and a React dashboard that reads only approved public snapshot JSON.
+This project extends a serverless energy data lake into a local news-aware insight dashboard MVP. It combines electricity and gas market evidence, curated RSS news summaries, schema validation, deterministic AI-style insight generation, and a React dashboard that reads only approved public snapshot JSON.
 
-The result is a portfolio-ready demonstration of how energy data and external context can be merged safely without allowing malformed or unreviewed AI output into the dashboard.
+The result is a portfolio-ready demonstration of how energy data and external context can be merged safely without allowing malformed or unreviewed AI output into the dashboard. The ENTSOG gas slice now has live raw-to-curated-to-Athena evidence; the news + AI slice remains a controlled local MVP with a clear AWS migration path.
 
 ## Architecture
 
@@ -22,12 +22,15 @@ Implemented baseline:
 - S3 raw and curated lakehouse layout
 - Glue crawler and ETL pattern
 - Athena query layer
+- ENTSOG gas ingestion, curated Parquet, Glue Catalog table, Athena query, and validation evidence
+- ENTSOG gas context cards and pointDirection table in the React dashboard
 - React dashboard
 - local evidence generation under `docs/evidence/`
 
 Local MVP extension:
 
 - RSS/news ingestion evidence
+- public-safe market-news article grid for gas and electricity context
 - JSON contracts for energy, news, AI insight, and dashboard snapshot outputs
 - local AI input bundle
 - deterministic AI-style merge
@@ -65,9 +68,20 @@ Target AWS extension:
 
 - Walkthrough: `docs/demo-walkthrough.md`
 - Screenshot: `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
+- Tabbed dashboard screenshots:
+  - `docs/evidence/screenshots/dashboard-energy-overview-tabs-20260507.png`
+  - `docs/evidence/screenshots/dashboard-power-tab-20260507.png`
+  - `docs/evidence/screenshots/dashboard-gas-tab-20260507.png`
+  - `docs/evidence/screenshots/dashboard-gas-tab-7day-trends-20260507.png`
 - PR/implementation summary: `docs/pr-description.md`
 - Public dashboard snapshot: `dashboard-ui/public/dashboard_snapshot_v1.sample.json`
+- Expanded news refresh evidence: `docs/evidence/news-refresh-expanded-20260507.md`
 - AI insight evidence: `docs/evidence/curated/ai_insight_v1.sample.json`
+- ENTSOG gas run evidence: `docs/evidence/run-entsog-gas-20260506.md`
+- ENTSOG gas Athena validation: `docs/evidence/athena-gas-schema-20260506.md`
+- ENTSOG gas query summary: `docs/evidence/athena-gas-query-summary-20260506.md`
+- ENTSOG gas dashboard evidence: `docs/evidence/phase7-dashboard-gas-20260507.md`
+- ENTSOG gas 7-day trend evidence: `docs/evidence/gas-7day-trend-20260507.md`
 
 Run the local evidence pipeline:
 
@@ -108,6 +122,7 @@ http://127.0.0.1:5173/
 - controlled AI output
 - failure handling and evidence
 - cost-conscious serverless design
+- end-to-end gas lakehouse proof from selected ENTSOG pointDirections to Athena validation
 - practical frontend dashboard delivery
 - clear local-to-cloud migration path
 
@@ -116,13 +131,14 @@ http://127.0.0.1:5173/
 - The news + AI path is implemented as a local MVP, not yet deployed as AWS orchestration.
 - The current AI merge is deterministic local logic, not live OpenClaw or Bedrock.
 - Demo energy evidence may be stale and is labelled as local demo evidence.
-- ENTSOG gas remains a target extension for full curated gas analytics.
+- ENTSOG gas is rendered in the React dashboard context, but not added to the public AI snapshot contract.
+- Terraform has been scaffolded and locally validated, but existing AWS resources still need to be imported into Terraform state before Terraform should manage them.
 
 ## Next Steps
 
-1. Refresh live energy data before any public demo.
-2. Select a small ENTSOG pointDirection set with `hasData=true`.
-3. Implement curated gas parsing and Athena queries.
+1. Import the existing AWS resources into Terraform state, then review `terraform plan`.
+2. Refresh live electricity and gas evidence before any public demo.
+3. Decide whether gas should later be included in the public AI snapshot contract.
 4. Move the local news + AI pipeline into Step Functions.
 5. Add SNS/CloudWatch notifications for validation failures.
 6. Publish the dashboard through CloudFront/S3.

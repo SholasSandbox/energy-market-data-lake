@@ -12,6 +12,11 @@ __pycache__/
 *.tfstate
 *.tfstate.*
 .terraform/
+**/.terraform/
+**/terraform.tfvars
+**/terraform.tfvars.json
+**/backend.hcl
+**/tfplan
 
 # Python caches
 .pytest_cache/
@@ -27,6 +32,7 @@ dashboard-ui/.vite/
 # Local demo outputs
 docs/evidence/*.html
 docs/evidence/run-*.md
+!docs/evidence/run-entsog-gas-*.md
 docs/evidence/run-summary-*.md
 docs/evidence/athena-run-*.md
 docs/evidence/athena-schema-*.md

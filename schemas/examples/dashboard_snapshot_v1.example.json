@@ -34,6 +34,17 @@
       ]
     }
   ],
+  "news_articles": [
+    {
+      "publisher": "Example Energy News",
+      "title": "GB power prices elevated alongside gas supply concern",
+      "url": "https://example.com/article",
+      "published_at": "2026-05-01T00:00:00Z",
+      "summary": "Example public-safe article summary linking wider energy market context to current movements.",
+      "topics": ["power_prices", "gas_supply"],
+      "regions": ["gb"]
+    }
+  ],
   "data_quality": {
     "status": "watch",
     "checks": [

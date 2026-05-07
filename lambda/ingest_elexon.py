@@ -71,6 +71,15 @@ def handler(event, context):
     if backfill_days < 1:
         raise ValueError("BACKFILL_DAYS must be >= 1")
 
+    requested_date = None
+    if isinstance(event, dict):
+        requested_date = event.get("date") or event.get("ingest_date")
+    requested_date = requested_date or os.environ.get("INGEST_DATE")
+    if requested_date:
+        dates = [datetime.strptime(requested_date, "%Y-%m-%d").date()]
+    else:
+        dates = [(now - timedelta(days=day_offset)).date() for day_offset in range(backfill_days)]
+
     # Lazy import to keep local testing simple
     import boto3  # noqa: WPS433
 
@@ -78,8 +87,7 @@ def handler(event, context):
     s3_keys = []
     warnings = []
     # Backfill window (default 30 days) for UK demand by bidding zone + system prices.
-    for day_offset in range(backfill_days):
-        day = (now - timedelta(days=day_offset)).date()
+    for day in dates:
         date_str = day.strftime("%Y-%m-%d")
         start = f"{date_str}T00:00:00.000Z"
         end = f"{date_str}T23:59:59.000Z"
@@ -113,8 +121,7 @@ def handler(event, context):
     entsoe_zones = [z.strip().upper() for z in entsoe_zones if z.strip()]
     if ENTSOE_TOKEN and entsoe_zones:
         try:
-            for day_offset in range(backfill_days):
-                day = (now - timedelta(days=day_offset)).date()
+            for day in dates:
                 date_str = day.strftime("%Y-%m-%d")
                 period_start = day.strftime("%Y%m%d0000")
                 period_end = (day + timedelta(days=1)).strftime("%Y%m%d0000")
@@ -168,15 +175,15 @@ def handler(event, context):
     entsog_period_type = os.environ.get("ENTSOG_PERIOD_TYPE", "day")
     entsog_timezone = os.environ.get("ENTSOG_TIMEZONE", "WET")
     entsog_limit = os.environ.get("ENTSOG_LIMIT", "1000")
+    entsog_include_exemptions = os.environ.get("ENTSOG_INCLUDE_EXEMPTIONS", "0")
 
     if entsog_point_dirs:
-        try:
-            for day_offset in range(backfill_days):
-                day = (now - timedelta(days=day_offset)).date()
-                date_str = day.strftime("%Y-%m-%d")
+        for day in dates:
+            date_str = day.strftime("%Y-%m-%d")
 
-                for pd in entsog_point_dirs:
-                    # Flows (operational datas)
+            for pd in entsog_point_dirs:
+                # Flows (operational datas)
+                try:
                     flow_payload = entsog_query(
                         "operationaldatas",
                         {
@@ -187,6 +194,7 @@ def handler(event, context):
                             "periodType": entsog_period_type,
                             "timeZone": entsog_timezone,
                             "limit": entsog_limit,
+                            "includeExemptions": entsog_include_exemptions,
                         },
                     )
                     flow_key = (
@@ -196,10 +204,16 @@ def handler(event, context):
                     )
                     s3.put_object(Bucket=S3_BUCKET, Key=flow_key, Body=flow_payload)
                     s3_keys.append(flow_key)
+                except Exception as exc:
+                    warnings.append(
+                        "ENTSOG gas_flow ingestion failed for "
+                        f"{pd} {date_str}: {type(exc).__name__}: {exc}"
+                    )
 
-                    # Demand proxy (aggregated data, balancing zones)
+                # Demand proxy from operational allocations at the same point direction.
+                try:
                     demand_payload = entsog_query(
-                        "aggregatedData",
+                        "operationaldatas",
                         {
                             "pointDirection": pd,
                             "from": date_str,
@@ -208,6 +222,7 @@ def handler(event, context):
                             "periodType": entsog_period_type,
                             "timeZone": entsog_timezone,
                             "limit": entsog_limit,
+                            "includeExemptions": entsog_include_exemptions,
                         },
                     )
                     demand_key = (
@@ -217,11 +232,15 @@ def handler(event, context):
                     )
                     s3.put_object(Bucket=S3_BUCKET, Key=demand_key, Body=demand_payload)
                     s3_keys.append(demand_key)
-        except Exception as exc:
-            warnings.append(f"ENTSOG ingestion skipped due to error: {exc}")
+                except Exception as exc:
+                    warnings.append(
+                        "ENTSOG gas_demand ingestion failed for "
+                        f"{pd} {date_str}: {type(exc).__name__}: {exc}"
+                    )
 
     if not s3_keys:
-        raise RuntimeError("No datasets were ingested successfully")
+        warning_text = "; ".join(warnings) if warnings else "no warnings captured"
+        raise RuntimeError(f"No datasets were ingested successfully: {warning_text}")
 
     return {
         "status": "ok" if not warnings else "partial",

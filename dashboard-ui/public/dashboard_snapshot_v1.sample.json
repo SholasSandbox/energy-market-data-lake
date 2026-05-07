@@ -1,61 +1,206 @@
 {
   "schema_version": "dashboard_snapshot_v1",
-  "generated_at": "2026-05-03T21:15:46Z",
+  "generated_at": "2026-05-07T14:45:46Z",
   "metadata": {
     "region": "gb",
-    "latest_date": "2026-03-23",
+    "latest_date": "2026-05-07",
     "data_freshness": "Local demo evidence snapshot; not live market freshness",
     "status": "watch"
   },
   "summary_cards": [
     {
-      "label": "Market Price",
-      "value": "127.05 GBP/MWh",
-      "trend": "From validated energy_input_v1 evidence",
+      "label": "Power Price",
+      "value": "105.17 GBP/MWh",
+      "trend": "From validated power evidence",
       "status": "watch"
     },
     {
-      "label": "Demand",
-      "value": "43,492.00 MW",
-      "trend": "From validated energy_input_v1 evidence",
+      "label": "Power Demand",
+      "value": "25,118.00 MW",
+      "trend": "From validated power evidence",
       "status": "ok"
     },
     {
-      "label": "News Articles",
-      "value": "3",
-      "trend": "Curated RSS summaries available",
+      "label": "Energy News",
+      "value": "18",
+      "trend": "Wider energy-sector RSS context",
       "status": "ok"
     }
   ],
   "insights": [
     {
-      "id": "insight-2026-03-23-gb-001",
-      "title": "GB energy context linked to: BP mulls North Sea sale",
-      "summary": "Validated energy evidence shows demand at 43,492 MW and market price at 127.05 GBP/MWh. Relevant curated news: One of the last remaining super major operators in the UK continental shelf is considering options after UK energy minster Ed Miliband steps back from accusations BP is 'morally wrong'.",
+      "id": "insight-2026-05-07-gb-001",
+      "title": "GB energy news context linked to: Scotland\u2019s economic and industrial future \u2018in the balance\u2019, OEUK chief says",
+      "summary": "Validated power evidence shows demand at 25,118 MW and power price at 105.17 GBP/MWh. Relevant curated news: David Whitehouse urges Holyrood candidates to back North Sea jobs and renewables together.",
       "risk_level": "watch",
       "confidence": 0.85,
       "sources": [
         {
           "label": "elexon - system_buy_price_gbp_mwh",
-          "url": "s3://energy-market-lake-sholasandbox-20260321/curated/curated_dataset_electricity_3d55606ee40ee8a52f504210ea44aa85/date=2026-03-23/"
+          "url": "s3://energy-market-lake-464975959576-20260405/curated/curated_dataset_electricity_e4e5001aa3d13e5189281de35cbc1cb9/date=2026-05-07/"
         },
         {
           "label": "Energy Voice",
-          "url": "https://www.energyvoice.com/oilandgas/north-sea/596906/bp-mulls-north-sea-sale/"
+          "url": "https://www.energyvoice.com/oilandgas/north-sea/597118/scotlands-economic-industrial-future-in-the-balance-oeuk-chief/"
         }
       ]
+    }
+  ],
+  "news_articles": [
+    {
+      "publisher": "Energy Voice",
+      "title": "Scotland\u2019s economic and industrial future \u2018in the balance\u2019, OEUK chief says",
+      "url": "https://www.energyvoice.com/oilandgas/north-sea/597118/scotlands-economic-industrial-future-in-the-balance-oeuk-chief/",
+      "published_at": "2026-05-07T13:06:53Z",
+      "summary": "David Whitehouse urges Holyrood candidates to back North Sea jobs and renewables together.",
+      "topics": [
+        "oil_gas",
+        "renewables"
+      ],
+      "regions": [
+        "eu",
+        "gb"
+      ]
+    },
+    {
+      "publisher": "Energy Voice",
+      "title": "Centrica brings electricity generation capacity to 4GW in \u00a3370m deal",
+      "url": "https://www.energyvoice.com/renewables-energy-transition/597090/centrica-brings-electricity-generation-capacity-to-4gw-in-370m-deal/",
+      "published_at": "2026-05-07T10:40:28Z",
+      "summary": "The asset could be home to hydrogen conversion or carbon capture.",
+      "topics": [
+        "power_supply"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Voice",
+      "title": "Industrial decarbonisation delay putting \u2018billions\u2019 of UK investment at risk, trade bodies warn",
+      "url": "https://www.energyvoice.com/renewables-energy-transition/ccs/uk-ccs/597128/ccsa-hydrogen-uk-urge-industrial-decarbonisation-action-miliband/",
+      "published_at": "2026-05-07T14:26:48Z",
+      "summary": "CCSA, Hydrogen UK and Electrify Industry urge action on industrial decarbonisation strategy.",
+      "topics": [],
+      "regions": [
+        "gb"
+      ]
+    },
+    {
+      "publisher": "Energy Voice",
+      "title": "Deltic Energy backs \u00a37.2m Neo Next+ takeover bid",
+      "url": "https://www.energyvoice.com/oilandgas/north-sea/597114/deltic-energy-north-sea-neo-next-takeover-ukcs/",
+      "published_at": "2026-05-07T11:12:09Z",
+      "summary": "Neo Next+ continues North Sea consolidation with recommended cash acquisition of Deltic Energy.",
+      "topics": [
+        "oil_gas"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "Energy Sector Joins 8-Hour Charity Challenge In Support Of Cash For Kids",
+      "url": "https://www.energylivenews.com/2026/04/21/energy-sector-joins-8-hour-charity-challenge-in-support-of-cash-for-kids/",
+      "published_at": "2026-04-21T14:25:16Z",
+      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/04/MAIN-Image-Feature-Image-Smarta-Energy-150x150.png\" width=\"150\" />Smarta Energy leads 8-hour running fundraiser on Earth Day wit...",
+      "topics": [
+        "power_supply"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Offshore Energy",
+      "title": "NKT\u2019s German cable accessories site becomes its first zero-carbon factory",
+      "url": "https://www.offshore-energy.biz/nkts-german-cable-accessories-site-becomes-its-first-zero-carbon-factory/",
+      "published_at": "2026-05-07T10:57:31Z",
+      "summary": "<p>NKT&#8217;s medium\u2011voltage cable accessories site in Nordenham, Germany, has become its first zero-carbon factory [&#8230;]</p> <p>The post <a href=\"https://www.offshore-energy.biz/nkts-german-cable-accessories-site-becomes-its-first-zero-carbon-factory/\">NKT&#8217;s German...",
+      "topics": [],
+      "regions": [
+        "de"
+      ]
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "Europe\u2019s electricity prices remain tied to gas amid geopolitical risks",
+      "url": "https://www.energylivenews.com/2026/04/21/europes-electricity-prices-remain-tied-to-gas-amid-geopolitical-risks/",
+      "published_at": "2026-04-21T13:00:00Z",
+      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2025/12/Shutterstock_2393210151-150x150.jpg\" width=\"150\" />Gas continues to set electricity prices across Europe, exposing markets to vo...",
+      "topics": [
+        "oil_gas",
+        "power_prices",
+        "power_supply"
+      ],
+      "regions": [
+        "eu"
+      ]
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "Pacific nations unite to accelerate fossil fuel phase-out and cut emissions",
+      "url": "https://www.energylivenews.com/2026/04/21/pacific-nations-unite-to-accelerate-fossil-fuel-phase-out-and-cut-emissions/",
+      "published_at": "2026-04-21T14:00:00Z",
+      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/04/shutterstock_1732426456-150x150.jpg\" width=\"150\" />Pacific nations push global fossil fuel phase-out to cut emissions</p> <p>The...",
+      "topics": [
+        "power_supply"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Factor This\u2122",
+      "title": "Stonepeak, Bernhard look to nab a regulated utility in latest acquisition",
+      "url": "https://www.renewableenergyworld.com/energy-business/stonepeak-bernhard-look-to-nab-a-regulated-utility-in-latest-acquisition/",
+      "published_at": "2026-05-06T17:40:31Z",
+      "summary": "Cleco, a Louisiana utility with 298,000 customers, will be acquired by Stonepeak and Bernhard Capital Partners, pending regulatory approvals.",
+      "topics": [
+        "policy"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Power Technology",
+      "title": "Scatec and NBE sign agreement for equity partnership in Obelisk project",
+      "url": "https://www.power-technology.com/news/scatec-nbe-agreement-obelisk/",
+      "published_at": "2026-05-07T07:50:45Z",
+      "summary": "Scatec and the NBE have signed an equity partnership agreement for the company\u2019s Obelisk solar and battery storage project.",
+      "topics": [
+        "gas_supply",
+        "renewables"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "Bugs in hot springs could clean up industry\u2026",
+      "url": "https://www.energylivenews.com/2026/04/21/bugs-in-hot-springs-could-clean-up-industry/",
+      "published_at": "2026-04-21T12:00:00Z",
+      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/04/Shutterstock_2671495445-150x150.jpg\" width=\"150\" />Microbes in nature's hot springs can not only capture CO2 in industry but mak...",
+      "topics": [
+        "power_supply"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Offshore Energy",
+      "title": "Excelerate Energy\u2019s FSRU finds job at Jordan\u2019s LNG terminal ahead of Iraq gig",
+      "url": "https://www.offshore-energy.biz/excelerate-energys-fsru-finds-job-at-jordans-lng-terminal-ahead-of-iraq-gig/",
+      "published_at": "2026-05-07T13:52:54Z",
+      "summary": "<p>Excelerate Energy, a U.S.-based liquefied natural gas (LNG) and power infrastructure company headquartered in Texas, has secured a new assignment for its newbuild floating storage regasification unit (FSRU) at an LNG terminal in Jordan. </p> <p>The post <a href=\"https://www...",
+      "topics": [
+        "gas_supply",
+        "oil_gas",
+        "power_supply"
+      ],
+      "regions": []
     }
   ],
   "data_quality": {
     "status": "ok",
     "checks": [
       {
-        "label": "Energy contract",
+        "label": "Power evidence contract",
         "status": "ok",
-        "detail": "Publisher input came from local demo energy_input_v1 evidence."
+        "detail": "Publisher metric input came from local demo power-focused energy_input_v1 evidence."
       },
       {
-        "label": "News contract",
+        "label": "Energy news contract",
         "status": "ok",
         "detail": "Publisher input came from local demo curated news_summary_v1 evidence."
       },

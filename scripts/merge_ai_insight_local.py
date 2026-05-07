@@ -85,10 +85,10 @@ def build_ai_insight(bundle: dict) -> dict:
         "insights": [
             {
                 "id": f"insight-{latest_date}-{region}-001",
-                "title": f"{region.upper()} energy context linked to: {article.get('title', 'curated news')}",
+                "title": f"{region.upper()} energy news context linked to: {article.get('title', 'curated news')}",
                 "summary": (
-                    f"Validated energy evidence shows demand at {demand:,.0f} MW "
-                    f"and market price at {price:,.2f} GBP/MWh. "
+                    f"Validated power evidence shows demand at {demand:,.0f} MW "
+                    f"and power price at {price:,.2f} GBP/MWh. "
                     f"Relevant curated news: {article.get('summary', 'No summary available')}"
                 ),
                 "region": region,
