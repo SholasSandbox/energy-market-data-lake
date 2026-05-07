@@ -45,8 +45,75 @@ button {
   border: 1px solid rgba(157, 179, 198, 0.36);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(247, 250, 252, 0.95));
   box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
+
+.pct-w-0 { width: 0%; }
+.pct-w-5 { width: 5%; }
+.pct-w-10 { width: 10%; }
+.pct-w-15 { width: 15%; }
+.pct-w-20 { width: 20%; }
+.pct-w-25 { width: 25%; }
+.pct-w-30 { width: 30%; }
+.pct-w-35 { width: 35%; }
+.pct-w-40 { width: 40%; }
+.pct-w-45 { width: 45%; }
+.pct-w-50 { width: 50%; }
+.pct-w-55 { width: 55%; }
+.pct-w-60 { width: 60%; }
+.pct-w-65 { width: 65%; }
+.pct-w-70 { width: 70%; }
+.pct-w-75 { width: 75%; }
+.pct-w-80 { width: 80%; }
+.pct-w-85 { width: 85%; }
+.pct-w-90 { width: 90%; }
+.pct-w-95 { width: 95%; }
+.pct-w-100 { width: 100%; }
+
+.pct-left-0 { left: 0%; }
+.pct-left-5 { left: 5%; }
+.pct-left-10 { left: 10%; }
+.pct-left-15 { left: 15%; }
+.pct-left-20 { left: 20%; }
+.pct-left-25 { left: 25%; }
+.pct-left-30 { left: 30%; }
+.pct-left-35 { left: 35%; }
+.pct-left-40 { left: 40%; }
+.pct-left-45 { left: 45%; }
+.pct-left-50 { left: 50%; }
+.pct-left-55 { left: 55%; }
+.pct-left-60 { left: 60%; }
+.pct-left-65 { left: 65%; }
+.pct-left-70 { left: 70%; }
+.pct-left-75 { left: 75%; }
+.pct-left-80 { left: 80%; }
+.pct-left-85 { left: 85%; }
+.pct-left-90 { left: 90%; }
+.pct-left-95 { left: 95%; }
+.pct-left-100 { left: 100%; }
+
+.pct-h-0 { height: 0%; }
+.pct-h-5 { height: 5%; }
+.pct-h-10 { height: 10%; }
+.pct-h-15 { height: 15%; }
+.pct-h-20 { height: 20%; }
+.pct-h-25 { height: 25%; }
+.pct-h-30 { height: 30%; }
+.pct-h-35 { height: 35%; }
+.pct-h-40 { height: 40%; }
+.pct-h-45 { height: 45%; }
+.pct-h-50 { height: 50%; }
+.pct-h-55 { height: 55%; }
+.pct-h-60 { height: 60%; }
+.pct-h-65 { height: 65%; }
+.pct-h-70 { height: 70%; }
+.pct-h-75 { height: 75%; }
+.pct-h-80 { height: 80%; }
+.pct-h-85 { height: 85%; }
+.pct-h-90 { height: 90%; }
+.pct-h-95 { height: 95%; }
+.pct-h-100 { height: 100%; }
 
 .topbar {
   display: grid;

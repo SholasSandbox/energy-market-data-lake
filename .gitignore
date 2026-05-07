@@ -39,4 +39,5 @@ docs/evidence/athena-schema-*.md
 
 # IDE files
 .idea/
-.vscode/
+.vscode/*
+!.vscode/settings.json
