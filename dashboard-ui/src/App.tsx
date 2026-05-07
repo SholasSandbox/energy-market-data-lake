@@ -178,14 +178,25 @@ function Header({
       <div className="hero-copy">
         <div className="hero-title-row">
           <h1>Energy Market Data Lake &amp; Analytics Platform</h1>
-          <button
-            type="button"
-            className="hero-toggle"
-            onClick={onToggleHeaderNarrative}
-            aria-expanded={showHeaderNarrative}
-          >
-            {showHeaderNarrative ? "Hide context" : "Show context"}
-          </button>
+          {showHeaderNarrative ? (
+            <button
+              type="button"
+              className="hero-toggle"
+              onClick={onToggleHeaderNarrative}
+              aria-expanded="true"
+            >
+              Hide context
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="hero-toggle"
+              onClick={onToggleHeaderNarrative}
+              aria-expanded="false"
+            >
+              Show context
+            </button>
+          )}
         </div>
         {showHeaderNarrative ? (
           <p>
@@ -461,7 +472,7 @@ function PowerMarketContextSection({
         note="Electricity-only Elexon and ENTSO-E signals. ENTSOG gas metrics are intentionally absent from these cards."
         chip="context panels"
       />
-      <div className="market-region-row" role="tablist" aria-label="Power market regions">
+      <div className="market-region-row" role="group" aria-label="Power market regions">
         {availableMarketRegions.map((region) => (
           <button
             key={region}
@@ -829,8 +840,9 @@ function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
                 </div>
                 <div className="pnl-driver-track">
                   <div
-                    className={`pnl-driver-fill ${bar.tone === "loss" ? "pnl-driver-fill-loss" : ""}`}
-                    style={{ width: `${widthPct}%` }}
+                    className={`pnl-driver-fill ${percentStepClass("pct-w", widthPct)} ${
+                      bar.tone === "loss" ? "pnl-driver-fill-loss" : ""
+                    }`}
                   />
                 </div>
               </div>
@@ -865,11 +877,12 @@ function CoverageChart({ points }: { points: CoveragePoint[] }) {
           <div key={point.label} className="coverage-row">
             <div className="coverage-label">{point.label}</div>
             <div className="coverage-track">
-              <div className="coverage-band-marker coverage-band-min" style={{ left: `${point.targetMin}%` }} />
-              <div className="coverage-band-marker coverage-band-max" style={{ left: `${point.targetMax}%` }} />
+              <div className={`coverage-band-marker coverage-band-min ${percentStepClass("pct-left", point.targetMin)}`} />
+              <div className={`coverage-band-marker coverage-band-max ${percentStepClass("pct-left", point.targetMax)}`} />
               <div
-                className={`coverage-fill ${point.flagged ? "coverage-fill-flagged" : ""}`}
-                style={{ width: `${Math.max(point.value, 6)}%` }}
+                className={`coverage-fill ${percentStepClass("pct-w", Math.max(point.value, 6))} ${
+                  point.flagged ? "coverage-fill-flagged" : ""
+                }`}
               />
             </div>
             <div className="coverage-value">{point.value.toFixed(0)}%</div>
@@ -891,8 +904,8 @@ function ExposureChart({ points }: { points: ExposurePoint[] }) {
           <div key={point.label} className="stack-row">
             <div className="stack-label">{point.label}</div>
             <div className="stack-track">
-              <div className="stack-hedged" style={{ width: `${point.hedged}%` }} />
-              <div className="stack-open" style={{ width: `${point.open}%` }} />
+              <div className={`stack-hedged ${percentStepClass("pct-w", point.hedged)}`} />
+              <div className={`stack-open ${percentStepClass("pct-w", point.open)}`} />
             </div>
           </div>
         ))}
@@ -978,10 +991,12 @@ function DataQualityView({ checks }: { checks: QualityCheck[] }) {
                 {check.series.map((value, index) => (
                   <div
                     key={`${check.label}-${index}`}
-                    className={`quality-bar ${
+                    className={`quality-bar ${percentStepClass(
+                      "pct-h",
+                      Math.max((value / Math.max(check.expected, 1)) * 100, 12),
+                    )} ${
                       value < check.expected ? "quality-bar-gap" : ""
                     }`}
-                    style={{ height: `${Math.max((value / Math.max(check.expected, 1)) * 100, 12)}%` }}
                     title={`${value}/${check.expected}`}
                   />
                 ))}
@@ -1031,6 +1046,11 @@ function DataQualityView({ checks }: { checks: QualityCheck[] }) {
       </section>
     </>
   );
+}
+
+function percentStepClass(prefix: "pct-w" | "pct-left" | "pct-h", value: number) {
+  const clamped = Math.min(100, Math.max(0, Math.ceil(value / 5) * 5));
+  return `${prefix}-${clamped}`;
 }
 
 function SparklineChart({ series }: { series: MarketSeries[] }) {
