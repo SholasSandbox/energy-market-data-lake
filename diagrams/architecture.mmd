@@ -1,9 +1,10 @@
 flowchart TD
     User["Analyst / Demo Queries"] --> Athena[Athena]
-    Athena --> S3Curated["S3 Curated (Parquet)"]
+    Athena --> GlueCatalog[Glue Data Catalog]
+    GlueCatalog --> S3Curated["S3 Curated (Parquet)\nelectricity + ENTSOG gas"]
 
-    S3Raw["S3 Raw (JSON/CSV)"] --> GlueCrawler[Glue Crawler]
-    GlueCrawler --> GlueCatalog[Glue Data Catalog]
+    S3Raw["S3 Raw (JSON/CSV)\nElexon / ENTSO-E / ENTSOG"] --> GlueCrawler[Glue Crawler]
+    GlueCrawler --> GlueCatalog
     GlueETL[Glue ETL Job] --> S3Curated
 
     EventBridge["EventBridge Schedule"] --> Lambda["Lambda Ingestion"]
@@ -11,4 +12,4 @@ flowchart TD
 
     Elexon["Elexon API (UK power)"] --> Lambda
     Entsoe["ENTSO-E API (EU power)"] --> Lambda
-    Entsog["ENTSOG API (EU gas)"] --> Lambda
+    Entsog["ENTSOG API (EU gas)\nPhysical Flow + Allocation"] --> Lambda

@@ -1,0 +1,187 @@
+{
+    "ResultSet": {
+        "Rows": [
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "date"
+                    },
+                    {
+                        "VarCharValue": "points"
+                    },
+                    {
+                        "VarCharValue": "flow_rows"
+                    },
+                    {
+                        "VarCharValue": "demand_rows"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-05"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-04"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-03"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-02"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-01"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-04-30"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-04-29"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    },
+                    {
+                        "VarCharValue": "4"
+                    }
+                ]
+            }
+        ],
+        "ResultSetMetadata": {
+            "ColumnInfo": [
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "date",
+                    "Label": "date",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "points",
+                    "Label": "points",
+                    "Type": "bigint",
+                    "Precision": 19,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": false
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "flow_rows",
+                    "Label": "flow_rows",
+                    "Type": "bigint",
+                    "Precision": 19,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": false
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "demand_rows",
+                    "Label": "demand_rows",
+                    "Type": "bigint",
+                    "Precision": 19,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": false
+                }
+            ]
+        }
+    },
+    "UpdateCount": 0
+}

@@ -1,0 +1,193 @@
+{
+    "ResultSet": {
+        "Rows": [
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "date"
+                    },
+                    {
+                        "VarCharValue": "point_direction"
+                    },
+                    {
+                        "VarCharValue": "point_label"
+                    },
+                    {
+                        "VarCharValue": "direction_key"
+                    },
+                    {
+                        "VarCharValue": "total_flow_kwh_d"
+                    },
+                    {
+                        "VarCharValue": "total_demand_kwh_d"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-05"
+                    },
+                    {
+                        "VarCharValue": "BE-TSO-0001ITP-00061entry"
+                    },
+                    {
+                        "VarCharValue": "Zeebrugge IZT"
+                    },
+                    {
+                        "VarCharValue": "entry"
+                    },
+                    {
+                        "VarCharValue": "1.83137952E8"
+                    },
+                    {
+                        "VarCharValue": "1.84904242E8"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-05"
+                    },
+                    {
+                        "VarCharValue": "BE-TSO-0001ITP-00115exit"
+                    },
+                    {
+                        "VarCharValue": "Blaregnies L (BE) / Taisnières B (FR)"
+                    },
+                    {
+                        "VarCharValue": "exit"
+                    },
+                    {
+                        "VarCharValue": "5.8480083E7"
+                    },
+                    {
+                        "VarCharValue": "5.85E7"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-05"
+                    },
+                    {
+                        "VarCharValue": "BE-TSO-0001ITP-00555exit"
+                    },
+                    {
+                        "VarCharValue": "VIP BENE"
+                    },
+                    {
+                        "VarCharValue": "exit"
+                    },
+                    {
+                        "VarCharValue": "2.75877915E8"
+                    },
+                    {
+                        "VarCharValue": "2.82350614E8"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "2026-05-05"
+                    },
+                    {
+                        "VarCharValue": "CZ-TSO-0001ITP-00537entry"
+                    },
+                    {
+                        "VarCharValue": "VIP Brandov"
+                    },
+                    {
+                        "VarCharValue": "entry"
+                    },
+                    {
+                        "VarCharValue": "2.66496575E8"
+                    },
+                    {
+                        "VarCharValue": "2.64362176E8"
+                    }
+                ]
+            }
+        ],
+        "ResultSetMetadata": {
+            "ColumnInfo": [
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "date",
+                    "Label": "date",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "point_direction",
+                    "Label": "point_direction",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "point_label",
+                    "Label": "point_label",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "direction_key",
+                    "Label": "direction_key",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "total_flow_kwh_d",
+                    "Label": "total_flow_kwh_d",
+                    "Type": "double",
+                    "Precision": 17,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": false
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "total_demand_kwh_d",
+                    "Label": "total_demand_kwh_d",
+                    "Type": "double",
+                    "Precision": 17,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": false
+                }
+            ]
+        }
+    },
+    "UpdateCount": 0
+}
