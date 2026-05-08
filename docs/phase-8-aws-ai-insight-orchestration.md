@@ -1,0 +1,306 @@
+# Phase 8: AWS AI Insight Orchestration
+
+Use this plan to move the local news and AI insight MVP into an AWS-managed
+workflow without introducing Bedrock or OpenClaw before the orchestration and
+validation boundary is proven.
+
+## Goal
+
+Operationalize the existing local news and AI insight flow as a scheduled,
+observable AWS workflow:
+
+```text
+Athena energy export
+  -> RSS/news ingest
+  -> contract validation
+  -> AI input bundle
+  -> deterministic AI insight merge
+  -> ai_insight_v1 validation
+  -> public dashboard snapshot publish
+  -> audit, failed, CloudWatch, and SNS paths
+```
+
+The important portfolio hook is not "AI generated text"; it is controlled AI
+orchestration with schema gates, quarantine, auditability, and a safe public
+publish boundary.
+
+## Branch
+
+```text
+feature/aws-ai-insight-orchestration
+```
+
+## Scope Boundary
+
+In scope for Phase 8:
+
+- AWS orchestration for the existing local news and deterministic AI merge path.
+- S3-backed inputs, outputs, failed payloads, and audit evidence.
+- Step Functions workflow with retries and catch paths.
+- CloudWatch logs and SNS notifications for failure events.
+- Dashboard snapshot publish to a public-safe prefix.
+- Documentation and evidence for rebuild/demo.
+
+Deferred until after Phase 8:
+
+- Bedrock `InvokeModel`.
+- OpenClaw on ECS/Fargate or another managed runtime.
+- Multi-agent orchestration.
+- Fine-tuning.
+- Publishing raw model text directly to the dashboard.
+
+## Current Local Producers
+
+- Generate dashboard data:
+  - Script: `scripts/generate_dashboard.py`
+  - Output: `dashboard-ui/public/dashboard-data.json`
+- Export energy input:
+  - Script: `scripts/export_energy_input_local.py`
+  - Output: `docs/evidence/energy_input_v1.sample.json`
+- Ingest curated news:
+  - Script: `scripts/ingest_news_local.py`
+  - Output: `docs/evidence/curated/news_summary_v1.sample.json`
+- Create AI input bundle:
+  - Script: `scripts/create_ai_input_bundle_local.py`
+  - Output: `docs/evidence/ai/ai_input_bundle_v1.sample.json`
+- Merge AI insight:
+  - Script: `scripts/merge_ai_insight_local.py`
+  - Output: `docs/evidence/curated/ai_insight_v1.sample.json`
+- Publish dashboard snapshot:
+  - Script: `scripts/publish_dashboard_snapshot_local.py`
+  - Output: `dashboard-ui/public/dashboard_snapshot_v1.sample.json`
+- Validate contracts:
+  - Script: `scripts/validate_contracts.py`
+  - Output: pass/fail for good and known-bad samples
+
+## Target AWS Data Contracts
+
+- `energy_input_v1.json`
+  - Location: `curated/dataset=energy_input/run_id=<run_id>/payload.json`
+  - Producer: Athena export Lambda
+  - Consumer: AI bundle Lambda
+- `news_summary_v1.json`
+  - Location: `curated/dataset=news_summary/run_id=<run_id>/payload.json`
+  - Producer: news ingest Lambda
+  - Consumer: AI bundle Lambda
+- `ai_input_bundle_v1.json`
+  - Location: `curated/dataset=ai_input_bundle/run_id=<run_id>/payload.json`
+  - Producer: AI bundle Lambda
+  - Consumer: AI merge Lambda
+- `ai_insight_v1.json`
+  - Location: `curated/dataset=ai_insight/run_id=<run_id>/payload.json`
+  - Producer: deterministic AI merge Lambda
+  - Consumer: publisher Lambda
+- `dashboard_snapshot_v1.json`
+  - Location: `public/dashboard/dashboard_snapshot_v1.json`
+  - Producer: publisher Lambda
+  - Consumer: React dashboard
+
+Failure and audit paths:
+
+```text
+s3://<lake-bucket>/failed/component=<component>/run_id=<run_id>/payload.json
+s3://<lake-bucket>/audit/workflow=ai_insight/run_id=<run_id>/summary.json
+```
+
+## Target AWS Workflow
+
+```text
+EventBridge schedule or manual execution
+  -> Step Functions state machine
+    -> ExportEnergyInput
+    -> IngestNewsSummary
+    -> ValidateInputs
+    -> CreateAiInputBundle
+    -> MergeAiInsightDeterministic
+    -> ValidateAiInsight
+    -> PublishDashboardSnapshot
+    -> WriteAuditSuccess
+
+Any failed validation or runtime error:
+  -> WriteFailedPayload
+  -> PublishSnsFailure
+  -> KeepPreviousGoodDashboardSnapshot
+```
+
+## Implementation Checklist With Time Estimates
+
+### 1. Phase 8 Design Lock
+
+Estimate: 0.5 day
+
+- [ ] Confirm the branch starts from clean `main`.
+- [ ] Review current local script inputs and outputs.
+- [ ] Lock S3 prefixes, run ID format, and state-machine payload shape.
+- [ ] Decide whether dashboard output reuses the lake bucket or a separate
+      public/static bucket.
+- [ ] Record environment variables and Terraform variables.
+
+Acceptance:
+
+- This plan is committed and points to concrete local scripts and AWS paths.
+
+### 2. Shared Runtime Utilities
+
+Estimate: 1 day
+
+- [ ] Add shared S3 JSON read/write helpers.
+- [ ] Add run ID generation helper.
+- [ ] Add contract validation helper usable by Lambda handlers.
+- [ ] Refactor local scripts only where needed so local and AWS paths share
+      business logic.
+- [ ] Preserve local demo commands.
+
+Acceptance:
+
+- Existing local scripts still run.
+- `python -m compileall scripts lambda glue` passes.
+- Contract validation still passes.
+
+### 3. Lambda Handler Slice
+
+Estimate: 1.5-2 days
+
+- [ ] Add `lambda/news_ai_orchestration.py` or a small handler package.
+- [ ] Implement `ExportEnergyInput` handler.
+- [ ] Implement `IngestNewsSummary` handler.
+- [ ] Implement `CreateAiInputBundle` handler.
+- [ ] Implement `MergeAiInsightDeterministic` handler.
+- [ ] Implement `PublishDashboardSnapshot` handler.
+- [ ] Add handler-level structured output for Step Functions.
+
+Acceptance:
+
+- Each handler can be invoked locally with a sample event.
+- Each handler writes the expected S3 key when configured for AWS.
+
+### 4. Validation And Quarantine Slice
+
+Estimate: 1 day
+
+- [ ] Validate `energy_input_v1`.
+- [ ] Validate `news_summary_v1`.
+- [ ] Validate `ai_input_bundle_v1`.
+- [ ] Validate `ai_insight_v1`.
+- [ ] Validate `dashboard_snapshot_v1`.
+- [ ] Write invalid payloads to `failed/`.
+- [ ] Preserve the previous good public dashboard snapshot on failure.
+- [ ] Add failure reason, component, schema name, and run ID to failed records.
+
+Acceptance:
+
+- A known-bad AI output is rejected.
+- No invalid output reaches the dashboard publish location.
+
+### 5. Terraform Foundation
+
+Estimate: 1-1.5 days
+
+- [ ] Add or extend S3 prefix conventions for curated, failed, audit, and public
+      dashboard outputs.
+- [ ] Add Lambda IAM permissions for required S3 prefixes.
+- [ ] Add Athena query permissions for energy export if needed.
+- [ ] Add CloudWatch log groups with retention.
+- [ ] Add SNS topic for failure notifications.
+- [ ] Add Step Functions execution role.
+- [ ] Keep a new S3 bucket optional; default to existing lake bucket.
+
+Acceptance:
+
+- `terraform fmt` passes.
+- `terraform validate` passes after initialization.
+- Plan output is documented before apply.
+
+### 6. Step Functions Orchestration
+
+Estimate: 1-1.5 days
+
+- [ ] Add state machine definition.
+- [ ] Wire Lambda task states.
+- [ ] Add retry policies for RSS/network and Athena steps.
+- [ ] Add catch paths to write failed payloads and publish SNS notifications.
+- [ ] Add EventBridge schedule, initially disabled or manual-only.
+- [ ] Add manual execution command to docs.
+
+Acceptance:
+
+- Manual Step Functions execution completes successfully.
+- A forced validation failure routes to failed/SNS path.
+
+### 7. Public Dashboard Publish
+
+Estimate: 0.5-1 day
+
+- [ ] Publish only `dashboard_snapshot_v1.json` and approved static assets.
+- [ ] If CloudFront is included, add cache behavior that does not trap stale JSON.
+- [ ] Confirm the React dashboard reads only public-safe snapshot data.
+- [ ] Add a smoke test for dashboard JSON availability.
+
+Acceptance:
+
+- Public dashboard snapshot returns HTTP 200.
+- Private raw, curated, failed, and audit paths are not exposed.
+
+### 8. Evidence And Docs Closeout
+
+Estimate: 0.5-1 day
+
+- [ ] Capture successful state-machine execution evidence.
+- [ ] Capture failed validation evidence.
+- [ ] Capture S3 output key evidence.
+- [ ] Capture CloudWatch/SNS evidence.
+- [ ] Update `README.md`.
+- [ ] Update `docs/setup.md`.
+- [ ] Update `docs/demo-walkthrough.md`.
+- [ ] Add Phase 8 closeout evidence under `docs/evidence/`.
+
+Acceptance:
+
+- Demo can explain the AI orchestration boundary in under two minutes.
+- Rebuild/setup docs contain the exact AWS CLI and Terraform commands used.
+
+## Estimated Effort
+
+Minimum useful Phase 8:
+
+```text
+5-7 working days
+```
+
+Portfolio-grade Phase 8 with evidence and docs:
+
+```text
+8-12 working days
+```
+
+Defer until Phase 9 or later:
+
+```text
+Bedrock InvokeModel: +2-4 working days
+OpenClaw managed runtime: +3-5 working days
+```
+
+## Token-Saving Execution Slices
+
+Use these as PR-sized implementation chunks:
+
+1. Design lock and S3 contract doc.
+2. Shared runtime utilities and local compatibility.
+3. Lambda handlers.
+4. Validation and quarantine.
+5. Terraform IAM/SNS/logs/Step Functions.
+6. Manual AWS execution evidence.
+7. Public dashboard publish and docs closeout.
+
+## Phase 8 Done Gate
+
+Phase 8 is complete when:
+
+- The AWS workflow can run manually through Step Functions.
+- Energy input, news summary, AI bundle, AI insight, and dashboard snapshot are
+  all produced as S3-backed JSON contracts.
+- Invalid AI output is quarantined and does not publish.
+- The previous good dashboard snapshot remains available after failure.
+- CloudWatch logs and SNS notification evidence exist.
+- The React dashboard consumes only the approved public snapshot.
+- Setup and demo docs can recreate the workflow.

@@ -363,6 +363,7 @@ python3 scripts/validate_athena_schema.py \
 - `infra/terraform/lakehouse/README.md`: Terraform rebuild path with S3 remote backend and optional data bucket creation.
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
+- `docs/phase-8-aws-ai-insight-orchestration.md`: active plan for moving the local news + AI insight flow into AWS orchestration.
 - `docs/demo-walkthrough.md`: concise demo script for the local MVP and target architecture story.
 - `docs/news-dashboard-merged-execution-model.md`: 4-week news + AI + dashboard expansion plan.
 
@@ -392,9 +393,9 @@ These are historical references, not the current delivery path.
 1. Keep the local pipeline reproducible with schema validation and failure checks.
 2. Keep the React dashboard focused on approved `dashboard_snapshot_v1.sample.json`.
 3. Operationalize ENTSO-E electricity more reliably.
-4. Decide whether gas metrics should enter the public AI snapshot contract after the React dashboard proof.
+4. Execute Phase 8 AWS AI insight orchestration with deterministic merge first.
 5. Import or recreate the AWS lakehouse resources through Terraform after reviewing the import plan.
-6. Move the local news + AI merge flow into AWS orchestration only after the local MVP stays stable.
+6. Decide whether gas metrics should enter the public AI snapshot contract after the orchestration boundary is proven.
 
 ## Notes
 
