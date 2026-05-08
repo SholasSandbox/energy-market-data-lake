@@ -6,10 +6,11 @@ Source of truth for this plan:
 - `docs/four-week-project-plan.md` for the delivery-focused 4-week MVP plan
 - `dashboard-ui/src/App.tsx` for current React implementation reality
 - `docs/dashboard-ia-spec.md` for the next dashboard design direction
+- `docs/phase-8-aws-ai-insight-orchestration.md` for the current AWS AI orchestration phase
 
 ## Current Baseline
 
-The repo already shows a strong end-to-end electricity demo:
+The repo now shows a strong end-to-end mixed-energy demo:
 
 - scheduled ingestion with EventBridge -> Lambda
 - raw landing in S3
@@ -17,12 +18,16 @@ The repo already shows a strong end-to-end electricity demo:
 - Athena query layer
 - generated dashboard outputs
 - React + TypeScript dashboard scaffold
+- ENTSOG gas raw ingestion, curated Parquet, Glue Catalog, Athena validation,
+  and dashboard context
+- local RSS/news evidence, deterministic AI insight merge, schema validation,
+  and public-safe dashboard snapshot
 
-The current implementation is still uneven across domains and UI depth:
+The current implementation boundary is:
 
-- electricity is the clearest implemented path
-- gas is part of the README target model, but should be treated as the next major platform extension
-- the React app exposes navigation for `Overview`, `Portfolio Risk`, `Market Context`, and `Data Quality`, but only `Overview` and `Data Quality` have meaningful implementation today
+- electricity and gas are proven through the lakehouse/dashboard path
+- news and AI insight are implemented as a local MVP
+- AWS orchestration for the news and AI insight flow is the next active phase
 
 ## Delivery Order
 
@@ -117,13 +122,41 @@ The React app already treats `Data Quality` as a distinct view. After ingestion 
 - surface latest successful ingestion, crawler, ETL, and dashboard-generation timestamps
 - make quality status easier to compare across electricity and gas
 
+### Phase 8: AWS AI Insight Orchestration
+
+Goal: move the local news and deterministic AI insight MVP into AWS
+orchestration without introducing Bedrock or OpenClaw before the validation
+boundary is proven.
+
+Working checklist: `docs/phase-8-aws-ai-insight-orchestration.md`
+
+Focus:
+
+- convert local news, energy input, AI bundle, AI merge, validation, and
+  dashboard publish steps into S3-backed AWS workflow steps
+- orchestrate the workflow with Step Functions
+- quarantine invalid AI output before publish
+- keep the previous good dashboard snapshot available after failures
+- add CloudWatch logs and SNS failure notifications
+- capture evidence and setup commands for rebuild/demo
+
+Definition of done:
+
+- Step Functions can run the workflow manually
+- S3 contains contract-shaped energy input, news summary, AI bundle, AI insight,
+  dashboard snapshot, audit, and failed-path outputs
+- invalid AI output does not reach the dashboard
+- public dashboard reads only approved dashboard snapshot data
+- docs and evidence explain the orchestration boundary clearly
+
 ## Suggested Immediate Next Steps
 
-1. Validate the clean run path end-to-end so README, evidence, and diagrams stay grounded in reproducible platform behavior.
-2. Confirm the ingestion + crawler + ETL evidence path is still reproducible from a clean run.
-3. Define the gas curated schema and Athena exposure as the next substantive platform feature.
-4. Keep `Portfolio Risk` and `Market Context` as explicitly planned React follow-ons after gas and ingestion stability are in place.
-5. Use `docs/four-week-project-plan.md` when executing the news summaries, AI merge, and insight dashboard MVP.
+1. Lock the Phase 8 AWS data contracts and S3 prefixes.
+2. Refactor shared local script logic only where needed for Lambda reuse.
+3. Add AWS handlers for energy input, news ingest, AI bundle, deterministic AI
+   merge, validation, and dashboard publish.
+4. Add Step Functions orchestration with failed/audit/SNS paths.
+5. Defer Bedrock or OpenClaw until the orchestration boundary is working.
 
 ## Planning Rule
 
