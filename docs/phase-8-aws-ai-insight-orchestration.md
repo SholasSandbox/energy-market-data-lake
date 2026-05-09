@@ -395,9 +395,9 @@ Estimate: 1 day
 - [x] Add hybrid Step Functions state payload helper.
 - [x] Add contract validation helper usable by Lambda handlers.
 - [x] Add focused runtime self-check script.
-- [ ] Refactor local scripts only where needed so local and AWS paths share
+- [x] Refactor local scripts only where needed so local and AWS paths share
       business logic.
-- [ ] Preserve local demo commands.
+- [x] Preserve local demo commands.
 
 Acceptance:
 
@@ -405,6 +405,7 @@ Acceptance:
 - `.venv/bin/python -m compileall energy_market scripts lambda glue` passes.
 - `.venv/bin/python scripts/validate_contracts.py --include-evidence`
   `--check-failures` passes.
+- Temp-output local pipeline run passes without modifying repo evidence files.
 
 ### 3. Lambda Handler Slice
 
@@ -507,6 +508,93 @@ Acceptance:
 
 - Demo can explain the AI orchestration boundary in under two minutes.
 - Rebuild/setup docs contain the exact AWS CLI and Terraform commands used.
+
+## AWS CLI State-Proof Commands
+
+Use these commands to prove state transitions during Phase 8. They should not
+replace Terraform, but they are useful for evidence and troubleshooting.
+
+Identity and account boundary:
+
+```bash
+aws sts get-caller-identity
+aws configure get region
+```
+
+S3 artifact state:
+
+```bash
+aws s3api head-bucket --bucket "${DATA_BUCKET}"
+aws s3api head-bucket --bucket "${DASHBOARD_BUCKET}"
+aws s3api list-objects-v2 \
+  --bucket "${DATA_BUCKET}" \
+  --prefix "curated/source=ai_orchestration/"
+aws s3 cp \
+  "s3://${DATA_BUCKET}/${ARTIFACT_KEY}" -
+aws s3api head-object \
+  --bucket "${DASHBOARD_BUCKET}" \
+  --key "dashboard_snapshot_v1.json"
+```
+
+Lambda configuration and invocation:
+
+```bash
+aws lambda get-function-configuration \
+  --function-name "${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --query 'Environment.Variables'
+aws lambda invoke \
+  --function-name "${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --payload file://docs/evidence/phase8-sample-event.json \
+  --cli-binary-format raw-in-base64-out \
+  docs/evidence/phase8-lambda-invoke-result.json
+```
+
+Step Functions execution:
+
+```bash
+aws stepfunctions start-execution \
+  --state-machine-arn "${AI_ORCHESTRATION_STATE_MACHINE_ARN}" \
+  --name "${RUN_ID}" \
+  --input file://docs/evidence/phase8-start-input.json
+aws stepfunctions describe-execution \
+  --execution-arn "${EXECUTION_ARN}"
+aws stepfunctions get-execution-history \
+  --execution-arn "${EXECUTION_ARN}" \
+  --max-results 25
+```
+
+Logs and failure notifications:
+
+```bash
+aws logs tail "/aws/lambda/${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --since 1h
+aws sns list-topics
+aws sns list-subscriptions-by-topic \
+  --topic-arn "${AI_ORCHESTRATION_FAILURE_TOPIC_ARN}"
+```
+
+Athena export checks:
+
+```bash
+aws athena start-query-execution \
+  --query-string "SELECT MAX(\"date\") AS latest_date \
+FROM curated_dataset_electricity" \
+  --query-execution-context Database="${ATHENA_DATABASE}" \
+  --work-group "${ATHENA_WORKGROUP}"
+aws athena get-query-execution \
+  --query-execution-id "${QUERY_EXECUTION_ID}"
+aws athena get-query-results \
+  --query-execution-id "${QUERY_EXECUTION_ID}"
+```
+
+CloudFront, if public hosting is included:
+
+```bash
+aws cloudfront list-distributions
+aws cloudfront create-invalidation \
+  --distribution-id "${DASHBOARD_DISTRIBUTION_ID}" \
+  --paths "/dashboard_snapshot_v1.json"
+```
 
 ## Estimated Effort
 
