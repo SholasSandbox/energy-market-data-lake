@@ -49,6 +49,98 @@ Deferred until after Phase 8:
 - Fine-tuning.
 - Publishing raw model text directly to the dashboard.
 
+## Design Lock Decisions
+
+These decisions are accepted for Phase 8 and should guide implementation.
+
+### Run ID Shape
+
+Use a workflow prefix, UTC timestamp, and short UUID:
+
+```text
+ai-insight-YYYYMMDDTHHMMSSZ-<8-char-uuid>
+```
+
+Example:
+
+```text
+ai-insight-20260509T093015Z-a1b2c3d4
+```
+
+Rationale:
+
+- Human-readable enough for evidence and S3 inspection.
+- Time-sortable for audit review.
+- Collision-safe for retries, manual reruns, and parallel tests.
+- Clear that the run belongs to the AI insight workflow.
+
+### Step Functions Payload Shape
+
+Use a hybrid payload:
+
+- pass metadata, state, counts, status, and S3 artifact references inline
+- keep full contract payloads in S3
+- do not pass full RSS articles or AI insight documents between states
+
+Shape:
+
+```json
+{
+  "workflow": "ai_insight",
+  "run_id": "ai-insight-20260509T093015Z-a1b2c3d4",
+  "status": "ai_insight_validated",
+  "lake_bucket": "energy-market-lake-...",
+  "dashboard_bucket": "energy-market-dashboard-public-...",
+  "artifacts": {
+    "energy_input": "curated/dataset=energy_input/run_id=.../payload.json",
+    "news_summary": "curated/dataset=news_summary/run_id=.../payload.json",
+    "ai_input_bundle": "curated/dataset=ai_input_bundle/run_id=.../payload.json",
+    "ai_insight": "curated/dataset=ai_insight/run_id=.../payload.json",
+    "dashboard_snapshot": "dashboard_snapshot_v1.json"
+  },
+  "summary": {
+    "article_count": 18,
+    "insight_count": 1,
+    "risk_level": "watch"
+  }
+}
+```
+
+Rationale:
+
+- Step Functions execution history remains useful in a technical demo.
+- S3 remains the artifact store of record.
+- State payloads stay small and avoid exposing full article/model content.
+- Retry and failure paths can pass stable artifact references.
+
+### Dashboard Publish Boundary
+
+Use a separate public/static dashboard bucket, while keeping it optional in
+Terraform for rebuild flexibility.
+
+Private lake bucket:
+
+```text
+raw/
+curated/
+failed/
+audit/
+```
+
+Public dashboard bucket:
+
+```text
+dashboard_snapshot_v1.json
+static React assets, if included in this phase
+```
+
+Rationale:
+
+- Cleaner public/private boundary.
+- Lower blast radius if a bucket policy is misconfigured.
+- Stronger SAP-C02 story around separation of concerns and least privilege.
+- Minimal storage cost penalty for a small dashboard JSON/static site.
+
 ## Current Local Producers
 
 - Generate dashboard data:
@@ -92,7 +184,7 @@ Deferred until after Phase 8:
   - Producer: deterministic AI merge Lambda
   - Consumer: publisher Lambda
 - `dashboard_snapshot_v1.json`
-  - Location: `public/dashboard/dashboard_snapshot_v1.json`
+  - Location: `s3://<dashboard-bucket>/dashboard_snapshot_v1.json`
   - Producer: publisher Lambda
   - Consumer: React dashboard
 
@@ -131,9 +223,11 @@ Estimate: 0.5 day
 
 - [ ] Confirm the branch starts from clean `main`.
 - [ ] Review current local script inputs and outputs.
-- [ ] Lock S3 prefixes, run ID format, and state-machine payload shape.
-- [ ] Decide whether dashboard output reuses the lake bucket or a separate
+- [x] Lock run ID format.
+- [x] Lock Step Functions payload shape.
+- [x] Decide whether dashboard output reuses the lake bucket or a separate
       public/static bucket.
+- [ ] Lock exact S3 prefixes and Terraform variable names.
 - [ ] Record environment variables and Terraform variables.
 
 Acceptance:
