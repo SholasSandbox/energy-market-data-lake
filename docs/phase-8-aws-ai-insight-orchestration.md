@@ -168,19 +168,19 @@ Rationale:
 ## Target AWS Data Contracts
 
 - `energy_input_v1.json`
-  - Location: `curated/dataset=energy_input/run_id=<run_id>/payload.json`
+  - Location: `curated/source=ai_orchestration/dataset=energy_input/run_id=<run_id>/payload.json`
   - Producer: Athena export Lambda
   - Consumer: AI bundle Lambda
 - `news_summary_v1.json`
-  - Location: `curated/dataset=news_summary/run_id=<run_id>/payload.json`
+  - Location: `curated/source=ai_orchestration/dataset=news_summary/run_id=<run_id>/payload.json`
   - Producer: news ingest Lambda
   - Consumer: AI bundle Lambda
 - `ai_input_bundle_v1.json`
-  - Location: `curated/dataset=ai_input_bundle/run_id=<run_id>/payload.json`
+  - Location: `curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=<run_id>/payload.json`
   - Producer: AI bundle Lambda
   - Consumer: AI merge Lambda
 - `ai_insight_v1.json`
-  - Location: `curated/dataset=ai_insight/run_id=<run_id>/payload.json`
+  - Location: `curated/source=ai_orchestration/dataset=ai_insight/run_id=<run_id>/payload.json`
   - Producer: deterministic AI merge Lambda
   - Consumer: publisher Lambda
 - `dashboard_snapshot_v1.json`
@@ -191,8 +191,159 @@ Rationale:
 Failure and audit paths:
 
 ```text
-s3://<lake-bucket>/failed/component=<component>/run_id=<run_id>/payload.json
+s3://<lake-bucket>/failed/workflow=ai_insight/component=<component>/run_id=<run_id>/payload.json
 s3://<lake-bucket>/audit/workflow=ai_insight/run_id=<run_id>/summary.json
+```
+
+## S3 Artifact Contract
+
+State now:
+
+```text
+Local evidence files exist under docs/evidence/ and dashboard-ui/public/.
+```
+
+Target state:
+
+```text
+Every Phase 8 workflow artifact has an exact S3 location and can be tied back
+to one run_id.
+```
+
+Private lake bucket:
+
+```text
+s3://<data_bucket_name>/
+```
+
+Private artifact prefixes:
+
+- Energy input:
+  - Prefix: `curated/source=ai_orchestration/dataset=energy_input/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- News summary:
+  - Prefix: `curated/source=ai_orchestration/dataset=news_summary/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- AI input bundle:
+  - Prefix: `curated/source=ai_orchestration/dataset=ai_input_bundle/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- AI insight:
+  - Prefix: `curated/source=ai_orchestration/dataset=ai_insight/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- Failed payloads:
+  - Prefix: `failed/workflow=ai_insight/component=<component>/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- Audit summaries:
+  - Prefix: `audit/workflow=ai_insight/`
+  - Payload key: `<prefix>run_id=<run_id>/summary.json`
+
+Public dashboard bucket:
+
+```text
+s3://<dashboard_bucket_name>/
+```
+
+Public artifact keys:
+
+- Dashboard snapshot:
+  - Key: `dashboard_snapshot_v1.json`
+- Optional immutable dashboard snapshot:
+  - Key: `snapshots/run_id=<run_id>/dashboard_snapshot_v1.json`
+- Optional React static assets:
+  - Prefix: `assets/`
+
+Trade-off decision:
+
+- `source=ai_orchestration` keeps Phase 8 curated JSON separate from existing
+  lakehouse datasets.
+- `dataset=<contract-name>` makes IAM and Athena/catalog decisions easier later.
+- `run_id=<run_id>` keeps every artifact traceable to the Step Functions run.
+- the public bucket contains only approved dashboard output, not raw, curated,
+  failed, or audit artifacts.
+
+## Terraform Variable Interface
+
+State now:
+
+```text
+Terraform already supports an existing or newly created data lake bucket.
+```
+
+Target state:
+
+```text
+Phase 8 has named Terraform inputs for orchestration, public publishing,
+retention, notifications, and schedule control.
+```
+
+Variables to add:
+
+- `create_dashboard_bucket`
+  - Type: `bool`
+  - Default: `true`
+  - Purpose: create a separate public/static dashboard bucket.
+- `dashboard_bucket_name`
+  - Type: `string`
+  - Default: `""`
+  - Purpose: existing or desired dashboard bucket name.
+- `ai_orchestration_enabled`
+  - Type: `bool`
+  - Default: `false`
+  - Purpose: keep Phase 8 schedule/manual resources off until validated.
+- `ai_orchestration_schedule_expression`
+  - Type: `string`
+  - Default: `cron(30 6 * * ? *)`
+  - Purpose: daily EventBridge schedule after manual proof.
+- `ai_orchestration_log_retention_days`
+  - Type: `number`
+  - Default: `14`
+  - Purpose: CloudWatch retention for Phase 8 logs.
+- `ai_orchestration_lambda_timeout_seconds`
+  - Type: `number`
+  - Default: `300`
+  - Purpose: Lambda timeout for news/AI handlers.
+- `ai_orchestration_lambda_memory_size`
+  - Type: `number`
+  - Default: `512`
+  - Purpose: Lambda memory for RSS parsing and JSON processing.
+- `ai_orchestration_news_limit_per_feed`
+  - Type: `number`
+  - Default: `4`
+  - Purpose: keep RSS ingest bounded and low cost.
+- `ai_orchestration_news_max_articles`
+  - Type: `number`
+  - Default: `18`
+  - Purpose: keep dashboard/news payloads compact.
+- `ai_orchestration_feeds`
+  - Type: `list(string)`
+  - Default: current local RSS feed set.
+  - Purpose: make news sources configurable without code changes.
+- `ai_orchestration_sns_email`
+  - Type: `string`
+  - Default: `""`
+  - Purpose: optional email subscription for failure notifications.
+- `ai_orchestration_state_machine_name`
+  - Type: `string`
+  - Default: `energy-market-ai-insight-orchestration`
+  - Purpose: predictable Step Functions state-machine name.
+
+Environment variables for Lambda handlers:
+
+- `AWS_REGION`
+- `DATA_BUCKET`
+- `DASHBOARD_BUCKET`
+- `ATHENA_DATABASE`
+- `ATHENA_WORKGROUP`
+- `ATHENA_OUTPUT_LOCATION`
+- `NEWS_FEEDS`
+- `NEWS_LIMIT_PER_FEED`
+- `NEWS_MAX_ARTICLES`
+- `AI_ORCHESTRATION_MODE`
+
+Initial value for `AI_ORCHESTRATION_MODE`:
+
+```text
+deterministic
 ```
 
 ## Target AWS Workflow
@@ -227,8 +378,8 @@ Estimate: 0.5 day
 - [x] Lock Step Functions payload shape.
 - [x] Decide whether dashboard output reuses the lake bucket or a separate
       public/static bucket.
-- [ ] Lock exact S3 prefixes and Terraform variable names.
-- [ ] Record environment variables and Terraform variables.
+- [x] Lock exact S3 prefixes and Terraform variable names.
+- [x] Record environment variables and Terraform variables.
 
 Acceptance:
 
