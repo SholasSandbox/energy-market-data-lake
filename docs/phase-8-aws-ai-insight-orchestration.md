@@ -389,18 +389,22 @@ Acceptance:
 
 Estimate: 1 day
 
-- [ ] Add shared S3 JSON read/write helpers.
-- [ ] Add run ID generation helper.
-- [ ] Add contract validation helper usable by Lambda handlers.
+- [x] Add shared S3 JSON read/write helpers.
+- [x] Add run ID generation helper.
+- [x] Add artifact key generation helpers.
+- [x] Add hybrid Step Functions state payload helper.
+- [x] Add contract validation helper usable by Lambda handlers.
+- [x] Add focused runtime self-check script.
 - [ ] Refactor local scripts only where needed so local and AWS paths share
       business logic.
 - [ ] Preserve local demo commands.
 
 Acceptance:
 
-- Existing local scripts still run.
-- `python -m compileall scripts lambda glue` passes.
-- Contract validation still passes.
+- `.venv/bin/python scripts/check_phase8_runtime.py` passes.
+- `.venv/bin/python -m compileall energy_market scripts lambda glue` passes.
+- `.venv/bin/python scripts/validate_contracts.py --include-evidence`
+  `--check-failures` passes.
 
 ### 3. Lambda Handler Slice
 
