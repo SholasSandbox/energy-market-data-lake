@@ -445,6 +445,7 @@ Acceptance:
 - `.venv/bin/python scripts/check_phase8_handlers.py` proves valid and failed paths.
 - A known-bad news payload is rejected and written to `failed/`.
 - No invalid output reaches the dashboard publish location.
+- A failed run leaves the existing public `dashboard_snapshot_v1.json` unchanged.
 
 ### 5. Terraform Foundation
 
