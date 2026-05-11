@@ -123,6 +123,42 @@ energy-market-daily-ingestion           = ENABLED
 The Phase 8 schedule remains disabled as intended. The older daily ingestion
 rule remains live because the plan has not been applied.
 
+## Targeted Daily Schedule Disable
+
+The operator accepted Terraform disabling the older daily ingestion schedule
+for now. A targeted plan was used to avoid applying unrelated drift.
+
+Command:
+
+```bash
+terraform plan \
+  -target=aws_cloudwatch_event_rule.daily_ingestion \
+  -out=tfplan-disable-daily-ingestion
+
+terraform apply tfplan-disable-daily-ingestion
+```
+
+Targeted apply result:
+
+```text
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+```
+
+Verified live schedule state after apply:
+
+```text
+energy-market-ai-orchestration-schedule = DISABLED
+energy-market-daily-ingestion           = DISABLED
+```
+
+Remaining full plan after this targeted apply:
+
+```text
+Plan: 1 to add, 19 to change, 0 to destroy.
+```
+
+No other drift was applied.
+
 ## Data Portability Note
 
 Terraform can recreate infrastructure in a future clean account, but it should
