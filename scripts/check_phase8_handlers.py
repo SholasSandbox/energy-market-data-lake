@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""Self-check Phase 8 Lambda handlers using an in-memory S3 client."""
+
+from __future__ import annotations
+
+import importlib.util
+import io
+import json
+import sys
+import datetime as dt
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from energy_market.ai_orchestration import generate_run_id, write_s3_json  # noqa: E402
+
+
+class MemoryS3:
+    """Tiny subset of the S3 client API used by the handlers."""
+
+    def __init__(self) -> None:
+        self.objects: dict[tuple[str, str], bytes] = {}
+
+    def put_object(self, *, Bucket: str, Key: str, Body: bytes, **_: object) -> None:
+        self.objects[(Bucket, Key)] = Body
+
+    def get_object(self, *, Bucket: str, Key: str) -> dict:
+        try:
+            body = self.objects[(Bucket, Key)]
+        except KeyError as exc:
+            raise AssertionError(f"missing s3://{Bucket}/{Key}") from exc
+        return {"Body": io.BytesIO(body)}
+
+
+def load_json(path: Path) -> dict:
+    with path.open("r", encoding="utf-8") as file:
+        return json.load(file)
+
+
+def load_handler_module():
+    path = ROOT / "lambda" / "news_ai_orchestration.py"
+    spec = importlib.util.spec_from_file_location("news_ai_orchestration", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"unable to load {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def main() -> int:
+    handlers = load_handler_module()
+    s3 = MemoryS3()
+    run_id = generate_run_id(
+        now=dt.datetime(2026, 5, 11, 9, 30, 15, tzinfo=dt.UTC),
+        suffix="a1b2c3d4",
+    )
+    lake_bucket = "energy-market-lake-test"
+    dashboard_bucket = "energy-market-dashboard-test"
+    dashboard_data_key = "inputs/dashboard-data.json"
+    dashboard_data = load_json(ROOT / "dashboard-ui" / "public" / "dashboard-data.json")
+    write_s3_json(s3, lake_bucket, dashboard_data_key, dashboard_data)
+
+    state = {
+        "action": "ExportEnergyInput",
+        "run_id": run_id,
+        "lake_bucket": lake_bucket,
+        "dashboard_bucket": dashboard_bucket,
+        "artifacts": {"dashboard_data": dashboard_data_key},
+    }
+    state = handlers.handle_event(state, s3)
+    assert state["status"] == "energy_input_exported"
+
+    news_example = load_json(ROOT / "schemas" / "examples" / "news_summary_v1.example.json")
+    state = {
+        **state,
+        "action": "IngestNewsSummary",
+        "news_articles": news_example["articles"],
+    }
+    state = handlers.handle_event(state, s3)
+    assert state["status"] == "news_summary_ingested"
+
+    for action, expected_status in [
+        ("CreateAiInputBundle", "ai_input_bundle_created"),
+        ("MergeAiInsightDeterministic", "ai_insight_merged"),
+        ("PublishDashboardSnapshot", "dashboard_snapshot_published"),
+    ]:
+        state = {**state, "action": action}
+        state = handlers.handle_event(state, s3)
+        assert state["status"] == expected_status
+
+    latest_key = "dashboard_snapshot_v1.json"
+    immutable_key = f"snapshots/run_id={run_id}/dashboard_snapshot_v1.json"
+    if (dashboard_bucket, latest_key) not in s3.objects:
+        raise AssertionError("latest dashboard snapshot was not written")
+    if (dashboard_bucket, immutable_key) not in s3.objects:
+        raise AssertionError("immutable dashboard snapshot was not written")
+
+    print(f"Phase 8 handler self-check passed for {run_id}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

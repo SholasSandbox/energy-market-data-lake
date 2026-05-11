@@ -411,18 +411,20 @@ Acceptance:
 
 Estimate: 1.5-2 days
 
-- [ ] Add `lambda/news_ai_orchestration.py` or a small handler package.
-- [ ] Implement `ExportEnergyInput` handler.
-- [ ] Implement `IngestNewsSummary` handler.
-- [ ] Implement `CreateAiInputBundle` handler.
-- [ ] Implement `MergeAiInsightDeterministic` handler.
-- [ ] Implement `PublishDashboardSnapshot` handler.
-- [ ] Add handler-level structured output for Step Functions.
+- [x] Add `lambda/news_ai_orchestration.py` or a small handler package.
+- [x] Implement `ExportEnergyInput` handler.
+- [x] Implement `IngestNewsSummary` handler.
+- [x] Implement `CreateAiInputBundle` handler.
+- [x] Implement `MergeAiInsightDeterministic` handler.
+- [x] Implement `PublishDashboardSnapshot` handler.
+- [x] Add handler-level structured output for Step Functions.
+- [x] Add local fake-S3 handler self-check.
 
 Acceptance:
 
+- `.venv/bin/python scripts/check_phase8_handlers.py` passes.
 - Each handler can be invoked locally with a sample event.
-- Each handler writes the expected S3 key when configured for AWS.
+- Each handler writes the expected S3 key through an injected S3 client.
 
 ### 4. Validation And Quarantine Slice
 
