@@ -18,6 +18,8 @@ cp -R "${ROOT_DIR}/schemas" "${BUILD_DIR}/schemas"
 "${PYTHON_BIN}" -m pip install \
   "jsonschema==4.26.0" \
   "jsonschema-specifications==2025.9.1" \
+  "referencing==0.36.2" \
+  "typing-extensions==4.15.0" \
   --target "${BUILD_DIR}" \
   --platform "${LAMBDA_PLATFORM}" \
   --implementation cp \
@@ -49,7 +51,11 @@ with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive
             continue
         if "__pycache__" in path.parts or path.suffix in {".pyc", ".pyo"}:
             continue
-        archive.write(path, path.relative_to(build_dir).as_posix())
+        arcname = path.relative_to(build_dir).as_posix()
+        info = zipfile.ZipInfo(arcname, date_time=(2020, 1, 1, 0, 0, 0))
+        info.external_attr = 0o644 << 16
+        info.compress_type = zipfile.ZIP_DEFLATED
+        archive.writestr(info, path.read_bytes())
 
 print(zip_path)
 PY

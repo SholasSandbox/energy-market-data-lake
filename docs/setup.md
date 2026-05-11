@@ -1240,6 +1240,18 @@ Functions execution has passed. The public `dashboard_snapshot_v1.json` is
 published last, after validation, so failed runs should leave the previous
 public snapshot unchanged.
 
+Phase 8 live AWS proof from 2026-05-11 used a targeted Terraform apply because
+the older ingestion, Glue, and Athena resources were not fully imported into
+this state yet. The proof deployed the orchestration Lambda, Step Functions
+state machine, SNS failure topic, disabled EventBridge schedule, and separate
+dashboard/static bucket.
+
+Evidence:
+
+```text
+docs/evidence/phase8-aws-live-execution-20260511.md
+```
+
 Initialize with remote state:
 
 ```bash

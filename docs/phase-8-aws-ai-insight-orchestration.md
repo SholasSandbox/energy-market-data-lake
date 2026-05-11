@@ -482,8 +482,12 @@ Estimate: 1-1.5 days
 
 Acceptance:
 
-- Manual Step Functions execution completes successfully.
-- A forced validation failure routes to failed/SNS path.
+- [x] Manual Step Functions execution completes successfully.
+- [x] A forced failed execution routes to failed/SNS path.
+
+Evidence:
+
+- `docs/evidence/phase8-aws-live-execution-20260511.md`
 
 ### 7. Public Dashboard Publish
 
