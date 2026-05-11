@@ -1,0 +1,309 @@
+"""Lambda handlers for Phase 8 deterministic AI insight orchestration.
+
+Step Functions invokes this Lambda with an `action` field for each workflow
+state. The handler keeps full artifacts in S3 and returns the hybrid state
+payload used by the next state.
+"""
+
+from __future__ import annotations
+
+import os
+import sys
+from pathlib import Path
+from typing import Any, Callable
+
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from energy_market.ai_orchestration import (  # noqa: E402
+    artifact_key,
+    build_state_payload,
+    dashboard_snapshot_key,
+    read_s3_json,
+    validate_payload,
+    write_s3_json,
+)
+from energy_market.news_ai import (  # noqa: E402
+    DEFAULT_FEEDS,
+    build_ai_insight,
+    build_bundle,
+    build_energy_input,
+    build_news_summary,
+    build_snapshot,
+    fetch_articles,
+)
+
+
+ActionHandler = Callable[[dict[str, Any], Any], dict[str, Any]]
+
+
+def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
+    """AWS Lambda entrypoint."""
+    return handle_event(event, _s3_client())
+
+
+def handle_event(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
+    """Dispatch one Step Functions action."""
+    action = event.get("action")
+    handlers: dict[str, ActionHandler] = {
+        "ExportEnergyInput": export_energy_input,
+        "IngestNewsSummary": ingest_news_summary,
+        "CreateAiInputBundle": create_ai_input_bundle,
+        "MergeAiInsightDeterministic": merge_ai_insight_deterministic,
+        "PublishDashboardSnapshot": publish_dashboard_snapshot,
+    }
+
+    handler = handlers.get(str(action))
+    if handler is None:
+        allowed = ", ".join(sorted(handlers))
+        raise ValueError(f"unknown action {action!r}; expected one of {allowed}")
+
+    return handler(event, s3_client)
+
+
+def export_energy_input(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
+    """Build and write `energy_input_v1` from dashboard data JSON."""
+    state = _state(event)
+    dashboard_data = _read_input_json(
+        event,
+        s3_client,
+        artifact_name="dashboard_data",
+        inline_name="dashboard_data",
+    )
+    payload = build_energy_input(dashboard_data)
+    _validate_or_raise(payload, "energy_input")
+
+    key = artifact_key("energy_input", state["run_id"])
+    write_s3_json(s3_client, state["lake_bucket"], key, payload)
+
+    return _with_artifact(
+        state,
+        status="energy_input_exported",
+        artifact_name="energy_input",
+        artifact_key_value=key,
+        summary_updates={"energy_record_count": len(payload.get("records", []))},
+    )
+
+
+def ingest_news_summary(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
+    """Fetch or accept news articles and write `news_summary_v1`."""
+    state = _state(event)
+    articles = event.get("news_articles")
+    if articles is None:
+        feeds = _news_feeds(event)
+        limit_per_feed = int(event.get("news_limit_per_feed", _env("NEWS_LIMIT_PER_FEED", "4")))
+        max_articles = int(event.get("news_max_articles", _env("NEWS_MAX_ARTICLES", "18")))
+        articles = fetch_articles(feeds, limit_per_feed, max_articles)
+
+    if not articles:
+        raise ValueError("news summary contains no articles")
+
+    payload = build_news_summary(articles)
+    _validate_or_raise(payload, "news_summary")
+
+    key = artifact_key("news_summary", state["run_id"])
+    write_s3_json(s3_client, state["lake_bucket"], key, payload)
+
+    return _with_artifact(
+        state,
+        status="news_summary_ingested",
+        artifact_name="news_summary",
+        artifact_key_value=key,
+        summary_updates={"article_count": len(payload.get("articles", []))},
+    )
+
+
+def create_ai_input_bundle(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
+    """Read validated inputs and write the AI input bundle artifact."""
+    state = _state(event)
+    energy_input = read_s3_json(
+        s3_client,
+        state["lake_bucket"],
+        _artifact(state, "energy_input"),
+    )
+    news_summary = read_s3_json(
+        s3_client,
+        state["lake_bucket"],
+        _artifact(state, "news_summary"),
+    )
+
+    payload = build_bundle(energy_input, news_summary)
+    key = artifact_key("ai_input_bundle", state["run_id"])
+    write_s3_json(s3_client, state["lake_bucket"], key, payload)
+
+    return _with_artifact(
+        state,
+        status="ai_input_bundle_created",
+        artifact_name="ai_input_bundle",
+        artifact_key_value=key,
+    )
+
+
+def merge_ai_insight_deterministic(
+    event: dict[str, Any],
+    s3_client: Any,
+) -> dict[str, Any]:
+    """Read the AI bundle and write a deterministic `ai_insight_v1` artifact."""
+    state = _state(event)
+    bundle = read_s3_json(
+        s3_client,
+        state["lake_bucket"],
+        _artifact(state, "ai_input_bundle"),
+    )
+
+    payload = build_ai_insight(bundle)
+    _validate_or_raise(payload, "ai_insight")
+
+    key = artifact_key("ai_insight", state["run_id"])
+    write_s3_json(s3_client, state["lake_bucket"], key, payload)
+    insight = payload.get("insights", [{}])[0]
+
+    return _with_artifact(
+        state,
+        status="ai_insight_merged",
+        artifact_name="ai_insight",
+        artifact_key_value=key,
+        summary_updates={
+            "insight_count": len(payload.get("insights", [])),
+            "risk_level": insight.get("risk_level", "watch"),
+        },
+    )
+
+
+def publish_dashboard_snapshot(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
+    """Build and publish the public-safe dashboard snapshot."""
+    state = _state(event)
+    energy_input = read_s3_json(
+        s3_client,
+        state["lake_bucket"],
+        _artifact(state, "energy_input"),
+    )
+    news_summary = read_s3_json(
+        s3_client,
+        state["lake_bucket"],
+        _artifact(state, "news_summary"),
+    )
+    ai_insight = read_s3_json(
+        s3_client,
+        state["lake_bucket"],
+        _artifact(state, "ai_insight"),
+    )
+
+    payload = build_snapshot(energy_input, news_summary, ai_insight)
+    _validate_or_raise(payload, "dashboard_snapshot")
+
+    latest_key = dashboard_snapshot_key()
+    immutable_key = dashboard_snapshot_key(state["run_id"], immutable=True)
+    write_s3_json(s3_client, state["dashboard_bucket"], latest_key, payload)
+    write_s3_json(s3_client, state["dashboard_bucket"], immutable_key, payload)
+
+    return _with_artifact(
+        state,
+        status="dashboard_snapshot_published",
+        artifact_name="dashboard_snapshot",
+        artifact_key_value=latest_key,
+        summary_updates={"immutable_dashboard_snapshot": immutable_key},
+    )
+
+
+def _state(event: dict[str, Any]) -> dict[str, Any]:
+    run_id = _required(event, "run_id")
+    lake_bucket = event.get("lake_bucket") or _env("DATA_BUCKET")
+    dashboard_bucket = event.get("dashboard_bucket") or _env("DASHBOARD_BUCKET")
+    if not lake_bucket:
+        raise ValueError("lake_bucket or DATA_BUCKET is required")
+    if not dashboard_bucket:
+        raise ValueError("dashboard_bucket or DASHBOARD_BUCKET is required")
+
+    return build_state_payload(
+        run_id=run_id,
+        lake_bucket=lake_bucket,
+        dashboard_bucket=dashboard_bucket,
+        status=str(event.get("status", "started")),
+        artifacts=dict(event.get("artifacts", {})),
+        summary=dict(event.get("summary", {})),
+    )
+
+
+def _with_artifact(
+    state: dict[str, Any],
+    *,
+    status: str,
+    artifact_name: str,
+    artifact_key_value: str,
+    summary_updates: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    artifacts = dict(state.get("artifacts", {}))
+    artifacts[artifact_name] = artifact_key_value
+    summary = dict(state.get("summary", {}))
+    summary.update(summary_updates or {})
+
+    return build_state_payload(
+        run_id=state["run_id"],
+        lake_bucket=state["lake_bucket"],
+        dashboard_bucket=state["dashboard_bucket"],
+        status=status,
+        artifacts=artifacts,
+        summary=summary,
+    )
+
+
+def _read_input_json(
+    event: dict[str, Any],
+    s3_client: Any,
+    *,
+    artifact_name: str,
+    inline_name: str,
+) -> dict[str, Any]:
+    inline_payload = event.get(inline_name)
+    if inline_payload is not None:
+        return inline_payload
+
+    state = _state(event)
+    key = _artifact(state, artifact_name)
+    return read_s3_json(s3_client, state["lake_bucket"], key)
+
+
+def _artifact(state: dict[str, Any], name: str) -> str:
+    artifacts = state.get("artifacts", {})
+    key = artifacts.get(name)
+    if not key:
+        raise ValueError(f"artifact {name!r} is required")
+    return str(key)
+
+
+def _validate_or_raise(payload: dict[str, Any], contract: str) -> None:
+    errors = validate_payload(payload, contract)
+    if errors:
+        raise ValueError(f"{contract} validation failed: {errors[0]}")
+
+
+def _news_feeds(event: dict[str, Any]) -> list[str]:
+    feeds = event.get("news_feeds")
+    if isinstance(feeds, list):
+        return [str(feed) for feed in feeds if str(feed).strip()]
+
+    configured = _env("NEWS_FEEDS", "")
+    if configured:
+        return [feed.strip() for feed in configured.split(",") if feed.strip()]
+
+    return DEFAULT_FEEDS
+
+
+def _required(event: dict[str, Any], name: str) -> str:
+    value = event.get(name)
+    if value in (None, ""):
+        raise ValueError(f"{name} is required")
+    return str(value)
+
+
+def _env(name: str, default: str = "") -> str:
+    return os.environ.get(name, default)
+
+
+def _s3_client() -> Any:
+    import boto3  # noqa: WPS433
+
+    return boto3.client("s3")
