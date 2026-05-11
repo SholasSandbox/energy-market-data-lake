@@ -51,6 +51,110 @@ variable "lambda_log_retention_days" {
   default     = 14
 }
 
+variable "create_dashboard_bucket" {
+  description = "When true, Terraform creates the separate public/static dashboard bucket."
+  type        = bool
+  default     = false
+}
+
+variable "dashboard_bucket_name" {
+  description = "Separate public/static dashboard bucket name used by Phase 8 publishing."
+  type        = string
+  default     = ""
+}
+
+variable "ai_orchestration_enabled" {
+  description = "Whether Terraform creates the Phase 8 AI insight orchestration resources."
+  type        = bool
+  default     = false
+}
+
+variable "ai_orchestration_lambda_function_name" {
+  description = "Lambda function name for Phase 8 deterministic AI insight orchestration."
+  type        = string
+  default     = "energy-market-news-ai-orchestration"
+}
+
+variable "ai_orchestration_lambda_package_path" {
+  description = "Path to the built Phase 8 Lambda zip package. Run scripts/build_phase8_lambda_package.sh before terraform plan/apply."
+  type        = string
+  default     = ".terraform/build/news_ai_orchestration.zip"
+}
+
+variable "ai_orchestration_lambda_timeout_seconds" {
+  description = "Timeout in seconds for the Phase 8 orchestration Lambda."
+  type        = number
+  default     = 120
+}
+
+variable "ai_orchestration_lambda_memory_size" {
+  description = "Memory size in MB for the Phase 8 orchestration Lambda."
+  type        = number
+  default     = 512
+}
+
+variable "ai_orchestration_log_retention_days" {
+  description = "CloudWatch Logs retention for Phase 8 orchestration logs."
+  type        = number
+  default     = 14
+}
+
+variable "ai_orchestration_state_machine_name" {
+  description = "Step Functions state machine name for Phase 8 AI insight orchestration."
+  type        = string
+  default     = "energy-market-ai-insight-orchestration"
+}
+
+variable "ai_orchestration_schedule_expression" {
+  description = "EventBridge schedule expression for Phase 8 orchestration."
+  type        = string
+  default     = "cron(30 7 * * ? *)"
+}
+
+variable "ai_orchestration_schedule_enabled" {
+  description = "Whether the Phase 8 EventBridge schedule is enabled."
+  type        = bool
+  default     = false
+}
+
+variable "ai_orchestration_dashboard_data_key" {
+  description = "S3 key in the data lake bucket for the dashboard-data.json input artifact."
+  type        = string
+  default     = "dashboard/dashboard-data.json"
+}
+
+variable "ai_orchestration_news_limit_per_feed" {
+  description = "Maximum RSS articles read per configured feed during Phase 8 orchestration."
+  type        = number
+  default     = 4
+}
+
+variable "ai_orchestration_news_max_articles" {
+  description = "Maximum curated news articles retained in the Phase 8 news summary."
+  type        = number
+  default     = 18
+}
+
+variable "ai_orchestration_feeds" {
+  description = "RSS feeds used by the deterministic Phase 8 news ingestion step."
+  type        = list(string)
+  default = [
+    "https://www.energyvoice.com/feed/",
+    "https://www.energylivenews.com/feed/",
+    "https://www.power-technology.com/feed/",
+    "https://www.offshore-energy.biz/feed/",
+    "https://oilprice.com/rss/main",
+    "https://www.renewableenergyworld.com/feed/",
+    "https://www.pv-magazine.com/feed/",
+  ]
+}
+
+variable "ai_orchestration_sns_email" {
+  description = "Optional email address subscribed to Phase 8 orchestration failure notifications. Leave blank to create the topic without an email subscription."
+  type        = string
+  default     = ""
+}
+
 variable "backfill_days" {
   description = "Default ingestion backfill window."
   type        = number

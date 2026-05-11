@@ -451,31 +451,34 @@ Acceptance:
 
 Estimate: 1-1.5 days
 
-- [ ] Add or extend S3 prefix conventions for curated, failed, audit, and public
+- [x] Add or extend S3 prefix conventions for curated, failed, audit, and public
       dashboard outputs.
-- [ ] Add Lambda IAM permissions for required S3 prefixes.
-- [ ] Add Athena query permissions for energy export if needed.
-- [ ] Add CloudWatch log groups with retention.
-- [ ] Add SNS topic for failure notifications.
-- [ ] Add Step Functions execution role.
-- [ ] Keep a new S3 bucket optional; default to existing lake bucket.
+- [x] Add Lambda IAM permissions for required S3 prefixes.
+- [x] Confirm Athena query permissions are not required for the current
+      dashboard-data input contract.
+- [x] Add CloudWatch log groups with retention.
+- [x] Add SNS topic for failure notifications.
+- [x] Add Step Functions execution role.
+- [x] Keep a new S3 bucket optional; default to existing lake bucket.
 
 Acceptance:
 
 - `terraform fmt` passes.
 - `terraform validate` passes after initialization.
-- Plan output is documented before apply.
+- A backendless, non-mutating Terraform plan with
+  `ai_orchestration_enabled=true` succeeds before apply.
 
 ### 6. Step Functions Orchestration
 
 Estimate: 1-1.5 days
 
-- [ ] Add state machine definition.
-- [ ] Wire Lambda task states.
-- [ ] Add retry policies for RSS/network and Athena steps.
-- [ ] Add catch paths to write failed payloads and publish SNS notifications.
-- [ ] Add EventBridge schedule, initially disabled or manual-only.
-- [ ] Add manual execution command to docs.
+- [x] Add state machine definition.
+- [x] Wire Lambda task states.
+- [x] Add retry policies for Lambda/RSS execution steps.
+- [x] Add catch paths to route failed executions to SNS while Lambda writes
+      failed payloads.
+- [x] Add EventBridge schedule, initially disabled or manual-only.
+- [x] Add manual execution command to docs.
 
 Acceptance:
 

@@ -74,12 +74,24 @@ def run_success_path(handlers, run_id: str) -> None:
     dashboard_data = load_json(ROOT / "dashboard-ui" / "public" / "dashboard-data.json")
     write_s3_json(s3, lake_bucket, dashboard_data_key, dashboard_data)
 
+    state = handlers.handle_event(
+        {
+            "action": "InitializeRun",
+            "run_id": run_id,
+            "lake_bucket": lake_bucket,
+            "dashboard_bucket": dashboard_bucket,
+            "dashboard_data_key": dashboard_data_key,
+        },
+        s3,
+    )
+    if state["status"] != "initialized":
+        raise AssertionError("run was not initialized")
+    if state["artifacts"]["dashboard_data"] != dashboard_data_key:
+        raise AssertionError("dashboard data artifact was not initialized")
+
     state = {
+        **state,
         "action": "ExportEnergyInput",
-        "run_id": run_id,
-        "lake_bucket": lake_bucket,
-        "dashboard_bucket": dashboard_bucket,
-        "artifacts": {"dashboard_data": dashboard_data_key},
     }
     state = handlers.handle_event(state, s3)
     assert state["status"] == "energy_input_exported"
@@ -114,6 +126,8 @@ def run_failure_path(handlers, run_id: str) -> None:
     s3 = MemoryS3()
     lake_bucket = "energy-market-lake-test"
     dashboard_bucket = "energy-market-dashboard-test"
+    existing_snapshot = b'{"schema_version":"dashboard_snapshot_v1","status":"previous-good"}'
+    s3.objects[(dashboard_bucket, "dashboard_snapshot_v1.json")] = existing_snapshot
     bad_article = {
         "source": "rss",
         "publisher": "Example Energy News",
@@ -151,8 +165,8 @@ def run_failure_path(handlers, run_id: str) -> None:
         raise AssertionError("failed record reason was empty")
 
     dashboard_key = "dashboard_snapshot_v1.json"
-    if (dashboard_bucket, dashboard_key) in s3.objects:
-        raise AssertionError("dashboard snapshot was written after validation failure")
+    if s3.objects[(dashboard_bucket, dashboard_key)] != existing_snapshot:
+        raise AssertionError("existing dashboard snapshot changed after validation failure")
 
 
 if __name__ == "__main__":

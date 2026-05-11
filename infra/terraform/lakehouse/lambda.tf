@@ -69,3 +69,45 @@ resource "aws_lambda_permission" "allow_eventbridge" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.daily_ingestion.arn
 }
+
+resource "aws_cloudwatch_log_group" "ai_orchestration_lambda" {
+  count = var.ai_orchestration_enabled ? 1 : 0
+
+  name              = "/aws/lambda/${var.ai_orchestration_lambda_function_name}"
+  retention_in_days = var.ai_orchestration_log_retention_days
+  tags              = local.common_tags
+}
+
+resource "aws_lambda_function" "ai_orchestration" {
+  count = var.ai_orchestration_enabled ? 1 : 0
+
+  function_name    = var.ai_orchestration_lambda_function_name
+  role             = aws_iam_role.ai_orchestration_lambda[0].arn
+  runtime          = "python3.11"
+  handler          = "news_ai_orchestration.lambda_handler"
+  filename         = var.ai_orchestration_lambda_package_path
+  source_code_hash = filebase64sha256(var.ai_orchestration_lambda_package_path)
+  timeout          = var.ai_orchestration_lambda_timeout_seconds
+  memory_size      = var.ai_orchestration_lambda_memory_size
+  tags             = local.common_tags
+
+  environment {
+    variables = {
+      AI_ORCHESTRATION_MODE  = "deterministic"
+      ATHENA_DATABASE        = var.glue_database_name
+      ATHENA_OUTPUT_LOCATION = local.athena_output_location
+      ATHENA_WORKGROUP       = var.athena_workgroup_name
+      DASHBOARD_BUCKET       = local.dashboard_bucket_name
+      DASHBOARD_DATA_KEY     = var.ai_orchestration_dashboard_data_key
+      DATA_BUCKET            = local.data_bucket_name
+      NEWS_FEEDS             = join(",", var.ai_orchestration_feeds)
+      NEWS_LIMIT_PER_FEED    = tostring(var.ai_orchestration_news_limit_per_feed)
+      NEWS_MAX_ARTICLES      = tostring(var.ai_orchestration_news_max_articles)
+    }
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_group.ai_orchestration_lambda,
+    aws_iam_role_policy_attachment.ai_orchestration_lambda_basic_execution,
+  ]
+}

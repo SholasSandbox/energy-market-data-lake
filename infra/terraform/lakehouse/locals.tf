@@ -9,6 +9,7 @@ locals {
   )
 
   data_bucket_name       = var.data_bucket_name
+  dashboard_bucket_name  = var.dashboard_bucket_name
   raw_path               = "s3://${local.data_bucket_name}/raw"
   curated_path           = "s3://${local.data_bucket_name}/curated"
   glue_script_key        = "scripts/etl_raw_to_parquet.py"
