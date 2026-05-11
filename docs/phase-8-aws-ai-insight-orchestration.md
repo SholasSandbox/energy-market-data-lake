@@ -430,18 +430,20 @@ Acceptance:
 
 Estimate: 1 day
 
-- [ ] Validate `energy_input_v1`.
-- [ ] Validate `news_summary_v1`.
-- [ ] Validate `ai_input_bundle_v1`.
-- [ ] Validate `ai_insight_v1`.
-- [ ] Validate `dashboard_snapshot_v1`.
-- [ ] Write invalid payloads to `failed/`.
+- [x] Validate `energy_input_v1`.
+- [x] Validate `news_summary_v1`.
+- [x] Validate `ai_input_bundle_v1`.
+- [x] Validate `ai_insight_v1`.
+- [x] Validate `dashboard_snapshot_v1`.
+- [x] Write invalid payloads to `failed/`.
 - [ ] Preserve the previous good public dashboard snapshot on failure.
-- [ ] Add failure reason, component, schema name, and run ID to failed records.
+- [x] Add failure reason, component, schema name, and run ID to failed records.
+- [x] Prove invalid output does not publish.
 
 Acceptance:
 
-- A known-bad AI output is rejected.
+- `.venv/bin/python scripts/check_phase8_handlers.py` proves valid and failed paths.
+- A known-bad news payload is rejected and written to `failed/`.
 - No invalid output reaches the dashboard publish location.
 
 ### 5. Terraform Foundation

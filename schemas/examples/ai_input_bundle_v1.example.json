@@ -1,0 +1,48 @@
+{
+  "bundle_version": "ai_input_bundle_v1",
+  "generated_at": "2026-05-01T00:05:00Z",
+  "purpose": "Merge validated energy facts with curated news summaries.",
+  "expected_output_schema": "schemas/ai_insight_v1.schema.json",
+  "instructions": [
+    "Return only JSON that follows ai_insight_v1.schema.json.",
+    "Use confidence between 0 and 1.",
+    "Cite at least one energy reference and one news reference."
+  ],
+  "energy_input": {
+    "schema_version": "energy_input_v1",
+    "generated_at": "2026-05-01T00:00:00Z",
+    "records": [
+      {
+        "source": "elexon",
+        "dataset": "electricity",
+        "region": "gb",
+        "timestamp_utc": "2026-04-05T12:00:00Z",
+        "date": "2026-04-05",
+        "settlement_period": 24,
+        "demand_mw": 43120.5,
+        "system_sell_price_gbp_mwh": 120.4,
+        "system_buy_price_gbp_mwh": 125.1,
+        "day_ahead_price_eur_mwh": null,
+        "source_reference": "s3://bucket/curated/dataset=electricity/source=elexon/region=gb/date=2026-04-05/"
+      }
+    ]
+  },
+  "news_summary": {
+    "schema_version": "news_summary_v1",
+    "generated_at": "2026-05-01T00:00:00Z",
+    "articles": [
+      {
+        "source": "rss",
+        "publisher": "Example Energy News",
+        "title": "UK power prices rise after gas supply concern",
+        "url": "https://example.com/article",
+        "published_at": "2026-04-05T09:30:00Z",
+        "summary": "UK power prices rose as gas supply concerns affected short-term market expectations.",
+        "topics": ["power_prices", "gas_supply"],
+        "regions": ["gb"],
+        "entities": ["UK power", "gas supply"],
+        "source_reference": "https://example.com/article"
+      }
+    ]
+  }
+}

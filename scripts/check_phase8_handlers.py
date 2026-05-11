@@ -14,7 +14,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from energy_market.ai_orchestration import generate_run_id, write_s3_json  # noqa: E402
+from energy_market.ai_orchestration import (  # noqa: E402
+    failed_payload_key,
+    generate_run_id,
+    write_s3_json,
+)
 
 
 class MemoryS3:
@@ -51,11 +55,19 @@ def load_handler_module():
 
 def main() -> int:
     handlers = load_handler_module()
-    s3 = MemoryS3()
     run_id = generate_run_id(
         now=dt.datetime(2026, 5, 11, 9, 30, 15, tzinfo=dt.UTC),
         suffix="a1b2c3d4",
     )
+    run_success_path(handlers, run_id)
+    run_failure_path(handlers, run_id)
+
+    print(f"Phase 8 handler self-check passed for {run_id}")
+    return 0
+
+
+def run_success_path(handlers, run_id: str) -> None:
+    s3 = MemoryS3()
     lake_bucket = "energy-market-lake-test"
     dashboard_bucket = "energy-market-dashboard-test"
     dashboard_data_key = "inputs/dashboard-data.json"
@@ -97,8 +109,50 @@ def main() -> int:
     if (dashboard_bucket, immutable_key) not in s3.objects:
         raise AssertionError("immutable dashboard snapshot was not written")
 
-    print(f"Phase 8 handler self-check passed for {run_id}")
-    return 0
+
+def run_failure_path(handlers, run_id: str) -> None:
+    s3 = MemoryS3()
+    lake_bucket = "energy-market-lake-test"
+    dashboard_bucket = "energy-market-dashboard-test"
+    bad_article = {
+        "source": "rss",
+        "publisher": "Example Energy News",
+        "title": "Bad article",
+        "published_at": "2026-04-05T09:30:00Z",
+        "summary": "Missing URL, topics, regions, entities, and source_reference.",
+    }
+
+    event = {
+        "action": "IngestNewsSummary",
+        "run_id": run_id,
+        "lake_bucket": lake_bucket,
+        "dashboard_bucket": dashboard_bucket,
+        "news_articles": [bad_article],
+    }
+    try:
+        handlers.handle_event(event, s3)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("bad news summary unexpectedly passed")
+
+    failed_key = failed_payload_key("ingest_news_summary", run_id)
+    if (lake_bucket, failed_key) not in s3.objects:
+        raise AssertionError("failed validation record was not written")
+
+    failed_record = json.loads(s3.objects[(lake_bucket, failed_key)].decode("utf-8"))
+    if failed_record["run_id"] != run_id:
+        raise AssertionError("failed record run_id mismatch")
+    if failed_record["component"] != "ingest_news_summary":
+        raise AssertionError("failed record component mismatch")
+    if failed_record["schema_name"] != "news_summary_v1":
+        raise AssertionError("failed record schema mismatch")
+    if not failed_record["reason"]:
+        raise AssertionError("failed record reason was empty")
+
+    dashboard_key = "dashboard_snapshot_v1.json"
+    if (dashboard_bucket, dashboard_key) in s3.objects:
+        raise AssertionError("dashboard snapshot was written after validation failure")
 
 
 if __name__ == "__main__":

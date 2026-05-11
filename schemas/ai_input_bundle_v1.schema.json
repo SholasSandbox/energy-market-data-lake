@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai_input_bundle_v1.schema.json",
+  "title": "AI Input Bundle v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundle_version",
+    "generated_at",
+    "purpose",
+    "expected_output_schema",
+    "instructions",
+    "energy_input",
+    "news_summary"
+  ],
+  "properties": {
+    "bundle_version": { "type": "string", "const": "ai_input_bundle_v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "purpose": { "type": "string", "minLength": 1 },
+    "expected_output_schema": { "type": "string", "const": "schemas/ai_insight_v1.schema.json" },
+    "instructions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "energy_input": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["schema_version", "generated_at", "records"],
+      "properties": {
+        "schema_version": { "type": "string", "const": "energy_input_v1" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "records": { "type": "array", "minItems": 1 }
+      }
+    },
+    "news_summary": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["schema_version", "generated_at", "articles"],
+      "properties": {
+        "schema_version": { "type": "string", "const": "news_summary_v1" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "articles": { "type": "array", "minItems": 1 }
+      }
+    }
+  }
+}
