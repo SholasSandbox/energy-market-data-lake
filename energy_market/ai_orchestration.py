@@ -34,9 +34,29 @@ ARTIFACT_DATASETS = {
 CONTRACT_SCHEMAS = {
     "energy_input": "energy_input_v1.schema.json",
     "news_summary": "news_summary_v1.schema.json",
+    "ai_input_bundle": "ai_input_bundle_v1.schema.json",
     "ai_insight": "ai_insight_v1.schema.json",
     "dashboard_snapshot": "dashboard_snapshot_v1.schema.json",
 }
+
+
+class PayloadValidationError(ValueError):
+    """Raised when a contract payload does not pass validation."""
+
+    def __init__(
+        self,
+        *,
+        component: str,
+        contract: str,
+        errors: list[str],
+        payload: dict[str, Any],
+    ) -> None:
+        self.component = component
+        self.contract = contract
+        self.errors = errors
+        self.payload = payload
+        reason = errors[0] if errors else "validation failed"
+        super().__init__(f"{contract} validation failed in {component}: {reason}")
 
 
 def generate_run_id(now: dt.datetime | None = None, suffix: str | None = None) -> str:
@@ -149,7 +169,6 @@ def validate_payload(
     if schema_name is None:
         allowed = ", ".join(sorted(CONTRACT_SCHEMAS))
         raise ValueError(f"unknown contract {contract!r}; expected one of {allowed}")
-
     schema = _load_json(schema_dir / schema_name)
     Draft202012Validator.check_schema(schema)
     validator = Draft202012Validator(schema, format_checker=FormatChecker())
@@ -161,6 +180,49 @@ def validate_payload(
     return errors
 
 
+def raise_for_validation_errors(
+    payload: dict[str, Any],
+    contract: str,
+    component: str,
+    schema_dir: Path = SCHEMA_DIR,
+) -> None:
+    """Raise a structured validation error when a payload fails its contract."""
+    errors = validate_payload(payload, contract, schema_dir=schema_dir)
+    if errors:
+        raise PayloadValidationError(
+            component=component,
+            contract=contract,
+            errors=errors,
+            payload=payload,
+        )
+
+
+def build_failed_record(
+    *,
+    run_id: str,
+    component: str,
+    schema_name: str,
+    reason: str,
+    payload: dict[str, Any],
+    status: str = "validation_failed",
+) -> dict[str, Any]:
+    """Build a structured failed-zone record for a rejected payload."""
+    validate_run_id(run_id)
+    return {
+        "workflow": "ai_insight",
+        "run_id": run_id,
+        "component": component,
+        "schema_name": schema_name,
+        "status": status,
+        "reason": reason,
+        "payload": payload,
+        "failed_at": dt.datetime.now(dt.UTC)
+        .replace(microsecond=0)
+        .isoformat()
+        .replace("+00:00", "Z"),
+    }
+
+
 def _load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as file:
         return json.load(file)
@@ -170,4 +232,3 @@ def _safe_path_token(value: str, *, field_name: str) -> str:
     if not re.fullmatch(r"[A-Za-z0-9_.-]+", value):
         raise ValueError(f"{field_name} must contain only letters, numbers, . _ or -")
     return value
-

@@ -22,6 +22,7 @@ DASHBOARD_PUBLIC_DIR = ROOT / "dashboard-ui" / "public"
 CONTRACTS = [
     ("energy_input_v1.schema.json", "energy_input_v1.example.json"),
     ("news_summary_v1.schema.json", "news_summary_v1.example.json"),
+    ("ai_input_bundle_v1.schema.json", "ai_input_bundle_v1.example.json"),
     ("ai_insight_v1.schema.json", "ai_insight_v1.example.json"),
     ("dashboard_snapshot_v1.schema.json", "dashboard_snapshot_v1.example.json"),
 ]
@@ -30,6 +31,7 @@ CONTRACTS = [
 EVIDENCE_CONTRACTS = [
     ("energy_input_v1.schema.json", EVIDENCE_DIR / "energy_input_v1.sample.json"),
     ("news_summary_v1.schema.json", CURATED_EVIDENCE_DIR / "news_summary_v1.sample.json"),
+    ("ai_input_bundle_v1.schema.json", EVIDENCE_DIR / "ai" / "ai_input_bundle_v1.sample.json"),
     ("ai_insight_v1.schema.json", CURATED_EVIDENCE_DIR / "ai_insight_v1.sample.json"),
     ("dashboard_snapshot_v1.schema.json", DASHBOARD_PUBLIC_DIR / "dashboard_snapshot_v1.sample.json"),
 ]

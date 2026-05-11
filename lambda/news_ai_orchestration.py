@@ -19,10 +19,12 @@ if str(ROOT) not in sys.path:
 
 from energy_market.ai_orchestration import (  # noqa: E402
     artifact_key,
+    build_failed_record,
     build_state_payload,
     dashboard_snapshot_key,
+    failed_payload_key,
+    raise_for_validation_errors,
     read_s3_json,
-    validate_payload,
     write_s3_json,
 )
 from energy_market.news_ai import (  # noqa: E402
@@ -60,7 +62,11 @@ def handle_event(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
         allowed = ", ".join(sorted(handlers))
         raise ValueError(f"unknown action {action!r}; expected one of {allowed}")
 
-    return handler(event, s3_client)
+    try:
+        return handler(event, s3_client)
+    except Exception as exc:
+        _write_failed_record(event, s3_client, exc)
+        raise
 
 
 def export_energy_input(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
@@ -73,7 +79,7 @@ def export_energy_input(event: dict[str, Any], s3_client: Any) -> dict[str, Any]
         inline_name="dashboard_data",
     )
     payload = build_energy_input(dashboard_data)
-    _validate_or_raise(payload, "energy_input")
+    _validate_or_raise(payload, "energy_input", "export_energy_input")
 
     key = artifact_key("energy_input", state["run_id"])
     write_s3_json(s3_client, state["lake_bucket"], key, payload)
@@ -101,7 +107,7 @@ def ingest_news_summary(event: dict[str, Any], s3_client: Any) -> dict[str, Any]
         raise ValueError("news summary contains no articles")
 
     payload = build_news_summary(articles)
-    _validate_or_raise(payload, "news_summary")
+    _validate_or_raise(payload, "news_summary", "ingest_news_summary")
 
     key = artifact_key("news_summary", state["run_id"])
     write_s3_json(s3_client, state["lake_bucket"], key, payload)
@@ -130,6 +136,7 @@ def create_ai_input_bundle(event: dict[str, Any], s3_client: Any) -> dict[str, A
     )
 
     payload = build_bundle(energy_input, news_summary)
+    _validate_or_raise(payload, "ai_input_bundle", "create_ai_input_bundle")
     key = artifact_key("ai_input_bundle", state["run_id"])
     write_s3_json(s3_client, state["lake_bucket"], key, payload)
 
@@ -154,7 +161,7 @@ def merge_ai_insight_deterministic(
     )
 
     payload = build_ai_insight(bundle)
-    _validate_or_raise(payload, "ai_insight")
+    _validate_or_raise(payload, "ai_insight", "merge_ai_insight_deterministic")
 
     key = artifact_key("ai_insight", state["run_id"])
     write_s3_json(s3_client, state["lake_bucket"], key, payload)
@@ -192,7 +199,7 @@ def publish_dashboard_snapshot(event: dict[str, Any], s3_client: Any) -> dict[st
     )
 
     payload = build_snapshot(energy_input, news_summary, ai_insight)
-    _validate_or_raise(payload, "dashboard_snapshot")
+    _validate_or_raise(payload, "dashboard_snapshot", "publish_dashboard_snapshot")
 
     latest_key = dashboard_snapshot_key()
     immutable_key = dashboard_snapshot_key(state["run_id"], immutable=True)
@@ -274,10 +281,54 @@ def _artifact(state: dict[str, Any], name: str) -> str:
     return str(key)
 
 
-def _validate_or_raise(payload: dict[str, Any], contract: str) -> None:
-    errors = validate_payload(payload, contract)
-    if errors:
-        raise ValueError(f"{contract} validation failed: {errors[0]}")
+def _validate_or_raise(payload: dict[str, Any], contract: str, component: str) -> None:
+    raise_for_validation_errors(payload, contract, component)
+
+
+def _write_failed_record(event: dict[str, Any], s3_client: Any, exc: Exception) -> None:
+    try:
+        state = _state(event)
+    except Exception:
+        return
+
+    component = _failure_component(event, exc)
+    schema_name = _failure_schema(exc)
+    reason = str(exc)
+    payload = _failure_payload(event, exc)
+    record = build_failed_record(
+        run_id=state["run_id"],
+        component=component,
+        schema_name=schema_name,
+        reason=reason,
+        payload=payload,
+    )
+    key = failed_payload_key(component, state["run_id"])
+    write_s3_json(s3_client, state["lake_bucket"], key, record)
+
+
+def _failure_component(event: dict[str, Any], exc: Exception) -> str:
+    component = getattr(exc, "component", None)
+    if component:
+        return str(component)
+    return str(event.get("action", "unknown")).lower()
+
+
+def _failure_schema(exc: Exception) -> str:
+    contract = getattr(exc, "contract", "")
+    if contract:
+        return f"{contract}_v1"
+    return "unknown"
+
+
+def _failure_payload(event: dict[str, Any], exc: Exception) -> dict[str, Any]:
+    payload = getattr(exc, "payload", None)
+    if isinstance(payload, dict):
+        return payload
+    return {
+        "action": event.get("action"),
+        "artifacts": event.get("artifacts", {}),
+        "summary": event.get("summary", {}),
+    }
 
 
 def _news_feeds(event: dict[str, Any]) -> list[str]:
