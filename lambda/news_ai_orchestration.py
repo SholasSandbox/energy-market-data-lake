@@ -13,7 +13,8 @@ from pathlib import Path
 from typing import Any, Callable
 
 
-ROOT = Path(__file__).resolve().parents[1]
+MODULE_DIR = Path(__file__).resolve().parent
+ROOT = MODULE_DIR if (MODULE_DIR / "energy_market").exists() else MODULE_DIR.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -23,6 +24,7 @@ from energy_market.ai_orchestration import (  # noqa: E402
     build_state_payload,
     dashboard_snapshot_key,
     failed_payload_key,
+    generate_run_id,
     raise_for_validation_errors,
     read_s3_json,
     write_s3_json,
@@ -50,6 +52,7 @@ def handle_event(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
     """Dispatch one Step Functions action."""
     action = event.get("action")
     handlers: dict[str, ActionHandler] = {
+        "InitializeRun": initialize_run,
         "ExportEnergyInput": export_energy_input,
         "IngestNewsSummary": ingest_news_summary,
         "CreateAiInputBundle": create_ai_input_bundle,
@@ -67,6 +70,30 @@ def handle_event(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
     except Exception as exc:
         _write_failed_record(event, s3_client, exc)
         raise
+
+
+def initialize_run(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
+    """Create the initial Step Functions state payload for one orchestration run."""
+    del s3_client
+    run_id = str(event.get("run_id") or generate_run_id())
+    lake_bucket = event.get("lake_bucket") or _env("DATA_BUCKET")
+    dashboard_bucket = event.get("dashboard_bucket") or _env("DASHBOARD_BUCKET")
+    dashboard_data_key = event.get("dashboard_data_key") or _env("DASHBOARD_DATA_KEY")
+    if not lake_bucket:
+        raise ValueError("lake_bucket or DATA_BUCKET is required")
+    if not dashboard_bucket:
+        raise ValueError("dashboard_bucket or DASHBOARD_BUCKET is required")
+    if not dashboard_data_key:
+        raise ValueError("dashboard_data_key or DASHBOARD_DATA_KEY is required")
+
+    return build_state_payload(
+        run_id=run_id,
+        lake_bucket=str(lake_bucket),
+        dashboard_bucket=str(dashboard_bucket),
+        status="initialized",
+        artifacts={"dashboard_data": str(dashboard_data_key)},
+        summary={"mode": _env("AI_ORCHESTRATION_MODE", "deterministic")},
+    )
 
 
 def export_energy_input(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
@@ -203,8 +230,8 @@ def publish_dashboard_snapshot(event: dict[str, Any], s3_client: Any) -> dict[st
 
     latest_key = dashboard_snapshot_key()
     immutable_key = dashboard_snapshot_key(state["run_id"], immutable=True)
-    write_s3_json(s3_client, state["dashboard_bucket"], latest_key, payload)
     write_s3_json(s3_client, state["dashboard_bucket"], immutable_key, payload)
+    write_s3_json(s3_client, state["dashboard_bucket"], latest_key, payload)
 
     return _with_artifact(
         state,

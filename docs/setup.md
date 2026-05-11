@@ -1,5 +1,7 @@
 # Setup Guide (eu-west-2)
 
+<!-- markdownlint-disable MD013 -->
+
 This is a lightweight, budget-conscious setup. Use the default settings unless
 you need additional scale.
 
@@ -1200,6 +1202,43 @@ Create a new data lake bucket:
 create_data_bucket = true
 data_bucket_name   = "energy-market-lake-your-real-suffix"
 ```
+
+Phase 8 deterministic AI insight orchestration is optional. It adds:
+
+- `lambda/news_ai_orchestration.py` as the Step Functions task Lambda.
+- A Step Functions state machine with validation gates and failure catches.
+- An SNS topic for failed executions.
+- An optional separate dashboard/static S3 bucket.
+- An initially disabled EventBridge schedule.
+
+Build the Phase 8 Lambda package before enabling those Terraform resources:
+
+```bash
+../../../scripts/build_phase8_lambda_package.sh
+```
+
+The package is written to:
+
+```text
+infra/terraform/lakehouse/.terraform/build/news_ai_orchestration.zip
+```
+
+Example Phase 8 variables:
+
+```hcl
+create_dashboard_bucket = false
+dashboard_bucket_name   = "energy-market-dashboard-public-464975959576-20260405"
+
+ai_orchestration_enabled             = true
+ai_orchestration_schedule_enabled    = false
+ai_orchestration_dashboard_data_key  = "dashboard/dashboard-data.json"
+ai_orchestration_sns_email           = ""
+```
+
+Keep `ai_orchestration_schedule_enabled = false` until one manual Step
+Functions execution has passed. The public `dashboard_snapshot_v1.json` is
+published last, after validation, so failed runs should leave the previous
+public snapshot unchanged.
 
 Initialize with remote state:
 
