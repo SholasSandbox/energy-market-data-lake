@@ -1,6 +1,14 @@
 # Energy Market Data Lake + News Insight Dashboard
 
-A budget-conscious AWS portfolio project for ingesting energy market data, transforming it into a queryable lakehouse, and presenting decision-ready dashboard outputs. The implemented baseline is a serverless energy data lake using Lambda, S3, Glue, Athena, EventBridge, and a React dashboard. The local MVP now extends that baseline with RSS news summaries, strict JSON contracts, a deterministic AI-style merge, failure samples, and a public-safe dashboard snapshot.
+<!-- markdownlint-disable MD013 -->
+
+A budget-conscious AWS portfolio project for ingesting energy market data,
+transforming it into a queryable lakehouse, and presenting decision-ready
+dashboard outputs. The implemented baseline is a serverless energy data lake
+using Lambda, S3, Glue, Athena, EventBridge, and a React dashboard. The news +
+AI extension adds RSS summaries, strict JSON contracts, a deterministic
+AI-style merge, failure samples, a public-safe dashboard snapshot, and a
+live-proven AWS Step Functions orchestration path.
 
 Region: **eu-west-2 (London)**
 
@@ -24,14 +32,16 @@ Region: **eu-west-2 (London)**
 - Validator checks for good evidence and intentionally bad failure samples.
 - Public-safe dashboard snapshot loaded by the React app.
 - Visible data freshness warning for old local demo evidence.
+- Phase 8 AWS AI insight orchestration with Lambda, Step Functions, S3
+  artifacts, validation gates, failed-run quarantine, and manual execution
+  evidence.
 
-### Target AWS Extension
+### Deferred AWS Extension
 
-- Move local news ingestion into Lambda or another scheduled AWS runtime.
-- Add Step Functions orchestration for ingest, validation, AI merge, and publish steps.
 - Run OpenClaw in a clear runtime, or use Bedrock `InvokeModel` as the managed cloud AI path.
 - Publish dashboard snapshot JSON to a CloudFront-fronted static site bucket.
-- Add SNS notifications and CloudWatch alarms for validation failures.
+- Enable the Phase 8 EventBridge schedule after another operating decision.
+- Add CloudWatch alarms after the manual workflow has settled.
 - Trust-boundary-aware architecture with private raw/curated/audit/failed zones and public dashboard-only output.
 
 ## Current Data Scope
@@ -71,36 +81,36 @@ Athena
 Dashboard JSON / HTML / React Dashboard
 ```
 
-## Target News + AI Architecture
+## News + AI Orchestration Architecture
 
 ```text
-Energy APIs + RSS Feeds
+Energy dashboard input + RSS Feeds
         |
         v
 Private AWS Processing Boundary
-  EventBridge -> Lambda ingest -> S3 raw/
-                         |
-                         v
-                  validate + normalize
-                         |
-                         v
-                    S3 curated/
-                         |
-                         v
-Local OpenClaw MVP or optional Bedrock/managed compute
-                         |
-                         v
-             validate ai_insight_v1.json
-                         |
-              +----------+----------+
-              |                     |
-            valid                invalid
-              |                     |
-              v                     v
- public dashboard JSON        S3 failed/ + alert
+  Manual Step Functions execution
+        |
+        v
+  Lambda deterministic orchestration
+        |
+        v
+  validate + write run-scoped S3 artifacts
+        |
+        v
+  validate ai_insight_v1 and dashboard_snapshot_v1
+        |
+        +------------------+
+        |                  |
+      valid             invalid
+        |                  |
+        v                  v
+ dashboard bucket     S3 failed/ + SNS + CloudWatch
 ```
 
 The public dashboard must never read directly from raw, curated, audit, or failed lake data.
+
+EventBridge scheduling is deployed but intentionally disabled. Manual Step
+Functions execution is the current safe operating mode.
 
 ## Local MVP Flow
 
@@ -145,6 +155,8 @@ Use these artifacts to review or present the local MVP:
 - ENTSOG Athena query summary: `docs/evidence/athena-gas-query-summary-20260506.md`
 - ENTSOG dashboard gas evidence: `docs/evidence/phase7-dashboard-gas-20260507.md`
 - ENTSOG 7-day gas trend evidence: `docs/evidence/gas-7day-trend-20260507.md`
+- Phase 8 AWS live execution evidence: `docs/evidence/phase8-aws-live-execution-20260511.md`
+- Phase 8 operational runbook: `docs/phase-8-operational-runbook.md`
 
 Run the local evidence pipeline:
 
@@ -315,6 +327,25 @@ curl -I http://127.0.0.1:5173/
 curl -I http://127.0.0.1:5173/dashboard_snapshot_v1.sample.json
 ```
 
+Run a manual Phase 8 AWS orchestration proof:
+
+```bash
+export AWS_REGION=eu-west-2
+export AI_ORCHESTRATION_STATE_MACHINE_ARN="arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration"
+export EXECUTION_NAME="phase8-manual-$(date -u +%Y%m%dT%H%M%SZ)"
+
+aws stepfunctions start-execution \
+  --state-machine-arn "${AI_ORCHESTRATION_STATE_MACHINE_ARN}" \
+  --name "${EXECUTION_NAME}" \
+  --input '{}' \
+  --region "${AWS_REGION}" \
+  --query executionArn \
+  --output text
+```
+
+The full operational runbook, including preflight, artifact verification, and
+failure drill commands, lives in `docs/phase-8-operational-runbook.md`.
+
 Find ENTSOG pointDirection IDs:
 
 ```bash
@@ -363,8 +394,12 @@ python3 scripts/validate_athena_schema.py \
 - `infra/terraform/lakehouse/README.md`: Terraform rebuild path with S3 remote backend and optional data bucket creation.
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
-- `docs/phase-8-aws-ai-insight-orchestration.md`: active plan for moving the local news + AI insight flow into AWS orchestration.
-- `docs/demo-walkthrough.md`: concise demo script for the local MVP and target architecture story.
+- `docs/phase-8-aws-ai-insight-orchestration.md`: active plan and checklist for
+  AWS AI insight orchestration.
+- `docs/phase-8-operational-runbook.md`: manual run, proof, failure drill, and
+  demo commands for Phase 8.
+- `docs/demo-walkthrough.md`: concise demo script for the local MVP and live
+  orchestration story.
 - `docs/news-dashboard-merged-execution-model.md`: 4-week news + AI + dashboard expansion plan.
 
 ## Diagrams
@@ -391,9 +426,9 @@ These are historical references, not the current delivery path.
 ## Current Delivery Priorities
 
 1. Keep the local pipeline reproducible with schema validation and failure checks.
-2. Keep the React dashboard focused on approved `dashboard_snapshot_v1.sample.json`.
+2. Keep the React dashboard focused on approved snapshot JSON.
 3. Operationalize ENTSO-E electricity more reliably.
-4. Execute Phase 8 AWS AI insight orchestration with deterministic merge first.
+4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
 5. Import or recreate the AWS lakehouse resources through Terraform after reviewing the import plan.
 6. Decide whether gas metrics should enter the public AI snapshot contract after the orchestration boundary is proven.
 
@@ -403,3 +438,5 @@ These are historical references, not the current delivery path.
 - ENTSO-E requires registration and an API token stored in SSM or Secrets Manager.
 - ENTSOG is public; the current gas proof uses a four-point seed and the `Physical Flow` plus `Allocation` indicators.
 - OpenClaw/local model execution is outside AWS unless moved into Bedrock or managed compute.
+- Phase 8 currently proves orchestration, validation, and publish controls with
+  deterministic logic; model invocation remains deferred.

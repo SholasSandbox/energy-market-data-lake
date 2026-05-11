@@ -7,7 +7,7 @@ you need additional scale.
 
 ## Current Demo Scope
 
-The local MVP is implemented and is the recommended path for demos and learning.
+The local MVP remains the fastest demo path for dashboard and contract review.
 It proves:
 
 - energy input evidence
@@ -19,8 +19,13 @@ It proves:
 - public-safe dashboard snapshot JSON
 - React dashboard display from `dashboard_snapshot_v1.sample.json`
 
-The AWS/serverless extension remains the target deployment path for Step
-Functions, CloudFront, SNS alerts, and a managed OpenClaw or Bedrock runtime.
+The Phase 8 AWS/serverless extension is now live-proven for deterministic AI
+insight orchestration. It adds Lambda, Step Functions, S3 artifacts,
+validation gates, failed-run quarantine, SNS failure routing, and a separate
+dashboard snapshot bucket. EventBridge scheduling remains disabled by design.
+
+Bedrock, OpenClaw managed runtime, CloudFront hosting, and schedule enablement
+remain later decisions.
 
 ## AWS Closeout Script (Optional)
 
@@ -1250,6 +1255,45 @@ Evidence:
 
 ```text
 docs/evidence/phase8-aws-live-execution-20260511.md
+```
+
+Operational runbook:
+
+```text
+docs/phase-8-operational-runbook.md
+```
+
+Manual execution proof:
+
+```bash
+export AWS_REGION=eu-west-2
+export AI_ORCHESTRATION_STATE_MACHINE_ARN="arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration"
+export EXECUTION_NAME="phase8-manual-$(date -u +%Y%m%dT%H%M%SZ)"
+
+aws stepfunctions start-execution \
+  --state-machine-arn "${AI_ORCHESTRATION_STATE_MACHINE_ARN}" \
+  --name "${EXECUTION_NAME}" \
+  --input '{}' \
+  --region "${AWS_REGION}" \
+  --query executionArn \
+  --output text
+```
+
+Confirm the schedule is disabled:
+
+```bash
+aws events describe-rule \
+  --name energy-market-ai-orchestration-schedule \
+  --region eu-west-2 \
+  --query '{name:Name,state:State,schedule:ScheduleExpression}'
+```
+
+If the schedule is accidentally enabled before the next decision gate:
+
+```bash
+aws events disable-rule \
+  --name energy-market-ai-orchestration-schedule \
+  --region eu-west-2
 ```
 
 Initialize with remote state:
