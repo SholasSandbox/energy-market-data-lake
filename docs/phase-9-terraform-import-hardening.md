@@ -275,6 +275,12 @@ After the targeted daily schedule disable:
 Plan: 1 to add, 19 to change, 0 to destroy.
 ```
 
+After encoding the Phase 8 tag in Terraform:
+
+```text
+Plan: 1 to add, 10 to change, 0 to destroy.
+```
+
 Observed plan items:
 
 - `energy-market-daily-ingestion` may be changed from `ENABLED` to `DISABLED`
@@ -289,8 +295,8 @@ Observed plan items:
   `energy-market-workgroup` does not currently exist.
 - `aws_lambda_function.ingest` may show package or environment drift if the
   deployed zip differs from the local `lambda/ingest_elexon.py` package.
-- Phase 8 resources may lose the extra `Phase=phase-8-ai-orchestration` tag
-  because `local.common_tags` does not include that tag.
+- Phase 8 resources keep the extra `Phase=phase-8-ai-orchestration` tag through
+  `local.phase8_tags`.
 
 Stop and investigate if Terraform wants to replace IAM roles, Lambda functions,
 Glue crawlers, or the Glue job.
@@ -321,6 +327,7 @@ separate backup/restore design is added later.
 - [x] Run and review `terraform plan`.
 - [x] Document expected drift.
 - [x] Disable older daily ingestion schedule through Terraform.
+- [x] Preserve Phase 8 tag ownership in Terraform.
 - [ ] Confirm Phase 8 resources remain reproducible from Terraform.
 - [ ] Add CloudWatch alarms only after state is clean.
 - [ ] Keep schedules disabled unless a later decision explicitly enables them.

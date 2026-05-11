@@ -26,7 +26,7 @@ resource "aws_sns_topic" "ai_orchestration_failures" {
   count = var.ai_orchestration_enabled ? 1 : 0
 
   name = "${var.project_prefix}-ai-orchestration-failures"
-  tags = local.common_tags
+  tags = local.phase8_tags
 }
 
 resource "aws_sns_topic_subscription" "ai_orchestration_failure_email" {
@@ -42,7 +42,7 @@ resource "aws_sfn_state_machine" "ai_orchestration" {
 
   name     = var.ai_orchestration_state_machine_name
   role_arn = aws_iam_role.ai_orchestration_state_machine[0].arn
-  tags     = local.common_tags
+  tags     = local.phase8_tags
   depends_on = [
     aws_iam_role_policy.ai_orchestration_state_machine,
   ]
@@ -189,7 +189,7 @@ resource "aws_cloudwatch_event_rule" "ai_orchestration_schedule" {
   description         = "Scheduled deterministic AI insight orchestration trigger."
   schedule_expression = var.ai_orchestration_schedule_expression
   state               = var.ai_orchestration_schedule_enabled ? "ENABLED" : "DISABLED"
-  tags                = local.common_tags
+  tags                = local.phase8_tags
 }
 
 resource "aws_cloudwatch_event_target" "ai_orchestration_schedule" {

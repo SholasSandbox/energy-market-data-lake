@@ -75,7 +75,7 @@ resource "aws_cloudwatch_log_group" "ai_orchestration_lambda" {
 
   name              = "/aws/lambda/${var.ai_orchestration_lambda_function_name}"
   retention_in_days = var.ai_orchestration_log_retention_days
-  tags              = local.common_tags
+  tags              = local.phase8_tags
 }
 
 resource "aws_lambda_function" "ai_orchestration" {
@@ -89,7 +89,7 @@ resource "aws_lambda_function" "ai_orchestration" {
   source_code_hash = filebase64sha256(var.ai_orchestration_lambda_package_path)
   timeout          = var.ai_orchestration_lambda_timeout_seconds
   memory_size      = var.ai_orchestration_lambda_memory_size
-  tags             = local.common_tags
+  tags             = local.phase8_tags
 
   environment {
     variables = {

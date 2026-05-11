@@ -159,6 +159,40 @@ Plan: 1 to add, 19 to change, 0 to destroy.
 
 No other drift was applied.
 
+## Phase 8 Tag Preservation
+
+Decision:
+
+- preserve `Phase=phase-8-ai-orchestration` on Phase 8 resources
+- encode the tag in Terraform instead of leaving it as unmanaged AWS drift
+- keep the tag scoped to Phase 8 resources, not the older lakehouse resources
+
+Terraform change:
+
+- added `local.phase8_tags`
+- applied it to Phase 8 resources only
+
+Validation:
+
+```text
+terraform fmt
+terraform validate
+terraform plan
+```
+
+Plan result after preserving the Phase 8 tag:
+
+```text
+Plan: 1 to add, 10 to change, 0 to destroy.
+```
+
+The plan no longer tries to remove
+`Phase=phase-8-ai-orchestration` from Phase 8 resources.
+
+No `terraform apply` was run for this tag-preservation step because the live
+resources already have the tag and the goal was to make Terraform ownership
+match that live state.
+
 ## Data Portability Note
 
 Terraform can recreate infrastructure in a future clean account, but it should

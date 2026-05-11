@@ -71,7 +71,7 @@ resource "aws_s3_bucket" "dashboard_static" {
   count = var.create_dashboard_bucket ? 1 : 0
 
   bucket = local.dashboard_bucket_name
-  tags   = local.common_tags
+  tags   = local.phase8_tags
 }
 
 resource "aws_s3_bucket_public_access_block" "dashboard_static" {
