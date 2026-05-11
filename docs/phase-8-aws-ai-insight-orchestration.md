@@ -6,8 +6,9 @@ validation boundary is proven.
 
 ## Goal
 
-Operationalize the existing local news and AI insight flow as a scheduled,
-observable AWS workflow:
+Operationalize the existing local news and AI insight flow as an observable AWS
+workflow. Manual Step Functions execution is the current approved operating
+mode; scheduled execution remains disabled until a later decision gate.
 
 ```text
 Athena energy export
@@ -489,32 +490,38 @@ Evidence:
 
 - `docs/evidence/phase8-aws-live-execution-20260511.md`
 
-### 7. Public Dashboard Publish
+### 7. Public Dashboard Snapshot Publish
 
 Estimate: 0.5-1 day
 
-- [ ] Publish only `dashboard_snapshot_v1.json` and approved static assets.
-- [ ] If CloudFront is included, add cache behavior that does not trap stale JSON.
-- [ ] Confirm the React dashboard reads only public-safe snapshot data.
-- [ ] Add a smoke test for dashboard JSON availability.
+- [x] Publish only `dashboard_snapshot_v1.json` and immutable approved
+      dashboard snapshots to the dashboard bucket.
+- [x] Add S3 availability checks for the latest and immutable dashboard JSON.
+- [x] Keep raw, curated, failed, and audit paths in the private lake bucket.
+- [ ] If CloudFront is included later, add cache behavior that does not trap
+      stale JSON.
+- [ ] If static website hosting is included later, confirm the hosted React app
+      reads only public-safe snapshot data.
 
 Acceptance:
 
-- Public dashboard snapshot returns HTTP 200.
+- Dashboard snapshot exists in the dashboard bucket after successful execution.
+- Failed execution leaves the previous dashboard snapshot unchanged.
 - Private raw, curated, failed, and audit paths are not exposed.
 
 ### 8. Evidence And Docs Closeout
 
 Estimate: 0.5-1 day
 
-- [ ] Capture successful state-machine execution evidence.
-- [ ] Capture failed validation evidence.
-- [ ] Capture S3 output key evidence.
-- [ ] Capture CloudWatch/SNS evidence.
-- [ ] Update `README.md`.
-- [ ] Update `docs/setup.md`.
-- [ ] Update `docs/demo-walkthrough.md`.
-- [ ] Add Phase 8 closeout evidence under `docs/evidence/`.
+- [x] Capture successful state-machine execution evidence.
+- [x] Capture failed validation evidence.
+- [x] Capture S3 output key evidence.
+- [x] Capture CloudWatch/Step Functions evidence.
+- [x] Add Phase 8 closeout evidence under `docs/evidence/`.
+- [x] Add operational runbook under `docs/phase-8-operational-runbook.md`.
+- [x] Update `README.md`.
+- [x] Update `docs/setup.md`.
+- [x] Update `docs/demo-walkthrough.md`.
 
 Acceptance:
 
@@ -651,5 +658,23 @@ Phase 8 is complete when:
 - Invalid AI output is quarantined and does not publish.
 - The previous good dashboard snapshot remains available after failure.
 - CloudWatch logs and SNS notification evidence exist.
-- The React dashboard consumes only the approved public snapshot.
+- The dashboard publish path exposes only the approved public-safe snapshot.
 - Setup and demo docs can recreate the workflow.
+
+## Operational Runbook
+
+Current manual operating procedures live here:
+
+```text
+docs/phase-8-operational-runbook.md
+```
+
+The runbook covers:
+
+- preflight checks
+- manual Step Functions execution
+- curated artifact verification
+- dashboard snapshot verification
+- controlled failure drill
+- schedule-disable command
+- demo talk track

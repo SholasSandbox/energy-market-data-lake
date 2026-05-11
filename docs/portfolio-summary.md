@@ -1,5 +1,7 @@
 # Portfolio Summary
 
+<!-- markdownlint-disable MD013 -->
+
 ## Project
 
 Energy Market Data Lake + News Insight Dashboard
@@ -10,9 +12,18 @@ Energy market teams need to understand not only what changed in price, demand, e
 
 ## Solution
 
-This project extends a serverless energy data lake into a local news-aware insight dashboard MVP. It combines electricity and gas market evidence, curated RSS news summaries, schema validation, deterministic AI-style insight generation, and a React dashboard that reads only approved public snapshot JSON.
+This project extends a serverless energy data lake into a news-aware insight
+dashboard MVP. It combines electricity and gas market evidence, curated RSS
+news summaries, schema validation, deterministic AI-style insight generation,
+AWS Step Functions orchestration, and a React dashboard that reads only
+approved public snapshot JSON.
 
-The result is a portfolio-ready demonstration of how energy data and external context can be merged safely without allowing malformed or unreviewed AI output into the dashboard. The ENTSOG gas slice now has live raw-to-curated-to-Athena evidence; the news + AI slice remains a controlled local MVP with a clear AWS migration path.
+The result is a portfolio-ready demonstration of how energy data and external
+context can be merged safely without allowing malformed or unreviewed AI output
+into the dashboard. The ENTSOG gas slice now has live
+raw-to-curated-to-Athena evidence; the news + AI slice now has a live AWS
+orchestration proof with manual Step Functions execution, S3 artifacts,
+validation gates, failed-run quarantine, and previous-snapshot preservation.
 
 ## Architecture
 
@@ -27,7 +38,7 @@ Implemented baseline:
 - React dashboard
 - local evidence generation under `docs/evidence/`
 
-Local MVP extension:
+News + AI extension:
 
 - RSS/news ingestion evidence
 - public-safe market-news article grid for gas and electricity context
@@ -38,22 +49,27 @@ Local MVP extension:
 - rejection of known-bad samples
 - public-safe dashboard snapshot
 - dashboard freshness warning for old local demo evidence
+- AWS Lambda handler for deterministic news/AI orchestration
+- AWS Step Functions state machine for manual orchestration
+- S3 curated, failed, audit, and dashboard snapshot artifact paths
+- SNS and CloudWatch failure observability
 
-Target AWS extension:
+Deferred AWS extension:
 
-- Step Functions orchestration
-- Lambda-based news ingestion
 - OpenClaw in managed compute or Bedrock `InvokeModel`
-- SNS and CloudWatch failure notifications
+- EventBridge schedule enablement
 - CloudFront/S3 static dashboard delivery
 
 ## Security And Control Design
 
 - Raw, curated, failed, and audit data remain private.
-- The public dashboard reads only `dashboard_snapshot_v1.sample.json`.
+- The public dashboard reads only approved snapshot JSON.
 - AI output must pass `ai_insight_v1` validation before publishing.
 - Bad input and bad AI output are represented with failed evidence samples.
-- The local AI merge is deterministic for demo reliability; cloud AI is a future extension.
+- The AWS orchestration publishes the dashboard snapshot only after validation
+  passes.
+- The deterministic AI merge is deliberate for demo reliability; model
+  invocation is a future extension.
 
 ## Cost-Aware Design
 
@@ -82,6 +98,8 @@ Target AWS extension:
 - ENTSOG gas query summary: `docs/evidence/athena-gas-query-summary-20260506.md`
 - ENTSOG gas dashboard evidence: `docs/evidence/phase7-dashboard-gas-20260507.md`
 - ENTSOG gas 7-day trend evidence: `docs/evidence/gas-7day-trend-20260507.md`
+- Phase 8 AWS execution evidence: `docs/evidence/phase8-aws-live-execution-20260511.md`
+- Phase 8 operational runbook: `docs/phase-8-operational-runbook.md`
 
 Run the local evidence pipeline:
 
@@ -121,6 +139,7 @@ http://127.0.0.1:5173/
 - schema-first data contracts
 - controlled AI output
 - failure handling and evidence
+- live AWS Step Functions orchestration proof
 - cost-conscious serverless design
 - end-to-end gas lakehouse proof from selected ENTSOG pointDirections to Athena validation
 - practical frontend dashboard delivery
@@ -128,8 +147,9 @@ http://127.0.0.1:5173/
 
 ## Known Limitations
 
-- The news + AI path is implemented as a local MVP, not yet deployed as AWS orchestration.
-- The current AI merge is deterministic local logic, not live OpenClaw or Bedrock.
+- The current AI merge is deterministic logic, not live OpenClaw or Bedrock.
+- Phase 8 scheduling is intentionally disabled; manual Step Functions execution
+  is the current operating mode.
 - Demo energy evidence may be stale and is labelled as local demo evidence.
 - ENTSOG gas is rendered in the React dashboard context, but not added to the public AI snapshot contract.
 - Terraform has been scaffolded and locally validated, but existing AWS resources still need to be imported into Terraform state before Terraform should manage them.
@@ -139,6 +159,8 @@ http://127.0.0.1:5173/
 1. Import the existing AWS resources into Terraform state, then review `terraform plan`.
 2. Refresh live electricity and gas evidence before any public demo.
 3. Decide whether gas should later be included in the public AI snapshot contract.
-4. Move the local news + AI pipeline into Step Functions.
-5. Add SNS/CloudWatch notifications for validation failures.
-6. Publish the dashboard through CloudFront/S3.
+4. Decide whether to enable the Phase 8 EventBridge schedule.
+5. Add Bedrock or managed OpenClaw only after the deterministic orchestration
+   boundary remains stable.
+6. Publish the dashboard through CloudFront/S3 if a public hosted demo is
+   required.
