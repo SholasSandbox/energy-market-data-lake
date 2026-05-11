@@ -8,6 +8,13 @@ locals {
     var.tags
   )
 
+  phase8_tags = merge(
+    local.common_tags,
+    {
+      Phase = "phase-8-ai-orchestration"
+    }
+  )
+
   data_bucket_name       = var.data_bucket_name
   dashboard_bucket_name  = var.dashboard_bucket_name
   raw_path               = "s3://${local.data_bucket_name}/raw"

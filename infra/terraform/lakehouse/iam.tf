@@ -47,7 +47,7 @@ resource "aws_iam_role" "ai_orchestration_lambda" {
 
   name               = "${var.project_prefix}-ai-orchestration-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags               = local.common_tags
+  tags               = local.phase8_tags
 }
 
 resource "aws_iam_role_policy_attachment" "ai_orchestration_lambda_basic_execution" {
@@ -113,7 +113,7 @@ resource "aws_iam_role" "ai_orchestration_state_machine" {
 
   name               = "${var.project_prefix}-ai-orchestration-sfn-role"
   assume_role_policy = data.aws_iam_policy_document.step_functions_assume_role.json
-  tags               = local.common_tags
+  tags               = local.phase8_tags
 }
 
 data "aws_iam_policy_document" "ai_orchestration_state_machine" {
@@ -163,7 +163,7 @@ resource "aws_iam_role" "ai_orchestration_eventbridge" {
 
   name               = "${var.project_prefix}-ai-orchestration-events-role"
   assume_role_policy = data.aws_iam_policy_document.eventbridge_step_functions_assume_role.json
-  tags               = local.common_tags
+  tags               = local.phase8_tags
 }
 
 data "aws_iam_policy_document" "ai_orchestration_eventbridge" {
