@@ -398,6 +398,8 @@ python3 scripts/validate_athena_schema.py \
   AWS AI insight orchestration.
 - `docs/phase-8-operational-runbook.md`: manual run, proof, failure drill, and
   demo commands for Phase 8.
+- `docs/phase-9-terraform-import-hardening.md`: Terraform import and operating
+  hardening tracker.
 - `docs/demo-walkthrough.md`: concise demo script for the local MVP and live
   orchestration story.
 - `docs/news-dashboard-merged-execution-model.md`: 4-week news + AI + dashboard expansion plan.
