@@ -98,6 +98,36 @@ Evidence:
 docs/evidence/phase9-terraform-import-20260511.md
 ```
 
+## Step 3 Partial Status: Daily Ingestion Schedule Disabled
+
+Completed on 2026-05-11:
+
+- Accepted Terraform control over `energy-market-daily-ingestion`.
+- Applied only the targeted EventBridge rule change:
+  - `aws_cloudwatch_event_rule.daily_ingestion`
+- Disabled the older daily ingestion schedule.
+- Left the Phase 8 AI orchestration schedule disabled.
+- Did not apply the remaining Terraform drift.
+
+Targeted apply result:
+
+```text
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+```
+
+Schedule state after targeted apply:
+
+```text
+energy-market-daily-ingestion           = DISABLED
+energy-market-ai-orchestration-schedule = DISABLED
+```
+
+Remaining plan after this change:
+
+```text
+Plan: 1 to add, 19 to change, 0 to destroy.
+```
+
 ## Backend And Bucket Preflight
 
 Confirmed:
@@ -239,6 +269,12 @@ Observed first-plan result after import:
 Plan: 1 to add, 20 to change, 0 to destroy.
 ```
 
+After the targeted daily schedule disable:
+
+```text
+Plan: 1 to add, 19 to change, 0 to destroy.
+```
+
 Observed plan items:
 
 - `energy-market-daily-ingestion` may be changed from `ENABLED` to `DISABLED`
@@ -284,6 +320,7 @@ separate backup/restore design is added later.
 - [x] Run `terraform state list`.
 - [x] Run and review `terraform plan`.
 - [x] Document expected drift.
+- [x] Disable older daily ingestion schedule through Terraform.
 - [ ] Confirm Phase 8 resources remain reproducible from Terraform.
 - [ ] Add CloudWatch alarms only after state is clean.
 - [ ] Keep schedules disabled unless a later decision explicitly enables them.
