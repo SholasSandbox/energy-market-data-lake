@@ -72,6 +72,32 @@ Validation result:
 Success! The configuration is valid.
 ```
 
+## Step 2 Status: Controlled Imports
+
+Completed on 2026-05-11:
+
+- Pulled a fresh state backup before import:
+  - `/tmp/phase9-terraform-import/state-before-import.json`
+- Imported the older manually-created lakehouse resources listed in the import
+  map.
+- Did not import Phase 8 resources again.
+- Captured post-import state:
+  - `/tmp/phase9-terraform-import/state-after-import.json`
+  - `/tmp/phase9-terraform-import/state-after-import-list.txt`
+- Ran `terraform validate`.
+- Ran `terraform plan -out=tfplan`.
+- Captured the readable plan:
+  - `/tmp/phase9-terraform-import/plan-after-import.txt`
+  - `/tmp/phase9-terraform-import/tfplan-after-import-show.txt`
+- Confirmed no resources are proposed for destroy.
+- Did not run `terraform apply`.
+
+Evidence:
+
+```text
+docs/evidence/phase9-terraform-import-20260511.md
+```
+
 ## Backend And Bucket Preflight
 
 Confirmed:
@@ -207,7 +233,13 @@ terraform import aws_glue_job.raw_to_parquet \
 
 ## Expected First-Plan Drift
 
-Expect these plan items after import:
+Observed first-plan result after import:
+
+```text
+Plan: 1 to add, 20 to change, 0 to destroy.
+```
+
+Observed plan items:
 
 - `energy-market-daily-ingestion` may be changed from `ENABLED` to `DISABLED`
   because `schedule_enabled = false`.
@@ -221,9 +253,20 @@ Expect these plan items after import:
   `energy-market-workgroup` does not currently exist.
 - `aws_lambda_function.ingest` may show package or environment drift if the
   deployed zip differs from the local `lambda/ingest_elexon.py` package.
+- Phase 8 resources may lose the extra `Phase=phase-8-ai-orchestration` tag
+  because `local.common_tags` does not include that tag.
 
 Stop and investigate if Terraform wants to replace IAM roles, Lambda functions,
 Glue crawlers, or the Glue job.
+
+No replacement or destroy action appeared in the first post-import plan.
+
+## Data Portability Boundary
+
+Terraform should be able to recreate the infrastructure in a future clean AWS
+account, but it is not expected to move stale historical S3 data, Athena result
+objects, or old dashboard evidence. Treat those as run artifacts unless a
+separate backup/restore design is added later.
 
 ## Phase 9 Checklist
 
@@ -236,11 +279,11 @@ Glue crawlers, or the Glue job.
 - [x] Confirm Phase 8 resources are already in Terraform state.
 - [x] Confirm Phase 8 schedule remains disabled.
 - [x] Produce import map.
-- [ ] Review import map before mutation.
-- [ ] Import older lakehouse resources into Terraform state.
-- [ ] Run `terraform state list`.
-- [ ] Run and review `terraform plan`.
-- [ ] Remove or document expected drift.
+- [x] Review import map before mutation.
+- [x] Import older lakehouse resources into Terraform state.
+- [x] Run `terraform state list`.
+- [x] Run and review `terraform plan`.
+- [x] Document expected drift.
 - [ ] Confirm Phase 8 resources remain reproducible from Terraform.
 - [ ] Add CloudWatch alarms only after state is clean.
 - [ ] Keep schedules disabled unless a later decision explicitly enables them.
@@ -248,6 +291,5 @@ Glue crawlers, or the Glue job.
 ## Next State
 
 ```text
-Phase 9 Step 2: imports completed in controlled batches, with state list
-captured and no resources destroyed.
+Phase 9 Step 3: decide drift handling before any terraform apply.
 ```
