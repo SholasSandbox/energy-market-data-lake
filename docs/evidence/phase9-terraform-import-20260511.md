@@ -271,6 +271,94 @@ Remaining deferred drift:
 These remain deferred because they are executable artifacts or tightly coupled
 to executable-artifact drift.
 
+## Executable Artifact Drift Baseline
+
+Completed on 2026-05-12.
+
+Decision:
+
+- inspect executable-artifact drift before any further apply
+- keep AWS and Terraform actions read-only
+- do not store secret Lambda environment values in evidence
+
+Baseline output directory:
+
+```text
+/tmp/phase9-artifact-baseline/
+```
+
+Terraform baseline:
+
+```text
+Plan: 0 to add, 5 to change, 0 to destroy.
+```
+
+Lambda package comparison:
+
+- `energy-market-elexon-ingest`
+  - local Terraform package hash:
+    `O+87gZ8+OMKKUwvzsXhA2sCVrAbDOwymkLU7MYS/Goc=`
+  - live package hash:
+    `LpuQEhsU45t3ne5cbEvumah4ljmMPwo8FaxzhW30Z/Y=`
+  - source diff lines: `0`
+  - classification: expected package update, source-equivalent
+- `energy-market-news-ai-orchestration`
+  - local Terraform package hash:
+    `ElgyDWfVG22HqYn8vx9hieJDenug/+AnmwINSjzB++g=`
+  - live package hash:
+    `ElgyDWfVG22HqYn8vx9hieJDenug/+AnmwINSjzB++g=`
+  - package diff lines: `0`
+  - classification: metadata-only drift
+
+Glue comparison:
+
+- `aws_s3_object.glue_script`
+  - live S3 script matches `glue/etl_raw_to_parquet.py`
+  - diff lines: `0`
+  - classification: metadata-only/tag drift
+- `aws_glue_job.raw_to_parquet`
+  - live `DefaultArguments` is `null`
+  - Terraform adds required `RAW_PATH`, `CURATED_PATH`, metrics, and
+    continuous logging args
+  - classification: operating configuration drift
+
+Glue script requirement:
+
+```text
+getResolvedOptions(sys.argv, ["JOB_NAME", "RAW_PATH", "CURATED_PATH"])
+```
+
+The ETL script requires `RAW_PATH` and `CURATED_PATH`. Adding them as Glue job
+default arguments makes the job runnable without manually passing those
+arguments at every invocation.
+
+Step Functions policy comparison:
+
+- `aws_iam_role_policy.ai_orchestration_state_machine[0]`
+  - live policy allows Lambda invoke on the AI orchestration Lambda
+  - live policy allows SNS publish to the failure topic
+  - classification: semantic no-op / policy normalization
+
+Remaining drift classification:
+
+- `aws_lambda_function.ingest`
+  - classification: expected package update, source-equivalent
+  - guidance: safe only as an accepted redeploy of identical source
+- `aws_lambda_function.ai_orchestration[0]`
+  - classification: metadata-only drift
+  - guidance: safe to apply if normalizing Terraform state
+- `aws_s3_object.glue_script`
+  - classification: metadata-only/tag drift
+  - guidance: safe if accepting object tag/version metadata update
+- `aws_glue_job.raw_to_parquet`
+  - classification: operating configuration drift
+  - guidance: recommended after accepting default argument behavior
+- `aws_iam_role_policy.ai_orchestration_state_machine[0]`
+  - classification: semantic no-op / policy normalization
+  - guidance: safe to apply if normalizing IAM policy state
+
+No Terraform apply was run during this baseline step.
+
 ## Data Portability Note
 
 Terraform can recreate infrastructure in a future clean account, but it should
