@@ -193,6 +193,84 @@ No `terraform apply` was run for this tag-preservation step because the live
 resources already have the tag and the goal was to make Terraform ownership
 match that live state.
 
+## Low-Risk Governance Drift Apply
+
+Decision:
+
+- apply governance and operating controls
+- exclude Lambda package/code drift
+- exclude Glue script object drift
+- defer Glue job argument updates because targeting the job also pulled in the
+  Glue script object dependency
+
+Targeted plan:
+
+```bash
+terraform plan \
+  -target=aws_athena_workgroup.lakehouse \
+  -target=aws_cloudwatch_log_group.lambda \
+  -target=aws_glue_crawler.raw \
+  -target=aws_glue_crawler.curated \
+  -target=aws_iam_role.lambda \
+  -target=aws_iam_role.glue \
+  -out=tfplan-low-risk-governance
+```
+
+Targeted plan result:
+
+```text
+Plan: 1 to add, 5 to change, 0 to destroy.
+```
+
+Applied:
+
+```bash
+terraform apply tfplan-low-risk-governance
+```
+
+Apply result:
+
+```text
+Apply complete! Resources: 1 added, 5 changed, 0 destroyed.
+```
+
+Applied changes:
+
+- created Athena workgroup `energy-market-workgroup`
+- set `/aws/lambda/energy-market-elexon-ingest` log retention to 14 days
+- retargeted `energy-market-raw-crawler` to the active `20260405/raw/` bucket
+  path
+- confirmed `energy-market-curated-crawler` remains on `20260405/curated/`
+- added standard Terraform tags to older Lambda and Glue IAM roles and crawlers
+
+Verified state:
+
+```text
+Athena workgroup             = energy-market-workgroup
+Athena workgroup metrics     = enabled
+Athena workgroup enforcement = enabled
+Lambda log retention         = 14 days
+Raw crawler target           = s3://energy-market-lake-464975959576-20260405/raw/
+Curated crawler target       = s3://energy-market-lake-464975959576-20260405/curated/
+```
+
+Remaining full plan after this targeted apply:
+
+```text
+Plan: 0 to add, 5 to change, 0 to destroy.
+```
+
+Remaining deferred drift:
+
+- `aws_glue_job.raw_to_parquet`
+- `aws_iam_role_policy.ai_orchestration_state_machine[0]`
+- `aws_lambda_function.ai_orchestration[0]`
+- `aws_lambda_function.ingest`
+- `aws_s3_object.glue_script`
+
+These remain deferred because they are executable artifacts or tightly coupled
+to executable-artifact drift.
+
 ## Data Portability Note
 
 Terraform can recreate infrastructure in a future clean account, but it should

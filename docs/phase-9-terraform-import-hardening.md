@@ -128,6 +128,42 @@ Remaining plan after this change:
 Plan: 1 to add, 19 to change, 0 to destroy.
 ```
 
+## Step 3b Status: Low-Risk Governance Drift Applied
+
+Completed on 2026-05-12:
+
+- Created Athena workgroup `energy-market-workgroup`.
+- Set ingestion Lambda log retention to 14 days.
+- Retargeted the raw crawler to the active `20260405/raw/` bucket path.
+- Confirmed the curated crawler remains on the active `20260405/curated/`
+  bucket path.
+- Applied standard Terraform tags to older Lambda/Glue roles and crawlers.
+- Excluded Lambda package/code drift.
+- Excluded Glue script object drift.
+- Deferred Glue job argument updates because the targeted Glue job plan also
+  pulled in the Glue script object dependency.
+
+Targeted apply result:
+
+```text
+Apply complete! Resources: 1 added, 5 changed, 0 destroyed.
+```
+
+Verified live state:
+
+```text
+Athena workgroup             = energy-market-workgroup
+Lambda log retention         = 14 days
+Raw crawler target           = s3://energy-market-lake-464975959576-20260405/raw/
+Curated crawler target       = s3://energy-market-lake-464975959576-20260405/curated/
+```
+
+Remaining full plan:
+
+```text
+Plan: 0 to add, 5 to change, 0 to destroy.
+```
+
 ## Backend And Bucket Preflight
 
 Confirmed:
@@ -142,11 +178,10 @@ Confirmed schedules:
 
 | EventBridge rule | Live state | Terraform intent |
 | --- | --- | --- |
-| `energy-market-daily-ingestion` | `ENABLED` | `schedule_enabled = false` |
+| `energy-market-daily-ingestion` | `DISABLED` | `schedule_enabled = false` |
 | `energy-market-ai-orchestration-schedule` | `DISABLED` | `ai_orchestration_schedule_enabled = false` |
 
-The daily ingestion rule is the first expected drift item. Phase 9 should decide
-whether to preserve it as enabled or let Terraform disable it.
+Both schedules are currently disabled.
 
 ## Current Terraform State
 
@@ -281,6 +316,12 @@ After encoding the Phase 8 tag in Terraform:
 Plan: 1 to add, 10 to change, 0 to destroy.
 ```
 
+After applying low-risk governance drift:
+
+```text
+Plan: 0 to add, 5 to change, 0 to destroy.
+```
+
 Observed plan items:
 
 - `energy-market-daily-ingestion` may be changed from `ENABLED` to `DISABLED`
@@ -297,6 +338,9 @@ Observed plan items:
   deployed zip differs from the local `lambda/ingest_elexon.py` package.
 - Phase 8 resources keep the extra `Phase=phase-8-ai-orchestration` tag through
   `local.phase8_tags`.
+- `aws_glue_job.raw_to_parquet` remains deferred until the Glue script object is
+  inspected, because a targeted Glue job plan pulled in
+  `aws_s3_object.glue_script`.
 
 Stop and investigate if Terraform wants to replace IAM roles, Lambda functions,
 Glue crawlers, or the Glue job.
@@ -328,6 +372,7 @@ separate backup/restore design is added later.
 - [x] Document expected drift.
 - [x] Disable older daily ingestion schedule through Terraform.
 - [x] Preserve Phase 8 tag ownership in Terraform.
+- [x] Apply low-risk governance drift.
 - [ ] Confirm Phase 8 resources remain reproducible from Terraform.
 - [ ] Add CloudWatch alarms only after state is clean.
 - [ ] Keep schedules disabled unless a later decision explicitly enables them.
@@ -335,5 +380,5 @@ separate backup/restore design is added later.
 ## Next State
 
 ```text
-Phase 9 Step 3: decide drift handling before any terraform apply.
+Phase 9 Step 4: inspect executable-artifact drift before any further apply.
 ```
