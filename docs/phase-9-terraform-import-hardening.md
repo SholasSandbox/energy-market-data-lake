@@ -164,6 +164,52 @@ Remaining full plan:
 Plan: 0 to add, 5 to change, 0 to destroy.
 ```
 
+## Step 4 Current Boundary: Executable-Artifact Drift Inspection
+
+Current state:
+
+- Low-risk governance drift has been applied.
+- Terraform still shows executable-artifact drift only.
+- Schedules remain disabled.
+- No broad Terraform apply should run yet.
+
+Target state:
+
+- Each remaining executable drift item is inspected and classified before any
+  further apply.
+- The Phase 8 state-proof runbook contains the Lambda, Glue, and Step Functions
+  artifact baseline commands needed for this inspection.
+- Any future apply is limited to drift that is understood and accepted.
+
+Use the executable artifact drift baseline in:
+
+```text
+docs/phase-8-aws-ai-insight-orchestration.md
+```
+
+Remaining drift to classify:
+
+| Terraform resource | Inspection required before apply |
+| --- | --- |
+| `aws_lambda_function.ingest` | Compare live deployed ZIP, local Terraform ZIP, env vars, timeout, and memory. |
+| `aws_lambda_function.ai_orchestration[0]` | Compare live deployed ZIP, local package, env vars, timeout, and memory. |
+| `aws_s3_object.glue_script` | Compare the live S3 script object with `glue/etl_raw_to_parquet.py`. |
+| `aws_glue_job.raw_to_parquet` | Review script location, default arguments, runtime, worker type, and retries. |
+| `aws_iam_role_policy.ai_orchestration_state_machine[0]` | Confirm Step Functions needs only Lambda invoke and SNS publish permissions. |
+
+Step 4 acceptance:
+
+- Artifact baseline commands have been run.
+- Results are captured under `/tmp/phase9-artifact-baseline/` or summarized in
+  evidence.
+- Every remaining plan item is classified as one of:
+  - safe to apply
+  - metadata-only drift
+  - expected package update
+  - needs code inspection
+  - do not apply yet
+- No invalid or unexplained executable change is applied.
+
 ## Backend And Bucket Preflight
 
 Confirmed:
@@ -373,6 +419,9 @@ separate backup/restore design is added later.
 - [x] Disable older daily ingestion schedule through Terraform.
 - [x] Preserve Phase 8 tag ownership in Terraform.
 - [x] Apply low-risk governance drift.
+- [x] Add executable-artifact drift baseline commands to the Phase 8 runbook.
+- [ ] Run executable-artifact drift baseline commands.
+- [ ] Classify remaining Lambda, Glue, and Step Functions policy drift.
 - [ ] Confirm Phase 8 resources remain reproducible from Terraform.
 - [ ] Add CloudWatch alarms only after state is clean.
 - [ ] Keep schedules disabled unless a later decision explicitly enables them.
@@ -380,5 +429,5 @@ separate backup/restore design is added later.
 ## Next State
 
 ```text
-Phase 9 Step 4: inspect executable-artifact drift before any further apply.
+Phase 9 Step 4a: run executable-artifact drift baseline and classify remaining drift.
 ```
