@@ -98,6 +98,47 @@ Evidence:
 docs/evidence/phase9-terraform-import-20260511.md
 ```
 
+## Step 4b Status: Accepted Executable Drift Applied
+
+Completed on 2026-05-12.
+
+Applied with a targeted plan:
+
+- `aws_glue_job.raw_to_parquet`
+- `aws_s3_object.glue_script`
+- `aws_lambda_function.ai_orchestration[0]`
+- `aws_iam_role_policy.ai_orchestration_state_machine[0]`
+
+Deferred:
+
+- `aws_lambda_function.ingest`
+
+Targeted apply result:
+
+```text
+Apply complete! Resources: 0 added, 3 changed, 0 destroyed.
+```
+
+Verified:
+
+- Glue job now has `RAW_PATH`, `CURATED_PATH`, metrics, and continuous logging
+  default arguments.
+- Glue script object has standard Terraform tags.
+- AI orchestration Lambda package hash remains unchanged.
+- Ingestion Lambda `LastModified` remains `2026-05-05T14:37:34.000+0000`.
+- Both EventBridge schedules remain disabled.
+
+Remaining full plan:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+The only remaining drift is `aws_lambda_function.ingest`. Deferring the
+ingestion Lambda redeploy remains the recommended approach until the next
+state explicitly decides whether to accept a source-equivalent redeploy or
+document that drift.
+
 ## Step 3 Partial Status: Daily Ingestion Schedule Disabled
 
 Completed on 2026-05-11:
@@ -452,6 +493,8 @@ separate backup/restore design is added later.
 - [x] Add executable-artifact drift baseline commands to the Phase 8 runbook.
 - [x] Run executable-artifact drift baseline commands.
 - [x] Classify remaining Lambda, Glue, and Step Functions policy drift.
+- [x] Apply accepted classified executable drift.
+- [x] Keep ingestion Lambda redeploy deferred.
 - [ ] Confirm Phase 8 resources remain reproducible from Terraform.
 - [ ] Add CloudWatch alarms only after state is clean.
 - [ ] Keep schedules disabled unless a later decision explicitly enables them.
@@ -459,5 +502,5 @@ separate backup/restore design is added later.
 ## Next State
 
 ```text
-Phase 9 Step 4b: decide whether to apply classified executable drift.
+Phase 9 Step 4c: decide ingestion Lambda redeploy or documented drift.
 ```
