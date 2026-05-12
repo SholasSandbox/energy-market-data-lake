@@ -1,3 +1,8 @@
+output "aws_region" {
+  description = "AWS region used by this Terraform root."
+  value       = var.aws_region
+}
+
 output "data_bucket_name" {
   description = "Data lake bucket used by Lambda, Glue, and Athena."
   value       = local.data_bucket_name
@@ -46,4 +51,24 @@ output "athena_workgroup_name" {
 output "athena_output_location" {
   description = "Athena query output location."
   value       = local.athena_output_location
+}
+
+output "dashboard_bucket_name" {
+  description = "Separate public/static dashboard bucket used by Phase 8 publishing."
+  value       = local.dashboard_bucket_name
+}
+
+output "ai_orchestration_lambda_function_name" {
+  description = "Phase 8 deterministic AI insight Lambda function name."
+  value       = try(aws_lambda_function.ai_orchestration[0].function_name, null)
+}
+
+output "ai_orchestration_state_machine_arn" {
+  description = "Phase 8 Step Functions state machine ARN."
+  value       = try(aws_sfn_state_machine.ai_orchestration[0].arn, null)
+}
+
+output "ai_orchestration_failure_topic_arn" {
+  description = "SNS topic ARN for Phase 8 orchestration failures."
+  value       = try(aws_sns_topic.ai_orchestration_failures[0].arn, null)
 }

@@ -1,0 +1,838 @@
+# Phase 8: AWS AI Insight Orchestration
+
+Use this plan to move the local news and AI insight MVP into an AWS-managed
+workflow without introducing Bedrock or OpenClaw before the orchestration and
+validation boundary is proven.
+
+## Goal
+
+Operationalize the existing local news and AI insight flow as an observable AWS
+workflow. Manual Step Functions execution is the current approved operating
+mode; scheduled execution remains disabled until a later decision gate.
+
+```text
+Athena energy export
+  -> RSS/news ingest
+  -> contract validation
+  -> AI input bundle
+  -> deterministic AI insight merge
+  -> ai_insight_v1 validation
+  -> public dashboard snapshot publish
+  -> audit, failed, CloudWatch, and SNS paths
+```
+
+The important portfolio hook is not "AI generated text"; it is controlled AI
+orchestration with schema gates, quarantine, auditability, and a safe public
+publish boundary.
+
+## Branch
+
+```text
+feature/aws-ai-insight-orchestration
+```
+
+## Scope Boundary
+
+In scope for Phase 8:
+
+- AWS orchestration for the existing local news and deterministic AI merge path.
+- S3-backed inputs, outputs, failed payloads, and audit evidence.
+- Step Functions workflow with retries and catch paths.
+- CloudWatch logs and SNS notifications for failure events.
+- Dashboard snapshot publish to a public-safe prefix.
+- Documentation and evidence for rebuild/demo.
+
+Deferred until after Phase 8:
+
+- Bedrock `InvokeModel`.
+- OpenClaw on ECS/Fargate or another managed runtime.
+- Multi-agent orchestration.
+- Fine-tuning.
+- Publishing raw model text directly to the dashboard.
+
+## Design Lock Decisions
+
+These decisions are accepted for Phase 8 and should guide implementation.
+
+### Run ID Shape
+
+Use a workflow prefix, UTC timestamp, and short UUID:
+
+```text
+ai-insight-YYYYMMDDTHHMMSSZ-<8-char-uuid>
+```
+
+Example:
+
+```text
+ai-insight-20260509T093015Z-a1b2c3d4
+```
+
+Rationale:
+
+- Human-readable enough for evidence and S3 inspection.
+- Time-sortable for audit review.
+- Collision-safe for retries, manual reruns, and parallel tests.
+- Clear that the run belongs to the AI insight workflow.
+
+### Step Functions Payload Shape
+
+Use a hybrid payload:
+
+- pass metadata, state, counts, status, and S3 artifact references inline
+- keep full contract payloads in S3
+- do not pass full RSS articles or AI insight documents between states
+
+Shape:
+
+```json
+{
+  "workflow": "ai_insight",
+  "run_id": "ai-insight-20260509T093015Z-a1b2c3d4",
+  "status": "ai_insight_validated",
+  "lake_bucket": "energy-market-lake-...",
+  "dashboard_bucket": "energy-market-dashboard-public-...",
+  "artifacts": {
+    "energy_input": "curated/dataset=energy_input/run_id=.../payload.json",
+    "news_summary": "curated/dataset=news_summary/run_id=.../payload.json",
+    "ai_input_bundle": "curated/dataset=ai_input_bundle/run_id=.../payload.json",
+    "ai_insight": "curated/dataset=ai_insight/run_id=.../payload.json",
+    "dashboard_snapshot": "dashboard_snapshot_v1.json"
+  },
+  "summary": {
+    "article_count": 18,
+    "insight_count": 1,
+    "risk_level": "watch"
+  }
+}
+```
+
+Rationale:
+
+- Step Functions execution history remains useful in a technical demo.
+- S3 remains the artifact store of record.
+- State payloads stay small and avoid exposing full article/model content.
+- Retry and failure paths can pass stable artifact references.
+
+### Dashboard Publish Boundary
+
+Use a separate public/static dashboard bucket, while keeping it optional in
+Terraform for rebuild flexibility.
+
+Private lake bucket:
+
+```text
+raw/
+curated/
+failed/
+audit/
+```
+
+Public dashboard bucket:
+
+```text
+dashboard_snapshot_v1.json
+static React assets, if included in this phase
+```
+
+Rationale:
+
+- Cleaner public/private boundary.
+- Lower blast radius if a bucket policy is misconfigured.
+- Stronger SAP-C02 story around separation of concerns and least privilege.
+- Minimal storage cost penalty for a small dashboard JSON/static site.
+
+## Current Local Producers
+
+- Generate dashboard data:
+  - Script: `scripts/generate_dashboard.py`
+  - Output: `dashboard-ui/public/dashboard-data.json`
+- Export energy input:
+  - Script: `scripts/export_energy_input_local.py`
+  - Output: `docs/evidence/energy_input_v1.sample.json`
+- Ingest curated news:
+  - Script: `scripts/ingest_news_local.py`
+  - Output: `docs/evidence/curated/news_summary_v1.sample.json`
+- Create AI input bundle:
+  - Script: `scripts/create_ai_input_bundle_local.py`
+  - Output: `docs/evidence/ai/ai_input_bundle_v1.sample.json`
+- Merge AI insight:
+  - Script: `scripts/merge_ai_insight_local.py`
+  - Output: `docs/evidence/curated/ai_insight_v1.sample.json`
+- Publish dashboard snapshot:
+  - Script: `scripts/publish_dashboard_snapshot_local.py`
+  - Output: `dashboard-ui/public/dashboard_snapshot_v1.sample.json`
+- Validate contracts:
+  - Script: `scripts/validate_contracts.py`
+  - Output: pass/fail for good and known-bad samples
+
+## Target AWS Data Contracts
+
+- `energy_input_v1.json`
+  - Location: `curated/source=ai_orchestration/dataset=energy_input/run_id=<run_id>/payload.json`
+  - Producer: Athena export Lambda
+  - Consumer: AI bundle Lambda
+- `news_summary_v1.json`
+  - Location: `curated/source=ai_orchestration/dataset=news_summary/run_id=<run_id>/payload.json`
+  - Producer: news ingest Lambda
+  - Consumer: AI bundle Lambda
+- `ai_input_bundle_v1.json`
+  - Location: `curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=<run_id>/payload.json`
+  - Producer: AI bundle Lambda
+  - Consumer: AI merge Lambda
+- `ai_insight_v1.json`
+  - Location: `curated/source=ai_orchestration/dataset=ai_insight/run_id=<run_id>/payload.json`
+  - Producer: deterministic AI merge Lambda
+  - Consumer: publisher Lambda
+- `dashboard_snapshot_v1.json`
+  - Location: `s3://<dashboard-bucket>/dashboard_snapshot_v1.json`
+  - Producer: publisher Lambda
+  - Consumer: React dashboard
+
+Failure and audit paths:
+
+```text
+s3://<lake-bucket>/failed/workflow=ai_insight/component=<component>/run_id=<run_id>/payload.json
+s3://<lake-bucket>/audit/workflow=ai_insight/run_id=<run_id>/summary.json
+```
+
+## S3 Artifact Contract
+
+State now:
+
+```text
+Local evidence files exist under docs/evidence/ and dashboard-ui/public/.
+```
+
+Target state:
+
+```text
+Every Phase 8 workflow artifact has an exact S3 location and can be tied back
+to one run_id.
+```
+
+Private lake bucket:
+
+```text
+s3://<data_bucket_name>/
+```
+
+Private artifact prefixes:
+
+- Energy input:
+  - Prefix: `curated/source=ai_orchestration/dataset=energy_input/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- News summary:
+  - Prefix: `curated/source=ai_orchestration/dataset=news_summary/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- AI input bundle:
+  - Prefix: `curated/source=ai_orchestration/dataset=ai_input_bundle/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- AI insight:
+  - Prefix: `curated/source=ai_orchestration/dataset=ai_insight/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- Failed payloads:
+  - Prefix: `failed/workflow=ai_insight/component=<component>/`
+  - Payload key: `<prefix>run_id=<run_id>/payload.json`
+- Audit summaries:
+  - Prefix: `audit/workflow=ai_insight/`
+  - Payload key: `<prefix>run_id=<run_id>/summary.json`
+
+Public dashboard bucket:
+
+```text
+s3://<dashboard_bucket_name>/
+```
+
+Public artifact keys:
+
+- Dashboard snapshot:
+  - Key: `dashboard_snapshot_v1.json`
+- Optional immutable dashboard snapshot:
+  - Key: `snapshots/run_id=<run_id>/dashboard_snapshot_v1.json`
+- Optional React static assets:
+  - Prefix: `assets/`
+
+Trade-off decision:
+
+- `source=ai_orchestration` keeps Phase 8 curated JSON separate from existing
+  lakehouse datasets.
+- `dataset=<contract-name>` makes IAM and Athena/catalog decisions easier later.
+- `run_id=<run_id>` keeps every artifact traceable to the Step Functions run.
+- the public bucket contains only approved dashboard output, not raw, curated,
+  failed, or audit artifacts.
+
+## Terraform Variable Interface
+
+State now:
+
+```text
+Terraform already supports an existing or newly created data lake bucket.
+```
+
+Target state:
+
+```text
+Phase 8 has named Terraform inputs for orchestration, public publishing,
+retention, notifications, and schedule control.
+```
+
+Variables to add:
+
+- `create_dashboard_bucket`
+  - Type: `bool`
+  - Default: `true`
+  - Purpose: create a separate public/static dashboard bucket.
+- `dashboard_bucket_name`
+  - Type: `string`
+  - Default: `""`
+  - Purpose: existing or desired dashboard bucket name.
+- `ai_orchestration_enabled`
+  - Type: `bool`
+  - Default: `false`
+  - Purpose: keep Phase 8 schedule/manual resources off until validated.
+- `ai_orchestration_schedule_expression`
+  - Type: `string`
+  - Default: `cron(30 6 * * ? *)`
+  - Purpose: daily EventBridge schedule after manual proof.
+- `ai_orchestration_log_retention_days`
+  - Type: `number`
+  - Default: `14`
+  - Purpose: CloudWatch retention for Phase 8 logs.
+- `ai_orchestration_lambda_timeout_seconds`
+  - Type: `number`
+  - Default: `300`
+  - Purpose: Lambda timeout for news/AI handlers.
+- `ai_orchestration_lambda_memory_size`
+  - Type: `number`
+  - Default: `512`
+  - Purpose: Lambda memory for RSS parsing and JSON processing.
+- `ai_orchestration_news_limit_per_feed`
+  - Type: `number`
+  - Default: `4`
+  - Purpose: keep RSS ingest bounded and low cost.
+- `ai_orchestration_news_max_articles`
+  - Type: `number`
+  - Default: `18`
+  - Purpose: keep dashboard/news payloads compact.
+- `ai_orchestration_feeds`
+  - Type: `list(string)`
+  - Default: current local RSS feed set.
+  - Purpose: make news sources configurable without code changes.
+- `ai_orchestration_sns_email`
+  - Type: `string`
+  - Default: `""`
+  - Purpose: optional email subscription for failure notifications.
+- `ai_orchestration_state_machine_name`
+  - Type: `string`
+  - Default: `energy-market-ai-insight-orchestration`
+  - Purpose: predictable Step Functions state-machine name.
+
+Environment variables for Lambda handlers:
+
+- `AWS_REGION`
+- `DATA_BUCKET`
+- `DASHBOARD_BUCKET`
+- `ATHENA_DATABASE`
+- `ATHENA_WORKGROUP`
+- `ATHENA_OUTPUT_LOCATION`
+- `NEWS_FEEDS`
+- `NEWS_LIMIT_PER_FEED`
+- `NEWS_MAX_ARTICLES`
+- `AI_ORCHESTRATION_MODE`
+
+Initial value for `AI_ORCHESTRATION_MODE`:
+
+```text
+deterministic
+```
+
+## Target AWS Workflow
+
+```text
+EventBridge schedule or manual execution
+  -> Step Functions state machine
+    -> ExportEnergyInput
+    -> IngestNewsSummary
+    -> ValidateInputs
+    -> CreateAiInputBundle
+    -> MergeAiInsightDeterministic
+    -> ValidateAiInsight
+    -> PublishDashboardSnapshot
+    -> WriteAuditSuccess
+
+Any failed validation or runtime error:
+  -> WriteFailedPayload
+  -> PublishSnsFailure
+  -> KeepPreviousGoodDashboardSnapshot
+```
+
+## Implementation Checklist With Time Estimates
+
+### 1. Phase 8 Design Lock
+
+Estimate: 0.5 day
+
+- [x] Confirm the branch starts from clean `main`.
+- [x] Review current local script inputs and outputs.
+- [x] Lock run ID format.
+- [x] Lock Step Functions payload shape.
+- [x] Decide whether dashboard output reuses the lake bucket or a separate
+      public/static bucket.
+- [x] Lock exact S3 prefixes and Terraform variable names.
+- [x] Record environment variables and Terraform variables.
+
+Acceptance:
+
+- This plan is committed and points to concrete local scripts and AWS paths.
+
+### 2. Shared Runtime Utilities
+
+Estimate: 1 day
+
+- [x] Add shared S3 JSON read/write helpers.
+- [x] Add run ID generation helper.
+- [x] Add artifact key generation helpers.
+- [x] Add hybrid Step Functions state payload helper.
+- [x] Add contract validation helper usable by Lambda handlers.
+- [x] Add focused runtime self-check script.
+- [x] Refactor local scripts only where needed so local and AWS paths share
+      business logic.
+- [x] Preserve local demo commands.
+
+Acceptance:
+
+- `.venv/bin/python scripts/check_phase8_runtime.py` passes.
+- `.venv/bin/python -m compileall energy_market scripts lambda glue` passes.
+- `.venv/bin/python scripts/validate_contracts.py --include-evidence`
+  `--check-failures` passes.
+- Temp-output local pipeline run passes without modifying repo evidence files.
+
+### 3. Lambda Handler Slice
+
+Estimate: 1.5-2 days
+
+- [x] Add `lambda/news_ai_orchestration.py` or a small handler package.
+- [x] Implement `ExportEnergyInput` handler.
+- [x] Implement `IngestNewsSummary` handler.
+- [x] Implement `CreateAiInputBundle` handler.
+- [x] Implement `MergeAiInsightDeterministic` handler.
+- [x] Implement `PublishDashboardSnapshot` handler.
+- [x] Add handler-level structured output for Step Functions.
+- [x] Add local fake-S3 handler self-check.
+
+Acceptance:
+
+- `.venv/bin/python scripts/check_phase8_handlers.py` passes.
+- Each handler can be invoked locally with a sample event.
+- Each handler writes the expected S3 key through an injected S3 client.
+
+### 4. Validation And Quarantine Slice
+
+Estimate: 1 day
+
+- [x] Validate `energy_input_v1`.
+- [x] Validate `news_summary_v1`.
+- [x] Validate `ai_input_bundle_v1`.
+- [x] Validate `ai_insight_v1`.
+- [x] Validate `dashboard_snapshot_v1`.
+- [x] Write invalid payloads to `failed/`.
+- [x] Preserve the previous good public dashboard snapshot on failure.
+- [x] Add failure reason, component, schema name, and run ID to failed records.
+- [x] Prove invalid output does not publish.
+
+Acceptance:
+
+- `.venv/bin/python scripts/check_phase8_handlers.py` proves valid and failed paths.
+- A known-bad news payload is rejected and written to `failed/`.
+- No invalid output reaches the dashboard publish location.
+- A failed run leaves the existing public `dashboard_snapshot_v1.json` unchanged.
+
+### 5. Terraform Foundation
+
+Estimate: 1-1.5 days
+
+- [x] Add or extend S3 prefix conventions for curated, failed, audit, and public
+      dashboard outputs.
+- [x] Add Lambda IAM permissions for required S3 prefixes.
+- [x] Confirm Athena query permissions are not required for the current
+      dashboard-data input contract.
+- [x] Add CloudWatch log groups with retention.
+- [x] Add SNS topic for failure notifications.
+- [x] Add Step Functions execution role.
+- [x] Keep a new S3 bucket optional; default to existing lake bucket.
+
+Acceptance:
+
+- `terraform fmt` passes.
+- `terraform validate` passes after initialization.
+- A backendless, non-mutating Terraform plan with
+  `ai_orchestration_enabled=true` succeeds before apply.
+
+### 6. Step Functions Orchestration
+
+Estimate: 1-1.5 days
+
+- [x] Add state machine definition.
+- [x] Wire Lambda task states.
+- [x] Add retry policies for Lambda/RSS execution steps.
+- [x] Add catch paths to route failed executions to SNS while Lambda writes
+      failed payloads.
+- [x] Add EventBridge schedule, initially disabled or manual-only.
+- [x] Add manual execution command to docs.
+
+Acceptance:
+
+- [x] Manual Step Functions execution completes successfully.
+- [x] A forced failed execution routes to failed/SNS path.
+
+Evidence:
+
+- `docs/evidence/phase8-aws-live-execution-20260511.md`
+
+### 7. Public Dashboard Snapshot Publish
+
+Estimate: 0.5-1 day
+
+- [x] Publish only `dashboard_snapshot_v1.json` and immutable approved
+      dashboard snapshots to the dashboard bucket.
+- [x] Add S3 availability checks for the latest and immutable dashboard JSON.
+- [x] Keep raw, curated, failed, and audit paths in the private lake bucket.
+
+Acceptance:
+
+- Dashboard snapshot exists in the dashboard bucket after successful execution.
+- Failed execution leaves the previous dashboard snapshot unchanged.
+- Private raw, curated, failed, and audit paths are not exposed.
+
+### 8. Evidence And Docs Closeout
+
+Estimate: 0.5-1 day
+
+- [x] Capture successful state-machine execution evidence.
+- [x] Capture failed validation evidence.
+- [x] Capture S3 output key evidence.
+- [x] Capture CloudWatch/Step Functions evidence.
+- [x] Add Phase 8 closeout evidence under `docs/evidence/`.
+- [x] Add operational runbook under `docs/phase-8-operational-runbook.md`.
+- [x] Update `README.md`.
+- [x] Update `docs/setup.md`.
+- [x] Update `docs/demo-walkthrough.md`.
+
+Acceptance:
+
+- Demo can explain the AI orchestration boundary in under two minutes.
+- Rebuild/setup docs contain the exact AWS CLI and Terraform commands used.
+
+## Deferred Follow-Up: Public Hosting Hardening
+
+These items are intentionally outside the completed Phase 8 scope. Phase 8
+publishes the public-safe dashboard snapshot to S3, but it does not enable a
+hosted public website or CloudFront distribution.
+
+- If CloudFront is included later, add cache behavior that does not trap stale
+  JSON.
+- If static website hosting is included later, confirm the hosted React app
+  reads only public-safe snapshot data.
+- Keep raw, curated, failed, and audit paths private; expose only the approved
+  dashboard snapshot contract.
+
+## AWS CLI State-Proof Commands
+
+Use these commands to prove state transitions during Phase 8. They should not
+replace Terraform, but they are useful for evidence and troubleshooting.
+
+Identity and account boundary:
+
+```bash
+aws sts get-caller-identity
+aws configure get region
+```
+
+S3 artifact state:
+
+```bash
+aws s3api head-bucket --bucket "${DATA_BUCKET}"
+aws s3api head-bucket --bucket "${DASHBOARD_BUCKET}"
+aws s3api list-objects-v2 \
+  --bucket "${DATA_BUCKET}" \
+  --prefix "curated/source=ai_orchestration/"
+aws s3 cp \
+  "s3://${DATA_BUCKET}/${ARTIFACT_KEY}" -
+aws s3api head-object \
+  --bucket "${DASHBOARD_BUCKET}" \
+  --key "dashboard_snapshot_v1.json"
+```
+
+Lambda configuration and invocation:
+
+```bash
+aws lambda get-function-configuration \
+  --function-name "${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --query 'Environment.Variables'
+aws lambda invoke \
+  --function-name "${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --payload file://docs/evidence/phase8-sample-event.json \
+  --cli-binary-format raw-in-base64-out \
+  docs/evidence/phase8-lambda-invoke-result.json
+```
+
+<!-- markdownlint-disable MD013 -->
+
+Executable artifact drift baseline:
+
+Use this baseline before any Terraform apply that could update Lambda code,
+Glue scripts, Glue jobs, or Step Functions execution permissions.
+
+```bash
+export AWS_REGION=eu-west-2
+export DATA_BUCKET=energy-market-lake-464975959576-20260405
+export INGEST_FUNCTION_NAME=energy-market-elexon-ingest
+export AI_ORCHESTRATION_FUNCTION_NAME=energy-market-news-ai-orchestration
+export GLUE_JOB_NAME=energy-market-etl-raw-to-parquet
+export GLUE_SCRIPT_KEY=scripts/etl_raw_to_parquet.py
+export SFN_ROLE_NAME=energy-market-ai-orchestration-sfn-role
+export SFN_POLICY_NAME=energy-market-ai-orchestration-sfn-policy
+
+mkdir -p /tmp/phase9-artifact-baseline/live
+mkdir -p /tmp/phase9-artifact-baseline/local
+```
+
+Build the Terraform desired-state baseline without applying it:
+
+```bash
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
+cd infra/terraform/lakehouse
+
+terraform validate
+terraform plan -no-color \
+  -out=tfplan-step4-executable-drift \
+  > /tmp/phase9-artifact-baseline/terraform-plan.txt
+terraform show -no-color tfplan-step4-executable-drift \
+  > /tmp/phase9-artifact-baseline/terraform-plan-show.txt
+
+openssl dgst -sha256 -binary .terraform/build/ingest_elexon.zip \
+  | openssl base64 \
+  > /tmp/phase9-artifact-baseline/local/ingest_elexon.code_sha256.txt
+openssl dgst -sha256 -binary .terraform/build/news_ai_orchestration.zip \
+  | openssl base64 \
+  > /tmp/phase9-artifact-baseline/local/news_ai_orchestration.code_sha256.txt
+```
+
+Capture live Lambda metadata and deployed packages:
+
+```bash
+aws lambda get-function \
+  --function-name "${INGEST_FUNCTION_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Configuration.{FunctionName:FunctionName,Runtime:Runtime,Handler:Handler,CodeSha256:CodeSha256,LastModified:LastModified,Timeout:Timeout,MemorySize:MemorySize,Environment:Environment.Variables}' \
+  > /tmp/phase9-artifact-baseline/live/ingest_lambda_config.json
+
+aws lambda get-function \
+  --function-name "${INGEST_FUNCTION_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Code.Location' \
+  --output text \
+  > /tmp/phase9-artifact-baseline/live/ingest_lambda_code_url.txt
+
+curl -sSL "$(cat /tmp/phase9-artifact-baseline/live/ingest_lambda_code_url.txt)" \
+  -o /tmp/phase9-artifact-baseline/live/ingest_elexon.zip
+
+aws lambda get-function \
+  --function-name "${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Configuration.{FunctionName:FunctionName,Runtime:Runtime,Handler:Handler,CodeSha256:CodeSha256,LastModified:LastModified,Timeout:Timeout,MemorySize:MemorySize,Environment:Environment.Variables}' \
+  > /tmp/phase9-artifact-baseline/live/news_ai_orchestration_config.json
+
+aws lambda get-function \
+  --function-name "${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Code.Location' \
+  --output text \
+  > /tmp/phase9-artifact-baseline/live/news_ai_orchestration_code_url.txt
+
+curl -sSL "$(cat /tmp/phase9-artifact-baseline/live/news_ai_orchestration_code_url.txt)" \
+  -o /tmp/phase9-artifact-baseline/live/news_ai_orchestration.zip
+```
+
+Inspect live Lambda package contents before deciding whether Terraform should
+replace them:
+
+```bash
+unzip -l /tmp/phase9-artifact-baseline/live/ingest_elexon.zip \
+  > /tmp/phase9-artifact-baseline/live/ingest_elexon.zip.list.txt
+unzip -l /tmp/phase9-artifact-baseline/live/news_ai_orchestration.zip \
+  > /tmp/phase9-artifact-baseline/live/news_ai_orchestration.zip.list.txt
+
+openssl dgst -sha256 -binary /tmp/phase9-artifact-baseline/live/ingest_elexon.zip \
+  | openssl base64 \
+  > /tmp/phase9-artifact-baseline/live/ingest_elexon.code_sha256.txt
+openssl dgst -sha256 -binary /tmp/phase9-artifact-baseline/live/news_ai_orchestration.zip \
+  | openssl base64 \
+  > /tmp/phase9-artifact-baseline/live/news_ai_orchestration.code_sha256.txt
+```
+
+Capture live Glue executable state:
+
+```bash
+aws s3api head-object \
+  --bucket "${DATA_BUCKET}" \
+  --key "${GLUE_SCRIPT_KEY}" \
+  --region "${AWS_REGION}" \
+  --query '{ETag:ETag,LastModified:LastModified,ContentLength:ContentLength,Metadata:Metadata}' \
+  > /tmp/phase9-artifact-baseline/live/glue_script_head_object.json
+
+aws s3 cp \
+  "s3://${DATA_BUCKET}/${GLUE_SCRIPT_KEY}" \
+  /tmp/phase9-artifact-baseline/live/etl_raw_to_parquet.py
+
+aws glue get-job \
+  --job-name "${GLUE_JOB_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Job.{Command:Command,DefaultArguments:DefaultArguments,GlueVersion:GlueVersion,WorkerType:WorkerType,NumberOfWorkers:NumberOfWorkers,MaxRetries:MaxRetries}' \
+  > /tmp/phase9-artifact-baseline/live/glue_job.json
+```
+
+Compare live Glue script with local source:
+
+```bash
+cd /Users/shola/Workspace/cloud-projects/energy-market-data-lake
+
+diff -u \
+  glue/etl_raw_to_parquet.py \
+  /tmp/phase9-artifact-baseline/live/etl_raw_to_parquet.py \
+  > /tmp/phase9-artifact-baseline/glue_script.diff || true
+```
+
+Capture Step Functions execution role policy drift:
+
+```bash
+aws iam get-role-policy \
+  --role-name "${SFN_ROLE_NAME}" \
+  --policy-name "${SFN_POLICY_NAME}" \
+  --query 'PolicyDocument' \
+  > /tmp/phase9-artifact-baseline/live/sfn_role_policy.json
+```
+
+Classify each remaining Terraform plan item before apply:
+
+| Resource | Classification |
+| --- | --- |
+| `aws_lambda_function.ingest` | Safe only after package and env drift are explained. |
+| `aws_lambda_function.ai_orchestration[0]` | Safe only after package and env drift are explained. |
+| `aws_s3_object.glue_script` | Safe only after live script and local script match or the change is accepted. |
+| `aws_glue_job.raw_to_parquet` | Safe only after script location and default arguments are reviewed. |
+| `aws_iam_role_policy.ai_orchestration_state_machine[0]` | Safe only after Lambda/SNS permissions match the state machine definition. |
+
+<!-- markdownlint-enable MD013 -->
+
+Step Functions execution:
+
+```bash
+aws stepfunctions start-execution \
+  --state-machine-arn "${AI_ORCHESTRATION_STATE_MACHINE_ARN}" \
+  --name "${RUN_ID}" \
+  --input file://docs/evidence/phase8-start-input.json
+aws stepfunctions describe-execution \
+  --execution-arn "${EXECUTION_ARN}"
+aws stepfunctions get-execution-history \
+  --execution-arn "${EXECUTION_ARN}" \
+  --max-results 25
+```
+
+Logs and failure notifications:
+
+```bash
+aws logs tail "/aws/lambda/${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --since 1h
+aws sns list-topics
+aws sns list-subscriptions-by-topic \
+  --topic-arn "${AI_ORCHESTRATION_FAILURE_TOPIC_ARN}"
+```
+
+Athena export checks:
+
+```bash
+aws athena start-query-execution \
+  --query-string "SELECT MAX(\"date\") AS latest_date \
+FROM curated_dataset_electricity" \
+  --query-execution-context Database="${ATHENA_DATABASE}" \
+  --work-group "${ATHENA_WORKGROUP}"
+aws athena get-query-execution \
+  --query-execution-id "${QUERY_EXECUTION_ID}"
+aws athena get-query-results \
+  --query-execution-id "${QUERY_EXECUTION_ID}"
+```
+
+CloudFront, if public hosting is included:
+
+```bash
+aws cloudfront list-distributions
+aws cloudfront create-invalidation \
+  --distribution-id "${DASHBOARD_DISTRIBUTION_ID}" \
+  --paths "/dashboard_snapshot_v1.json"
+```
+
+## Estimated Effort
+
+Minimum useful Phase 8:
+
+```text
+5-7 working days
+```
+
+Portfolio-grade Phase 8 with evidence and docs:
+
+```text
+8-12 working days
+```
+
+Defer until Phase 9 or later:
+
+```text
+Bedrock InvokeModel: +2-4 working days
+OpenClaw managed runtime: +3-5 working days
+```
+
+## Token-Saving Execution Slices
+
+Use these as PR-sized implementation chunks:
+
+1. Design lock and S3 contract doc.
+2. Shared runtime utilities and local compatibility.
+3. Lambda handlers.
+4. Validation and quarantine.
+5. Terraform IAM/SNS/logs/Step Functions.
+6. Manual AWS execution evidence.
+7. Public dashboard publish and docs closeout.
+
+## Phase 8 Done Gate
+
+Phase 8 is complete when:
+
+- The AWS workflow can run manually through Step Functions.
+- Energy input, news summary, AI bundle, AI insight, and dashboard snapshot are
+  all produced as S3-backed JSON contracts.
+- Invalid AI output is quarantined and does not publish.
+- The previous good dashboard snapshot remains available after failure.
+- CloudWatch logs and SNS notification evidence exist.
+- The dashboard publish path exposes only the approved public-safe snapshot.
+- Setup and demo docs can recreate the workflow.
+
+## Operational Runbook
+
+Current manual operating procedures live here:
+
+```text
+docs/phase-8-operational-runbook.md
+```
+
+The runbook covers:
+
+- preflight checks
+- manual Step Functions execution
+- curated artifact verification
+- dashboard snapshot verification
+- controlled failure drill
+- schedule-disable command
+- demo talk track

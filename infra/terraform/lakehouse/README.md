@@ -1,5 +1,7 @@
 # Terraform Lakehouse
 
+<!-- markdownlint-disable MD013 -->
+
 This Terraform root recreates the serverless energy lakehouse resources used by the ENTSOG gas build:
 
 - Lambda ingestion function and execution role
@@ -7,6 +9,8 @@ This Terraform root recreates the serverless energy lakehouse resources used by 
 - Optional data lake S3 bucket
 - Glue role, database, raw crawler, curated crawler, and ETL job
 - Athena workgroup and query result location
+- Phase 8 deterministic AI insight Lambda, Step Functions state machine,
+  failure SNS topic, and optional dashboard snapshot bucket
 
 The Terraform state backend is intentionally separate from the data lake bucket.
 
@@ -16,6 +20,7 @@ Datastores in scope:
 - Glue Data Catalog for table and partition metadata
 - CloudWatch Logs for operational logs
 - S3 Terraform state bucket for durable Terraform state
+- Optional separate S3 dashboard/static bucket for public-safe snapshot JSON
 - Optional SSM Parameter Store or Secrets Manager for future secrets
 
 ## Backend
@@ -95,6 +100,39 @@ data_bucket_name   = "energy-market-lake-<account-or-unique-suffix>"
 
 Avoid angle-bracket placeholders in your shell commands; replace them in the file first.
 
+Phase 8 orchestration is optional and disabled by default:
+
+```hcl
+create_dashboard_bucket = false
+dashboard_bucket_name   = "energy-market-dashboard-public-464975959576-20260405"
+
+ai_orchestration_enabled             = false
+ai_orchestration_schedule_enabled    = false
+ai_orchestration_dashboard_data_key  = "dashboard/dashboard-data.json"
+ai_orchestration_sns_email           = ""
+```
+
+Set `ai_orchestration_enabled = true` only after the Lambda zip exists and the
+dashboard input JSON has been uploaded to the data lake bucket at
+`ai_orchestration_dashboard_data_key`.
+
+Build the Phase 8 Lambda package before planning or applying orchestration
+resources:
+
+```bash
+../../../scripts/build_phase8_lambda_package.sh
+```
+
+The build writes:
+
+```text
+.terraform/build/news_ai_orchestration.zip
+```
+
+The package includes `lambda/news_ai_orchestration.py`, the shared
+`energy_market/` runtime code, `schemas/`, and Lambda-only Python dependencies
+from `requirements-lambda.txt`.
+
 ## Commands
 
 Initialize with the S3 backend:
@@ -120,6 +158,14 @@ Apply:
 
 ```bash
 terraform apply tfplan
+```
+
+Start one orchestration execution manually after apply:
+
+```bash
+aws stepfunctions start-execution \
+  --state-machine-arn "$(terraform output -raw ai_orchestration_state_machine_arn)" \
+  --region "$(terraform output -raw aws_region)"
 ```
 
 ## Existing Manual Resources
@@ -168,6 +214,9 @@ Import addresses may change if you rename resources in the Terraform files. The 
 - **Existing data bucket is not managed when `create_data_bucket = false`.** Do not import `aws_s3_bucket.data_lake[0]` unless you intentionally switch to Terraform-managed bucket creation.
 - **Changing `S3_BUCKET` requires IAM policy alignment.** Lambda and Glue may read the new bucket name from configuration but still fail S3 writes if their role policies point at an older bucket.
 - **Do not enable the EventBridge schedule until manual validation passes.** Keep `schedule_enabled = false` while importing and reconciling resources.
+- **Do not enable the Phase 8 schedule until one manual Step Functions execution passes.** Keep `ai_orchestration_schedule_enabled = false` while validating failure handling.
+- **Build the Phase 8 Lambda package before planning enabled orchestration resources.** Terraform reads `.terraform/build/news_ai_orchestration.zip` when `ai_orchestration_enabled = true`.
+- **The public dashboard snapshot is updated last.** The state machine publishes `dashboard_snapshot_v1.json` only after all validation gates pass; failed runs route to SNS/`failed/` and leave the previous public snapshot in place.
 - **Secrets can leak into state.** `entsoe_token` is sensitive, but Terraform state can still contain sensitive values. Prefer an empty token here until a Secrets Manager or SSM pattern is added.
 - **Glue crawler names and table names can drift.** Confirm `curated_dataset_gas` points at the intended `s3://.../curated/dataset=gas/` location after any import or crawler run.
 - **AWS-generated attributes may cause noisy plans.** Review `terraform plan` carefully before apply; adjust lifecycle rules only when the drift is harmless and understood.
@@ -179,3 +228,4 @@ Import addresses may change if you rename resources in the Terraform files. The 
 - `schedule_enabled` defaults to `false`; enable it after manual ingestion and ETL validation pass.
 - The Glue job script is uploaded from `glue/etl_raw_to_parquet.py`.
 - The Lambda deployment package is built from `lambda/ingest_elexon.py`.
+- The Phase 8 Lambda deployment package is built by `scripts/build_phase8_lambda_package.sh`.
