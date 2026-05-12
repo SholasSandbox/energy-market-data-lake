@@ -547,6 +547,39 @@ Conclusion:
 - No CloudWatch alarms were added in this step because the plan is not fully
   clean; alarms should be a separate decision.
 
+## Phase 9 Closeout
+
+Completed on 2026-05-12.
+
+Decision:
+
+- close Phase 9 with documented residual drift
+- keep `aws_lambda_function.ingest` redeploy deferred
+- defer CloudWatch alarms to a later focused state
+- keep both EventBridge schedules disabled
+
+Final accepted plan state:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+The remaining plan item is:
+
+```text
+aws_lambda_function.ingest
+```
+
+Closeout summary:
+
+- Terraform import and backend adoption are complete.
+- Governance drift has been applied.
+- Accepted executable drift has been applied.
+- Phase 8 resources are reproducible from Terraform.
+- Historical S3 data, Athena results, and old dashboard evidence remain outside
+  Terraform portability scope.
+- Alarms remain a follow-up task, not part of this closeout.
+
 ## Data Portability Note
 
 Terraform can recreate infrastructure in a future clean account, but it should
