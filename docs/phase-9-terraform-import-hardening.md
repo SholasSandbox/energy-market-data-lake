@@ -1,0 +1,630 @@
+# Phase 9: Terraform Import And Operating Hardening
+
+<!-- markdownlint-disable MD013 -->
+
+Use this tracker to adopt the existing manually-created AWS lakehouse resources
+into Terraform state, review drift, and harden the operating posture without
+enabling schedules prematurely.
+
+## Goal
+
+Current state:
+
+- Phase 8 AI insight orchestration resources are already managed in the S3
+  Terraform backend.
+- Older lakehouse resources exist in AWS but are not yet imported into this
+  Terraform state.
+- The Phase 8 EventBridge schedule is deployed and disabled.
+- The older daily ingestion EventBridge rule is live and enabled.
+
+Target state:
+
+- Terraform state accurately represents the live AWS resources needed for the
+  lakehouse and Phase 8 orchestration.
+- Expected drift is either removed or documented.
+- Phase 8 remains reproducible from Terraform.
+- CloudWatch alarms are considered only after state is clean.
+- Schedules remain intentionally disabled unless a later operating decision
+  changes that.
+
+## Branch
+
+```text
+phase9-terraform-import-hardening
+```
+
+This branch was created from `feature/aws-ai-insight-orchestration`. If Phase 8
+is merged first, rebase this branch onto `main` before importing resources.
+
+## Step 1 Status: Branch And Backend Preflight
+
+Completed on 2026-05-11:
+
+- Created branch `phase9-terraform-import-hardening`.
+- Recreated local ignored Terraform config files:
+  - `infra/terraform/lakehouse/backend.hcl`
+  - `infra/terraform/lakehouse/terraform.tfvars`
+- Initialized Terraform against the S3 backend:
+  - bucket: `energy-market-terraform-state-464975959576-eu-west-2`
+  - key: `energy-market-data-lake/phase8-ai-orchestration/terraform.tfstate`
+  - region: `eu-west-2`
+- Pulled a pre-import state backup to:
+  - `/tmp/phase9-terraform-preflight/state-before-phase9.json`
+- Ran `terraform validate`.
+- Confirmed import map below.
+
+Commands used:
+
+```bash
+cd /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake
+git switch -c phase9-terraform-import-hardening
+
+cd infra/terraform/lakehouse
+terraform init -reconfigure -backend-config=backend.hcl
+terraform state pull > /tmp/phase9-terraform-preflight/state-before-phase9.json
+terraform state list | sort
+terraform validate
+```
+
+Validation result:
+
+```text
+Success! The configuration is valid.
+```
+
+## Step 2 Status: Controlled Imports
+
+Completed on 2026-05-11:
+
+- Pulled a fresh state backup before import:
+  - `/tmp/phase9-terraform-import/state-before-import.json`
+- Imported the older manually-created lakehouse resources listed in the import
+  map.
+- Did not import Phase 8 resources again.
+- Captured post-import state:
+  - `/tmp/phase9-terraform-import/state-after-import.json`
+  - `/tmp/phase9-terraform-import/state-after-import-list.txt`
+- Ran `terraform validate`.
+- Ran `terraform plan -out=tfplan`.
+- Captured the readable plan:
+  - `/tmp/phase9-terraform-import/plan-after-import.txt`
+  - `/tmp/phase9-terraform-import/tfplan-after-import-show.txt`
+- Confirmed no resources are proposed for destroy.
+- Did not run `terraform apply`.
+
+Evidence:
+
+```text
+docs/evidence/phase9-terraform-import-20260511.md
+```
+
+## Step 4b Status: Accepted Executable Drift Applied
+
+Completed on 2026-05-12.
+
+Applied with a targeted plan:
+
+- `aws_glue_job.raw_to_parquet`
+- `aws_s3_object.glue_script`
+- `aws_lambda_function.ai_orchestration[0]`
+- `aws_iam_role_policy.ai_orchestration_state_machine[0]`
+
+Deferred:
+
+- `aws_lambda_function.ingest`
+
+Targeted apply result:
+
+```text
+Apply complete! Resources: 0 added, 3 changed, 0 destroyed.
+```
+
+Verified:
+
+- Glue job now has `RAW_PATH`, `CURATED_PATH`, metrics, and continuous logging
+  default arguments.
+- Glue script object has standard Terraform tags.
+- AI orchestration Lambda package hash remains unchanged.
+- Ingestion Lambda `LastModified` remains `2026-05-05T14:37:34.000+0000`.
+- Both EventBridge schedules remain disabled.
+
+Remaining full plan:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+The only remaining drift is `aws_lambda_function.ingest`. Deferring the
+ingestion Lambda redeploy remains the recommended approach until the next
+state explicitly decides whether to accept a source-equivalent redeploy or
+document that drift.
+
+## Step 4c Status: Ingestion Lambda Drift Documented
+
+Completed on 2026-05-12.
+
+Decision:
+
+- do not redeploy `aws_lambda_function.ingest` in Phase 9 Step 4
+- keep the currently proven ingestion Lambda deployed
+- document the remaining Terraform drift as intentional
+- revisit the redeploy only when there is a clear validation window
+
+Rationale:
+
+- The live deployed `ingest_elexon.py` source and local source are
+  source-equivalent.
+- The package hash differs, so applying Terraform would still perform a real
+  Lambda code update.
+- The ingestion path is already proven and does not need a redeploy to complete
+  the current Terraform import/hardening state.
+- Avoiding a redeploy keeps the blast radius tight and preserves current
+  ingestion evidence.
+
+Redeploy criteria:
+
+- `lambda/ingest_elexon.py` is intentionally changed.
+- A full ingestion validation window is available immediately after apply.
+- Phase 9 closeout explicitly requires a fully clean Terraform plan.
+- The remaining Lambda drift starts obscuring future plan reviews.
+
+If redeployed later, required proof:
+
+- targeted Terraform plan includes only `aws_lambda_function.ingest`
+- no EventBridge schedules are enabled
+- Lambda invoke succeeds
+- raw S3 keys land for the expected datasets
+- post-apply Terraform plan is reviewed
+
+Current accepted residual drift:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+## Step 5 Status: Reproducibility Posture Confirmed
+
+Completed on 2026-05-12.
+
+State transition:
+
+```text
+From: imported/hardened Terraform with one documented residual drift item
+To: reproducibility posture confirmed with documented residual drift
+```
+
+Validation:
+
+- `terraform validate` passes.
+- Terraform state contains 44 addresses.
+- Phase 8 orchestration resources remain in Terraform state.
+- Terraform outputs expose the expected lakehouse, Athena, dashboard, Glue,
+  Lambda, Step Functions, and SNS identifiers.
+- Live Phase 8 state machine is `ACTIVE`.
+- Live Phase 8 Lambda package hash matches the local Terraform package hash.
+- Live Phase 8 SNS failure topic exists.
+- Dashboard bucket exists and has versioning enabled.
+- Both EventBridge schedules remain `DISABLED`.
+- Full Terraform plan remains limited to the accepted residual ingestion Lambda
+  drift.
+
+Current accepted residual plan:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+Reproducibility posture:
+
+- Phase 8 resources are reproducible from Terraform.
+- Older lakehouse resources are imported and governed by Terraform.
+- The ingestion Lambda package redeploy is the only accepted residual drift.
+- Historical S3 data, Athena results, and old dashboard evidence remain outside
+  Terraform portability scope.
+- CloudWatch alarms remain deferred until either the residual drift is cleared
+  or alarms are explicitly accepted with this documented residual plan.
+
+## Phase 9 Closeout Status
+
+Completed on 2026-05-12.
+
+Closeout decision:
+
+- close Phase 9 with the residual ingestion Lambda drift documented
+- do not redeploy `aws_lambda_function.ingest` during this phase
+- do not add CloudWatch alarms during this phase
+- keep both EventBridge schedules disabled
+
+Final posture:
+
+- Terraform backend and state are configured in S3.
+- Existing lakehouse resources have been imported into Terraform state.
+- Phase 8 orchestration resources remain managed by Terraform.
+- Low-risk governance drift has been applied.
+- Accepted executable drift has been applied.
+- The only remaining plan item is the intentionally deferred ingestion Lambda
+  package redeploy.
+
+Final accepted residual plan:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+Why alarms are deferred:
+
+- CloudWatch alarms are useful, but adding them while a known residual plan item
+  remains would make the closeout state harder to reason about.
+- Alarms should be added in a focused follow-up state, either after clearing the
+  ingestion Lambda drift or after explicitly accepting alarms with documented
+  residual drift.
+
+Phase 9 is complete with documented residual drift.
+
+## Step 3 Partial Status: Daily Ingestion Schedule Disabled
+
+Completed on 2026-05-11:
+
+- Accepted Terraform control over `energy-market-daily-ingestion`.
+- Applied only the targeted EventBridge rule change:
+  - `aws_cloudwatch_event_rule.daily_ingestion`
+- Disabled the older daily ingestion schedule.
+- Left the Phase 8 AI orchestration schedule disabled.
+- Did not apply the remaining Terraform drift.
+
+Targeted apply result:
+
+```text
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+```
+
+Schedule state after targeted apply:
+
+```text
+energy-market-daily-ingestion           = DISABLED
+energy-market-ai-orchestration-schedule = DISABLED
+```
+
+Remaining plan after this change:
+
+```text
+Plan: 1 to add, 19 to change, 0 to destroy.
+```
+
+## Step 3b Status: Low-Risk Governance Drift Applied
+
+Completed on 2026-05-12:
+
+- Created Athena workgroup `energy-market-workgroup`.
+- Set ingestion Lambda log retention to 14 days.
+- Retargeted the raw crawler to the active `20260405/raw/` bucket path.
+- Confirmed the curated crawler remains on the active `20260405/curated/`
+  bucket path.
+- Applied standard Terraform tags to older Lambda/Glue roles and crawlers.
+- Excluded Lambda package/code drift.
+- Excluded Glue script object drift.
+- Deferred Glue job argument updates because the targeted Glue job plan also
+  pulled in the Glue script object dependency.
+
+Targeted apply result:
+
+```text
+Apply complete! Resources: 1 added, 5 changed, 0 destroyed.
+```
+
+Verified live state:
+
+```text
+Athena workgroup             = energy-market-workgroup
+Lambda log retention         = 14 days
+Raw crawler target           = s3://energy-market-lake-464975959576-20260405/raw/
+Curated crawler target       = s3://energy-market-lake-464975959576-20260405/curated/
+```
+
+Remaining full plan:
+
+```text
+Plan: 0 to add, 5 to change, 0 to destroy.
+```
+
+## Step 4 Current Boundary: Executable-Artifact Drift Inspection
+
+Current state:
+
+- Low-risk governance drift has been applied.
+- Terraform still shows executable-artifact drift only.
+- Schedules remain disabled.
+- No broad Terraform apply should run yet.
+
+Target state:
+
+- Each remaining executable drift item is inspected and classified before any
+  further apply.
+- The Phase 8 state-proof runbook contains the Lambda, Glue, and Step Functions
+  artifact baseline commands needed for this inspection.
+- Any future apply is limited to drift that is understood and accepted.
+
+Use the executable artifact drift baseline in:
+
+```text
+docs/phase-8-aws-ai-insight-orchestration.md
+```
+
+Remaining drift to classify:
+
+| Terraform resource | Inspection required before apply |
+| --- | --- |
+| `aws_lambda_function.ingest` | Compare live deployed ZIP, local Terraform ZIP, env vars, timeout, and memory. |
+| `aws_lambda_function.ai_orchestration[0]` | Compare live deployed ZIP, local package, env vars, timeout, and memory. |
+| `aws_s3_object.glue_script` | Compare the live S3 script object with `glue/etl_raw_to_parquet.py`. |
+| `aws_glue_job.raw_to_parquet` | Review script location, default arguments, runtime, worker type, and retries. |
+| `aws_iam_role_policy.ai_orchestration_state_machine[0]` | Confirm Step Functions needs only Lambda invoke and SNS publish permissions. |
+
+Step 4 acceptance:
+
+- [x] Artifact baseline commands have been run.
+- [x] Results are captured under `/tmp/phase9-artifact-baseline/` or summarized in
+  evidence.
+- [x] Every remaining plan item is classified as one of:
+  - safe to apply
+  - metadata-only drift
+  - expected package update
+  - needs code inspection
+  - do not apply yet
+- [x] No invalid or unexplained executable change is applied.
+
+Step 4a classification completed on 2026-05-12:
+
+| Terraform resource | Classification | Apply guidance |
+| --- | --- | --- |
+| `aws_lambda_function.ingest` | expected package update, source-equivalent | safe only as an accepted redeploy of identical source |
+| `aws_lambda_function.ai_orchestration[0]` | metadata-only drift | safe to apply if normalizing Terraform state |
+| `aws_s3_object.glue_script` | metadata-only/tag drift | safe to apply if accepting object tag/version metadata update |
+| `aws_glue_job.raw_to_parquet` | operating configuration drift | recommended after accepting default argument behavior |
+| `aws_iam_role_policy.ai_orchestration_state_machine[0]` | semantic no-op / policy normalization | safe to apply if normalizing IAM policy state |
+
+Key findings:
+
+- The AI orchestration Lambda local package hash matches the live deployed
+  package hash.
+- The ingestion Lambda package hash differs, but the deployed source file and
+  local source file have no source diff.
+- The live Glue script object and local `glue/etl_raw_to_parquet.py` have no
+  source diff.
+- The Glue ETL script requires `JOB_NAME`, `RAW_PATH`, and `CURATED_PATH`.
+  Terraform adds the missing Glue job default arguments for `RAW_PATH` and
+  `CURATED_PATH`.
+- The Step Functions policy already allows only Lambda invoke and SNS publish
+  for the expected resources.
+
+Evidence:
+
+```text
+docs/evidence/phase9-terraform-import-20260511.md
+```
+
+## Backend And Bucket Preflight
+
+Confirmed:
+
+| Bucket | State |
+| --- | --- |
+| `energy-market-terraform-state-464975959576-eu-west-2` | exists |
+| `energy-market-lake-464975959576-20260405` | exists |
+| `energy-market-dashboard-public-464975959576-20260511` | exists |
+
+Confirmed schedules:
+
+| EventBridge rule | Live state | Terraform intent |
+| --- | --- | --- |
+| `energy-market-daily-ingestion` | `DISABLED` | `schedule_enabled = false` |
+| `energy-market-ai-orchestration-schedule` | `DISABLED` | `ai_orchestration_schedule_enabled = false` |
+
+Both schedules are currently disabled.
+
+## Current Terraform State
+
+These Phase 8 resources are already in Terraform state. Do not import them
+again:
+
+```text
+aws_cloudwatch_event_rule.ai_orchestration_schedule[0]
+aws_cloudwatch_event_target.ai_orchestration_schedule[0]
+aws_cloudwatch_log_group.ai_orchestration_lambda[0]
+aws_iam_role.ai_orchestration_eventbridge[0]
+aws_iam_role.ai_orchestration_lambda[0]
+aws_iam_role.ai_orchestration_state_machine[0]
+aws_iam_role_policy.ai_orchestration_eventbridge[0]
+aws_iam_role_policy.ai_orchestration_lambda_s3[0]
+aws_iam_role_policy.ai_orchestration_state_machine[0]
+aws_iam_role_policy_attachment.ai_orchestration_lambda_basic_execution[0]
+aws_lambda_function.ai_orchestration[0]
+aws_s3_bucket.dashboard_static[0]
+aws_s3_bucket_public_access_block.dashboard_static[0]
+aws_s3_bucket_server_side_encryption_configuration.dashboard_static[0]
+aws_s3_bucket_versioning.dashboard_static[0]
+aws_sfn_state_machine.ai_orchestration[0]
+aws_sns_topic.ai_orchestration_failures[0]
+```
+
+Phase 8 live checks:
+
+| Resource | Live state |
+| --- | --- |
+| Lambda `energy-market-news-ai-orchestration` | active |
+| State machine `energy-market-ai-insight-orchestration` | active |
+| SNS topic `energy-market-ai-orchestration-failures` | exists |
+| EventBridge rule `energy-market-ai-orchestration-schedule` | disabled |
+
+## Import Map
+
+Run imports from `infra/terraform/lakehouse`.
+
+| AWS resource | Terraform address | Import ID | Import in Phase 9? | Notes |
+| --- | --- | --- | --- | --- |
+| Lambda role | `aws_iam_role.lambda` | `energy-market-lambda-role` | yes | Existing ingestion role. |
+| Lambda basic execution attachment | `aws_iam_role_policy_attachment.lambda_basic_execution` | `energy-market-lambda-role/arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole` | yes | Confirmed attached. |
+| Lambda S3 inline policy | `aws_iam_role_policy.lambda_s3` | `energy-market-lambda-role:energy-market-lambda-s3-policy` | yes | Confirmed inline policy exists. |
+| Lambda log group | `aws_cloudwatch_log_group.lambda` | `/aws/lambda/energy-market-elexon-ingest` | yes | Live retention is unset; Terraform intent is 14 days. |
+| Ingestion Lambda | `aws_lambda_function.ingest` | `energy-market-elexon-ingest` | yes | Live memory 256 MB, timeout 900s, Python 3.11. |
+| Daily ingestion rule | `aws_cloudwatch_event_rule.daily_ingestion` | `energy-market-daily-ingestion` | yes | Live state is enabled; Terraform intent currently disabled. |
+| Daily ingestion target | `aws_cloudwatch_event_target.daily_ingestion` | `energy-market-daily-ingestion/1` | yes | Target ID is `1`. |
+| Lambda EventBridge permission | `aws_lambda_permission.allow_eventbridge` | `energy-market-elexon-ingest/energy-market-daily-ingestion-invoke` | yes | Existing statement ID. |
+| Glue role | `aws_iam_role.glue` | `energy-market-glue-role` | yes | Existing Glue role. |
+| Glue service role attachment | `aws_iam_role_policy_attachment.glue_service_role` | `energy-market-glue-role/arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole` | yes | Confirmed attached. |
+| Glue S3 inline policy | `aws_iam_role_policy.glue_s3` | `energy-market-glue-role:energy-market-glue-s3-policy` | yes | Confirmed inline policy exists. |
+| Glue ETL script object | `aws_s3_object.glue_script` | `energy-market-lake-464975959576-20260405/scripts/etl_raw_to_parquet.py` | yes | Object exists. |
+| Glue database | `aws_glue_catalog_database.lakehouse` | `464975959576:energy_market_lake` | yes | Database exists. |
+| Raw crawler | `aws_glue_crawler.raw` | `energy-market-raw-crawler` | yes | Live target points to older `20260504` bucket. |
+| Curated crawler | `aws_glue_crawler.curated` | `energy-market-curated-crawler` | yes | Live target points to `20260405/curated/`. |
+| Glue ETL job | `aws_glue_job.raw_to_parquet` | `energy-market-etl-raw-to-parquet` | yes | Live script points to `20260405/scripts/etl_raw_to_parquet.py`. |
+| Athena workgroup | `aws_athena_workgroup.lakehouse` | `energy-market-workgroup` | no | Workgroup does not exist; Terraform can create it later. |
+| Data lake bucket | `aws_s3_bucket.data_lake[0]` | `energy-market-lake-464975959576-20260405` | no | `create_data_bucket = false`; bucket is referenced, not managed. |
+| Dashboard bucket | `aws_s3_bucket.dashboard_static[0]` | `energy-market-dashboard-public-464975959576-20260511` | no | Already in Terraform state. |
+
+## Import Command Batch
+
+Do not run this batch until the operator has reviewed the map and confirmed
+the state backup exists.
+
+```bash
+terraform import aws_iam_role.lambda energy-market-lambda-role
+
+terraform import aws_iam_role_policy_attachment.lambda_basic_execution \
+  'energy-market-lambda-role/arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+
+terraform import aws_iam_role_policy.lambda_s3 \
+  'energy-market-lambda-role:energy-market-lambda-s3-policy'
+
+terraform import aws_cloudwatch_log_group.lambda \
+  /aws/lambda/energy-market-elexon-ingest
+
+terraform import aws_lambda_function.ingest \
+  energy-market-elexon-ingest
+
+terraform import aws_cloudwatch_event_rule.daily_ingestion \
+  energy-market-daily-ingestion
+
+terraform import aws_cloudwatch_event_target.daily_ingestion \
+  energy-market-daily-ingestion/1
+
+terraform import aws_lambda_permission.allow_eventbridge \
+  energy-market-elexon-ingest/energy-market-daily-ingestion-invoke
+
+terraform import aws_iam_role.glue energy-market-glue-role
+
+terraform import aws_iam_role_policy_attachment.glue_service_role \
+  'energy-market-glue-role/arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole'
+
+terraform import aws_iam_role_policy.glue_s3 \
+  'energy-market-glue-role:energy-market-glue-s3-policy'
+
+terraform import aws_s3_object.glue_script \
+  energy-market-lake-464975959576-20260405/scripts/etl_raw_to_parquet.py
+
+terraform import aws_glue_catalog_database.lakehouse \
+  464975959576:energy_market_lake
+
+terraform import aws_glue_crawler.raw \
+  energy-market-raw-crawler
+
+terraform import aws_glue_crawler.curated \
+  energy-market-curated-crawler
+
+terraform import aws_glue_job.raw_to_parquet \
+  energy-market-etl-raw-to-parquet
+```
+
+## Expected First-Plan Drift
+
+Observed first-plan result after import:
+
+```text
+Plan: 1 to add, 20 to change, 0 to destroy.
+```
+
+After the targeted daily schedule disable:
+
+```text
+Plan: 1 to add, 19 to change, 0 to destroy.
+```
+
+After encoding the Phase 8 tag in Terraform:
+
+```text
+Plan: 1 to add, 10 to change, 0 to destroy.
+```
+
+After applying low-risk governance drift:
+
+```text
+Plan: 0 to add, 5 to change, 0 to destroy.
+```
+
+Observed plan items:
+
+- `energy-market-daily-ingestion` may be changed from `ENABLED` to `DISABLED`
+  because `schedule_enabled = false`.
+- `/aws/lambda/energy-market-elexon-ingest` may get log retention set to
+  `14` days.
+- `energy-market-raw-crawler` may be retargeted from the older
+  `20260504/raw/` bucket path to the configured `20260405/raw/` bucket path.
+- Terraform may add standard tags such as `Environment`, `Project`, `ManagedBy`,
+  and `Workload`.
+- `aws_athena_workgroup.lakehouse` may be created because
+  `energy-market-workgroup` does not currently exist.
+- `aws_lambda_function.ingest` may show package or environment drift if the
+  deployed zip differs from the local `lambda/ingest_elexon.py` package.
+- Phase 8 resources keep the extra `Phase=phase-8-ai-orchestration` tag through
+  `local.phase8_tags`.
+- `aws_glue_job.raw_to_parquet` remains deferred until the Glue script object is
+  inspected, because a targeted Glue job plan pulled in
+  `aws_s3_object.glue_script`.
+
+Stop and investigate if Terraform wants to replace IAM roles, Lambda functions,
+Glue crawlers, or the Glue job.
+
+No replacement or destroy action appeared in the first post-import plan.
+
+## Data Portability Boundary
+
+Terraform should be able to recreate the infrastructure in a future clean AWS
+account, but it is not expected to move stale historical S3 data, Athena result
+objects, or old dashboard evidence. Treat those as run artifacts unless a
+separate backup/restore design is added later.
+
+## Phase 9 Checklist
+
+- [x] Create Phase 9 branch.
+- [x] Confirm S3 backend configuration.
+- [x] Create local ignored `backend.hcl`.
+- [x] Create local ignored `terraform.tfvars`.
+- [x] Pull pre-import state backup to `/tmp`.
+- [x] Run `terraform validate`.
+- [x] Confirm Phase 8 resources are already in Terraform state.
+- [x] Confirm Phase 8 schedule remains disabled.
+- [x] Produce import map.
+- [x] Review import map before mutation.
+- [x] Import older lakehouse resources into Terraform state.
+- [x] Run `terraform state list`.
+- [x] Run and review `terraform plan`.
+- [x] Document expected drift.
+- [x] Disable older daily ingestion schedule through Terraform.
+- [x] Preserve Phase 8 tag ownership in Terraform.
+- [x] Apply low-risk governance drift.
+- [x] Add executable-artifact drift baseline commands to the Phase 8 runbook.
+- [x] Run executable-artifact drift baseline commands.
+- [x] Classify remaining Lambda, Glue, and Step Functions policy drift.
+- [x] Apply accepted classified executable drift.
+- [x] Keep ingestion Lambda redeploy deferred.
+- [x] Document ingestion Lambda drift and redeploy criteria.
+- [x] Confirm Phase 8 resources remain reproducible from Terraform.
+- [x] Keep schedules disabled unless a later decision explicitly enables them.
+- [x] Defer CloudWatch alarms until a later focused state.
+- [x] Close Phase 9 with documented residual drift.
+
+## Next State
+
+```text
+Phase 9 complete. Next optional state: branch closeout, PR, or a focused alarms slice.
+```

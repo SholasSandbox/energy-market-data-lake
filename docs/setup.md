@@ -1,11 +1,13 @@
 # Setup Guide (eu-west-2)
 
+<!-- markdownlint-disable MD013 -->
+
 This is a lightweight, budget-conscious setup. Use the default settings unless
 you need additional scale.
 
 ## Current Demo Scope
 
-The local MVP is implemented and is the recommended path for demos and learning.
+The local MVP remains the fastest demo path for dashboard and contract review.
 It proves:
 
 - energy input evidence
@@ -17,8 +19,13 @@ It proves:
 - public-safe dashboard snapshot JSON
 - React dashboard display from `dashboard_snapshot_v1.sample.json`
 
-The AWS/serverless extension remains the target deployment path for Step
-Functions, CloudFront, SNS alerts, and a managed OpenClaw or Bedrock runtime.
+The Phase 8 AWS/serverless extension is now live-proven for deterministic AI
+insight orchestration. It adds Lambda, Step Functions, S3 artifacts,
+validation gates, failed-run quarantine, SNS failure routing, and a separate
+dashboard snapshot bucket. EventBridge scheduling remains disabled by design.
+
+Bedrock, OpenClaw managed runtime, CloudFront hosting, and schedule enablement
+remain later decisions.
 
 ## AWS Closeout Script (Optional)
 
@@ -1199,6 +1206,94 @@ Create a new data lake bucket:
 ```hcl
 create_data_bucket = true
 data_bucket_name   = "energy-market-lake-your-real-suffix"
+```
+
+Phase 8 deterministic AI insight orchestration is optional. It adds:
+
+- `lambda/news_ai_orchestration.py` as the Step Functions task Lambda.
+- A Step Functions state machine with validation gates and failure catches.
+- An SNS topic for failed executions.
+- An optional separate dashboard/static S3 bucket.
+- An initially disabled EventBridge schedule.
+
+Build the Phase 8 Lambda package before enabling those Terraform resources:
+
+```bash
+../../../scripts/build_phase8_lambda_package.sh
+```
+
+The package is written to:
+
+```text
+infra/terraform/lakehouse/.terraform/build/news_ai_orchestration.zip
+```
+
+Example Phase 8 variables:
+
+```hcl
+create_dashboard_bucket = false
+dashboard_bucket_name   = "energy-market-dashboard-public-464975959576-20260405"
+
+ai_orchestration_enabled             = true
+ai_orchestration_schedule_enabled    = false
+ai_orchestration_dashboard_data_key  = "dashboard/dashboard-data.json"
+ai_orchestration_sns_email           = ""
+```
+
+Keep `ai_orchestration_schedule_enabled = false` until one manual Step
+Functions execution has passed. The public `dashboard_snapshot_v1.json` is
+published last, after validation, so failed runs should leave the previous
+public snapshot unchanged.
+
+Phase 8 live AWS proof from 2026-05-11 used a targeted Terraform apply because
+the older ingestion, Glue, and Athena resources were not fully imported into
+this state yet. The proof deployed the orchestration Lambda, Step Functions
+state machine, SNS failure topic, disabled EventBridge schedule, and separate
+dashboard/static bucket.
+
+Evidence:
+
+```text
+docs/evidence/phase8-aws-live-execution-20260511.md
+```
+
+Operational runbook:
+
+```text
+docs/phase-8-operational-runbook.md
+```
+
+Manual execution proof:
+
+```bash
+export AWS_REGION=eu-west-2
+export AI_ORCHESTRATION_STATE_MACHINE_ARN="arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration"
+export EXECUTION_NAME="phase8-manual-$(date -u +%Y%m%dT%H%M%SZ)"
+
+aws stepfunctions start-execution \
+  --state-machine-arn "${AI_ORCHESTRATION_STATE_MACHINE_ARN}" \
+  --name "${EXECUTION_NAME}" \
+  --input '{}' \
+  --region "${AWS_REGION}" \
+  --query executionArn \
+  --output text
+```
+
+Confirm the schedule is disabled:
+
+```bash
+aws events describe-rule \
+  --name energy-market-ai-orchestration-schedule \
+  --region eu-west-2 \
+  --query '{name:Name,state:State,schedule:ScheduleExpression}'
+```
+
+If the schedule is accidentally enabled before the next decision gate:
+
+```bash
+aws events disable-rule \
+  --name energy-market-ai-orchestration-schedule \
+  --region eu-west-2
 ```
 
 Initialize with remote state:

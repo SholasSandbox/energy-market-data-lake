@@ -11,6 +11,20 @@ backfill_days        = 1
 schedule_enabled     = false
 schedule_expression  = "cron(0 2 * * ? *)"
 
+# Phase 8 deterministic AI insight orchestration. Build the Lambda zip first:
+# ../../../scripts/build_phase8_lambda_package.sh
+create_dashboard_bucket = false
+dashboard_bucket_name   = "energy-market-dashboard-public-464975959576-20260405"
+
+ai_orchestration_enabled               = false
+ai_orchestration_lambda_package_path   = ".terraform/build/news_ai_orchestration.zip"
+ai_orchestration_schedule_enabled      = false
+ai_orchestration_schedule_expression   = "cron(30 7 * * ? *)"
+ai_orchestration_dashboard_data_key    = "dashboard/dashboard-data.json"
+ai_orchestration_news_limit_per_feed   = 4
+ai_orchestration_news_max_articles     = 18
+ai_orchestration_sns_email             = ""
+
 entsog_point_directions = "BE-TSO-0001ITP-00061entry,BE-TSO-0001ITP-00115exit,CZ-TSO-0001ITP-00537entry,BE-TSO-0001ITP-00555exit"
 entsog_flow_indicator   = "Physical Flow"
 entsog_demand_indicator = "Allocation"

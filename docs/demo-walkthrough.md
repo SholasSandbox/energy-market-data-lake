@@ -1,8 +1,16 @@
 # Demo Walkthrough
 
-Purpose: show a serverless energy data lake with proven electricity and ENTSOG gas data paths, extended with validated news and AI insight outputs. Keep the demo under 10 minutes.
+<!-- markdownlint-disable MD004 MD013 -->
 
-Current demo state: the ENTSOG gas lakehouse path is proven through raw S3, curated Parquet, Glue Catalog, Athena query, and validation evidence. The news + AI extension is implemented as a local MVP; AWS orchestration for that extension remains target architecture.
+Purpose: show a serverless energy data lake with proven electricity and ENTSOG
+gas data paths, extended with validated news and AI insight outputs. Keep the
+demo under 10 minutes.
+
+Current demo state: the ENTSOG gas lakehouse path is proven through raw S3,
+curated Parquet, Glue Catalog, Athena query, and validation evidence. The
+news + AI extension is now live-proven in AWS as a manual Step Functions
+workflow with Lambda handlers, validation gates, S3 artifacts, failed-run
+quarantine, and a schedule that remains disabled by design.
 
 ## 1. Business Problem
 
@@ -26,7 +34,8 @@ Key points:
 - Raw, curated, failed, and audit data stay private.
 - The public dashboard reads only approved snapshot JSON.
 - AI output must pass `ai_insight_v1.schema.json` before publishing.
-- OpenClaw or Bedrock is a later cloud/runtime extension; this demo uses deterministic local merge logic.
+- OpenClaw or Bedrock is a later cloud/runtime extension; this demo uses
+  deterministic merge logic to prove orchestration and control boundaries first.
 
 ## 3. Run Local Pipeline
 
@@ -83,7 +92,41 @@ Say:
 The gas slice is intentionally small: four ENTSOG pointDirections selected for live data, ingested to raw S3, transformed to curated Parquet, cataloged by Glue, and validated through Athena.
 ```
 
-## 5. Show Dashboard
+## 5. Show AWS AI Orchestration Proof
+
+Show:
+
+- `docs/evidence/phase8-aws-live-execution-20260511.md`
+- `docs/phase-8-operational-runbook.md`
+
+AWS proof state:
+
+- Step Functions execution succeeded manually.
+- Lambda wrote run-scoped curated artifacts to S3.
+- The dashboard snapshot was published only after validation passed.
+- A controlled failed run wrote to `failed/`.
+- The previous dashboard snapshot was preserved after failure.
+- EventBridge schedule remains disabled.
+
+Evidence values:
+
+```text
+State machine: energy-market-ai-insight-orchestration
+Successful run: ai-insight-20260511T114815Z-927685a3
+Execution status: SUCCEEDED
+Schedule state: DISABLED
+```
+
+Say:
+
+```text
+This is the AI orchestration hook: Step Functions gives an auditable execution
+history, Lambda writes contract-bound S3 artifacts, validation gates the publish
+step, and failed runs are quarantined without replacing the last good dashboard
+snapshot.
+```
+
+## 6. Show Dashboard
 
 Run:
 
@@ -175,7 +218,7 @@ Say:
 The dashboard is deliberately reading the public snapshot, not private raw or curated evidence paths.
 ```
 
-## 6. Close With Controls
+## 7. Close With Controls
 
 Security:
 
@@ -198,13 +241,17 @@ Hiring signal:
 - failure handling evidence
 - gas market data proven from source API to Athena validation
 - gas context rendered in the React dashboard from Athena-backed dashboard data
+- live AWS Step Functions proof for the deterministic AI insight workflow
 - static dashboard delivery path
 - cost-aware AWS architecture
 
 ## Known Limitations
 
-- The current AI merge is deterministic local logic, not a live OpenClaw or Bedrock model call.
+- The current AI merge is deterministic logic, not a live OpenClaw or Bedrock
+  model call.
 - The energy evidence may be stale because it comes from the current local dashboard data.
 - Gas metrics are rendered in the React dashboard context, but not in the public AI snapshot contract.
 - RSS feed results change over time.
 - Terraform is scaffolded for the AWS lakehouse, but existing resources still need to be imported before Terraform manages them.
+- Phase 8 schedule automation is intentionally disabled until a later operating
+  decision.
