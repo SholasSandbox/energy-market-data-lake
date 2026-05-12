@@ -568,6 +568,155 @@ aws lambda invoke \
   docs/evidence/phase8-lambda-invoke-result.json
 ```
 
+<!-- markdownlint-disable MD013 -->
+
+Executable artifact drift baseline:
+
+Use this baseline before any Terraform apply that could update Lambda code,
+Glue scripts, Glue jobs, or Step Functions execution permissions.
+
+```bash
+export AWS_REGION=eu-west-2
+export DATA_BUCKET=energy-market-lake-464975959576-20260405
+export INGEST_FUNCTION_NAME=energy-market-elexon-ingest
+export AI_ORCHESTRATION_FUNCTION_NAME=energy-market-news-ai-orchestration
+export GLUE_JOB_NAME=energy-market-etl-raw-to-parquet
+export GLUE_SCRIPT_KEY=scripts/etl_raw_to_parquet.py
+export SFN_ROLE_NAME=energy-market-ai-orchestration-sfn-role
+export SFN_POLICY_NAME=energy-market-ai-orchestration-sfn-policy
+
+mkdir -p /tmp/phase9-artifact-baseline/live
+mkdir -p /tmp/phase9-artifact-baseline/local
+```
+
+Build the Terraform desired-state baseline without applying it:
+
+```bash
+cd /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake
+cd infra/terraform/lakehouse
+
+terraform validate
+terraform plan -no-color \
+  -out=tfplan-step4-executable-drift \
+  > /tmp/phase9-artifact-baseline/terraform-plan.txt
+terraform show -no-color tfplan-step4-executable-drift \
+  > /tmp/phase9-artifact-baseline/terraform-plan-show.txt
+
+openssl dgst -sha256 -binary .terraform/build/ingest_elexon.zip \
+  | openssl base64 \
+  > /tmp/phase9-artifact-baseline/local/ingest_elexon.code_sha256.txt
+openssl dgst -sha256 -binary .terraform/build/news_ai_orchestration.zip \
+  | openssl base64 \
+  > /tmp/phase9-artifact-baseline/local/news_ai_orchestration.code_sha256.txt
+```
+
+Capture live Lambda metadata and deployed packages:
+
+```bash
+aws lambda get-function \
+  --function-name "${INGEST_FUNCTION_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Configuration.{FunctionName:FunctionName,Runtime:Runtime,Handler:Handler,CodeSha256:CodeSha256,LastModified:LastModified,Timeout:Timeout,MemorySize:MemorySize,Environment:Environment.Variables}' \
+  > /tmp/phase9-artifact-baseline/live/ingest_lambda_config.json
+
+aws lambda get-function \
+  --function-name "${INGEST_FUNCTION_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Code.Location' \
+  --output text \
+  > /tmp/phase9-artifact-baseline/live/ingest_lambda_code_url.txt
+
+curl -sSL "$(cat /tmp/phase9-artifact-baseline/live/ingest_lambda_code_url.txt)" \
+  -o /tmp/phase9-artifact-baseline/live/ingest_elexon.zip
+
+aws lambda get-function \
+  --function-name "${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Configuration.{FunctionName:FunctionName,Runtime:Runtime,Handler:Handler,CodeSha256:CodeSha256,LastModified:LastModified,Timeout:Timeout,MemorySize:MemorySize,Environment:Environment.Variables}' \
+  > /tmp/phase9-artifact-baseline/live/news_ai_orchestration_config.json
+
+aws lambda get-function \
+  --function-name "${AI_ORCHESTRATION_FUNCTION_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Code.Location' \
+  --output text \
+  > /tmp/phase9-artifact-baseline/live/news_ai_orchestration_code_url.txt
+
+curl -sSL "$(cat /tmp/phase9-artifact-baseline/live/news_ai_orchestration_code_url.txt)" \
+  -o /tmp/phase9-artifact-baseline/live/news_ai_orchestration.zip
+```
+
+Inspect live Lambda package contents before deciding whether Terraform should
+replace them:
+
+```bash
+unzip -l /tmp/phase9-artifact-baseline/live/ingest_elexon.zip \
+  > /tmp/phase9-artifact-baseline/live/ingest_elexon.zip.list.txt
+unzip -l /tmp/phase9-artifact-baseline/live/news_ai_orchestration.zip \
+  > /tmp/phase9-artifact-baseline/live/news_ai_orchestration.zip.list.txt
+
+openssl dgst -sha256 -binary /tmp/phase9-artifact-baseline/live/ingest_elexon.zip \
+  | openssl base64 \
+  > /tmp/phase9-artifact-baseline/live/ingest_elexon.code_sha256.txt
+openssl dgst -sha256 -binary /tmp/phase9-artifact-baseline/live/news_ai_orchestration.zip \
+  | openssl base64 \
+  > /tmp/phase9-artifact-baseline/live/news_ai_orchestration.code_sha256.txt
+```
+
+Capture live Glue executable state:
+
+```bash
+aws s3api head-object \
+  --bucket "${DATA_BUCKET}" \
+  --key "${GLUE_SCRIPT_KEY}" \
+  --region "${AWS_REGION}" \
+  --query '{ETag:ETag,LastModified:LastModified,ContentLength:ContentLength,Metadata:Metadata}' \
+  > /tmp/phase9-artifact-baseline/live/glue_script_head_object.json
+
+aws s3 cp \
+  "s3://${DATA_BUCKET}/${GLUE_SCRIPT_KEY}" \
+  /tmp/phase9-artifact-baseline/live/etl_raw_to_parquet.py
+
+aws glue get-job \
+  --job-name "${GLUE_JOB_NAME}" \
+  --region "${AWS_REGION}" \
+  --query 'Job.{Command:Command,DefaultArguments:DefaultArguments,GlueVersion:GlueVersion,WorkerType:WorkerType,NumberOfWorkers:NumberOfWorkers,MaxRetries:MaxRetries}' \
+  > /tmp/phase9-artifact-baseline/live/glue_job.json
+```
+
+Compare live Glue script with local source:
+
+```bash
+cd /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake
+
+diff -u \
+  glue/etl_raw_to_parquet.py \
+  /tmp/phase9-artifact-baseline/live/etl_raw_to_parquet.py \
+  > /tmp/phase9-artifact-baseline/glue_script.diff || true
+```
+
+Capture Step Functions execution role policy drift:
+
+```bash
+aws iam get-role-policy \
+  --role-name "${SFN_ROLE_NAME}" \
+  --policy-name "${SFN_POLICY_NAME}" \
+  --query 'PolicyDocument' \
+  > /tmp/phase9-artifact-baseline/live/sfn_role_policy.json
+```
+
+Classify each remaining Terraform plan item before apply:
+
+| Resource | Classification |
+| --- | --- |
+| `aws_lambda_function.ingest` | Safe only after package and env drift are explained. |
+| `aws_lambda_function.ai_orchestration[0]` | Safe only after package and env drift are explained. |
+| `aws_s3_object.glue_script` | Safe only after live script and local script match or the change is accepted. |
+| `aws_glue_job.raw_to_parquet` | Safe only after script location and default arguments are reviewed. |
+| `aws_iam_role_policy.ai_orchestration_state_machine[0]` | Safe only after Lambda/SNS permissions match the state machine definition. |
+
+<!-- markdownlint-enable MD013 -->
+
 Step Functions execution:
 
 ```bash
