@@ -139,6 +139,49 @@ ingestion Lambda redeploy remains the recommended approach until the next
 state explicitly decides whether to accept a source-equivalent redeploy or
 document that drift.
 
+## Step 4c Status: Ingestion Lambda Drift Documented
+
+Completed on 2026-05-12.
+
+Decision:
+
+- do not redeploy `aws_lambda_function.ingest` in Phase 9 Step 4
+- keep the currently proven ingestion Lambda deployed
+- document the remaining Terraform drift as intentional
+- revisit the redeploy only when there is a clear validation window
+
+Rationale:
+
+- The live deployed `ingest_elexon.py` source and local source are
+  source-equivalent.
+- The package hash differs, so applying Terraform would still perform a real
+  Lambda code update.
+- The ingestion path is already proven and does not need a redeploy to complete
+  the current Terraform import/hardening state.
+- Avoiding a redeploy keeps the blast radius tight and preserves current
+  ingestion evidence.
+
+Redeploy criteria:
+
+- `lambda/ingest_elexon.py` is intentionally changed.
+- A full ingestion validation window is available immediately after apply.
+- Phase 9 closeout explicitly requires a fully clean Terraform plan.
+- The remaining Lambda drift starts obscuring future plan reviews.
+
+If redeployed later, required proof:
+
+- targeted Terraform plan includes only `aws_lambda_function.ingest`
+- no EventBridge schedules are enabled
+- Lambda invoke succeeds
+- raw S3 keys land for the expected datasets
+- post-apply Terraform plan is reviewed
+
+Current accepted residual drift:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
 ## Step 3 Partial Status: Daily Ingestion Schedule Disabled
 
 Completed on 2026-05-11:
@@ -495,6 +538,7 @@ separate backup/restore design is added later.
 - [x] Classify remaining Lambda, Glue, and Step Functions policy drift.
 - [x] Apply accepted classified executable drift.
 - [x] Keep ingestion Lambda redeploy deferred.
+- [x] Document ingestion Lambda drift and redeploy criteria.
 - [ ] Confirm Phase 8 resources remain reproducible from Terraform.
 - [ ] Add CloudWatch alarms only after state is clean.
 - [ ] Keep schedules disabled unless a later decision explicitly enables them.
@@ -502,5 +546,5 @@ separate backup/restore design is added later.
 ## Next State
 
 ```text
-Phase 9 Step 4c: decide ingestion Lambda redeploy or documented drift.
+Phase 9 Step 5: confirm reproducibility posture with documented residual drift.
 ```

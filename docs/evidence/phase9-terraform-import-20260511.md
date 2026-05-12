@@ -428,6 +428,45 @@ Remaining deferred drift:
 This remains deferred because applying it would redeploy the ingestion Lambda,
 even though the downloaded live source and local source were source-equivalent.
 
+## Ingestion Lambda Drift Decision
+
+Completed on 2026-05-12.
+
+Decision:
+
+- document `aws_lambda_function.ingest` drift
+- defer ingestion Lambda redeploy
+- keep the current deployed ingestion Lambda unchanged
+
+Reasoning:
+
+- Live and local `ingest_elexon.py` source comparison produced `0` diff lines.
+- The live package hash still differs from the Terraform-built package hash.
+- Applying Terraform would therefore perform a real Lambda code update, even
+  though the source is equivalent.
+- A redeploy is not required for the current Phase 9 hardening objective.
+
+Accepted residual plan:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+Redeploy criteria:
+
+- intentional source change to `lambda/ingest_elexon.py`
+- full post-apply ingestion validation window is available
+- final closeout requires a fully clean Terraform plan
+- the documented drift starts making future Terraform plans harder to review
+
+Required validation if redeployed later:
+
+- targeted plan includes only `aws_lambda_function.ingest`
+- EventBridge schedules remain disabled
+- Lambda invoke succeeds
+- raw S3 keys land for expected datasets
+- final Terraform plan is reviewed
+
 ## Data Portability Note
 
 Terraform can recreate infrastructure in a future clean account, but it should
