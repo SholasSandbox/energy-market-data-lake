@@ -359,6 +359,75 @@ Remaining drift classification:
 
 No Terraform apply was run during this baseline step.
 
+## Classified Executable Drift Apply
+
+Completed on 2026-05-12.
+
+Decision:
+
+- apply accepted classified drift only
+- include Glue job default arguments
+- include Glue script object metadata/tags
+- include AI orchestration Lambda metadata normalization
+- include Step Functions policy normalization
+- defer `aws_lambda_function.ingest`
+
+Targeted plan:
+
+```bash
+terraform plan -no-color \
+  -target=aws_glue_job.raw_to_parquet \
+  -target=aws_s3_object.glue_script \
+  -target='aws_lambda_function.ai_orchestration[0]' \
+  -target='aws_iam_role_policy.ai_orchestration_state_machine[0]' \
+  -out=tfplan-step4b-accepted-drift
+```
+
+Targeted plan result:
+
+```text
+Plan: 0 to add, 4 to change, 0 to destroy.
+```
+
+Applied:
+
+```bash
+terraform apply tfplan-step4b-accepted-drift
+```
+
+Apply result:
+
+```text
+Apply complete! Resources: 0 added, 3 changed, 0 destroyed.
+```
+
+Terraform planned the Step Functions policy normalization, but it resolved as a
+semantic no-op during apply.
+
+Verified live state:
+
+```text
+Glue job DefaultArguments include RAW_PATH, CURATED_PATH, metrics, and logs.
+Glue script object has standard Terraform tags.
+AI orchestration Lambda package hash remains unchanged.
+Ingestion Lambda LastModified remains 2026-05-05T14:37:34.000+0000.
+Daily ingestion schedule remains DISABLED.
+AI orchestration schedule remains DISABLED.
+```
+
+Remaining full plan after this targeted apply:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+Remaining deferred drift:
+
+- `aws_lambda_function.ingest`
+
+This remains deferred because applying it would redeploy the ingestion Lambda,
+even though the downloaded live source and local source were source-equivalent.
+
 ## Data Portability Note
 
 Terraform can recreate infrastructure in a future clean account, but it should
