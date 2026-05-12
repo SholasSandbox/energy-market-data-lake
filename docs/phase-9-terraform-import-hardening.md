@@ -224,6 +224,43 @@ Reproducibility posture:
 - CloudWatch alarms remain deferred until either the residual drift is cleared
   or alarms are explicitly accepted with this documented residual plan.
 
+## Phase 9 Closeout Status
+
+Completed on 2026-05-12.
+
+Closeout decision:
+
+- close Phase 9 with the residual ingestion Lambda drift documented
+- do not redeploy `aws_lambda_function.ingest` during this phase
+- do not add CloudWatch alarms during this phase
+- keep both EventBridge schedules disabled
+
+Final posture:
+
+- Terraform backend and state are configured in S3.
+- Existing lakehouse resources have been imported into Terraform state.
+- Phase 8 orchestration resources remain managed by Terraform.
+- Low-risk governance drift has been applied.
+- Accepted executable drift has been applied.
+- The only remaining plan item is the intentionally deferred ingestion Lambda
+  package redeploy.
+
+Final accepted residual plan:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+Why alarms are deferred:
+
+- CloudWatch alarms are useful, but adding them while a known residual plan item
+  remains would make the closeout state harder to reason about.
+- Alarms should be added in a focused follow-up state, either after clearing the
+  ingestion Lambda drift or after explicitly accepting alarms with documented
+  residual drift.
+
+Phase 9 is complete with documented residual drift.
+
 ## Step 3 Partial Status: Daily Ingestion Schedule Disabled
 
 Completed on 2026-05-11:
@@ -583,10 +620,11 @@ separate backup/restore design is added later.
 - [x] Document ingestion Lambda drift and redeploy criteria.
 - [x] Confirm Phase 8 resources remain reproducible from Terraform.
 - [x] Keep schedules disabled unless a later decision explicitly enables them.
-- [ ] Add CloudWatch alarms only after state is clean.
+- [x] Defer CloudWatch alarms until a later focused state.
+- [x] Close Phase 9 with documented residual drift.
 
 ## Next State
 
 ```text
-Phase 9 Step 6: decide closeout versus clearing residual Lambda drift before alarms.
+Phase 9 complete. Next optional state: branch closeout, PR, or a focused alarms slice.
 ```
