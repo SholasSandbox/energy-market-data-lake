@@ -199,16 +199,46 @@ Remaining drift to classify:
 
 Step 4 acceptance:
 
-- Artifact baseline commands have been run.
-- Results are captured under `/tmp/phase9-artifact-baseline/` or summarized in
+- [x] Artifact baseline commands have been run.
+- [x] Results are captured under `/tmp/phase9-artifact-baseline/` or summarized in
   evidence.
-- Every remaining plan item is classified as one of:
+- [x] Every remaining plan item is classified as one of:
   - safe to apply
   - metadata-only drift
   - expected package update
   - needs code inspection
   - do not apply yet
-- No invalid or unexplained executable change is applied.
+- [x] No invalid or unexplained executable change is applied.
+
+Step 4a classification completed on 2026-05-12:
+
+| Terraform resource | Classification | Apply guidance |
+| --- | --- | --- |
+| `aws_lambda_function.ingest` | expected package update, source-equivalent | safe only as an accepted redeploy of identical source |
+| `aws_lambda_function.ai_orchestration[0]` | metadata-only drift | safe to apply if normalizing Terraform state |
+| `aws_s3_object.glue_script` | metadata-only/tag drift | safe to apply if accepting object tag/version metadata update |
+| `aws_glue_job.raw_to_parquet` | operating configuration drift | recommended after accepting default argument behavior |
+| `aws_iam_role_policy.ai_orchestration_state_machine[0]` | semantic no-op / policy normalization | safe to apply if normalizing IAM policy state |
+
+Key findings:
+
+- The AI orchestration Lambda local package hash matches the live deployed
+  package hash.
+- The ingestion Lambda package hash differs, but the deployed source file and
+  local source file have no source diff.
+- The live Glue script object and local `glue/etl_raw_to_parquet.py` have no
+  source diff.
+- The Glue ETL script requires `JOB_NAME`, `RAW_PATH`, and `CURATED_PATH`.
+  Terraform adds the missing Glue job default arguments for `RAW_PATH` and
+  `CURATED_PATH`.
+- The Step Functions policy already allows only Lambda invoke and SNS publish
+  for the expected resources.
+
+Evidence:
+
+```text
+docs/evidence/phase9-terraform-import-20260511.md
+```
 
 ## Backend And Bucket Preflight
 
@@ -420,8 +450,8 @@ separate backup/restore design is added later.
 - [x] Preserve Phase 8 tag ownership in Terraform.
 - [x] Apply low-risk governance drift.
 - [x] Add executable-artifact drift baseline commands to the Phase 8 runbook.
-- [ ] Run executable-artifact drift baseline commands.
-- [ ] Classify remaining Lambda, Glue, and Step Functions policy drift.
+- [x] Run executable-artifact drift baseline commands.
+- [x] Classify remaining Lambda, Glue, and Step Functions policy drift.
 - [ ] Confirm Phase 8 resources remain reproducible from Terraform.
 - [ ] Add CloudWatch alarms only after state is clean.
 - [ ] Keep schedules disabled unless a later decision explicitly enables them.
@@ -429,5 +459,5 @@ separate backup/restore design is added later.
 ## Next State
 
 ```text
-Phase 9 Step 4a: run executable-artifact drift baseline and classify remaining drift.
+Phase 9 Step 4b: decide whether to apply classified executable drift.
 ```
