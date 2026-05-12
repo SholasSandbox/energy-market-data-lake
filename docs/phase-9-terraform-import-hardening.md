@@ -182,6 +182,48 @@ Current accepted residual drift:
 Plan: 0 to add, 1 to change, 0 to destroy.
 ```
 
+## Step 5 Status: Reproducibility Posture Confirmed
+
+Completed on 2026-05-12.
+
+State transition:
+
+```text
+From: imported/hardened Terraform with one documented residual drift item
+To: reproducibility posture confirmed with documented residual drift
+```
+
+Validation:
+
+- `terraform validate` passes.
+- Terraform state contains 44 addresses.
+- Phase 8 orchestration resources remain in Terraform state.
+- Terraform outputs expose the expected lakehouse, Athena, dashboard, Glue,
+  Lambda, Step Functions, and SNS identifiers.
+- Live Phase 8 state machine is `ACTIVE`.
+- Live Phase 8 Lambda package hash matches the local Terraform package hash.
+- Live Phase 8 SNS failure topic exists.
+- Dashboard bucket exists and has versioning enabled.
+- Both EventBridge schedules remain `DISABLED`.
+- Full Terraform plan remains limited to the accepted residual ingestion Lambda
+  drift.
+
+Current accepted residual plan:
+
+```text
+Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+Reproducibility posture:
+
+- Phase 8 resources are reproducible from Terraform.
+- Older lakehouse resources are imported and governed by Terraform.
+- The ingestion Lambda package redeploy is the only accepted residual drift.
+- Historical S3 data, Athena results, and old dashboard evidence remain outside
+  Terraform portability scope.
+- CloudWatch alarms remain deferred until either the residual drift is cleared
+  or alarms are explicitly accepted with this documented residual plan.
+
 ## Step 3 Partial Status: Daily Ingestion Schedule Disabled
 
 Completed on 2026-05-11:
@@ -539,12 +581,12 @@ separate backup/restore design is added later.
 - [x] Apply accepted classified executable drift.
 - [x] Keep ingestion Lambda redeploy deferred.
 - [x] Document ingestion Lambda drift and redeploy criteria.
-- [ ] Confirm Phase 8 resources remain reproducible from Terraform.
+- [x] Confirm Phase 8 resources remain reproducible from Terraform.
+- [x] Keep schedules disabled unless a later decision explicitly enables them.
 - [ ] Add CloudWatch alarms only after state is clean.
-- [ ] Keep schedules disabled unless a later decision explicitly enables them.
 
 ## Next State
 
 ```text
-Phase 9 Step 5: confirm reproducibility posture with documented residual drift.
+Phase 9 Step 6: decide closeout versus clearing residual Lambda drift before alarms.
 ```

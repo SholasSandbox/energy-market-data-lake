@@ -467,6 +467,86 @@ Required validation if redeployed later:
 - raw S3 keys land for expected datasets
 - final Terraform plan is reviewed
 
+## Reproducibility Posture Check
+
+Completed on 2026-05-12.
+
+Purpose:
+
+- confirm Phase 8 resources remain reproducible from Terraform
+- confirm the remaining Terraform plan is limited to documented residual drift
+- confirm schedules remain disabled
+
+Commands:
+
+```bash
+terraform validate
+terraform state list | sort > /tmp/phase9-step5/state-list.txt
+terraform output -json > /tmp/phase9-step5/outputs.json
+terraform plan -no-color > /tmp/phase9-step5/plan-step5-reproducibility.txt
+```
+
+Terraform proof:
+
+```text
+terraform validate = success
+state address count = 44
+plan = Plan: 0 to add, 1 to change, 0 to destroy.
+```
+
+Phase 8 Terraform state includes:
+
+```text
+aws_cloudwatch_event_rule.ai_orchestration_schedule[0]
+aws_cloudwatch_event_target.ai_orchestration_schedule[0]
+aws_cloudwatch_log_group.ai_orchestration_lambda[0]
+aws_iam_role.ai_orchestration_eventbridge[0]
+aws_iam_role.ai_orchestration_lambda[0]
+aws_iam_role.ai_orchestration_state_machine[0]
+aws_iam_role_policy.ai_orchestration_eventbridge[0]
+aws_iam_role_policy.ai_orchestration_lambda_s3[0]
+aws_iam_role_policy.ai_orchestration_state_machine[0]
+aws_iam_role_policy_attachment.ai_orchestration_lambda_basic_execution[0]
+aws_lambda_function.ai_orchestration[0]
+aws_s3_bucket.dashboard_static[0]
+aws_s3_bucket_public_access_block.dashboard_static[0]
+aws_s3_bucket_server_side_encryption_configuration.dashboard_static[0]
+aws_s3_bucket_versioning.dashboard_static[0]
+aws_sfn_state_machine.ai_orchestration[0]
+aws_sns_topic.ai_orchestration_failures[0]
+```
+
+Output proof:
+
+```text
+ai_orchestration_lambda_function_name=energy-market-news-ai-orchestration
+ai_orchestration_state_machine_arn=arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration
+ai_orchestration_failure_topic_arn=arn:aws:sns:eu-west-2:464975959576:energy-market-ai-orchestration-failures
+dashboard_bucket_name=energy-market-dashboard-public-464975959576-20260511
+data_bucket_name=energy-market-lake-464975959576-20260405
+glue_job_name=energy-market-etl-raw-to-parquet
+athena_workgroup_name=energy-market-workgroup
+```
+
+Live readback:
+
+```text
+State machine energy-market-ai-insight-orchestration = ACTIVE
+AI orchestration Lambda CodeSha256 = ElgyDWfVG22HqYn8vx9hieJDenug/+AnmwINSjzB++g=
+SNS failure topic exists
+Dashboard bucket versioning = Enabled
+energy-market-daily-ingestion = DISABLED
+energy-market-ai-orchestration-schedule = DISABLED
+```
+
+Conclusion:
+
+- Phase 8 resources are reproducible from Terraform.
+- The only remaining Terraform drift is the intentionally documented ingestion
+  Lambda package redeploy.
+- No CloudWatch alarms were added in this step because the plan is not fully
+  clean; alarms should be a separate decision.
+
 ## Data Portability Note
 
 Terraform can recreate infrastructure in a future clean account, but it should
