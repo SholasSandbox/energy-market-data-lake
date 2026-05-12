@@ -373,8 +373,8 @@ Any failed validation or runtime error:
 
 Estimate: 0.5 day
 
-- [ ] Confirm the branch starts from clean `main`.
-- [ ] Review current local script inputs and outputs.
+- [x] Confirm the branch starts from clean `main`.
+- [x] Review current local script inputs and outputs.
 - [x] Lock run ID format.
 - [x] Lock Step Functions payload shape.
 - [x] Decide whether dashboard output reuses the lake bucket or a separate
@@ -437,7 +437,7 @@ Estimate: 1 day
 - [x] Validate `ai_insight_v1`.
 - [x] Validate `dashboard_snapshot_v1`.
 - [x] Write invalid payloads to `failed/`.
-- [ ] Preserve the previous good public dashboard snapshot on failure.
+- [x] Preserve the previous good public dashboard snapshot on failure.
 - [x] Add failure reason, component, schema name, and run ID to failed records.
 - [x] Prove invalid output does not publish.
 
@@ -498,10 +498,6 @@ Estimate: 0.5-1 day
       dashboard snapshots to the dashboard bucket.
 - [x] Add S3 availability checks for the latest and immutable dashboard JSON.
 - [x] Keep raw, curated, failed, and audit paths in the private lake bucket.
-- [ ] If CloudFront is included later, add cache behavior that does not trap
-      stale JSON.
-- [ ] If static website hosting is included later, confirm the hosted React app
-      reads only public-safe snapshot data.
 
 Acceptance:
 
@@ -527,6 +523,19 @@ Acceptance:
 
 - Demo can explain the AI orchestration boundary in under two minutes.
 - Rebuild/setup docs contain the exact AWS CLI and Terraform commands used.
+
+## Deferred Follow-Up: Public Hosting Hardening
+
+These items are intentionally outside the completed Phase 8 scope. Phase 8
+publishes the public-safe dashboard snapshot to S3, but it does not enable a
+hosted public website or CloudFront distribution.
+
+- If CloudFront is included later, add cache behavior that does not trap stale
+  JSON.
+- If static website hosting is included later, confirm the hosted React app
+  reads only public-safe snapshot data.
+- Keep raw, curated, failed, and audit paths private; expose only the approved
+  dashboard snapshot contract.
 
 ## AWS CLI State-Proof Commands
 
