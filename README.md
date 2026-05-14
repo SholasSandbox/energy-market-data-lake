@@ -393,13 +393,15 @@ python3 scripts/validate_athena_schema.py \
 - `docs/entsog-gas-build-plan.md`: time-budgeted ENTSOG gas build tracker.
 - `infra/terraform/lakehouse/README.md`: Terraform rebuild path with S3 remote backend and optional data bucket creation.
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
+- `docs/phase-10-dashboard-implementation.md`: active Phase 10 dashboard
+  implementation checklist and project plan.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
-- `docs/phase-8-aws-ai-insight-orchestration.md`: active plan and checklist for
-  AWS AI insight orchestration.
+- `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
+  for AWS AI insight orchestration.
 - `docs/phase-8-operational-runbook.md`: manual run, proof, failure drill, and
   demo commands for Phase 8.
-- `docs/phase-9-terraform-import-hardening.md`: Terraform import and operating
-  hardening tracker.
+- `docs/phase-9-terraform-import-hardening.md`: completed Terraform import and
+  operating hardening tracker.
 - `docs/demo-walkthrough.md`: concise demo script for the local MVP and live
   orchestration story.
 - `docs/news-dashboard-merged-execution-model.md`: 4-week news + AI + dashboard expansion plan.
@@ -407,8 +409,10 @@ python3 scripts/validate_athena_schema.py \
 ## Diagrams
 
 - `diagrams/architecture.mmd`: compact current architecture.
-- `diagrams/architecture_overview.png`: rendered AWS overview diagram.
-- `diagrams/flow_diagram.png`: older data-flow diagram; useful as reference, but lower priority than current plans.
+- `diagrams/architecture_overview.png`: rendered lakehouse overview diagram;
+  useful for core ingestion, Glue, Athena, and dashboard export.
+- `diagrams/flow_diagram.png`: older data-flow diagram; useful as reference,
+  but lower priority than current plans and Phase 10 diagram fidelity notes.
 - `diagrams/news-dashboard-high-level.mmd`: high-level target diagram for news + dashboard.
 - `diagrams/news-dashboard-high-level.svg`: rendered high-level target diagram.
 - `diagrams/news-dashboard-detailed.mmd`: detailed target diagram with trust boundaries and failure paths.
@@ -427,12 +431,15 @@ These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Keep the local pipeline reproducible with schema validation and failure checks.
+1. Implement Phase 10's operator-focused React dashboard `Overview` slice.
 2. Keep the React dashboard focused on approved snapshot JSON.
-3. Operationalize ENTSO-E electricity more reliably.
+3. Keep the local and AWS orchestration proof paths reproducible with schema
+   validation and failure checks.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
-5. Import or recreate the AWS lakehouse resources through Terraform after reviewing the import plan.
-6. Decide whether gas metrics should enter the public AI snapshot contract after the orchestration boundary is proven.
+5. Keep the documented ingestion Lambda residual drift visible until redeploy
+   criteria are met.
+6. Decide whether gas metrics should enter the public AI snapshot contract after
+   the Phase 10 dashboard surface is proven.
 
 ## Notes
 

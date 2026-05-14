@@ -6,7 +6,12 @@ Source of truth for this plan:
 - `docs/four-week-project-plan.md` for the delivery-focused 4-week MVP plan
 - `dashboard-ui/src/App.tsx` for current React implementation reality
 - `docs/dashboard-ia-spec.md` for the next dashboard design direction
-- `docs/phase-8-aws-ai-insight-orchestration.md` for the current AWS AI orchestration phase
+- `docs/phase-8-aws-ai-insight-orchestration.md` for the completed AWS AI
+  orchestration phase
+- `docs/phase-9-terraform-import-hardening.md` for the completed Terraform
+  import and hardening phase
+- `docs/phase-10-dashboard-implementation.md` for the active dashboard
+  implementation phase
 
 ## Current Baseline
 
@@ -26,8 +31,12 @@ The repo now shows a strong end-to-end mixed-energy demo:
 The current implementation boundary is:
 
 - electricity and gas are proven through the lakehouse/dashboard path
-- news and AI insight are implemented as a local MVP
-- AWS orchestration for the news and AI insight flow is the next active phase
+- news and AI insight are implemented as a local MVP and AWS-managed manual
+  orchestration path
+- Terraform now tracks the core lakehouse and Phase 8 resources, with residual
+  ingestion Lambda drift documented
+- Phase 10 is the active implementation phase for turning the React dashboard
+  into a stronger operator-facing product surface
 
 ## Delivery Order
 
@@ -128,7 +137,12 @@ Goal: move the local news and deterministic AI insight MVP into AWS
 orchestration without introducing Bedrock or OpenClaw before the validation
 boundary is proven.
 
-Working checklist: `docs/phase-8-aws-ai-insight-orchestration.md`
+Status: complete.
+
+Working checklist and runbook:
+
+- `docs/phase-8-aws-ai-insight-orchestration.md`
+- `docs/phase-8-operational-runbook.md`
 
 Focus:
 
@@ -149,14 +163,59 @@ Definition of done:
 - public dashboard reads only approved dashboard snapshot data
 - docs and evidence explain the orchestration boundary clearly
 
+### Phase 9: Terraform Import And Operating Hardening
+
+Goal: adopt the manually created AWS lakehouse resources into Terraform state,
+classify drift, and leave the platform in a reproducible operating posture
+without enabling schedules prematurely.
+
+Status: complete.
+
+Working tracker: `docs/phase-9-terraform-import-hardening.md`
+
+Definition of done:
+
+- Phase 8 orchestration resources remain reproducible from Terraform
+- older lakehouse resources are imported into Terraform state
+- accepted governance and executable drift is applied
+- ingestion Lambda drift is documented with redeploy criteria
+- schedules remain disabled unless a later decision explicitly enables them
+
+### Phase 10: Dashboard Implementation
+
+Goal: implement the first operator-focused React dashboard slice now that the
+lakehouse, AI orchestration, and Terraform posture are proven.
+
+Status: active.
+
+Working checklist: `docs/phase-10-dashboard-implementation.md`
+
+Focus:
+
+- implement the `Overview` page from `docs/dashboard-ia-spec.md`
+- add a global filter bar, executive KPIs, P&L drivers, risk coverage,
+  exception table, market context strip, and data-quality state
+- keep the dashboard driven by approved public snapshot JSON only
+- make stale, limited, or missing evidence visible rather than hidden
+- update README, demo walkthrough, and LinkedIn copy after the UI is real
+
+Definition of done:
+
+- React build passes
+- contract validation passes
+- desktop and mobile screenshots are captured
+- docs describe Phase 8 and Phase 9 as completed foundations
+- the demo story connects lakehouse data, AI orchestration controls, and the
+  visible dashboard decision surface
+
 ## Suggested Immediate Next Steps
 
-1. Lock the Phase 8 AWS data contracts and S3 prefixes.
-2. Refactor shared local script logic only where needed for Lambda reuse.
-3. Add AWS handlers for energy input, news ingest, AI bundle, deterministic AI
-   merge, validation, and dashboard publish.
-4. Add Step Functions orchestration with failed/audit/SNS paths.
-5. Defer Bedrock or OpenClaw until the orchestration boundary is working.
+1. Start `feature/phase10-dashboard-implementation` from clean `main`.
+2. Run the Phase 10 preflight checks in
+   `docs/phase-10-dashboard-implementation.md`.
+3. Map `dashboard_snapshot_v1` fields to the Overview sections.
+4. Implement the Overview skeleton before adding secondary pages.
+5. Build, validate contracts, and capture visual evidence before closeout.
 
 ## Planning Rule
 
