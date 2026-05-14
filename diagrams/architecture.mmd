@@ -1,15 +1,62 @@
 flowchart TD
-    User["Analyst / Demo Queries"] --> Athena[Athena]
-    Athena --> GlueCatalog[Glue Data Catalog]
-    GlueCatalog --> S3Curated["S3 Curated (Parquet)\nelectricity + ENTSOG gas"]
+    subgraph External["External sources"]
+        Elexon["Elexon API\nUK power"]
+        Entsoe["ENTSO-E API\nEU power"]
+        Entsog["ENTSOG API\nEU gas\nPhysical Flow + Allocation"]
+        RSS["RSS feeds\nenergy market news"]
+    end
 
-    S3Raw["S3 Raw (JSON/CSV)\nElexon / ENTSO-E / ENTSOG"] --> GlueCrawler[Glue Crawler]
+    subgraph Private["Private AWS lakehouse and orchestration boundary"]
+        EventBridge["EventBridge schedules\ncreated but disabled"]
+        IngestLambda["Ingestion Lambda\nenergy raw payloads"]
+        StepFunctions["Step Functions\nmanual Phase 8 execution"]
+        NewsAI["news_ai_orchestration Lambda\ndeterministic workflow actions"]
+
+        Raw["S3 raw/\nElexon / ENTSO-E / ENTSOG / news"]
+        Curated["S3 curated/\nelectricity / gas / news / ai insight"]
+        Audit["S3 audit/\nrun-scoped publish records"]
+        Failed["S3 failed/\nvalidation and runtime failures"]
+
+        GlueCrawler["Glue crawler"]
+        GlueCatalog["Glue Data Catalog"]
+        GlueETL["Glue ETL Job\nraw to curated Parquet"]
+        Athena["Athena\ncurated SQL"]
+        Validation["Schema validation gates\nenergy, news, AI insight, dashboard snapshot"]
+        SNS["SNS failure notification"]
+    end
+
+    subgraph Public["Public dashboard boundary"]
+        DashboardJSON["Approved public dashboard JSON"]
+        ReactDashboard["React dashboard\nPhase 10 Overview"]
+    end
+
+    Analyst["Analyst / demo queries"]
+    Viewer["Dashboard user"]
+
+    Elexon --> IngestLambda
+    Entsoe --> IngestLambda
+    Entsog --> IngestLambda
+    EventBridge -. "disabled schedule" .-> IngestLambda
+    IngestLambda --> Raw
+
+    Raw --> GlueCrawler
     GlueCrawler --> GlueCatalog
-    GlueETL[Glue ETL Job] --> S3Curated
+    Raw --> GlueETL
+    GlueCatalog --> GlueETL
+    GlueETL --> Curated
+    Curated --> Athena
+    GlueCatalog --> Athena
 
-    EventBridge["EventBridge Schedule"] --> Lambda["Lambda Ingestion"]
-    Lambda --> S3Raw
+    RSS --> NewsAI
+    StepFunctions --> NewsAI
+    NewsAI --> Validation
+    Athena --> Validation
+    Validation -->|valid| Curated
+    Validation -->|valid publish| Audit
+    Validation -->|valid publish| DashboardJSON
+    Validation -->|invalid| Failed
+    Validation -->|invalid| SNS
 
-    Elexon["Elexon API (UK power)"] --> Lambda
-    Entsoe["ENTSO-E API (EU power)"] --> Lambda
-    Entsog["ENTSOG API (EU gas)\nPhysical Flow + Allocation"] --> Lambda
+    Analyst --> Athena
+    Viewer --> ReactDashboard
+    ReactDashboard --> DashboardJSON
