@@ -10,16 +10,24 @@ Current demo state: the ENTSOG gas lakehouse path is proven through raw S3,
 curated Parquet, Glue Catalog, Athena query, and validation evidence. The
 news + AI extension is now live-proven in AWS as a manual Step Functions
 workflow with Lambda handlers, validation gates, S3 artifacts, failed-run
-quarantine, and a schedule that remains disabled by design.
+quarantine, and a schedule that remains disabled by design. Phase 10 adds an
+operator-focused React `Overview` page with alerts, executive KPIs, P&L
+drivers, risk coverage, market/news context, AI insight, and data-quality
+state.
 
 ## 1. Business Problem
 
-Energy teams need to connect market movement with external context. This project shows how energy data, RSS news, schema validation, and an AI-style merge can produce a public-safe dashboard insight.
+Energy teams need to connect market movement with portfolio risk and external
+context. This project shows how energy data, RSS news, schema validation, and
+an AI-style merge can produce a public-safe dashboard insight and an
+operator-facing decision surface.
 
 Say:
 
 ```text
-This demo connects electricity and gas market facts with curated news context, validates every contract, rejects malformed output, and publishes only approved dashboard JSON.
+This demo connects electricity and gas market facts with portfolio risk and
+curated news context, validates every contract, rejects malformed output, and
+publishes only approved dashboard JSON.
 ```
 
 ## 2. Architecture Story
@@ -141,8 +149,9 @@ Open:
 ```text
 http://127.0.0.1:5173/
 http://127.0.0.1:5173/#overview
-http://127.0.0.1:5173/#power
-http://127.0.0.1:5173/#gas
+http://127.0.0.1:5173/#portfolio-risk
+http://127.0.0.1:5173/#market-context
+http://127.0.0.1:5173/#quality
 ```
 
 Quick checks:
@@ -158,12 +167,17 @@ Expected result:
 HTTP/1.1 200 OK
 ```
 
-Show the `Energy Overview` tab:
+Show the `Overview` tab:
 
-- cross-energy alert strip
-- power portfolio executive summary
-- compact ENTSOG gas summary
+- decision alert strip
+- portfolio executive KPI summary
+- P&L drivers ranked before market context
+- hedge coverage versus policy band
+- hedged versus open exposure
+- exception-first investigation table
+- compact power, gas, and news signals
 - energy news insight snapshot
+- data-quality and public contract state
 
 Show the `Energy News Insight Snapshot` section:
 
@@ -184,16 +198,16 @@ Say:
 This panel links validated power-market evidence to curated wider energy news. The article grid gives gas and electricity movement context, while gas flow metrics stay in the separate ENTSOG gas section.
 ```
 
-Show the `Power` tab:
+Show the `Portfolio Risk` view:
 
 - portfolio P&L drivers
 - coverage versus policy band
 - hedged versus open exposure
 - exception-first investigation table
+
+Show the `Market Context` view:
+
 - electricity-only Elexon and ENTSO-E market context
-
-Show the `Gas` tab:
-
 - gas data date
 - total physical flow for the four selected pointDirections
 - allocation proxy
@@ -202,8 +216,18 @@ Show the `Gas` tab:
 - rolling 7-day charts for physical flow versus allocation, allocation delta, and completeness
 - boundary note that gas context is separate from portfolio P&L
 
+Show the `Data Quality` view:
+
+- latest dashboard snapshot date
+- freshness and completeness checks
+- public snapshot contract status
+- power evidence, news contract, and AI insight contract status
+
 Screenshot artifact:
 
+- `docs/evidence/screenshots/dashboard-phase10-overview-desktop-20260514.png`
+- `docs/evidence/screenshots/dashboard-phase10-overview-tablet-20260514.png`
+- `docs/evidence/screenshots/dashboard-phase10-overview-mobile-20260514.png`
 - `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
 - `docs/evidence/screenshots/dashboard-phase7-gas-context-20260507.png`
 - `docs/evidence/screenshots/dashboard-energy-overview-tabs-20260507.png`
@@ -240,6 +264,8 @@ Hiring signal:
 - schema-controlled AI output
 - failure handling evidence
 - gas market data proven from source API to Athena validation
+- operator-focused Overview rendered in the React dashboard from approved
+  dashboard JSON
 - gas context rendered in the React dashboard from Athena-backed dashboard data
 - live AWS Step Functions proof for the deterministic AI insight workflow
 - static dashboard delivery path
@@ -255,3 +281,5 @@ Hiring signal:
 - Terraform is scaffolded for the AWS lakehouse, but existing resources still need to be imported before Terraform manages them.
 - Phase 8 schedule automation is intentionally disabled until a later operating
   decision.
+- Phase 10 filter controls are currently display/readout controls until a later
+  deterministic filtering slice wires the interactions.
