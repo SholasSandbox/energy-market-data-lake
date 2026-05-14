@@ -5,10 +5,10 @@
 A budget-conscious AWS portfolio project for ingesting energy market data,
 transforming it into a queryable lakehouse, and presenting decision-ready
 dashboard outputs. The implemented baseline is a serverless energy data lake
-using Lambda, S3, Glue, Athena, EventBridge, and a React dashboard. The news +
-AI extension adds RSS summaries, strict JSON contracts, a deterministic
-AI-style merge, failure samples, a public-safe dashboard snapshot, and a
-live-proven AWS Step Functions orchestration path.
+using Lambda, S3, Glue, Athena, EventBridge, and an operator-focused React
+dashboard. The news + AI extension adds RSS summaries, strict JSON contracts,
+a deterministic AI-style merge, failure samples, a public-safe dashboard
+snapshot, and a live-proven AWS Step Functions orchestration path.
 
 Region: **eu-west-2 (London)**
 
@@ -22,7 +22,9 @@ Region: **eu-west-2 (London)**
 - Athena query layer over curated Parquet data.
 - Evidence generation under `docs/evidence/`.
 - HTML dashboard generation from Athena-backed data.
-- React + TypeScript dashboard under `dashboard-ui/`.
+- React + TypeScript dashboard under `dashboard-ui/`, with a Phase 10
+  `Overview` page for alerts, executive KPIs, P&L drivers, risk coverage,
+  market context, AI insight, and data-quality state.
 - ENTSOG gas proof from raw ingestion through curated Parquet, Glue Catalog, Athena query, and validation evidence.
 - ENTSOG gas context cards and selected pointDirection table in the React dashboard.
 - Local RSS/news ingestion evidence.
@@ -35,6 +37,7 @@ Region: **eu-west-2 (London)**
 - Phase 8 AWS AI insight orchestration with Lambda, Step Functions, S3
   artifacts, validation gates, failed-run quarantine, and manual execution
   evidence.
+- Phase 10 responsive dashboard evidence for desktop, tablet, and mobile.
 
 ### Deferred AWS Extension
 
@@ -42,7 +45,7 @@ Region: **eu-west-2 (London)**
 - Publish dashboard snapshot JSON to a CloudFront-fronted static site bucket.
 - Enable the Phase 8 EventBridge schedule after another operating decision.
 - Add CloudWatch alarms after the manual workflow has settled.
-- Trust-boundary-aware architecture with private raw/curated/audit/failed zones and public dashboard-only output.
+- CloudFront/static-site delivery for the public dashboard.
 
 ## Current Data Scope
 
@@ -141,6 +144,10 @@ React dashboard
 Use these artifacts to review or present the local MVP:
 
 - Walkthrough: `docs/demo-walkthrough.md`
+- Phase 10 Overview screenshots:
+  - `docs/evidence/screenshots/dashboard-phase10-overview-desktop-20260514.png`
+  - `docs/evidence/screenshots/dashboard-phase10-overview-tablet-20260514.png`
+  - `docs/evidence/screenshots/dashboard-phase10-overview-mobile-20260514.png`
 - Screenshot: `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
 - Tabbed dashboard screenshots:
   - `docs/evidence/screenshots/dashboard-energy-overview-tabs-20260507.png`
@@ -181,7 +188,7 @@ All contracts are valid.
 ```text
 athena/                Athena demo queries
 config/                Sample environment settings
-dashboard-ui/          React + TypeScript dashboard scaffold
+dashboard-ui/          React + TypeScript dashboard application
 diagrams/              Mermaid, SVG, PNG, and generated architecture diagrams
 docs/                  Active documentation and implementation plans
 docs/archive/          Historical completed plans and old demo artifacts
@@ -431,7 +438,8 @@ These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Implement Phase 10's operator-focused React dashboard `Overview` slice.
+1. Close out Phase 10 documentation and demo evidence around the implemented
+   operator-focused React dashboard `Overview` slice.
 2. Keep the React dashboard focused on approved snapshot JSON.
 3. Keep the local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.

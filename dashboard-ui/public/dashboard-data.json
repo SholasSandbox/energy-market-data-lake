@@ -9,9 +9,9 @@
     "dataFreshness": "Daily snapshot (5/48 settlement rows)"
   },
   "navItems": [
-    "Energy Overview",
-    "Power",
-    "Gas",
+    "Overview",
+    "Portfolio Risk",
+    "Market Context",
     "Data Quality"
   ],
   "overview": {

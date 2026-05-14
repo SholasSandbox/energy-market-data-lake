@@ -855,7 +855,7 @@ def _build_dashboard_context(
             "bucket": bucket,
             "dataFreshness": f"Daily snapshot ({latest_settlements}/48 settlement rows)",
         },
-        "navItems": ["Energy Overview", "Power", "Gas", "Data Quality"],
+        "navItems": ["Overview", "Portfolio Risk", "Market Context", "Data Quality"],
         "overview": {
             "alerts": [
                 {

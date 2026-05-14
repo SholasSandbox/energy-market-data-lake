@@ -174,8 +174,8 @@ Required before Phase 10 closeout:
 
 ### 1. Preflight
 
-- [ ] Start from clean `main`.
-- [ ] Create `feature/phase10-dashboard-implementation`.
+- [x] Start from clean `main`.
+- [x] Create `feature/phase10-dashboard-implementation`.
 - [x] Confirm `dashboard-ui` dependencies install cleanly.
 - [x] Run the current contract validation baseline.
 - [x] Run the current React build baseline.
@@ -185,13 +185,13 @@ Preflight started on 2026-05-14.
 
 Current boundary:
 
-- Running on `feature/phase10-dashboard-implementation-plan`, not clean `main`.
-- Planning docs are still uncommitted:
-  - `PLANS.md`
-  - `README.md`
-  - `docs/phase-10-dashboard-implementation.md`
-- Do not start Phase 10 implementation edits until these planning changes are
-  committed, merged, or intentionally carried into the implementation branch.
+- Phase 10 planning was committed on
+  `feature/phase10-dashboard-implementation-plan`.
+- Planning was merged into `main` and pushed to `origin/main`.
+- `feature/phase10-dashboard-implementation` was created from clean synced
+  `main`.
+- Actual Phase 10 implementation edits can now proceed on
+  `feature/phase10-dashboard-implementation`.
 
 Baseline proof:
 
@@ -217,83 +217,143 @@ npm --prefix dashboard-ui run build
 
 ### 2. Data And UI Contract Review
 
-- [ ] Inspect `dashboard-ui/public/dashboard_snapshot_v1.sample.json`.
-- [ ] Inspect `schemas/dashboard_snapshot_v1.schema.json`.
-- [ ] Map available snapshot fields to the Phase 10 UI sections.
-- [ ] Decide which values are real, derived, mocked, or placeholder.
-- [ ] Avoid adding UI fields that cannot be explained from approved data.
+- [x] Inspect `dashboard-ui/public/dashboard_snapshot_v1.sample.json`.
+- [x] Inspect `schemas/dashboard_snapshot_v1.schema.json`.
+- [x] Map available snapshot fields to the Phase 10 UI sections.
+- [x] Decide which values are real, derived, mocked, or placeholder.
+- [x] Avoid adding UI fields that cannot be explained from approved data.
+
+Mapping result:
+
+- `dashboard_snapshot_v1` supports public summary cards, validated insight,
+  source references, curated news articles, snapshot freshness, and public
+  contract checks.
+- `dashboard-data.json` supports portfolio KPIs, P&L drivers, hedge coverage,
+  open exposure, exception rows, market panels, gas context, and lakehouse data
+  quality.
+- Phase 10 uses these existing approved JSON payloads. It does not add raw,
+  curated, failed, or audit lake paths to the public UI.
+- Portfolio values remain demo/sample operating values until a future contract
+  extension exposes them through `dashboard_snapshot_v1`.
 
 ### 3. Overview Layout
 
-- [ ] Make `Overview` the primary implementation target.
-- [ ] Add or refine a persistent global header.
+- [x] Make `Overview` the primary implementation target.
+- [x] Add or refine a persistent global header.
 - [ ] Add filter controls for date range, book, segment, and risk state if the
   current data can support them.
-- [ ] Keep filters deterministic and local to the approved snapshot data.
-- [ ] Preserve mobile and desktop readability.
+- [x] Keep filters deterministic and local to the approved snapshot data.
+- [x] Preserve mobile and desktop readability.
+
+Implementation note:
+
+- Navigation now uses the Phase 10 IA:
+  `Overview`, `Portfolio Risk`, `Market Context`, and `Data Quality`.
+- The `Overview` page now includes alerts, executive KPIs, P&L drivers, risk
+  coverage, exception table, compact market/news context, AI snapshot, and
+  trust state.
+- `Export Snapshot` now downloads a local JSON bundle containing the current
+  dashboard data and approved dashboard snapshot.
+- Heading and metric typography has been tightened for smaller viewports.
+- Filter controls remain display-only until supported by deterministic local
+  filtering.
+- Responsive visual proof was captured for desktop, tablet, and mobile on
+  2026-05-14.
 
 ### 4. Executive KPIs
 
-- [ ] Add portfolio gross margin.
-- [ ] Add open exposure.
-- [ ] Add weighted hedge cover.
-- [ ] Add market price versus recent average.
-- [ ] Show deltas or directional movement where available.
-- [ ] Make stale or incomplete source data visible, not hidden.
+- [x] Add portfolio gross margin.
+- [x] Add open exposure.
+- [x] Add weighted hedge cover.
+- [x] Add market price versus recent average.
+- [x] Show deltas or directional movement where available.
+- [x] Make stale or incomplete source data visible, not hidden.
 
 ### 5. P&L Drivers
 
-- [ ] Add a compact panel for margin drivers by book or segment.
-- [ ] Show contribution, movement, and source reference where possible.
-- [ ] Keep the chart readable without requiring a hover-only explanation.
-- [ ] Highlight negative contribution clearly but sparingly.
+- [x] Add a compact panel for margin drivers by book or segment.
+- [x] Show contribution, movement, and source reference where possible.
+- [x] Keep the chart readable without requiring a hover-only explanation.
+- [x] Highlight negative contribution clearly but sparingly.
 
 ### 6. Risk Coverage
 
-- [ ] Add hedge coverage versus target.
-- [ ] Add open exposure versus limit.
-- [ ] Add breached or watch-state books.
-- [ ] Make the risk state easy to explain in one sentence during a demo.
+- [x] Add hedge coverage versus target.
+- [x] Add open exposure versus limit.
+- [x] Add breached or watch-state books.
+- [x] Make the risk state easy to explain in one sentence during a demo.
 
 ### 7. Exception Table
 
-- [ ] Add a table sorted by risk or margin impact by default.
-- [ ] Include book or segment, margin, exposure, hedge cover, risk state, and
+- [x] Add a table sorted by risk or margin impact by default.
+- [x] Include book or segment, margin, exposure, hedge cover, risk state, and
   next inspection cue.
-- [ ] Add row highlighting for breached or watch-state rows.
-- [ ] Keep the table useful with the current sample data volume.
+- [x] Add row highlighting for breached or watch-state rows.
+- [x] Keep the table useful with the current sample data volume.
 
 ### 8. Market Context Strip
 
-- [ ] Add compact power and gas context.
-- [ ] Include latest market movement and relevant news signal.
-- [ ] Link market movement to source references from the snapshot where
+- [x] Add compact power and gas context.
+- [x] Include latest market movement and relevant news signal.
+- [x] Link market movement to source references from the snapshot where
   possible.
-- [ ] Keep this supporting context below the portfolio/risk story.
+- [x] Keep this supporting context below the portfolio/risk story.
 
 ### 9. Data Quality And Trust
 
-- [ ] Show snapshot timestamp and freshness state.
-- [ ] Show contract or validation status.
-- [ ] Show source coverage for energy, gas, and news where available.
-- [ ] Keep private raw, curated, failed, and audit paths out of the public UI.
+- [x] Show snapshot timestamp and freshness state.
+- [x] Show contract or validation status.
+- [x] Show source coverage for energy, gas, and news where available.
+- [x] Keep private raw, curated, failed, and audit paths out of the public UI.
 
 ### 10. Documentation And Demo
 
-- [ ] Update `README.md` active priorities.
-- [ ] Update `PLANS.md` so Phase 10 is the active implementation slice.
-- [ ] Update `docs/demo-walkthrough.md` after the UI is implemented.
-- [ ] Update `docs/linkedin-project.md` after the demo story is stable.
-- [ ] Capture a fresh screenshot under `docs/evidence/screenshots/`.
+- [x] Update `README.md` active priorities.
+- [x] Update `PLANS.md` so Phase 10 is the active implementation slice.
+- [x] Update `docs/demo-walkthrough.md` after the UI is implemented.
+- [x] Update `docs/linkedin-project.md` after the demo story is stable.
+- [x] Capture a fresh screenshot under `docs/evidence/screenshots/`.
+
+Documentation closeout note:
+
+- `README.md` now describes the Phase 10 operator-focused `Overview` page and
+  links the desktop, tablet, and mobile screenshot evidence.
+- `PLANS.md` now marks Phase 10 as active in documentation/demo closeout
+  rather than pre-implementation.
+- `docs/demo-walkthrough.md` now follows the implemented Phase 10 navigation:
+  `Overview`, `Portfolio Risk`, `Market Context`, and `Data Quality`.
+- `docs/linkedin-project.md` now includes the Step Functions orchestration and
+  operator dashboard story.
 
 ### 11. Verification
 
-- [ ] Run contract validation.
-- [ ] Run TypeScript/build checks.
-- [ ] Run the dashboard locally.
-- [ ] Capture desktop and mobile visual evidence.
-- [ ] Confirm no private lake data is fetched directly by the dashboard.
-- [ ] Confirm Phase 8 schedule remains disabled if Terraform is touched.
+- [x] Run contract validation.
+- [x] Run TypeScript/build checks.
+- [x] Run the dashboard locally.
+- [x] Capture desktop and mobile visual evidence.
+- [x] Confirm no private lake data is fetched directly by the dashboard.
+- [x] Confirm Phase 8 schedule remains disabled if Terraform is touched.
+
+Verification note:
+
+- Contract validation passed after the Phase 10 Overview implementation.
+- `npm --prefix dashboard-ui run build` passed after the implementation.
+- Vite served the app at `http://127.0.0.1:5173/`.
+- `dashboard-data.json` and `dashboard_snapshot_v1.sample.json` both returned
+  HTTP 200 from the local dev server.
+- Responsive screenshot evidence was captured under
+  `docs/evidence/screenshots/`:
+  `dashboard-phase10-overview-desktop-20260514.png`,
+  `dashboard-phase10-overview-tablet-20260514.png`, and
+  `dashboard-phase10-overview-mobile-20260514.png`.
+- The React app fetches only `dashboard-data.json` and
+  `dashboard_snapshot_v1.sample.json`. A private S3 URI remains present as a
+  source reference string in the approved snapshot, but it is not fetched by the
+  dashboard.
+- In-app browser visual verification was not available in this environment
+  because the required browser-control tool was not exposed; Playwright CLI
+  screenshots were used for visual evidence instead.
+- Terraform was not touched.
 
 Commands:
 

@@ -12,9 +12,9 @@ import type {
 } from "./types";
 
 export const navItems: NavItem[] = [
-  "Energy Overview",
-  "Power",
-  "Gas",
+  "Overview",
+  "Portfolio Risk",
+  "Market Context",
   "Data Quality",
 ];
 
