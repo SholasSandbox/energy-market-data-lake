@@ -63,7 +63,8 @@ External Energy APIs
   `-- ENTSOG
         |
         v
-EventBridge Scheduler
+EventBridge schedules
+created but disabled
         |
         v
 Lambda Ingestion
@@ -81,7 +82,7 @@ S3 Curated Zone
 Athena
         |
         v
-Dashboard JSON / HTML / React Dashboard
+Approved dashboard JSON / React Dashboard
 ```
 
 ## News + AI Orchestration Architecture
@@ -416,14 +417,33 @@ python3 scripts/validate_athena_schema.py \
 ## Diagrams
 
 - `diagrams/architecture.mmd`: compact current architecture.
+- `diagrams/architecture.svg`: rendered compact current architecture.
 - `diagrams/architecture_overview.png`: rendered lakehouse overview diagram;
-  useful for core ingestion, Glue, Athena, and dashboard export.
-- `diagrams/flow_diagram.png`: older data-flow diagram; useful as reference,
-  but lower priority than current plans and Phase 10 diagram fidelity notes.
-- `diagrams/news-dashboard-high-level.mmd`: high-level target diagram for news + dashboard.
-- `diagrams/news-dashboard-high-level.svg`: rendered high-level target diagram.
-- `diagrams/news-dashboard-detailed.mmd`: detailed target diagram with trust boundaries and failure paths.
-- `diagrams/news-dashboard-detailed.svg`: rendered detailed target diagram.
+  updated to include disabled schedules, Phase 8 orchestration, private
+  audit/failed paths, and public dashboard JSON.
+- `diagrams/flow_diagram.png`: rendered current data-flow diagram with Elexon,
+  ENTSO-E, and ENTSOG raw-to-curated paths.
+- `diagrams/news-dashboard-high-level.mmd`: high-level current-state diagram
+  for news + AI orchestration + dashboard.
+- `diagrams/news-dashboard-high-level.svg`: rendered high-level current-state
+  diagram.
+- `diagrams/news-dashboard-detailed.mmd`: detailed current-state diagram with
+  trust boundaries, disabled schedules, validation gates, and failure paths.
+- `diagrams/news-dashboard-detailed.svg`: rendered detailed current-state
+  diagram.
+
+Regenerate diagram assets after editing sources:
+
+```bash
+npx --yes @mermaid-js/mermaid-cli -i diagrams/architecture.mmd -o diagrams/architecture.svg
+npx --yes @mermaid-js/mermaid-cli -i diagrams/news-dashboard-high-level.mmd -o diagrams/news-dashboard-high-level.svg
+npx --yes @mermaid-js/mermaid-cli -i diagrams/news-dashboard-detailed.mmd -o diagrams/news-dashboard-detailed.svg
+
+brew install graphviz
+.venv/bin/python -m pip install diagrams
+.venv/bin/python diagrams/flow_diagram.py
+.venv/bin/python diagrams/architecture_overview.py
+```
 
 ## Archived Documentation
 

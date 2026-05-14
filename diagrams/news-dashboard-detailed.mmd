@@ -1,94 +1,100 @@
 flowchart TD
-    subgraph External["External Sources - outside AWS trust boundary"]
-        Elexon["Elexon API"]
-        Entsoe["ENTSO-E API"]
-        Entsog["ENTSOG API"]
-        RSS["RSS feeds"]
+    subgraph External["External sources outside AWS trust boundary"]
+        Elexon["Elexon API\nUK demand and imbalance"]
+        Entsoe["ENTSO-E API\nEU load and prices"]
+        Entsog["ENTSOG API\nPhysical Flow + Allocation"]
+        RSS["RSS feeds\nenergy market news"]
     end
 
-    subgraph AWS["AWS Account Boundary"]
-        Secrets["Secrets Manager / SSM\nAPI tokens and runtime config"]
+    subgraph AWS["AWS account boundary"]
+        Secrets["SSM / Secrets Manager\nAPI tokens and runtime config"]
 
-        subgraph Private["Private Processing Boundary"]
-            EventBridge["EventBridge Scheduler"]
+        subgraph Private["Private processing boundary"]
+            EnergySchedule["EventBridge energy schedule\nDISABLED"]
+            AISchedule["EventBridge AI schedule\nDISABLED"]
+            ManualRun["Manual Step Functions execution\nPhase 8 proof path"]
 
-            subgraph Ingest["Parallel ingest"]
-                EnergyLambda["Energy ingest Lambda\nrole: energy-ingest-role"]
-                NewsLambda["News ingest Lambda\nrole: news-ingest-role"]
-            end
+            EnergyLambda["Energy ingest Lambda\nElexon / ENTSO-E / ENTSOG"]
+            OrchestrationLambda["news_ai_orchestration Lambda\nworkflow action dispatcher"]
 
             subgraph DataBucket["S3 data bucket - private"]
-                Raw["raw/\nsource payloads"]
-                Curated["curated/\nnormalized datasets"]
-                Audit["audit/\nappend-only snapshots"]
+                Raw["raw/\nsource=elexon / entsoe / entsog / news"]
+                Curated["curated/\nelectricity / gas / news / ai insight"]
+                Audit["audit/\nrun-scoped successful publishes"]
                 Failed["failed/\nvalidation and runtime failures"]
             end
 
-            Glue["Glue crawler + ETL"]
+            GlueCrawler["Glue crawler"]
+            GlueETL["Glue ETL\nraw to Parquet"]
+            Catalog["Glue Data Catalog"]
             Athena["Athena curated queries"]
-            Normalize["Validate + normalize\nenergy_input_v1\nnews_summary_v1"]
-            AIMerge["AI merge boundary\nai_insight_v1"]
-            CloudAI["Optional cloud AI path\nBedrock InvokeModel\nor managed compute\nrole: ai-merge-role"]
-            AIValidate["Validate AI output schema"]
-            Publish["Publisher\nrole: publisher-role"]
 
-            subgraph Observability["Observability"]
+            EnergyInput["Build energy_input_v1"]
+            NewsSummary["Build news_summary_v1"]
+            Bundle["Build ai_input_bundle_v1"]
+            DeterministicMerge["Deterministic AI insight merge\nmodel invocation deferred"]
+            AIValidate["Validate ai_insight_v1"]
+            DashboardValidate["Validate dashboard_snapshot_v1"]
+            Publish["Publish approved dashboard snapshot"]
+
+            subgraph Observability["Implemented operating signals"]
                 Logs["CloudWatch Logs"]
-                Metrics["CloudWatch Metrics"]
-                Alarms["CloudWatch Alarms"]
-                Budget["AWS Budget alert"]
+                SNS["SNS failure notification"]
             end
-
-            SNS["SNS notification\ninvalid AI output or high risk insight"]
         end
 
-        subgraph Public["Public Delivery Boundary"]
-            DashboardData["Public dashboard JSON\napproved fields only"]
+        subgraph Public["Public dashboard boundary"]
+            DashboardData["Approved dashboard JSON\npublic fields only"]
         end
     end
 
-    subgraph Local["MVP local boundary"]
-        OpenClaw["OpenClaw/local model\nmanual-reviewed merge"]
-    end
-
-    StaticSite["React dashboard\nGitHub Pages or CloudFront/S3"]
+    ReactDashboard["React dashboard\nPhase 10 Overview"]
     Viewer["Dashboard user"]
+    CloudModel["Bedrock/OpenClaw cloud model\ndeferred"]
+    StaticHosting["CloudFront/static website hosting\ndeferred"]
 
     Elexon --> EnergyLambda
     Entsoe --> EnergyLambda
     Entsog --> EnergyLambda
-    RSS --> NewsLambda
     Secrets --> EnergyLambda
-
-    EventBridge --> EnergyLambda
-    EventBridge --> NewsLambda
+    EnergySchedule -. "not auto-running" .-> EnergyLambda
     EnergyLambda --> Raw
-    NewsLambda --> Raw
 
-    Raw --> Normalize
-    Normalize -->|success| Curated
-    Normalize -->|failure| Failed
-    Normalize -->|failure| Alarms
+    Raw --> GlueCrawler
+    GlueCrawler --> Catalog
+    Raw --> GlueETL
+    Catalog --> GlueETL
+    GlueETL --> Curated
+    Curated --> Athena
+    Catalog --> Athena
+    Athena --> EnergyInput
 
-    Curated --> Glue
-    Glue --> Athena
-    Athena --> OpenClaw
-    OpenClaw --> AIMerge
-    EventBridge -. "Optional cloud AI path" .-> CloudAI
-    CloudAI -.-> AIMerge
+    RSS --> OrchestrationLambda
+    AISchedule -. "not auto-running" .-> ManualRun
+    ManualRun --> OrchestrationLambda
+    OrchestrationLambda --> EnergyInput
+    OrchestrationLambda --> NewsSummary
+    OrchestrationLambda --> Bundle
+    OrchestrationLambda --> DeterministicMerge
+    CloudModel -. "future model path" .-> DeterministicMerge
 
-    AIMerge --> AIValidate
-    AIValidate -->|valid| Publish
+    EnergyInput --> Bundle
+    NewsSummary --> Bundle
+    Bundle --> DeterministicMerge
+    DeterministicMerge --> AIValidate
+    AIValidate -->|valid| DashboardValidate
     AIValidate -->|invalid| Failed
-    AIValidate -->|invalid| SNS
-
+    DashboardValidate -->|valid| Publish
+    DashboardValidate -->|invalid| Failed
     Publish --> Audit
     Publish --> DashboardData
+    OrchestrationLambda --> Curated
 
     EnergyLambda --> Logs
-    NewsLambda --> Logs
-    Publish --> Metrics
-    Alarms --> SNS
+    OrchestrationLambda --> Logs
+    AIValidate -->|invalid| SNS
+    DashboardValidate -->|invalid| SNS
 
-    Viewer --> StaticSite
-    StaticSite --> DashboardData
+    Viewer --> ReactDashboard
+    ReactDashboard --> DashboardData
+    StaticHosting -. "future delivery path" .-> ReactDashboard
