@@ -126,33 +126,22 @@ paths, React app, and Phase 9 closeout notes.
   trust-boundary diagram: raw, curated, audit, failed, validation, SNS, and
   public dashboard JSON are still the right conceptual boundaries.
 
-### Drift To Account For
+### Diagram Drift Resolved In Follow-Up
 
-- `diagrams/flow_diagram.py` is stale for the current implementation. It names
-  ENTSOG as an external source, but the raw and curated zones still describe
-  only electricity. The implementation now writes ENTSOG raw gas payloads and
-  curated gas Parquet.
-- `diagrams/flow_diagram.py` and `diagrams/architecture_overview.py` show daily
-  schedule-led ingestion as the normal operating path. Phase 9 deliberately
-  leaves both the older ingestion schedule and the Phase 8 orchestration
-  schedule disabled.
-- `diagrams/architecture_overview.py` is faithful as a lakehouse overview, but
-  it does not include Phase 8 Step Functions, SNS, the AI orchestration Lambda,
-  failed/audit paths, or the separate dashboard snapshot bucket.
-- `diagrams/news-dashboard-detailed.mmd` shows separate energy and news ingest
-  Lambdas. The implementation currently uses the existing ingestion Lambda for
-  energy and one Phase 8 `news_ai_orchestration` Lambda that dispatches workflow
-  actions from Step Functions.
-- `diagrams/news-dashboard-detailed.mmd` includes CloudWatch alarms and AWS
-  Budget as observability elements. CloudWatch logs and SNS failure notification
-  exist in the operating story, but CloudWatch alarms were explicitly deferred
-  in Phase 9.
-- `diagrams/news-dashboard-detailed.mmd` shows optional Bedrock/OpenClaw cloud
-  AI. The implemented Phase 8 path is deterministic; model invocation remains
-  deferred.
-- The public delivery diagrams say GitHub Pages or CloudFront/S3. The current
-  implementation publishes approved snapshot JSON to a dashboard bucket, but
-  public website hosting and CloudFront remain deferred.
+- `diagrams/flow_diagram.py` and its rendered PNG now show ENTSOG raw gas
+  inputs and curated gas outputs.
+- `diagrams/flow_diagram.py` and `diagrams/architecture_overview.py` now show
+  schedules as deployed but disabled rather than normal daily execution.
+- `diagrams/architecture_overview.py` and its rendered PNG now include the
+  Phase 8 manual orchestration path, `news_ai_orchestration`, private
+  audit/failed paths, and the public dashboard JSON boundary.
+- `diagrams/news-dashboard-detailed.mmd` now reflects the implemented
+  `news_ai_orchestration` Lambda dispatch path from Step Functions.
+- `diagrams/news-dashboard-detailed.mmd` now shows implemented CloudWatch logs
+  and SNS failure notification while keeping CloudWatch alarms and budget
+  alerts out of the current-state diagram.
+- Bedrock/OpenClaw model invocation and CloudFront/static website hosting are
+  now shown as deferred follow-up paths rather than implemented components.
 
 ### Phase 10 Decision
 
@@ -160,15 +149,28 @@ Do not block Phase 10 dashboard implementation on diagram redraws. The diagrams
 are faithful enough to preserve the architecture story if they are read with
 the target-versus-current distinction above.
 
-Required before Phase 10 closeout:
+Required before Phase 10 diagram-fidelity follow-up closeout:
 
-- [ ] Update or annotate `diagrams/flow_diagram.py` so gas raw and curated paths
+- [x] Update or annotate `diagrams/flow_diagram.py` so gas raw and curated paths
   match implementation.
-- [ ] Update or annotate `diagrams/architecture_overview.py` as a lakehouse-only
+- [x] Update or annotate `diagrams/architecture_overview.py` as a lakehouse-only
   overview, or extend it to include the Phase 8 orchestration resources.
-- [ ] Keep `diagrams/news-dashboard-detailed.mmd` as the target architecture
+- [x] Keep `diagrams/news-dashboard-detailed.mmd` as the target architecture
   unless Phase 10 changes the public snapshot contract.
-- [ ] Regenerate rendered diagram assets if any diagram source changes.
+- [x] Regenerate rendered diagram assets if any diagram source changes.
+
+Diagram-fidelity follow-up note:
+
+- `diagrams/flow_diagram.py` and `diagrams/flow_diagram.png` now show ENTSOG
+  raw gas inputs and curated gas outputs.
+- `diagrams/architecture_overview.py` and `diagrams/architecture_overview.png`
+  now include disabled schedules, the Phase 8 manual orchestration path,
+  private audit/failed paths, and the public dashboard JSON boundary.
+- `diagrams/architecture.mmd` now has a rendered `diagrams/architecture.svg`.
+- `diagrams/news-dashboard-high-level.mmd` and
+  `diagrams/news-dashboard-detailed.mmd` now reflect the implemented manual
+  Step Functions path, deterministic merge boundary, deferred model invocation,
+  deferred static hosting, and public snapshot contract.
 
 ## Implementation Checklist
 

@@ -1,5 +1,7 @@
 # News Summaries + Energy Data Lake Dashboard - 4 Week Delivery Plan
 
+<!-- markdownlint-disable MD013 -->
+
 ## Short Answer
 
 The ChatGPT 5.5 review is directionally right. The original concept is useful, but the stronger portfolio/SAP-C02 version needs clearer trust boundaries, explicit failure handling, least-privilege IAM, observability, cost controls, and a clean split between MVP, target architecture, and optional stretch features.
@@ -43,46 +45,9 @@ Use the SVG when your editor or Markdown viewer does not render Mermaid directly
 
 ![High-level news dashboard architecture](../diagrams/news-dashboard-high-level.svg)
 
-```mermaid
-flowchart LR
-    subgraph External["External Sources"]
-        EnergyAPI["Energy APIs\nElexon / ENTSO-E / ENTSOG"]
-        NewsRSS["News RSS feeds"]
-    end
-
-    subgraph AWS["AWS Account Boundary"]
-        subgraph Private["Private Processing Boundary"]
-            Schedule["EventBridge Scheduler"]
-            Ingest["Lambda ingest jobs"]
-            DataLake["S3 data bucket\nraw / curated / audit / failed"]
-            Transform["Glue + Athena\ncurated outputs"]
-            InputGate["Input schema validation"]
-            PublishGate["AI output validation + publisher"]
-            Observability["CloudWatch logs, metrics, alarms\nAWS Budget alert"]
-        end
-
-        subgraph Public["Public Delivery Boundary"]
-            StaticHost["Static dashboard hosting\nGitHub Pages or CloudFront/S3"]
-            DashboardJSON["Public dashboard JSON\napproved fields only"]
-        end
-    end
-
-    LocalAI["MVP local OpenClaw\nmanual-reviewed merge"]
-    Viewer["Dashboard user"]
-
-    EnergyAPI --> Schedule
-    NewsRSS --> Schedule
-    Schedule --> Ingest
-    Ingest --> DataLake
-    DataLake --> InputGate
-    InputGate --> Transform
-    Transform --> LocalAI
-    LocalAI --> PublishGate
-    PublishGate --> DashboardJSON
-    Ingest --> Observability
-    StaticHost --> DashboardJSON
-    Viewer --> StaticHost
-```
+The rendered SVG is generated from `diagrams/news-dashboard-high-level.mmd`.
+Keep the `.mmd` file as the source of truth so the embedded documentation does
+not drift from the committed diagram asset.
 
 ## Detailed Architecture Diagram
 
@@ -91,102 +56,10 @@ Mermaid source: `diagrams/news-dashboard-detailed.mmd`
 
 ![Detailed news dashboard architecture](../diagrams/news-dashboard-detailed.svg)
 
-```mermaid
-flowchart TD
-    subgraph External["External Sources - outside AWS trust boundary"]
-        Elexon["Elexon API"]
-        Entsoe["ENTSO-E API"]
-        Entsog["ENTSOG API"]
-        RSS["RSS feeds"]
-    end
-
-    subgraph AWS["AWS Account Boundary"]
-        Secrets["Secrets Manager / SSM\nAPI tokens and runtime config"]
-
-        subgraph Private["Private Processing Boundary"]
-            EventBridge["EventBridge Scheduler"]
-
-            subgraph Ingest["Parallel ingest"]
-                EnergyLambda["Energy ingest Lambda\nrole: energy-ingest-role"]
-                NewsLambda["News ingest Lambda\nrole: news-ingest-role"]
-            end
-
-            subgraph DataBucket["S3 data bucket - private"]
-                Raw["raw/\nsource payloads"]
-                Curated["curated/\nnormalized datasets"]
-                Audit["audit/\nappend-only snapshots"]
-                Failed["failed/\nvalidation and runtime failures"]
-            end
-
-            Glue["Glue crawler + ETL"]
-            Athena["Athena curated queries"]
-            Normalize["Validate + normalize\nenergy_input_v1\nnews_summary_v1"]
-            AIMerge["AI merge boundary\nai_insight_v1"]
-            CloudAI["Optional cloud AI path\nBedrock InvokeModel\nor managed compute\nrole: ai-merge-role"]
-            AIValidate["Validate AI output schema"]
-            Publish["Publisher\nrole: publisher-role"]
-
-            subgraph Observability["Observability"]
-                Logs["CloudWatch Logs"]
-                Metrics["CloudWatch Metrics"]
-                Alarms["CloudWatch Alarms"]
-                Budget["AWS Budget alert"]
-            end
-
-            SNS["SNS notification\ninvalid AI output or high risk insight"]
-        end
-
-        subgraph Public["Public Delivery Boundary"]
-            DashboardData["Public dashboard JSON\napproved fields only"]
-        end
-    end
-
-    subgraph Local["MVP local boundary"]
-        OpenClaw["OpenClaw/local model\nmanual-reviewed merge"]
-    end
-
-    StaticSite["React dashboard\nGitHub Pages or CloudFront/S3"]
-    Viewer["Dashboard user"]
-
-    Elexon --> EnergyLambda
-    Entsoe --> EnergyLambda
-    Entsog --> EnergyLambda
-    RSS --> NewsLambda
-    Secrets --> EnergyLambda
-
-    EventBridge --> EnergyLambda
-    EventBridge --> NewsLambda
-    EnergyLambda --> Raw
-    NewsLambda --> Raw
-
-    Raw --> Normalize
-    Normalize -->|success| Curated
-    Normalize -->|failure| Failed
-    Normalize -->|failure| Alarms
-
-    Curated --> Glue
-    Glue --> Athena
-    Athena --> OpenClaw
-    OpenClaw --> AIMerge
-    EventBridge -. "Optional cloud AI path" .-> CloudAI
-    CloudAI -.-> AIMerge
-
-    AIMerge --> AIValidate
-    AIValidate -->|valid| Publish
-    AIValidate -->|invalid| Failed
-    AIValidate -->|invalid| SNS
-
-    Publish --> Audit
-    Publish --> DashboardData
-
-    EnergyLambda --> Logs
-    NewsLambda --> Logs
-    Publish --> Metrics
-    Alarms --> SNS
-
-    Viewer --> StaticSite
-    StaticSite --> DashboardData
-```
+The rendered SVG is generated from `diagrams/news-dashboard-detailed.mmd`.
+The current source shows the implemented manual Step Functions proof path,
+disabled schedules, deterministic merge boundary, and deferred model/hosting
+extensions.
 
 ## Data Contracts
 
