@@ -1,38 +1,49 @@
 flowchart LR
-    subgraph External["External Sources"]
+    subgraph External["External sources"]
         EnergyAPI["Energy APIs\nElexon / ENTSO-E / ENTSOG"]
-        NewsRSS["News RSS feeds"]
+        NewsRSS["RSS feeds\ncurated news evidence"]
     end
 
-    subgraph AWS["AWS Account Boundary"]
-        subgraph Private["Private Processing Boundary"]
-            Schedule["EventBridge Scheduler"]
-            Ingest["Lambda ingest jobs"]
+    subgraph AWS["AWS account boundary"]
+        subgraph Private["Private processing boundary"]
+            DisabledSchedules["EventBridge schedules\ncreated but disabled"]
+            EnergyIngest["Energy ingestion Lambda"]
+            StateMachine["Step Functions\nmanual AI insight run"]
+            OrchestrationLambda["news_ai_orchestration Lambda\nworkflow dispatcher"]
             DataLake["S3 data bucket\nraw / curated / audit / failed"]
-            Transform["Glue + Athena\ncurated outputs"]
-            InputGate["Input schema validation"]
-            PublishGate["AI output validation + publisher"]
-            Observability["CloudWatch logs, metrics, alarms\nAWS Budget alert"]
+            Transform["Glue + Athena\ncurated power and gas outputs"]
+            ContractGates["Schema validation gates\ninput, AI insight, dashboard snapshot"]
+            SNS["SNS failure notification"]
+            Logs["CloudWatch logs"]
         end
 
-        subgraph Public["Public Delivery Boundary"]
-            StaticHost["Static dashboard hosting\nGitHub Pages or CloudFront/S3"]
-            DashboardJSON["Public dashboard JSON\napproved fields only"]
+        subgraph Public["Public dashboard boundary"]
+            DashboardJSON["Approved dashboard JSON\npublic fields only"]
         end
     end
 
-    LocalAI["MVP local OpenClaw\nmanual-reviewed merge"]
+    ReactDashboard["React dashboard\nPhase 10 Overview"]
     Viewer["Dashboard user"]
+    DeferredHosting["CloudFront/static hosting\ndeferred follow-up"]
+    DeferredModel["Bedrock/OpenClaw cloud model\ndeferred follow-up"]
 
-    EnergyAPI --> Schedule
-    NewsRSS --> Schedule
-    Schedule --> Ingest
-    Ingest --> DataLake
-    DataLake --> InputGate
-    InputGate --> Transform
-    Transform --> LocalAI
-    LocalAI --> PublishGate
-    PublishGate --> DashboardJSON
-    Ingest --> Observability
-    StaticHost --> DashboardJSON
-    Viewer --> StaticHost
+    EnergyAPI --> EnergyIngest
+    DisabledSchedules -. "not running automatically" .-> EnergyIngest
+    EnergyIngest --> DataLake
+    DataLake --> Transform
+    Transform --> ContractGates
+
+    NewsRSS --> OrchestrationLambda
+    StateMachine --> OrchestrationLambda
+    OrchestrationLambda --> ContractGates
+    DeferredModel -. "future model path" .-> ContractGates
+
+    ContractGates -->|valid publish| DashboardJSON
+    ContractGates -->|audit trail| DataLake
+    ContractGates -->|invalid| DataLake
+    ContractGates -->|invalid| SNS
+    OrchestrationLambda --> Logs
+
+    Viewer --> ReactDashboard
+    ReactDashboard --> DashboardJSON
+    DeferredHosting -. "future delivery path" .-> ReactDashboard
