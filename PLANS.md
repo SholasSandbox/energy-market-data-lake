@@ -1,5 +1,7 @@
 # PLANS.md
 
+<!-- markdownlint-disable MD013 -->
+
 Source of truth for this plan:
 
 - `README.md` for current platform scope and target model
@@ -22,7 +24,8 @@ The repo now shows a strong end-to-end mixed-energy demo:
 - Glue crawler + ETL pattern for curated data
 - Athena query layer
 - generated dashboard outputs
-- React + TypeScript dashboard scaffold
+- React + TypeScript dashboard with a Phase 10 operator-focused `Overview`
+  page
 - ENTSOG gas raw ingestion, curated Parquet, Glue Catalog, Athena validation,
   and dashboard context
 - local RSS/news evidence, deterministic AI insight merge, schema validation,
@@ -36,7 +39,8 @@ The current implementation boundary is:
 - Terraform now tracks the core lakehouse and Phase 8 resources, with residual
   ingestion Lambda drift documented
 - Phase 10 is the active implementation phase for turning the React dashboard
-  into a stronger operator-facing product surface
+  into a stronger operator-facing product surface, now in documentation and
+  demo closeout
 
 ## Delivery Order
 
@@ -186,36 +190,37 @@ Definition of done:
 Goal: implement the first operator-focused React dashboard slice now that the
 lakehouse, AI orchestration, and Terraform posture are proven.
 
-Status: active.
+Status: active, in documentation/demo closeout.
 
 Working checklist: `docs/phase-10-dashboard-implementation.md`
 
 Focus:
 
-- implement the `Overview` page from `docs/dashboard-ia-spec.md`
-- add a global filter bar, executive KPIs, P&L drivers, risk coverage,
+- maintain the implemented `Overview` page from `docs/dashboard-ia-spec.md`
+- preserve the global filter bar, executive KPIs, P&L drivers, risk coverage,
   exception table, market context strip, and data-quality state
 - keep the dashboard driven by approved public snapshot JSON only
 - make stale, limited, or missing evidence visible rather than hidden
-- update README, demo walkthrough, and LinkedIn copy after the UI is real
+- keep README, demo walkthrough, and LinkedIn copy aligned with the implemented
+  UI and proof evidence
 
 Definition of done:
 
 - React build passes
 - contract validation passes
-- desktop and mobile screenshots are captured
+- desktop, tablet, and mobile screenshots are captured
 - docs describe Phase 8 and Phase 9 as completed foundations
 - the demo story connects lakehouse data, AI orchestration controls, and the
   visible dashboard decision surface
 
 ## Suggested Immediate Next Steps
 
-1. Start `feature/phase10-dashboard-implementation` from clean `main`.
-2. Run the Phase 10 preflight checks in
-   `docs/phase-10-dashboard-implementation.md`.
-3. Map `dashboard_snapshot_v1` fields to the Overview sections.
-4. Implement the Overview skeleton before adding secondary pages.
-5. Build, validate contracts, and capture visual evidence before closeout.
+1. Review the Phase 10 documentation/demo closeout diff.
+2. Run the final build, contract validation, and Markdown sanity checks.
+3. Commit the Phase 10 implementation and evidence on
+   `feature/phase10-dashboard-implementation`.
+4. Keep diagram redraws as the next bounded follow-up unless they become
+   required for the Phase 10 PR.
 
 ## Planning Rule
 

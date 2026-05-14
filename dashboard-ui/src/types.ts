@@ -1,4 +1,4 @@
-export type NavItem = "Energy Overview" | "Power" | "Gas" | "Data Quality";
+export type NavItem = "Overview" | "Portfolio Risk" | "Market Context" | "Data Quality";
 export type DashboardSnapshotStatus = "ok" | "watch" | "error";
 
 export interface AlertItem {
