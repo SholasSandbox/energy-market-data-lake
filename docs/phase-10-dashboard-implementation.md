@@ -242,8 +242,8 @@ Mapping result:
 
 - [x] Make `Overview` the primary implementation target.
 - [x] Add or refine a persistent global header.
-- [ ] Add filter controls for date range, book, segment, and risk state if the
-  current data can support them.
+- [x] Add filter readout controls for date range, book, segment, and risk
+  state.
 - [x] Keep filters deterministic and local to the approved snapshot data.
 - [x] Preserve mobile and desktop readability.
 
@@ -261,6 +261,8 @@ Implementation note:
   filtering.
 - Responsive visual proof was captured for desktop, tablet, and mobile on
   2026-05-14.
+- Deterministic filter wiring is intentionally moved to
+  `docs/phase-11-dashboard-filters.md`.
 
 ### 4. Executive KPIs
 
@@ -320,8 +322,8 @@ Documentation closeout note:
 
 - `README.md` now describes the Phase 10 operator-focused `Overview` page and
   links the desktop, tablet, and mobile screenshot evidence.
-- `PLANS.md` now marks Phase 10 as active in documentation/demo closeout
-  rather than pre-implementation.
+- `PLANS.md` now marks Phase 10 as complete and Phase 11 as the next planned
+  dashboard interaction slice.
 - `docs/demo-walkthrough.md` now follows the implemented Phase 10 navigation:
   `Overview`, `Portfolio Risk`, `Market Context`, and `Data Quality`.
 - `docs/linkedin-project.md` now includes the Step Functions orchestration and
