@@ -8,6 +8,8 @@ Source of truth for this plan:
 - `docs/four-week-project-plan.md` for the delivery-focused 4-week MVP plan
 - `dashboard-ui/src/App.tsx` for current React implementation reality
 - `docs/dashboard-ia-spec.md` for the next dashboard design direction
+- `docs/target-operating-model.md` for the envisioned end-state operating
+  model and AWS service-level companion diagrams
 - `docs/phase-8-aws-ai-insight-orchestration.md` for the completed AWS AI
   orchestration phase
 - `docs/phase-9-terraform-import-hardening.md` for the completed Terraform
@@ -43,6 +45,8 @@ The current implementation boundary is:
 - Phase 10 is complete: the React dashboard now has a stronger
   operator-facing `Overview` surface, refreshed demo/docs, responsive
   screenshot evidence, and current architecture diagrams
+- the target operating model is now captured as a high-level architecture and
+  operating posture view for interview and planning use
 - Phase 11 is the next planned slice for deterministic dashboard filter wiring
 
 ## Delivery Order
@@ -222,7 +226,7 @@ Goal: turn the Phase 10 filter controls from display/readout controls into
 deterministic local interactions that update dashboard views without changing
 the approved public data boundary.
 
-Status: planned.
+Status: planned, pending target operating model review.
 
 Working checklist: `docs/phase-11-dashboard-filters.md`
 
@@ -247,11 +251,13 @@ Definition of done:
 
 ## Suggested Immediate Next Steps
 
-1. Commit the docs-only Phase 11 planning branch.
-2. Start `feature/phase11-dashboard-filters` from clean `main`.
-3. Run the Phase 11 preflight checks in
+1. Review `docs/target-operating-model.md` as the high-level end-state story
+   and use its AWS service companion diagrams for interview-level detail.
+2. Commit the docs-only Phase 11 planning and target operating model branch.
+3. Start `feature/phase11-dashboard-filters` from clean `main`.
+4. Run the Phase 11 preflight checks in
    `docs/phase-11-dashboard-filters.md`.
-4. Implement deterministic filter wiring before adding new dashboard pages,
+5. Implement deterministic filter wiring before adding new dashboard pages,
    AWS features, or new data contracts.
 
 ## Planning Rule
