@@ -401,8 +401,10 @@ python3 scripts/validate_athena_schema.py \
 - `docs/entsog-gas-build-plan.md`: time-budgeted ENTSOG gas build tracker.
 - `infra/terraform/lakehouse/README.md`: Terraform rebuild path with S3 remote backend and optional data bucket creation.
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
-- `docs/phase-10-dashboard-implementation.md`: active Phase 10 dashboard
+- `docs/phase-10-dashboard-implementation.md`: completed Phase 10 dashboard
   implementation checklist and project plan.
+- `docs/phase-11-dashboard-filters.md`: planned deterministic dashboard filter
+  wiring phase.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
@@ -458,8 +460,7 @@ These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Close out Phase 10 documentation and demo evidence around the implemented
-   operator-focused React dashboard `Overview` slice.
+1. Plan and implement Phase 11 deterministic dashboard filter wiring.
 2. Keep the React dashboard focused on approved snapshot JSON.
 3. Keep the local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.
@@ -467,7 +468,7 @@ These are historical references, not the current delivery path.
 5. Keep the documented ingestion Lambda residual drift visible until redeploy
    criteria are met.
 6. Decide whether gas metrics should enter the public AI snapshot contract after
-   the Phase 10 dashboard surface is proven.
+   deterministic dashboard filtering is proven.
 
 ## Notes
 
