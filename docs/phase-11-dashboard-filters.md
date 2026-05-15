@@ -33,6 +33,8 @@ feature/phase11-dashboard-filters-plan
 
 - Phase 10 dashboard implementation is complete and merged.
 - Diagram fidelity follow-up is complete and merged.
+- Target operating model and AWS service companion diagrams are captured in
+  `docs/target-operating-model.md`.
 - The dashboard has a global filter bar, but the controls are currently
   display/readout controls.
 - The React app still reads approved public JSON only:

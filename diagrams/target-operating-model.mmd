@@ -1,0 +1,45 @@
+flowchart TB
+    subgraph Sources["External Sources"]
+        APIs["Energy APIs\nElexon / ENTSO-E / ENTSOG"]
+        News["Market news feeds"]
+    end
+
+    subgraph Private["Private AWS Operating Boundary"]
+        Run["Controlled run modes\nscheduled ingestion + manual replay"]
+        Lake["Lakehouse data products\nraw / curated / audit / failed"]
+        Orch["Orchestration and AI insight\nStep Functions + Lambda + managed AI runtime"]
+        Gates["Contract gates\nschema validation before publish"]
+        Ops["Operating controls\nTerraform + IAM + logs + alarms + budgets + runbooks"]
+    end
+
+    subgraph Public["Public Decision Boundary"]
+        Snapshot["Approved dashboard JSON\npublic fields only"]
+        Dashboard["React decision dashboard\nCloudFront/S3 delivery, filters,\nrisk, market context, quality"]
+        Export["Exported evidence snapshot\nselected filters + source references"]
+    end
+
+    subgraph Users["Users And Decisions"]
+        Operator["Energy operator\ninspect exceptions and risk"]
+        Analyst["Market analyst\nexplain movement from evidence"]
+        Reviewer["Architectural reviewer\nassess controls, tradeoffs,\nand operating maturity"]
+    end
+
+    APIs --> Run
+    News --> Orch
+    Run --> Lake
+    Lake --> Orch
+    Orch --> Gates
+    Gates -->|valid publish| Snapshot
+    Gates -->|invalid quarantine| Lake
+    Ops -. governs .-> Run
+    Ops -. governs .-> Lake
+    Ops -. governs .-> Orch
+    Ops -. governs .-> Gates
+
+    Snapshot --> Dashboard
+    Dashboard --> Export
+
+    Dashboard --> Operator
+    Dashboard --> Analyst
+    Dashboard --> Reviewer
+    Export --> Reviewer
