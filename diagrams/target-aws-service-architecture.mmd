@@ -1,0 +1,72 @@
+flowchart TB
+    subgraph External["External Sources"]
+        Elexon["Elexon API"]
+        Entsoe["ENTSO-E API"]
+        Entsog["ENTSOG API"]
+        News["RSS and market news feeds"]
+    end
+
+    subgraph AwsPrivate["Private AWS Data And Insight Boundary"]
+        EventBridge["Amazon EventBridge Scheduler\ncontrolled schedules and replay windows"]
+        IngestLambda["AWS Lambda ingestion functions\nElexon / ENTSO-E / ENTSOG / news"]
+        RawS3["Amazon S3 raw zone\nimmutable source payloads"]
+        GlueCrawler["AWS Glue Crawlers\nschema discovery"]
+        GlueCatalog["AWS Glue Data Catalog\nqueryable table metadata"]
+        GlueJobs["AWS Glue ETL jobs\ncurated parquet products"]
+        CuratedS3["Amazon S3 curated zone\nvalidated data products"]
+        Athena["Amazon Athena\nportfolio and market queries"]
+        StepFunctions["AWS Step Functions\nAI insight orchestration"]
+        InsightLambda["AWS Lambda AI orchestration\ncontracted insight assembly"]
+        ManagedAI["Amazon Bedrock or OpenClaw runtime\nmanaged model boundary"]
+        Validation["JSON Schema validation gates\npublish or quarantine"]
+        AuditS3["Amazon S3 audit and failed zones\nrun evidence and rejected payloads"]
+        DashboardS3["Amazon S3 dashboard artifact zone\napproved public JSON only"]
+        ControlAnchor["Private platform control point\nIAM, config, logs, alerts, budgets"]
+    end
+
+    subgraph Public["Public Decision Surface"]
+        PublicBucket["Amazon S3 static website bucket\nor private origin bucket"]
+        CloudFront["Amazon CloudFront\npublic delivery and cache control"]
+        Dashboard["React dashboard\nfilters, overview, export snapshot"]
+    end
+
+    subgraph Controls["Cross-Cutting AWS Controls"]
+        Terraform["Terraform\nrepeatable AWS ownership"]
+        IAM["AWS IAM\nleast privilege access"]
+        Config["AWS Systems Manager Parameter Store\nand AWS Secrets Manager"]
+        Observability["Amazon CloudWatch, SNS, and Budgets\nobserve, alert, and control cost"]
+    end
+
+    Elexon --> EventBridge
+    Entsoe --> EventBridge
+    Entsog --> EventBridge
+    News --> IngestLambda
+    EventBridge --> IngestLambda
+    IngestLambda --> RawS3
+    RawS3 --> GlueCrawler
+    GlueCrawler --> GlueCatalog
+    RawS3 --> GlueJobs
+    GlueCatalog --> GlueJobs
+    GlueJobs --> CuratedS3
+    CuratedS3 --> Athena
+    Athena --> StepFunctions
+    News --> StepFunctions
+    StepFunctions --> InsightLambda
+    InsightLambda --> ManagedAI
+    ManagedAI --> InsightLambda
+    InsightLambda --> Validation
+    Validation -->|valid publish| DashboardS3
+    Validation -->|invalid quarantine| AuditS3
+    StepFunctions --> AuditS3
+    DashboardS3 --> PublicBucket
+    PublicBucket --> CloudFront
+    CloudFront --> Dashboard
+
+    Terraform -. provisions .-> ControlAnchor
+    IAM -. authorizes .-> ControlAnchor
+    Config -. configures .-> ControlAnchor
+    Observability -. monitors .-> ControlAnchor
+    ControlAnchor -. governs .-> IngestLambda
+    ControlAnchor -. governs .-> GlueJobs
+    ControlAnchor -. governs .-> StepFunctions
+    ControlAnchor -. governs .-> Validation
