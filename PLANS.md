@@ -261,6 +261,53 @@ Definition of done:
 3. Defer hosting, alarms, or managed AI runtime changes unless the new phase
    explicitly targets that operating boundary.
 
+## Next Branch Preflight Checklist
+
+Use this before opening the next implementation branch:
+
+- Confirm the current branch is clean and synchronized:
+
+  ```bash
+  git switch main
+  git pull --ff-only origin main
+  git status --short --branch
+  ```
+
+- Confirm the previous phase is closed:
+  - PR merged
+  - local feature branch deleted
+  - remote feature branch deleted
+  - docs reflect completed state
+
+- Define the next state boundary in one sentence:
+
+  ```text
+  From: <current clean state>
+  To: <smallest useful proven state>
+  Proof: <build/check/demo evidence>
+  Failure path: <how to pause without leaving repo half-changed>
+  ```
+
+- Choose the branch name only after the boundary is clear:
+
+  ```bash
+  git switch -c feature/name-of-work
+  git status --short --branch
+  ```
+
+- Run the baseline proof before editing:
+
+  ```bash
+  npm --prefix dashboard-ui run build
+  .venv/bin/python scripts/validate_contracts.py \
+    --include-evidence \
+    --check-failures
+  ```
+
+- Stop and update docs first if the planned slice depends on architecture or
+  operating assumptions that are not yet reflected in `README.md`, `PLANS.md`,
+  or the relevant phase checklist.
+
 ## Planning Rule
 
 If implementation reality and design ambition diverge, update this file in the following order:
