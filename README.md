@@ -483,16 +483,17 @@ These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Review the target operating model, then implement Phase 11 deterministic
-   dashboard filter wiring.
-2. Keep the React dashboard focused on approved snapshot JSON.
+1. Complete Phase 11 deterministic dashboard filter wiring verification and
+   docs closeout.
+2. Keep the React dashboard focused on approved snapshot JSON and URL-backed
+   local filtering.
 3. Keep the local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
 5. Keep the documented ingestion Lambda residual drift visible until redeploy
    criteria are met.
 6. Decide whether gas metrics should enter the public AI snapshot contract after
-   deterministic dashboard filtering is proven.
+   deterministic dashboard filtering is fully closed out.
 
 ## Notes
 

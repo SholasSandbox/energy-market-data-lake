@@ -179,6 +179,23 @@ Show the `Overview` tab:
 - energy news insight snapshot
 - data-quality and public contract state
 
+Show the deterministic filter path:
+
+- choose `Date Range: 7D`
+- choose `Segment: EV`
+- choose `Risk: breach`
+- choose `Book: EV Flex Portfolio`
+- reload or copy the URL and confirm the selected filters restore
+- export the snapshot and note that `selected_filters` and `filtered_view`
+  metadata are included in the JSON bundle
+
+Say:
+
+```text
+The filters do not fetch private lake data. They deterministically reshape the
+approved public dashboard JSON into a shareable operator view.
+```
+
 Show the `Energy News Insight Snapshot` section:
 
 - power price
@@ -226,6 +243,8 @@ Show the `Data Quality` view:
 Screenshot artifact:
 
 - `docs/evidence/screenshots/dashboard-phase10-overview-desktop-20260514.png`
+- `docs/evidence/screenshots/dashboard-phase11-filters-desktop-20260516.png`
+- `docs/evidence/screenshots/dashboard-phase11-filters-mobile-20260516.png`
 - `docs/evidence/screenshots/dashboard-phase10-overview-tablet-20260514.png`
 - `docs/evidence/screenshots/dashboard-phase10-overview-mobile-20260514.png`
 - `docs/evidence/screenshots/dashboard-week4-local-mvp.png`
@@ -281,5 +300,5 @@ Hiring signal:
 - Terraform is scaffolded for the AWS lakehouse, but existing resources still need to be imported before Terraform manages them.
 - Phase 8 schedule automation is intentionally disabled until a later operating
   decision.
-- Phase 10 filter controls are currently display/readout controls until a later
-  deterministic filtering slice wires the interactions.
+- Phase 11 filter evidence is local dashboard evidence; CloudFront hosting is a
+  later state transition.
