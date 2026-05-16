@@ -16,8 +16,8 @@ Source of truth for this plan:
   import and hardening phase
 - `docs/phase-10-dashboard-implementation.md` for the completed dashboard
   implementation phase
-- `docs/phase-11-dashboard-filters.md` for the next dashboard interaction
-  phase
+- `docs/phase-11-dashboard-filters.md` for the completed deterministic
+  dashboard interaction phase
 
 ## Current Baseline
 
@@ -47,7 +47,9 @@ The current implementation boundary is:
   screenshot evidence, and current architecture diagrams
 - the target operating model is now captured as a high-level architecture and
   operating posture view for interview and planning use
-- Phase 11 is the next planned slice for deterministic dashboard filter wiring
+- Phase 11 is complete: deterministic dashboard filters are URL-backed, local
+  to public dashboard JSON, export-aware, and covered by desktop/mobile
+  screenshot evidence
 
 ## Delivery Order
 
@@ -226,9 +228,9 @@ Goal: turn the Phase 10 filter controls from display/readout controls into
 deterministic local interactions that update dashboard views without changing
 the approved public data boundary.
 
-Status: implementation in progress. First slice has URL-backed filters,
-filtered portfolio surfaces, market-series date slicing, export metadata, and
-desktop screenshot evidence.
+Status: complete and merged. Phase 11 delivered URL-backed filters, filtered
+portfolio surfaces, market-series date slicing, export metadata, desktop and
+mobile screenshot evidence, and documentation updates.
 
 Working checklist: `docs/phase-11-dashboard-filters.md`
 
@@ -253,11 +255,11 @@ Definition of done:
 
 ## Suggested Immediate Next Steps
 
-1. Finish Phase 11 verification: contract validation, Markdown lint, mobile
-   screenshot evidence, and final checklist closeout.
-2. Keep Phase 11 scoped to deterministic local filtering and export metadata.
-3. Commit the implementation slice before starting hosting, alarms, or managed
-   AI runtime work.
+1. Start the next implementation boundary from clean `main`.
+2. Keep the next slice narrow enough to prove with build, contract validation,
+   docs, and visual evidence.
+3. Defer hosting, alarms, or managed AI runtime changes unless the new phase
+   explicitly targets that operating boundary.
 
 ## Planning Rule
 

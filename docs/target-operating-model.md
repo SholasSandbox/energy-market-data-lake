@@ -85,11 +85,11 @@ Current proven state:
 - schema validation and failed-run quarantine
 - public-safe dashboard snapshot
 - Phase 10 operator-focused dashboard Overview
+- Phase 11 deterministic dashboard filter wiring
 - refreshed architecture diagrams
 
 Target follow-up state:
 
-- deterministic dashboard filter wiring
 - CloudFront/S3 public dashboard delivery
 - CloudWatch alarms and budget controls
 - managed AI invocation through Bedrock or OpenClaw runtime
