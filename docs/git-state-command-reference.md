@@ -1,7 +1,7 @@
 # Git State Command Reference
 
 Use this when you need to check branch state, commit a completed slice, push a
-branch, or clean up after a merged PR.
+branch, merge a branch, or clean up after a merged PR.
 
 ## 1. Check Where You Are
 
@@ -87,7 +87,49 @@ gh pr view "$(git branch --show-current)" \
 Use Codex to generate PR titles, bodies, and merge-path commentary when the PR
 needs a good narrative.
 
-## 6. After A PR Is Merged
+## 6. Merge A Branch Locally
+
+Use this only when you are intentionally merging locally instead of using the
+GitHub PR merge button.
+
+```bash
+git switch main
+git pull --ff-only origin main
+
+git merge feature/name-of-work
+git push origin main
+
+git status --short --branch
+```
+
+If you want to preserve an explicit merge commit, even when Git could
+fast-forward:
+
+```bash
+git merge --no-ff feature/name-of-work \
+  -m "merge: feature/name-of-work"
+```
+
+`git checkout main` is the older equivalent of `git switch main`.
+
+If Git reports conflicts, resolve the files it lists, then complete the merge:
+
+```bash
+git status --short
+# edit conflicted files
+
+git add <resolved-files>
+git commit
+```
+
+After the local merge is pushed and confirmed, delete the feature branch:
+
+```bash
+git branch -d feature/name-of-work
+git push origin --delete feature/name-of-work
+```
+
+## 7. After A PR Is Merged
 
 ```bash
 git switch main
@@ -105,7 +147,7 @@ Expected final state:
 ## main...origin/main
 ```
 
-## 7. Useful Safety Checks
+## 8. Useful Safety Checks
 
 Show branches already merged into local `main`:
 
