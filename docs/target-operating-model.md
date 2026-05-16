@@ -19,6 +19,8 @@ diagrams when the conversation needs Cloud Architect depth:
 
 - AWS service architecture:
   `diagrams/target-aws-service-architecture.svg`
+- AWS service architecture with AWS symbols:
+  `diagrams/target_aws_service_architecture_icons.png`
 - AWS operations control plane:
   `diagrams/target-aws-operations-control-plane.svg`
 
@@ -27,6 +29,8 @@ source APIs into S3, Glue, Athena, Step Functions, AI orchestration, validation,
 and the public dashboard boundary.
 
 ![Target AWS service architecture](../diagrams/target-aws-service-architecture.svg)
+
+![Target AWS service architecture with symbols](../diagrams/target_aws_service_architecture_icons.png)
 
 The operations control-plane view explains how the platform is owned and run:
 Terraform, IAM, configuration, secrets, schedules, observability, alerts, cost
