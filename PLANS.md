@@ -8,12 +8,16 @@ Source of truth for this plan:
 - `docs/four-week-project-plan.md` for the delivery-focused 4-week MVP plan
 - `dashboard-ui/src/App.tsx` for current React implementation reality
 - `docs/dashboard-ia-spec.md` for the next dashboard design direction
+- `docs/target-operating-model.md` for the envisioned end-state operating
+  model and AWS service-level companion diagrams
 - `docs/phase-8-aws-ai-insight-orchestration.md` for the completed AWS AI
   orchestration phase
 - `docs/phase-9-terraform-import-hardening.md` for the completed Terraform
   import and hardening phase
-- `docs/phase-10-dashboard-implementation.md` for the active dashboard
+- `docs/phase-10-dashboard-implementation.md` for the completed dashboard
   implementation phase
+- `docs/phase-11-dashboard-filters.md` for the next dashboard interaction
+  phase
 
 ## Current Baseline
 
@@ -38,9 +42,12 @@ The current implementation boundary is:
   orchestration path
 - Terraform now tracks the core lakehouse and Phase 8 resources, with residual
   ingestion Lambda drift documented
-- Phase 10 is the active implementation phase for turning the React dashboard
-  into a stronger operator-facing product surface, now in documentation and
-  demo closeout
+- Phase 10 is complete: the React dashboard now has a stronger
+  operator-facing `Overview` surface, refreshed demo/docs, responsive
+  screenshot evidence, and current architecture diagrams
+- the target operating model is now captured as a high-level architecture and
+  operating posture view for interview and planning use
+- Phase 11 is the next planned slice for deterministic dashboard filter wiring
 
 ## Delivery Order
 
@@ -190,18 +197,18 @@ Definition of done:
 Goal: implement the first operator-focused React dashboard slice now that the
 lakehouse, AI orchestration, and Terraform posture are proven.
 
-Status: active, in documentation/demo closeout.
+Status: complete.
 
 Working checklist: `docs/phase-10-dashboard-implementation.md`
 
-Focus:
+Completed scope:
 
-- maintain the implemented `Overview` page from `docs/dashboard-ia-spec.md`
-- preserve the global filter bar, executive KPIs, P&L drivers, risk coverage,
+- implemented the `Overview` page from `docs/dashboard-ia-spec.md`
+- added the global filter bar, executive KPIs, P&L drivers, risk coverage,
   exception table, market context strip, and data-quality state
-- keep the dashboard driven by approved public snapshot JSON only
-- make stale, limited, or missing evidence visible rather than hidden
-- keep README, demo walkthrough, and LinkedIn copy aligned with the implemented
+- kept the dashboard driven by approved public snapshot JSON only
+- made stale, limited, or missing evidence visible rather than hidden
+- aligned README, demo walkthrough, LinkedIn copy, and diagrams with the
   UI and proof evidence
 
 Definition of done:
@@ -213,14 +220,45 @@ Definition of done:
 - the demo story connects lakehouse data, AI orchestration controls, and the
   visible dashboard decision surface
 
+### Phase 11: Deterministic Dashboard Filter Wiring
+
+Goal: turn the Phase 10 filter controls from display/readout controls into
+deterministic local interactions that update dashboard views without changing
+the approved public data boundary.
+
+Status: planned, pending target operating model review.
+
+Working checklist: `docs/phase-11-dashboard-filters.md`
+
+Focus:
+
+- wire date range, book, segment, and risk filters into React state
+- keep filters encoded in the URL query string for shareable views
+- apply the selected filters consistently to KPIs, P&L drivers, risk panels,
+  exception rows, market context, and snapshot export metadata
+- keep all filtering local to `dashboard-data.json` and
+  `dashboard_snapshot_v1.sample.json`
+- preserve mobile readability and screenshot evidence
+
+Definition of done:
+
+- React build passes
+- contract validation passes
+- filter state is deterministic and shareable through the URL
+- exported snapshot reflects selected filters
+- desktop and mobile visual evidence is refreshed
+- docs and demo walkthrough explain the filter behavior clearly
+
 ## Suggested Immediate Next Steps
 
-1. Review the Phase 10 documentation/demo closeout diff.
-2. Run the final build, contract validation, and Markdown sanity checks.
-3. Commit the Phase 10 implementation and evidence on
-   `feature/phase10-dashboard-implementation`.
-4. Keep diagram redraws as the next bounded follow-up unless they become
-   required for the Phase 10 PR.
+1. Review `docs/target-operating-model.md` as the high-level end-state story
+   and use its AWS service companion diagrams for interview-level detail.
+2. Commit the docs-only Phase 11 planning and target operating model branch.
+3. Start `feature/phase11-dashboard-filters` from clean `main`.
+4. Run the Phase 11 preflight checks in
+   `docs/phase-11-dashboard-filters.md`.
+5. Implement deterministic filter wiring before adding new dashboard pages,
+   AWS features, or new data contracts.
 
 ## Planning Rule
 

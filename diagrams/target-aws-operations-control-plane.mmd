@@ -1,0 +1,68 @@
+flowchart TB
+    subgraph Delivery["Delivery And Change Control"]
+        Developer["Single-developer delivery\nfeature branches and PR review"]
+        GitHub["GitHub repository\ncommits, PRs, evidence, releases"]
+        Terraform["Terraform plans and applies\nstateful AWS ownership"]
+        StateBackend["Amazon S3 Terraform state\nwith DynamoDB lock target"]
+        ManagedBaseline["Managed AWS baseline\nrepeatable infrastructure boundary"]
+    end
+
+    subgraph AwsControl["AWS Control Plane"]
+        IAM["AWS IAM\nleast privilege execution roles"]
+        SSM["AWS Systems Manager Parameter Store\nruntime configuration"]
+        Secrets["AWS Secrets Manager\nAPI credentials where needed"]
+        EventBridge["Amazon EventBridge Scheduler\ndisabled until operating controls pass"]
+        CloudWatch["Amazon CloudWatch\nlogs, metrics, alarms"]
+        SNS["Amazon SNS\noperator notification path"]
+        Budgets["AWS Budgets\ncost and anomaly guardrails"]
+    end
+
+    subgraph Runtime["Runtime Workloads"]
+        Lambda["AWS Lambda handlers\ningest, validate, publish"]
+        Glue["AWS Glue\ncrawlers, catalog, ETL"]
+        Athena["Amazon Athena\nquery and proof surface"]
+        StepFunctions["AWS Step Functions\nrun-level orchestration"]
+        AI["Amazon Bedrock or OpenClaw\nmanaged AI target boundary"]
+        S3Lake["Amazon S3 lakehouse\nraw, curated, audit, failed, dashboard"]
+        CloudFront["Amazon CloudFront and S3\npublic dashboard delivery"]
+    end
+
+    subgraph Operations["Operational Evidence"]
+        Runbooks["Runbooks and AWS CLI proof commands"]
+        Contracts["Contract validation\nschema, evidence, failure checks"]
+        Screenshots["Demo screenshots and exported snapshots"]
+        Operator["Operator or reviewer\ninspects state and approves transition"]
+    end
+
+    Developer --> GitHub
+    GitHub --> Terraform
+    Terraform --> StateBackend
+    Terraform --> ManagedBaseline
+    ManagedBaseline --> AwsControl
+    ManagedBaseline --> Runtime
+
+    IAM --> Lambda
+    IAM --> Glue
+    IAM --> StepFunctions
+    SSM --> Lambda
+    Secrets --> Lambda
+    EventBridge --> Lambda
+    Lambda --> S3Lake
+    Glue --> S3Lake
+    Athena --> S3Lake
+    StepFunctions --> Lambda
+    StepFunctions --> AI
+    Lambda --> CloudFront
+
+    Lambda --> CloudWatch
+    Glue --> CloudWatch
+    StepFunctions --> CloudWatch
+    CloudWatch --> SNS
+    Budgets --> SNS
+    SNS --> Operator
+
+    Runbooks --> Operator
+    Contracts --> Operator
+    Screenshots --> Operator
+    S3Lake --> Contracts
+    CloudFront --> Screenshots

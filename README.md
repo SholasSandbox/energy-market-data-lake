@@ -401,8 +401,12 @@ python3 scripts/validate_athena_schema.py \
 - `docs/entsog-gas-build-plan.md`: time-budgeted ENTSOG gas build tracker.
 - `infra/terraform/lakehouse/README.md`: Terraform rebuild path with S3 remote backend and optional data bucket creation.
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
-- `docs/phase-10-dashboard-implementation.md`: active Phase 10 dashboard
+- `docs/target-operating-model.md`: high-level target operating model for the
+  completed platform vision.
+- `docs/phase-10-dashboard-implementation.md`: completed Phase 10 dashboard
   implementation checklist and project plan.
+- `docs/phase-11-dashboard-filters.md`: planned deterministic dashboard filter
+  wiring phase.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
@@ -416,6 +420,23 @@ python3 scripts/validate_athena_schema.py \
 
 ## Diagrams
 
+- `diagrams/target-operating-model.mmd`: high-level target operating model
+  after the planned phases are complete.
+- `diagrams/target-operating-model.svg`: rendered target operating model.
+- `diagrams/target-aws-service-architecture.mmd`: target AWS service
+  architecture with ingestion, lakehouse, AI orchestration, validation, and
+  public dashboard delivery.
+- `diagrams/target-aws-service-architecture.svg`: rendered target AWS service
+  architecture.
+- `diagrams/target_aws_service_architecture_icons.py`: Python `diagrams`
+  source for the AWS-symbol version of the target service architecture.
+- `diagrams/target_aws_service_architecture_icons.png`: rendered AWS-symbol
+  target service architecture for interview and walkthrough use.
+- `diagrams/target-aws-operations-control-plane.mmd`: target AWS operations
+  control-plane view with Terraform, IAM, schedules, observability, alerts,
+  budgets, and evidence.
+- `diagrams/target-aws-operations-control-plane.svg`: rendered target AWS
+  operations control-plane view.
 - `diagrams/architecture.mmd`: compact current architecture.
 - `diagrams/architecture.svg`: rendered compact current architecture.
 - `diagrams/architecture_overview.png`: rendered lakehouse overview diagram;
@@ -435,6 +456,9 @@ python3 scripts/validate_athena_schema.py \
 Regenerate diagram assets after editing sources:
 
 ```bash
+npx --yes @mermaid-js/mermaid-cli -i diagrams/target-operating-model.mmd -o diagrams/target-operating-model.svg
+npx --yes @mermaid-js/mermaid-cli -i diagrams/target-aws-service-architecture.mmd -o diagrams/target-aws-service-architecture.svg
+npx --yes @mermaid-js/mermaid-cli -i diagrams/target-aws-operations-control-plane.mmd -o diagrams/target-aws-operations-control-plane.svg
 npx --yes @mermaid-js/mermaid-cli -i diagrams/architecture.mmd -o diagrams/architecture.svg
 npx --yes @mermaid-js/mermaid-cli -i diagrams/news-dashboard-high-level.mmd -o diagrams/news-dashboard-high-level.svg
 npx --yes @mermaid-js/mermaid-cli -i diagrams/news-dashboard-detailed.mmd -o diagrams/news-dashboard-detailed.svg
@@ -443,6 +467,7 @@ brew install graphviz
 .venv/bin/python -m pip install diagrams
 .venv/bin/python diagrams/flow_diagram.py
 .venv/bin/python diagrams/architecture_overview.py
+.venv/bin/python diagrams/target_aws_service_architecture_icons.py
 ```
 
 ## Archived Documentation
@@ -458,8 +483,8 @@ These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Close out Phase 10 documentation and demo evidence around the implemented
-   operator-focused React dashboard `Overview` slice.
+1. Review the target operating model, then implement Phase 11 deterministic
+   dashboard filter wiring.
 2. Keep the React dashboard focused on approved snapshot JSON.
 3. Keep the local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.
@@ -467,7 +492,7 @@ These are historical references, not the current delivery path.
 5. Keep the documented ingestion Lambda residual drift visible until redeploy
    criteria are met.
 6. Decide whether gas metrics should enter the public AI snapshot contract after
-   the Phase 10 dashboard surface is proven.
+   deterministic dashboard filtering is proven.
 
 ## Notes
 
