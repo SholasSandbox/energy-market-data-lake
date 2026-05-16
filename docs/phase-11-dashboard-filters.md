@@ -23,7 +23,8 @@ operator view -> exportable filtered snapshot
 feature/phase11-dashboard-filters
 ```
 
-The planning branch used to create this checklist is:
+The implementation branch was merged through PR #10. The planning branch used
+to create this checklist was:
 
 ```text
 feature/phase11-dashboard-filters-plan
@@ -35,12 +36,16 @@ feature/phase11-dashboard-filters-plan
 - Diagram fidelity follow-up is complete and merged.
 - Target operating model and AWS service companion diagrams are captured in
   `docs/target-operating-model.md`.
-- The dashboard has a global filter bar, but the controls are currently
-  display/readout controls.
+- Phase 11 deterministic dashboard filter wiring is complete and merged.
+- The dashboard has URL-backed date range, book, segment, and risk filters.
+- Filtered portfolio KPIs, P&L drivers, risk panels, exception rows, and market
+  date slices are derived locally from the approved dashboard payload.
 - The React app still reads approved public JSON only:
   `dashboard-data.json` and `dashboard_snapshot_v1.sample.json`.
-- Export snapshot works, but it does not yet include selected filter metadata
-  or filtered view summaries.
+- Export snapshot includes selected filter metadata and filtered view summary
+  counts.
+- Desktop and mobile screenshot evidence is captured under
+  `docs/evidence/screenshots/`.
 
 ## Target State
 
@@ -100,7 +105,8 @@ risk sections first, then prove build, contracts, and visual behavior.
 
 ## Prioritized Work
 
-Use this order unless a concrete blocker appears:
+Phase 11 is complete. This order is retained as implementation rationale and
+future regression guidance:
 
 1. Preserve the public data boundary.
 2. Define filter state and URL serialization before UI polishing.
@@ -185,6 +191,17 @@ npm --prefix dashboard-ui run build
 - [x] Verify URL query filters can be copied, reloaded, and restored.
 - [x] Verify export snapshot includes selected filter metadata.
 - [x] Confirm the React app still does not fetch private lake paths.
+
+Status review notes:
+
+- `dashboard-ui/src/App.tsx` defines typed filter state, URL serialization,
+  restore-on-load behavior, local data derivation, and export metadata.
+- Filter options are derived from public exception rows, not private lake paths.
+- Empty states are present for exception rows, P&L drivers, coverage, and
+  exposure when a filter combination narrows the view to no matching books.
+- Current limitation: filter matching relies on the public snapshot labels and
+  exception-row fields already available in `dashboard-data.json`; deeper
+  schema changes remain future work.
 
 Verification notes:
 

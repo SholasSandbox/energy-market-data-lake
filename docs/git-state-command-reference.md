@@ -25,6 +25,13 @@ Clean feature branch should look like:
 ## feature/name...origin/feature/name
 ```
 
+If you accidentally run `git switch -d <branch>`, you have detached `HEAD`; you
+have not deleted the branch. Return to a normal branch with:
+
+```bash
+git switch main
+```
+
 ## 2. Start A Fresh Feature Branch
 
 ```bash
@@ -171,4 +178,11 @@ Show files staged for commit:
 
 ```bash
 git diff --cached --name-only
+```
+
+Show whether you are on a branch or in detached `HEAD`:
+
+```bash
+git branch --show-current
+git status --short --branch
 ```
