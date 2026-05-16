@@ -428,6 +428,10 @@ python3 scripts/validate_athena_schema.py \
   public dashboard delivery.
 - `diagrams/target-aws-service-architecture.svg`: rendered target AWS service
   architecture.
+- `diagrams/target_aws_service_architecture_icons.py`: Python `diagrams`
+  source for the AWS-symbol version of the target service architecture.
+- `diagrams/target_aws_service_architecture_icons.png`: rendered AWS-symbol
+  target service architecture for interview and walkthrough use.
 - `diagrams/target-aws-operations-control-plane.mmd`: target AWS operations
   control-plane view with Terraform, IAM, schedules, observability, alerts,
   budgets, and evidence.
@@ -463,6 +467,7 @@ brew install graphviz
 .venv/bin/python -m pip install diagrams
 .venv/bin/python diagrams/flow_diagram.py
 .venv/bin/python diagrams/architecture_overview.py
+.venv/bin/python diagrams/target_aws_service_architecture_icons.py
 ```
 
 ## Archived Documentation
