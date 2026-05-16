@@ -7,6 +7,7 @@ import type {
   DashboardSnapshot,
   DashboardSnapshotNewsArticle,
   DriverBar,
+  ExceptionRow,
   ExposurePoint,
   GasContext,
   GasTrendPoint,
@@ -14,6 +15,7 @@ import type {
   MarketSeries,
   NavItem,
   QualityCheck,
+  SummaryCard,
 } from "./types";
 
 const NAV_ITEMS: NavItem[] = ["Overview", "Portfolio Risk", "Market Context", "Data Quality"];
@@ -24,9 +26,319 @@ const NAV_HASHES: Record<NavItem, string> = {
   "Data Quality": "quality",
 };
 
+const DATE_RANGE_OPTIONS = ["7D", "14D", "30D"] as const;
+type DateRangeOption = (typeof DATE_RANGE_OPTIONS)[number];
+type FilterState = {
+  dateRange: DateRangeOption;
+  segment: string;
+  risk: string;
+  book: string;
+};
+
+type FilterOptions = {
+  segments: string[];
+  risks: string[];
+  books: string[];
+};
+
+type FilterSummary = {
+  activeFilterCount: number;
+  exceptionRowCount: number;
+  pnlDriverCount: number;
+  marketPanelCount: number;
+};
+
+const DEFAULT_FILTERS: FilterState = {
+  dateRange: "30D",
+  segment: "ALL",
+  risk: "ALL",
+  book: "ALL",
+};
+
+const DATE_RANGE_POINTS: Record<DateRangeOption, number> = {
+  "7D": 7,
+  "14D": 14,
+  "30D": 30,
+};
+
 function navFromHash(hash: string): NavItem {
   const normalized = hash.replace(/^#/, "").toLowerCase();
   return NAV_ITEMS.find((item) => NAV_HASHES[item] === normalized) ?? "Overview";
+}
+
+function parseFilterState(search: string): FilterState {
+  const params = new URLSearchParams(search);
+  const dateRange = DATE_RANGE_OPTIONS.includes(params.get("range") as DateRangeOption)
+    ? (params.get("range") as DateRangeOption)
+    : DEFAULT_FILTERS.dateRange;
+
+  return {
+    dateRange,
+    segment: params.get("segment") || DEFAULT_FILTERS.segment,
+    risk: params.get("risk") || DEFAULT_FILTERS.risk,
+    book: params.get("book") || DEFAULT_FILTERS.book,
+  };
+}
+
+function filterStateToSearch(filters: FilterState) {
+  const params = new URLSearchParams();
+  if (filters.dateRange !== DEFAULT_FILTERS.dateRange) params.set("range", filters.dateRange);
+  if (filters.segment !== DEFAULT_FILTERS.segment) params.set("segment", filters.segment);
+  if (filters.risk !== DEFAULT_FILTERS.risk) params.set("risk", filters.risk);
+  if (filters.book !== DEFAULT_FILTERS.book) params.set("book", filters.book);
+
+  const query = params.toString();
+  return query ? `?${query}` : "";
+}
+
+function writeLocationState(filters: FilterState, activeNav: NavItem) {
+  const nextUrl = `${window.location.pathname}${filterStateToSearch(filters)}#${NAV_HASHES[activeNav]}`;
+  const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  if (nextUrl !== currentUrl) {
+    window.history.replaceState(null, "", nextUrl);
+  }
+}
+
+function buildFilterOptions(rows: ExceptionRow[]): FilterOptions {
+  return {
+    segments: uniqueSorted(rows.map((row) => row.segment)),
+    risks: uniqueSorted(rows.map((row) => row.riskStatus)),
+    books: uniqueSorted(rows.map((row) => row.book)),
+  };
+}
+
+function uniqueSorted(values: string[]) {
+  return Array.from(new Set(values.filter(Boolean))).sort((left, right) => left.localeCompare(right));
+}
+
+function buildFilteredDashboardData(data: DashboardData, filters: FilterState): DashboardData {
+  const filteredRows = data.overview.exceptionRows.filter((row) => rowMatchesFilters(row, filters));
+  const hasPortfolioFilters = filters.book !== "ALL" || filters.segment !== "ALL" || filters.risk !== "ALL";
+  const portfolioRows = hasPortfolioFilters ? filteredRows : data.overview.exceptionRows;
+
+  const pnlDrivers = data.overview.pnlDrivers.filter((bar) => portfolioItemMatchesRows(bar.label, portfolioRows));
+  const coveragePoints = data.overview.coveragePoints.filter((point) => portfolioItemMatchesRows(point.label, portfolioRows));
+  const exposurePoints = data.overview.exposurePoints.filter((point) => portfolioItemMatchesRows(point.label, portfolioRows));
+  const marketPanels = data.overview.marketPanels.map((panel) => sliceMarketPanel(panel, filters.dateRange));
+
+  return {
+    ...data,
+    overview: {
+      ...data.overview,
+      alerts: buildFilteredAlerts(data.overview.alerts, filteredRows, pnlDrivers),
+      summaryCards: buildFilteredSummaryCards(data, filteredRows, pnlDrivers, marketPanels),
+      pnlDrivers,
+      coveragePoints,
+      exposurePoints,
+      exceptionRows: filteredRows,
+      marketPanels,
+    },
+  };
+}
+
+function buildFilterSummary(_sourceData: DashboardData, filteredData: DashboardData, filters: FilterState): FilterSummary {
+  return {
+    activeFilterCount: [
+      filters.dateRange !== DEFAULT_FILTERS.dateRange,
+      filters.segment !== DEFAULT_FILTERS.segment,
+      filters.risk !== DEFAULT_FILTERS.risk,
+      filters.book !== DEFAULT_FILTERS.book,
+    ].filter(Boolean).length,
+    exceptionRowCount: filteredData.overview.exceptionRows.length,
+    pnlDriverCount: filteredData.overview.pnlDrivers.length,
+    marketPanelCount: filteredData.overview.marketPanels.length,
+  };
+}
+
+function rowMatchesFilters(row: ExceptionRow, filters: FilterState) {
+  return (
+    (filters.book === "ALL" || row.book === filters.book) &&
+    (filters.segment === "ALL" || row.segment === filters.segment) &&
+    (filters.risk === "ALL" || row.riskStatus === filters.risk)
+  );
+}
+
+function portfolioItemMatchesRows(label: string, rows: ExceptionRow[]) {
+  if (!rows.length) return false;
+  const normalizedLabel = normalizeFilterText(label);
+  return rows.some((row) => {
+    const normalizedBook = normalizeFilterText(row.book);
+    const normalizedSegment = normalizeFilterText(row.segment);
+    return (
+      normalizedBook === normalizedLabel ||
+      normalizedBook.includes(normalizedLabel) ||
+      normalizedLabel.includes(normalizedSegment) ||
+      normalizedSegment.includes(normalizedLabel)
+    );
+  });
+}
+
+function normalizeFilterText(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function sliceMarketPanel(panel: MarketPanel, dateRange: DateRangeOption): MarketPanel {
+  const pointCount = DATE_RANGE_POINTS[dateRange];
+  return {
+    ...panel,
+    series: panel.series.map((series) => ({
+      ...series,
+      values: series.values.slice(-pointCount),
+    })),
+  };
+}
+
+function buildFilteredAlerts(
+  sourceAlerts: AlertItem[],
+  rows: ExceptionRow[],
+  pnlDrivers: DriverBar[],
+): AlertItem[] {
+  const breachCount = rows.filter((row) => row.riskStatus === "breach").length;
+  const lossCount = pnlDrivers.filter((bar) => bar.value < 0).length;
+  const maxOpenExposure = rows.reduce((max, row) => Math.max(max, parsePercent(row.openExposure)), 0);
+
+  return sourceAlerts.map((alert) => {
+    if (alert.label === "Books Breaching Limits") {
+      return {
+        ...alert,
+        value: String(breachCount),
+        detail: breachCount
+          ? `${breachCount} filtered book${breachCount === 1 ? "" : "s"} require limit review.`
+          : "No filtered books are outside policy limits.",
+        status: breachCount ? "investigate" : "healthy",
+      };
+    }
+
+    if (alert.label === "Loss-Making Books") {
+      return {
+        ...alert,
+        value: String(lossCount),
+        detail: lossCount
+          ? `${lossCount} filtered book${lossCount === 1 ? "" : "s"} show negative gross margin.`
+          : "No filtered books are loss-making.",
+        status: lossCount ? "investigate" : "healthy",
+      };
+    }
+
+    if (alert.label === "Open Exposure Above Limit") {
+      const aboveLimit = maxOpenExposure > 25;
+      return {
+        ...alert,
+        value: aboveLimit ? "Yes" : "No",
+        detail: aboveLimit
+          ? "At least one filtered book exceeds the 25% open exposure control threshold."
+          : "Filtered portfolio open exposure remains below the 25% control threshold.",
+        status: aboveLimit ? "watch" : "healthy",
+      };
+    }
+
+    return alert;
+  });
+}
+
+function buildFilteredSummaryCards(
+  data: DashboardData,
+  rows: ExceptionRow[],
+  pnlDrivers: DriverBar[],
+  marketPanels: MarketPanel[],
+): SummaryCard[] {
+  const totalMargin = pnlDrivers.reduce((sum, bar) => sum + bar.value, 0);
+  const positiveMarginCount = pnlDrivers.filter((bar) => bar.value > 0).length;
+  const averageOpenExposure = average(rows.map((row) => parsePercent(row.openExposure)));
+  const averageHedgeCover = average(rows.map((row) => parsePercent(row.hedgeCover)));
+  const priceSeries = findSeries(marketPanels, "price") ?? findSeries(marketPanels, "spot");
+  const demandSeries = findPanelByTitle(marketPanels, "demand")?.series[0];
+
+  return data.overview.summaryCards.map((card) => {
+    if (card.label === "Portfolio Gross Margin") {
+      return {
+        ...card,
+        value: formatCurrencyMillions(totalMargin),
+        trend: `${positiveMarginCount}/${pnlDrivers.length} books margin-positive`,
+        detail: pnlDrivers.length
+          ? "Gross margin is recalculated from the filtered portfolio subset."
+          : "No books match the selected portfolio filters.",
+      };
+    }
+
+    if (card.label === "Open Exposure") {
+      return {
+        ...card,
+        value: rows.length ? `${averageOpenExposure.toFixed(1)}%` : "n/a",
+        detail: rows.length
+          ? "Average open exposure is recalculated from filtered exception rows."
+          : "No filtered exception rows are available for exposure calculation.",
+      };
+    }
+
+    if (card.label === "Weighted Hedge Cover") {
+      return {
+        ...card,
+        value: rows.length ? `${averageHedgeCover.toFixed(1)}%` : "n/a",
+        detail: rows.length
+          ? "Hedge cover is recalculated from filtered exception rows."
+          : "No filtered exception rows are available for hedge calculation.",
+      };
+    }
+
+    if (card.label === "Market Price") {
+      return {
+        ...card,
+        value: priceSeries ? `£${lastValue(priceSeries).toFixed(2)}/MWh` : "n/a",
+        trend: priceSeries ? `${priceSeries.values.length}-point avg £${average(priceSeries.values).toFixed(2)}/MWh` : "No price series",
+        detail: `Market price context reflects the selected ${dataRangeLabel(data)} and date range filter.`,
+      };
+    }
+
+    if (card.label === "Peak Demand") {
+      return {
+        ...card,
+        value: demandSeries ? `${Math.round(lastValue(demandSeries)).toLocaleString("en-GB")} MW` : "n/a",
+        trend: demandSeries ? `${demandSeries.values.length}-point avg ${Math.round(average(demandSeries.values)).toLocaleString("en-GB")} MW` : "No demand series",
+        detail: "Demand context is sliced by the selected date range.",
+      };
+    }
+
+    return card;
+  });
+}
+
+function parsePercent(value: string) {
+  const parsed = Number.parseFloat(value.replace("%", ""));
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function formatCurrencyMillions(value: number) {
+  const prefix = value < 0 ? "-£" : "£";
+  return `${prefix}${(Math.abs(value) / 1_000_000).toFixed(2)}m`;
+}
+
+function average(values: number[]) {
+  const validValues = values.filter((value) => Number.isFinite(value));
+  if (!validValues.length) return 0;
+  return validValues.reduce((sum, value) => sum + value, 0) / validValues.length;
+}
+
+function lastValue(series: MarketSeries) {
+  return series.values[series.values.length - 1] ?? 0;
+}
+
+function findSeries(panels: MarketPanel[], label: string) {
+  const normalizedLabel = label.toLowerCase();
+  return panels.flatMap((panel) => panel.series).find((series) => series.label.toLowerCase().includes(normalizedLabel));
+}
+
+function findPanelByTitle(panels: MarketPanel[], title: string) {
+  const normalizedTitle = title.toLowerCase();
+  return panels.find((panel) => panel.title.toLowerCase().includes(normalizedTitle));
+}
+
+function dataRangeLabel(data: DashboardData) {
+  return data.metadata.region === "ALL" ? "portfolio" : data.metadata.region;
+}
+
+function formatFilterLabel(value: string) {
+  return value === "ALL" ? "All" : value;
 }
 
 function App() {
@@ -35,6 +347,7 @@ function App() {
   const [sourceLabel, setSourceLabel] = useState("Fallback sample");
   const [snapshotSourceLabel, setSnapshotSourceLabel] = useState("No snapshot");
   const [marketRegion, setMarketRegion] = useState("ALL");
+  const [filters, setFilters] = useState<FilterState>(() => parseFilterState(window.location.search));
   const [activeNav, setActiveNav] = useState<NavItem>(() => navFromHash(window.location.hash));
 
   useEffect(() => {
@@ -99,15 +412,32 @@ function App() {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
+  useEffect(() => {
+    function handlePopState() {
+      setFilters(parseFilterState(window.location.search));
+      setActiveNav(navFromHash(window.location.hash));
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  useEffect(() => {
+    writeLocationState(filters, activeNav);
+  }, [filters, activeNav]);
+
   function selectNav(item: NavItem) {
     setActiveNav(item);
-    window.history.replaceState(null, "", `#${NAV_HASHES[item]}`);
   }
 
   function exportSnapshot() {
+    const filteredData = buildFilteredDashboardData(data, filters);
+    const filterSummary = buildFilterSummary(data, filteredData, filters);
     const exportPayload = {
       exported_at: new Date().toISOString(),
-      dashboard_data: data,
+      selected_filters: filters,
+      filtered_view: filterSummary,
+      dashboard_data: filteredData,
       dashboard_snapshot: snapshot,
     };
     const blob = new Blob([JSON.stringify(exportPayload, null, 2)], {
@@ -132,10 +462,13 @@ function App() {
     ),
   ];
 
+  const filterOptions = buildFilterOptions(data.overview.exceptionRows);
+  const filteredData = buildFilteredDashboardData(data, filters);
+  const filterSummary = buildFilterSummary(data, filteredData, filters);
   const visibleMarketPanels =
     marketRegion === "ALL"
-      ? data.overview.marketPanels
-      : data.overview.marketPanels.filter((panel) => panel.region === marketRegion);
+      ? filteredData.overview.marketPanels
+      : filteredData.overview.marketPanels.filter((panel) => panel.region === marketRegion);
 
   return (
     <div className="page-shell">
@@ -144,6 +477,10 @@ function App() {
           data={data}
           sourceLabel={sourceLabel}
           activeNav={activeNav}
+          filters={filters}
+          filterOptions={filterOptions}
+          filterSummary={filterSummary}
+          onChangeFilters={setFilters}
           onSelectNav={selectNav}
           onExportSnapshot={exportSnapshot}
         />
@@ -151,18 +488,18 @@ function App() {
           {activeNav === "Data Quality" ? (
             <DataQualityView checks={data.dataQuality.checks} />
           ) : activeNav === "Portfolio Risk" ? (
-            <PortfolioRiskView data={data} />
+            <PortfolioRiskView data={filteredData} />
           ) : activeNav === "Market Context" ? (
             <MarketContextView
               marketRegion={marketRegion}
               onSelectMarketRegion={setMarketRegion}
               availableMarketRegions={availableMarketRegions}
               visibleMarketPanels={visibleMarketPanels}
-              gasContext={data.overview.gasContext}
+              gasContext={filteredData.overview.gasContext}
             />
           ) : (
             <OverviewView
-              data={data}
+              data={filteredData}
               snapshot={snapshot}
               snapshotSourceLabel={snapshotSourceLabel}
               visibleMarketPanels={visibleMarketPanels}
@@ -178,15 +515,31 @@ function Header({
   data,
   sourceLabel,
   activeNav,
+  filters,
+  filterOptions,
+  filterSummary,
+  onChangeFilters,
   onSelectNav,
   onExportSnapshot,
 }: {
   data: DashboardData;
   sourceLabel: string;
   activeNav: NavItem;
+  filters: FilterState;
+  filterOptions: FilterOptions;
+  filterSummary: FilterSummary;
+  onChangeFilters: (filters: FilterState) => void;
   onSelectNav: (item: NavItem) => void;
   onExportSnapshot: () => void;
 }) {
+  function updateFilter(key: keyof FilterState, value: string) {
+    onChangeFilters({ ...filters, [key]: value });
+  }
+
+  function resetFilters() {
+    onChangeFilters(DEFAULT_FILTERS);
+  }
+
   return (
     <header className="topbar">
       <div className="hero-copy">
@@ -215,17 +568,73 @@ function Header({
             </button>
           ))}
         </nav>
-        <div className="filter-row">
-          <button type="button" className="filter-pill">Date Range: 30D</button>
-          <button type="button" className="filter-pill">Segment: All</button>
-          <button type="button" className="filter-pill">Risk: All</button>
-          <button type="button" className="filter-pill">Book: All</button>
+        <div className="filter-row" aria-label="Dashboard filters">
+          <FilterSelect
+            label="Date Range"
+            value={filters.dateRange}
+            options={[...DATE_RANGE_OPTIONS]}
+            onChange={(value) => updateFilter("dateRange", value)}
+          />
+          <FilterSelect
+            label="Segment"
+            value={filters.segment}
+            options={["ALL", ...filterOptions.segments]}
+            optionLabel={formatFilterLabel}
+            onChange={(value) => updateFilter("segment", value)}
+          />
+          <FilterSelect
+            label="Risk"
+            value={filters.risk}
+            options={["ALL", ...filterOptions.risks]}
+            optionLabel={formatFilterLabel}
+            onChange={(value) => updateFilter("risk", value)}
+          />
+          <FilterSelect
+            label="Book"
+            value={filters.book}
+            options={["ALL", ...filterOptions.books]}
+            optionLabel={formatFilterLabel}
+            onChange={(value) => updateFilter("book", value)}
+          />
+          <button type="button" className="filter-reset-button" onClick={resetFilters}>
+            Reset
+          </button>
+        </div>
+        <div className="filter-state-line">
+          {filterSummary.exceptionRowCount} exception rows / {filterSummary.pnlDriverCount} P&amp;L drivers / {filterSummary.marketPanelCount} market panels
         </div>
         <button type="button" className="action-button" onClick={onExportSnapshot}>
           Export Snapshot
         </button>
       </div>
     </header>
+  );
+}
+
+function FilterSelect({
+  label,
+  value,
+  options,
+  optionLabel = (option) => option,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  optionLabel?: (option: string) => string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="filter-select-shell">
+      <span>{label}</span>
+      <select value={value} onChange={(event) => onChange(event.target.value)}>
+        {options.map((option) => (
+          <option key={`${label}-${option}`} value={option}>
+            {optionLabel(option)}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
 
@@ -321,7 +730,7 @@ function AlertStrip({ alerts }: { alerts: AlertItem[] }) {
         eyebrow="Energy Overview"
         title="Alert Strip"
         note="The first screen leads with exceptions so the operator can tell what needs inspection before reading charts."
-        chip="4 decision alerts"
+        chip={`${alerts.length} decision alerts`}
       />
       <div className="alert-grid">
         {alerts.map((alert) => (
@@ -339,7 +748,7 @@ function ExecutiveSummary({ cards }: { cards: DashboardData["overview"]["summary
         eyebrow="Power Portfolio"
         title="Executive Summary"
         note="Business-facing KPIs stay above the fold and are backed by generated dashboard JSON, not private lake paths."
-        chip="6 power cards"
+        chip={`${cards.length} power cards`}
       />
       <div className="summary-grid">
         {cards.map((card) => (
@@ -436,7 +845,7 @@ function PortfolioRiskSection({ data }: { data: DashboardData }) {
           eyebrow="Power"
           title="Portfolio P&L Drivers"
           note="The biggest margin contributors are ranked before market context so the operating story starts with portfolio impact."
-          chip="P&L first"
+          chip={`${data.overview.pnlDrivers.length} drivers`}
         />
         <PnlDriversChart bars={data.overview.pnlDrivers} />
       </article>
@@ -445,19 +854,19 @@ function PortfolioRiskSection({ data }: { data: DashboardData }) {
         <article className="panel panel-compact">
           <SectionHeader
             eyebrow="Power Risk"
-            title="Coverage vs Policy Band"
-            note="Hedge-band compliance is shown separately from gas market context."
-            chip="hedge policy"
-          />
-          <CoverageChart points={data.overview.coveragePoints} />
+          title="Coverage vs Policy Band"
+          note="Hedge-band compliance is shown separately from gas market context."
+          chip={`${data.overview.coveragePoints.length} books`}
+        />
+        <CoverageChart points={data.overview.coveragePoints} />
         </article>
 
         <article className="panel panel-compact">
           <SectionHeader
             eyebrow="Power Risk"
-            title="Hedged vs Open Exposure"
-            note="Open exposure is kept visible beside hedge coverage so risk is not buried in the table."
-            chip="open risk"
+          title="Hedged vs Open Exposure"
+          note="Open exposure is kept visible beside hedge coverage so risk is not buried in the table."
+            chip={`${data.overview.exposurePoints.length} books`}
           />
           <ExposureChart points={data.overview.exposurePoints} />
         </article>
@@ -486,7 +895,7 @@ function ExceptionTable({
         eyebrow="Power"
         title="Exception-First Investigation Table"
         note="Rows are sorted by risk state first so breached and watch books remain visible on the Overview page."
-        chip={compact ? "Overview table" : "sticky header"}
+        chip={`${rankedRows.length} rows`}
       />
       <div className="table-shell">
         <table>
@@ -504,19 +913,30 @@ function ExceptionTable({
             </tr>
           </thead>
           <tbody>
-            {rankedRows.map((row) => (
-              <tr key={row.book} className={row.tone ? `row-${row.tone}` : undefined}>
-                <td>{row.book}</td>
-                <td>{row.segment}</td>
-                <td>{row.grossMargin}</td>
-                <td>{row.marginPerMwh}</td>
-                <td>{row.hedgeCover}</td>
-                <td>{row.targetBand}</td>
-                <td>{row.openExposure}</td>
-                <td>{row.riskStatus}</td>
-                <td>{row.breachReason}</td>
+            {rankedRows.length ? (
+              rankedRows.map((row) => (
+                <tr key={row.book} className={row.tone ? `row-${row.tone}` : undefined}>
+                  <td>{row.book}</td>
+                  <td>{row.segment}</td>
+                  <td>{row.grossMargin}</td>
+                  <td>{row.marginPerMwh}</td>
+                  <td>{row.hedgeCover}</td>
+                  <td>{row.targetBand}</td>
+                  <td>{row.openExposure}</td>
+                  <td>{row.riskStatus}</td>
+                  <td>{row.breachReason}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={9}>
+                  <EmptyState
+                    title="No exception rows match these filters"
+                    detail="The selected filter combination produced an empty public dashboard view."
+                  />
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -556,11 +976,27 @@ function PowerMarketContextSection({
         ))}
       </div>
       <div className="market-grid">
-        {visibleMarketPanels.map((panel) => (
-          <MarketPanelCard key={panel.title} panel={panel} />
-        ))}
+        {visibleMarketPanels.length ? (
+          visibleMarketPanels.map((panel) => (
+            <MarketPanelCard key={panel.title} panel={panel} />
+          ))
+        ) : (
+          <EmptyState
+            title="No market panels match this region"
+            detail="Choose All Regions or another available region to restore market context."
+          />
+        )}
       </div>
     </section>
+  );
+}
+
+function EmptyState({ title, detail }: { title: string; detail: string }) {
+  return (
+    <div className="empty-state">
+      <strong>{title}</strong>
+      <span>{detail}</span>
+    </div>
   );
 }
 
@@ -925,6 +1361,17 @@ function AlertCard({ alert }: { alert: AlertItem }) {
 }
 
 function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
+  if (!bars.length) {
+    return (
+      <div className="chart-box chart-box--primary">
+        <EmptyState
+          title="No P&L drivers match these filters"
+          detail="The approved public payload remains loaded; only the visible portfolio subset is empty."
+        />
+      </div>
+    );
+  }
+
   const rankedBars = [...bars].sort((left, right) => right.value - left.value);
   const maxValue = Math.max(...rankedBars.map((bar) => Math.abs(bar.value)), 1);
   const totalImpact = rankedBars.reduce((sum, bar) => sum + Math.abs(bar.value), 0);
@@ -983,6 +1430,17 @@ function PnlDriversChart({ bars }: { bars: DriverBar[] }) {
 }
 
 function CoverageChart({ points }: { points: CoveragePoint[] }) {
+  if (!points.length) {
+    return (
+      <div className="chart-box">
+        <EmptyState
+          title="No hedge coverage rows"
+          detail="Coverage is hidden because the selected portfolio subset has no matching books."
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="chart-box">
       <div className="coverage-chart">
@@ -1010,6 +1468,17 @@ function CoverageChart({ points }: { points: CoveragePoint[] }) {
 }
 
 function ExposureChart({ points }: { points: ExposurePoint[] }) {
+  if (!points.length) {
+    return (
+      <div className="chart-box">
+        <EmptyState
+          title="No exposure rows"
+          detail="Exposure is hidden because the selected portfolio subset has no matching books."
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="chart-box">
       <div className="stack-chart">

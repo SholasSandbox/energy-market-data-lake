@@ -226,7 +226,9 @@ Goal: turn the Phase 10 filter controls from display/readout controls into
 deterministic local interactions that update dashboard views without changing
 the approved public data boundary.
 
-Status: planned, pending target operating model review.
+Status: implementation in progress. First slice has URL-backed filters,
+filtered portfolio surfaces, market-series date slicing, export metadata, and
+desktop screenshot evidence.
 
 Working checklist: `docs/phase-11-dashboard-filters.md`
 
@@ -251,14 +253,11 @@ Definition of done:
 
 ## Suggested Immediate Next Steps
 
-1. Review `docs/target-operating-model.md` as the high-level end-state story
-   and use its AWS service companion diagrams for interview-level detail.
-2. Commit the docs-only Phase 11 planning and target operating model branch.
-3. Start `feature/phase11-dashboard-filters` from clean `main`.
-4. Run the Phase 11 preflight checks in
-   `docs/phase-11-dashboard-filters.md`.
-5. Implement deterministic filter wiring before adding new dashboard pages,
-   AWS features, or new data contracts.
+1. Finish Phase 11 verification: contract validation, Markdown lint, mobile
+   screenshot evidence, and final checklist closeout.
+2. Keep Phase 11 scoped to deterministic local filtering and export metadata.
+3. Commit the implementation slice before starting hosting, alarms, or managed
+   AI runtime work.
 
 ## Planning Rule
 

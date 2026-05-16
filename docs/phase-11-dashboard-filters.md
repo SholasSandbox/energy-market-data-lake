@@ -113,12 +113,12 @@ Use this order unless a concrete blocker appears:
 
 ### 1. Preflight
 
-- [ ] Start from clean `main`.
-- [ ] Create `feature/phase11-dashboard-filters`.
-- [ ] Run the current React build baseline.
-- [ ] Run the current contract validation baseline.
-- [ ] Confirm Phase 10 screenshots and docs remain present.
-- [ ] Record any pre-existing failures before editing.
+- [x] Start from clean `main`.
+- [x] Create `feature/phase11-dashboard-filters`.
+- [x] Run the current React build baseline.
+- [x] Run the current contract validation baseline.
+- [x] Confirm Phase 10 screenshots and docs remain present.
+- [x] Record any pre-existing failures before editing.
 
 Commands:
 
@@ -135,56 +135,69 @@ npm --prefix dashboard-ui run build
 
 ### 2. Filter State Model
 
-- [ ] Define a single typed filter state object.
-- [ ] Support date range, book, segment, and risk status.
-- [ ] Derive default values from the current approved dashboard data.
-- [ ] Encode filter state in URL query parameters.
-- [ ] Restore filter state on page load.
-- [ ] Keep invalid query values from breaking render.
+- [x] Define a single typed filter state object.
+- [x] Support date range, book, segment, and risk status.
+- [x] Derive default values from the current approved dashboard data.
+- [x] Encode filter state in URL query parameters.
+- [x] Restore filter state on page load.
+- [x] Keep invalid query values from breaking render.
 
 ### 3. Data Derivation
 
-- [ ] Filter portfolio books by book, segment, and risk status.
-- [ ] Filter exception rows consistently with portfolio selections.
-- [ ] Filter market series by selected date range where local data supports it.
-- [ ] Recalculate KPI summary values from the filtered subset where possible.
-- [ ] Clearly label values that remain whole-portfolio or whole-market context.
-- [ ] Add empty-state copy for no matching books or rows.
+- [x] Filter portfolio books by book, segment, and risk status.
+- [x] Filter exception rows consistently with portfolio selections.
+- [x] Filter market series by selected date range where local data supports it.
+- [x] Recalculate KPI summary values from the filtered subset where possible.
+- [x] Clearly label values that remain whole-portfolio or whole-market context.
+- [x] Add empty-state copy for no matching books or rows.
 
 ### 4. UI Behavior
 
-- [ ] Make filter controls interactive.
-- [ ] Keep controls keyboard-accessible and mobile-readable.
-- [ ] Add clear/reset behavior.
-- [ ] Preserve the current Phase 10 visual hierarchy.
-- [ ] Avoid layout shifts when filters produce smaller result sets.
+- [x] Make filter controls interactive.
+- [x] Keep controls keyboard-accessible and mobile-readable.
+- [x] Add clear/reset behavior.
+- [x] Preserve the current Phase 10 visual hierarchy.
+- [x] Avoid layout shifts when filters produce smaller result sets.
 
 ### 5. Export Snapshot
 
-- [ ] Include selected filters in the exported JSON bundle.
-- [ ] Include generated-at timestamp.
-- [ ] Include filtered KPI or row counts where deterministic.
-- [ ] Preserve original approved dashboard data references.
+- [x] Include selected filters in the exported JSON bundle.
+- [x] Include generated-at timestamp.
+- [x] Include filtered KPI or row counts where deterministic.
+- [x] Preserve original approved dashboard data references.
 
 ### 6. Documentation And Demo
 
-- [ ] Update `README.md` active priorities.
-- [ ] Update `PLANS.md` so Phase 11 is active implementation.
-- [ ] Update `docs/demo-walkthrough.md` with a short filter demo.
-- [ ] Add verification notes to this checklist.
-- [ ] Capture fresh desktop and mobile screenshot evidence if the UI changes
+- [x] Update `README.md` active priorities.
+- [x] Update `PLANS.md` so Phase 11 is active implementation.
+- [x] Update `docs/demo-walkthrough.md` with a short filter demo.
+- [x] Add verification notes to this checklist.
+- [x] Capture fresh desktop and mobile screenshot evidence if the UI changes
   materially.
 
 ### 7. Verification
 
-- [ ] Run React build.
-- [ ] Run contract validation.
-- [ ] Run Markdown lint on touched docs.
-- [ ] Run `git diff --check`.
-- [ ] Run local dashboard and confirm public JSON endpoints return HTTP 200.
-- [ ] Verify URL query filters can be copied, reloaded, and restored.
-- [ ] Verify export snapshot includes selected filter metadata.
-- [ ] Confirm the React app still does not fetch private lake paths.
+- [x] Run React build.
+- [x] Run contract validation.
+- [x] Run Markdown lint on touched docs.
+- [x] Run `git diff --check`.
+- [x] Run local dashboard and confirm public JSON endpoints return HTTP 200.
+- [x] Verify URL query filters can be copied, reloaded, and restored.
+- [x] Verify export snapshot includes selected filter metadata.
+- [x] Confirm the React app still does not fetch private lake paths.
+
+Verification notes:
+
+- `npm --prefix dashboard-ui run build`
+- `.venv/bin/python scripts/validate_contracts.py --include-evidence --check-failures`
+- `npx markdownlint-cli2 README.md PLANS.md docs/demo-walkthrough.md docs/phase-11-dashboard-filters.md`
+- `curl -fsS http://127.0.0.1:5173/dashboard-data.json`
+- `npx playwright screenshot` for
+  `?range=7D&segment=EV&risk=breach&book=EV+Flex+Portfolio#overview`
+- Screenshot evidence:
+  `docs/evidence/screenshots/dashboard-phase11-filters-desktop-20260516.png`
+- Mobile screenshot evidence:
+  `docs/evidence/screenshots/dashboard-phase11-filters-mobile-20260516.png`
 
 Commands:
 

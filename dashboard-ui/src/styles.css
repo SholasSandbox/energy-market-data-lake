@@ -180,6 +180,8 @@ button {
 .tag,
 .nav-pill,
 .filter-pill,
+.filter-select-shell,
+.filter-reset-button,
 .action-button {
   border-radius: 999px;
   padding: 9px 12px;
@@ -195,7 +197,9 @@ button {
 }
 
 .nav-pill,
-.filter-pill {
+.filter-pill,
+.filter-reset-button,
+.filter-select-shell select {
   cursor: pointer;
 }
 
@@ -209,9 +213,46 @@ button {
   background: #fff;
 }
 
-.filter-pill {
+.filter-pill,
+.filter-select-shell,
+.filter-reset-button {
   background: rgba(7, 28, 46, 0.18);
   color: #eef6fd;
+}
+
+.filter-select-shell {
+  display: grid;
+  grid-template-columns: auto minmax(78px, auto);
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+}
+
+.filter-select-shell span {
+  white-space: nowrap;
+  color: rgba(238, 246, 253, 0.74);
+}
+
+.filter-select-shell select {
+  min-width: 0;
+  border: 0;
+  border-radius: 999px;
+  padding: 4px 22px 4px 8px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--primary);
+  font: inherit;
+  font-size: 12px;
+}
+
+.filter-reset-button {
+  padding: 8px 11px;
+}
+
+.filter-state-line {
+  color: rgba(238, 246, 253, 0.78);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
 }
 
 .action-button {
@@ -362,6 +403,12 @@ button {
 
 .summary-card {
   border: 1px dashed var(--line-strong);
+}
+
+.summary-card .metric {
+  font-size: 1.875rem;
+  line-height: 1.08;
+  overflow-wrap: anywhere;
 }
 
 .gas-panel {
@@ -1111,6 +1158,29 @@ button {
   z-index: 2;
 }
 
+.empty-state {
+  display: grid;
+  gap: 6px;
+  min-height: 96px;
+  align-content: center;
+  padding: 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 14px;
+  background: rgba(236, 242, 247, 0.72);
+  color: var(--muted);
+  text-align: center;
+}
+
+.empty-state strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.empty-state span {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .table-shell {
   overflow: auto;
   border: 1px dashed var(--line-strong);
@@ -1550,8 +1620,23 @@ th {
 
   .nav-pill,
   .filter-pill,
+  .filter-select-shell,
+  .filter-reset-button,
   .action-button {
     width: 100%;
+  }
+
+  .filter-select-shell {
+    grid-template-columns: 1fr;
+    border-radius: 16px;
+  }
+
+  .filter-select-shell select {
+    width: 100%;
+  }
+
+  .filter-state-line {
+    text-align: left;
   }
 
   .section-header {
