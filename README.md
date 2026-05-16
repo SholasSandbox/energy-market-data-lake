@@ -405,6 +405,8 @@ python3 scripts/validate_athena_schema.py \
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
 - `docs/target-operating-model.md`: high-level target operating model for the
   completed platform vision.
+- `docs/interview-demo-talking-points.md`: concise current-state pitch for
+  Solution Architect interviews and demos.
 - `docs/phase-10-dashboard-implementation.md`: completed Phase 10 dashboard
   implementation checklist and project plan.
 - `docs/phase-11-dashboard-filters.md`: completed deterministic dashboard
