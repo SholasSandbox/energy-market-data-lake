@@ -11,6 +11,7 @@ This Terraform root recreates the serverless energy lakehouse resources used by 
 - Athena workgroup and query result location
 - Phase 8 deterministic AI insight Lambda, Step Functions state machine,
   failure SNS topic, and optional dashboard snapshot bucket
+- Optional Phase 12 CloudFront distribution for private S3 dashboard delivery
 
 The Terraform state backend is intentionally separate from the data lake bucket.
 
@@ -21,6 +22,8 @@ Datastores in scope:
 - CloudWatch Logs for operational logs
 - S3 Terraform state bucket for durable Terraform state
 - Optional separate S3 dashboard/static bucket for public-safe snapshot JSON
+- Optional CloudFront distribution with Origin Access Control for private S3
+  dashboard delivery
 - Optional SSM Parameter Store or Secrets Manager for future secrets
 
 ## Backend
@@ -106,6 +109,9 @@ Phase 8 orchestration is optional and disabled by default:
 create_dashboard_bucket = false
 dashboard_bucket_name   = "energy-market-dashboard-public-464975959576-20260405"
 
+dashboard_cloudfront_enabled     = false
+dashboard_cloudfront_price_class = "PriceClass_100"
+
 ai_orchestration_enabled             = false
 ai_orchestration_schedule_enabled    = false
 ai_orchestration_dashboard_data_key  = "dashboard/dashboard-data.json"
@@ -115,6 +121,12 @@ ai_orchestration_sns_email           = ""
 Set `ai_orchestration_enabled = true` only after the Lambda zip exists and the
 dashboard input JSON has been uploaded to the data lake bucket at
 `ai_orchestration_dashboard_data_key`.
+
+Set `dashboard_cloudfront_enabled = true` only when
+`create_dashboard_bucket = true` and you are ready for Terraform to manage the
+dashboard bucket and CloudFront delivery path. CloudFront uses Origin Access
+Control, so the S3 bucket remains private and grants read access only to the
+distribution.
 
 Build the Phase 8 Lambda package before planning or applying orchestration
 resources:
@@ -168,6 +180,14 @@ aws stepfunctions start-execution \
   --region "$(terraform output -raw aws_region)"
 ```
 
+Create a CloudFront invalidation after publishing new dashboard assets:
+
+```bash
+aws cloudfront create-invalidation \
+  --distribution-id "$(terraform output -raw dashboard_cloudfront_distribution_id)" \
+  --paths "/index.html" "/assets/*" "/dashboard-data.json" "/dashboard_snapshot_v1.sample.json"
+```
+
 ## Existing Manual Resources
 
 This Terraform root uses the current resource names by default, such as:
@@ -217,6 +237,8 @@ Import addresses may change if you rename resources in the Terraform files. The 
 - **Do not enable the Phase 8 schedule until one manual Step Functions execution passes.** Keep `ai_orchestration_schedule_enabled = false` while validating failure handling.
 - **Build the Phase 8 Lambda package before planning enabled orchestration resources.** Terraform reads `.terraform/build/news_ai_orchestration.zip` when `ai_orchestration_enabled = true`.
 - **The public dashboard snapshot is updated last.** The state machine publishes `dashboard_snapshot_v1.json` only after all validation gates pass; failed runs route to SNS/`failed/` and leave the previous public snapshot in place.
+- **CloudFront dashboard delivery is opt-in.** Keep `dashboard_cloudfront_enabled = false` until the dashboard bucket is Terraform-managed and you are ready to publish static assets through CloudFront.
+- **CloudFront Origin Access Control keeps the dashboard bucket private.** Do not loosen S3 public access settings to make the dashboard work; fix the CloudFront distribution or bucket policy instead.
 - **Secrets can leak into state.** `entsoe_token` is sensitive, but Terraform state can still contain sensitive values. Prefer an empty token here until a Secrets Manager or SSM pattern is added.
 - **Glue crawler names and table names can drift.** Confirm `curated_dataset_gas` points at the intended `s3://.../curated/dataset=gas/` location after any import or crawler run.
 - **AWS-generated attributes may cause noisy plans.** Review `terraform plan` carefully before apply; adjust lifecycle rules only when the drift is harmless and understood.
@@ -229,3 +251,4 @@ Import addresses may change if you rename resources in the Terraform files. The 
 - The Glue job script is uploaded from `glue/etl_raw_to_parquet.py`.
 - The Lambda deployment package is built from `lambda/ingest_elexon.py`.
 - The Phase 8 Lambda deployment package is built by `scripts/build_phase8_lambda_package.sh`.
+- The Phase 12 CloudFront distribution is optional and disabled by default.
