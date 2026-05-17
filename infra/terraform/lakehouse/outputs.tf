@@ -58,6 +58,16 @@ output "dashboard_bucket_name" {
   value       = local.dashboard_bucket_name
 }
 
+output "dashboard_cloudfront_distribution_id" {
+  description = "CloudFront distribution ID for public-safe dashboard delivery when enabled."
+  value       = try(aws_cloudfront_distribution.dashboard_static[0].id, null)
+}
+
+output "dashboard_cloudfront_domain_name" {
+  description = "CloudFront domain name for public-safe dashboard delivery when enabled."
+  value       = try(aws_cloudfront_distribution.dashboard_static[0].domain_name, null)
+}
+
 output "ai_orchestration_lambda_function_name" {
   description = "Phase 8 deterministic AI insight Lambda function name."
   value       = try(aws_lambda_function.ai_orchestration[0].function_name, null)

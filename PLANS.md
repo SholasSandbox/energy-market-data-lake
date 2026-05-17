@@ -18,6 +18,8 @@ Source of truth for this plan:
   implementation phase
 - `docs/phase-11-dashboard-filters.md` for the completed deterministic
   dashboard interaction phase
+- `docs/phase-12-dashboard-hosting-foundation.md` for the optional
+  CloudFront/static dashboard delivery foundation
 
 ## Current Baseline
 
@@ -50,6 +52,8 @@ The current implementation boundary is:
 - Phase 11 is complete: deterministic dashboard filters are URL-backed, local
   to public dashboard JSON, export-aware, and covered by desktop/mobile
   screenshot evidence
+- Phase 12 is in progress: Terraform now has an opt-in private S3 plus
+  CloudFront foundation for public-safe dashboard delivery
 
 ## Delivery Order
 
@@ -252,6 +256,32 @@ Definition of done:
 - exported snapshot reflects selected filters
 - desktop and mobile visual evidence is refreshed
 - docs and demo walkthrough explain the filter behavior clearly
+
+### Phase 12: Dashboard Hosting Foundation
+
+Goal: add optional Terraform support for CloudFront-fronted dashboard delivery
+while keeping the dashboard bucket private and leaving live hosting disabled by
+default.
+
+Status: implementation in progress. First slice adds CloudFront Origin Access
+Control, distribution, S3 bucket policy, security headers, outputs, variables,
+and enablement docs.
+
+Working checklist: `docs/phase-12-dashboard-hosting-foundation.md`
+
+Focus:
+
+- keep the approved public dashboard JSON boundary intact
+- use private S3 plus CloudFront Origin Access Control
+- leave CloudFront disabled until a deliberate live apply decision
+- avoid DNS, ACM, alarms, schedules, and managed AI changes in this slice
+
+Definition of done:
+
+- Terraform formatting and validation pass
+- dashboard build still passes
+- contract validation still passes
+- docs explain enablement, proof commands, and out-of-scope items
 
 ## Suggested Immediate Next Steps
 
