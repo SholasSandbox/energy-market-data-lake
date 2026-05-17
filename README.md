@@ -38,6 +38,8 @@ Region: **eu-west-2 (London)**
   artifacts, validation gates, failed-run quarantine, and manual execution
   evidence.
 - Phase 10 responsive dashboard evidence for desktop, tablet, and mobile.
+- Phase 11 deterministic dashboard filters with URL-backed state, filtered
+  portfolio views, export metadata, and desktop/mobile evidence.
 
 ### Deferred AWS Extension
 
@@ -403,10 +405,12 @@ python3 scripts/validate_athena_schema.py \
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.
 - `docs/target-operating-model.md`: high-level target operating model for the
   completed platform vision.
+- `docs/interview-demo-talking-points.md`: concise current-state pitch for
+  Solution Architect interviews and demos.
 - `docs/phase-10-dashboard-implementation.md`: completed Phase 10 dashboard
   implementation checklist and project plan.
-- `docs/phase-11-dashboard-filters.md`: planned deterministic dashboard filter
-  wiring phase.
+- `docs/phase-11-dashboard-filters.md`: completed deterministic dashboard
+  filter wiring phase.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
