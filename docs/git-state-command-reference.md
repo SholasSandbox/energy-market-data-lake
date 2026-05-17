@@ -103,19 +103,36 @@ GitHub PR merge button.
 git switch main
 git pull --ff-only origin main
 
-git merge feature/name-of-work
+git merge --no-ff origin/feature/name-of-work \
+  -m "merge: feature/name-of-work"
+
+git status --short --branch
 git push origin main
 
 git status --short --branch
 ```
 
-If you want to preserve an explicit merge commit, even when Git could
-fast-forward:
+Expected state before push:
+
+```text
+## main...origin/main [ahead 1]
+```
+
+Expected state after push:
+
+```text
+## main...origin/main
+```
+
+You can also merge a local branch name if it still exists locally:
 
 ```bash
 git merge --no-ff feature/name-of-work \
   -m "merge: feature/name-of-work"
 ```
+
+Using `origin/feature/name-of-work` is useful when the branch is already pushed
+and you want to merge exactly what remote GitHub has.
 
 `git checkout main` is the older equivalent of `git switch main`.
 
