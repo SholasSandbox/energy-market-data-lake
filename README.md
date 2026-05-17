@@ -40,14 +40,16 @@ Region: **eu-west-2 (London)**
 - Phase 10 responsive dashboard evidence for desktop, tablet, and mobile.
 - Phase 11 deterministic dashboard filters with URL-backed state, filtered
   portfolio views, export metadata, and desktop/mobile evidence.
+- Phase 12 Terraform foundation for private S3 plus CloudFront dashboard
+  delivery, disabled by default until a live hosting decision.
 
 ### Deferred AWS Extension
 
 - Run OpenClaw in a clear runtime, or use Bedrock `InvokeModel` as the managed cloud AI path.
-- Publish dashboard snapshot JSON to a CloudFront-fronted static site bucket.
+- Apply CloudFront/static-site delivery for the public dashboard.
 - Enable the Phase 8 EventBridge schedule after another operating decision.
 - Add CloudWatch alarms after the manual workflow has settled.
-- CloudFront/static-site delivery for the public dashboard.
+- Add DNS, ACM certificate, and custom domain for the public dashboard.
 
 ## Current Data Scope
 
@@ -411,6 +413,8 @@ python3 scripts/validate_athena_schema.py \
   implementation checklist and project plan.
 - `docs/phase-11-dashboard-filters.md`: completed deterministic dashboard
   filter wiring phase.
+- `docs/phase-12-dashboard-hosting-foundation.md`: optional CloudFront/static
+  dashboard delivery foundation.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.

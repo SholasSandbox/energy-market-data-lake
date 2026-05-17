@@ -86,11 +86,14 @@ Current proven state:
 - public-safe dashboard snapshot
 - Phase 10 operator-focused dashboard Overview
 - Phase 11 deterministic dashboard filter wiring
+- Phase 12 Terraform foundation for private S3 plus CloudFront dashboard
+  delivery
 - refreshed architecture diagrams
 
 Target follow-up state:
 
-- CloudFront/S3 public dashboard delivery
+- live CloudFront/S3 public dashboard apply and asset publishing
+- DNS, ACM certificate, and custom domain for dashboard delivery
 - CloudWatch alarms and budget controls
 - managed AI invocation through Bedrock or OpenClaw runtime
 - carefully enabled schedules after manual proof and operating controls are

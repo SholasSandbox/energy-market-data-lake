@@ -63,6 +63,27 @@ variable "dashboard_bucket_name" {
   default     = ""
 }
 
+variable "dashboard_cloudfront_enabled" {
+  description = "When true, create CloudFront delivery for the Terraform-managed dashboard bucket. Requires create_dashboard_bucket = true."
+  type        = bool
+  default     = false
+}
+
+variable "dashboard_cloudfront_price_class" {
+  description = "CloudFront price class for static dashboard delivery."
+  type        = string
+  default     = "PriceClass_100"
+
+  validation {
+    condition = contains([
+      "PriceClass_100",
+      "PriceClass_200",
+      "PriceClass_All",
+    ], var.dashboard_cloudfront_price_class)
+    error_message = "dashboard_cloudfront_price_class must be PriceClass_100, PriceClass_200, or PriceClass_All."
+  }
+}
+
 variable "ai_orchestration_enabled" {
   description = "Whether Terraform creates the Phase 8 AI insight orchestration resources."
   type        = bool
