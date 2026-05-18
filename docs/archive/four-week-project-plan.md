@@ -1,5 +1,11 @@
 # 4 Week Project Plan - Energy Data Lake + News Insight Dashboard
 
+<!-- markdownlint-disable MD013 -->
+
+Archived note: this document preserves the original 4-week MVP delivery plan.
+It is historical context, not the current project source of truth. Use
+`PLANS.md` and the phase-specific checklists for current status.
+
 ## Purpose
 
 Ship a portfolio-ready MVP that extends the existing serverless energy data lake into a news-aware insight dashboard. The plan keeps the current Lambda, S3, Glue, Athena, and React foundation, then adds news ingestion, strict data contracts, an AI merge step, and a polished dashboard story.
