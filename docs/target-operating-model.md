@@ -88,6 +88,7 @@ Current proven state:
 - Phase 11 deterministic dashboard filter wiring
 - Phase 12 Terraform foundation for private S3 plus CloudFront dashboard
   delivery
+- Phase 13 dashboard hosting publish/runbook proof in plan-only mode
 - refreshed architecture diagrams
 
 Target follow-up state:
