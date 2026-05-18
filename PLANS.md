@@ -5,7 +5,6 @@
 Source of truth for this plan:
 
 - `README.md` for current platform scope and target model
-- `docs/four-week-project-plan.md` for the delivery-focused 4-week MVP plan
 - `dashboard-ui/src/App.tsx` for current React implementation reality
 - `docs/dashboard-ia-spec.md` for the next dashboard design direction
 - `docs/target-operating-model.md` for the envisioned end-state operating
@@ -22,6 +21,12 @@ Source of truth for this plan:
   CloudFront/static dashboard delivery foundation
 - `docs/phase-13-dashboard-hosting-publish-runbook.md` for the dashboard
   hosting publish and evidence runbook proof
+
+Historical planning references:
+
+- `docs/archive/four-week-project-plan.md` preserves the original 4-week MVP
+  plan. It is archived and no longer a source of truth for current phase
+  status.
 
 ## Current Baseline
 
