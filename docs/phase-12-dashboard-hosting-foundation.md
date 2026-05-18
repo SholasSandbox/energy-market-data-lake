@@ -136,3 +136,8 @@ aws cloudfront create-invalidation \
 - Static hosting remains opt-in.
 - The public dashboard surface reads only approved dashboard assets.
 - The implementation can be validated without changing live AWS state.
+
+## Follow-On
+
+Phase 13 adds the publish/runbook proof for the dashboard hosting path:
+`docs/phase-13-dashboard-hosting-publish-runbook.md`.

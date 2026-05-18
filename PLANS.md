@@ -20,6 +20,8 @@ Source of truth for this plan:
   dashboard interaction phase
 - `docs/phase-12-dashboard-hosting-foundation.md` for the optional
   CloudFront/static dashboard delivery foundation
+- `docs/phase-13-dashboard-hosting-publish-runbook.md` for the dashboard
+  hosting publish and evidence runbook proof
 
 ## Current Baseline
 
@@ -54,6 +56,8 @@ The current implementation boundary is:
   screenshot evidence
 - Phase 12 is in progress: Terraform now has an opt-in private S3 plus
   CloudFront foundation for public-safe dashboard delivery
+- Phase 13 is complete: dashboard static publish commands and evidence
+  capture are scripted in plan-only mode before live hosting writes
 
 ## Delivery Order
 
@@ -263,9 +267,9 @@ Goal: add optional Terraform support for CloudFront-fronted dashboard delivery
 while keeping the dashboard bucket private and leaving live hosting disabled by
 default.
 
-Status: implementation in progress. First slice adds CloudFront Origin Access
-Control, distribution, S3 bucket policy, security headers, outputs, variables,
-and enablement docs.
+Status: complete. First slice adds CloudFront Origin Access Control,
+distribution, S3 bucket policy, security headers, outputs, variables, and
+enablement docs.
 
 Working checklist: `docs/phase-12-dashboard-hosting-foundation.md`
 
@@ -282,6 +286,32 @@ Definition of done:
 - dashboard build still passes
 - contract validation still passes
 - docs explain enablement, proof commands, and out-of-scope items
+
+### Phase 13: Dashboard Hosting Publish Runbook Proof
+
+Goal: turn the Phase 12 hosting foundation into a repeatable operator publish
+path for React build artifacts, S3 sync commands, CloudFront invalidation, and
+evidence capture.
+
+Status: complete. First slice adds a plan-only publish script and runbook so
+the command path can be verified without writing to AWS.
+
+Working checklist: `docs/phase-13-dashboard-hosting-publish-runbook.md`
+
+Focus:
+
+- build and validate dashboard assets before publish
+- render the exact S3 sync and CloudFront invalidation commands
+- write Markdown evidence for the publish attempt
+- require explicit `--apply` before any AWS write commands execute
+- keep DNS, ACM, alarms, schedules, and managed AI out of scope
+
+Definition of done:
+
+- shell syntax check passes
+- plan-only publish evidence is generated
+- React build, contract validation, Terraform validation, Markdown lint, and
+  whitespace checks pass
 
 ## Suggested Immediate Next Steps
 
