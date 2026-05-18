@@ -420,7 +420,6 @@ python3 scripts/validate_athena_schema.py \
 - `docs/phase-13-dashboard-hosting-publish-runbook.md`: publish/runbook proof
   for dashboard build artifacts, S3 sync commands, CloudFront invalidation,
   and evidence capture.
-- `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
 - `docs/phase-8-operational-runbook.md`: manual run, proof, failure drill, and
@@ -490,23 +489,23 @@ Older completed plans and demo artifacts have been moved to `docs/archive/`:
 - `closeout-summary.md`
 - `dashboard-wireframe-overview.html`
 - `demo-checklist.md`
+- `four-week-project-plan.md`
 - `project-plan.md`
 
 These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Complete Phase 11 deterministic dashboard filter wiring verification and
-   docs closeout.
-2. Keep the React dashboard focused on approved snapshot JSON and URL-backed
-   local filtering.
-3. Keep the local and AWS orchestration proof paths reproducible with schema
+1. Use `PLANS.md` as the current delivery control document.
+2. Keep the React dashboard focused on approved snapshot JSON, URL-backed
+   filters, and explicit publish evidence.
+3. Keep local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
 5. Keep the documented ingestion Lambda residual drift visible until redeploy
    criteria are met.
-6. Decide whether gas metrics should enter the public AI snapshot contract after
-   deterministic dashboard filtering is fully closed out.
+6. Defer DNS, ACM, alarms, schedules, and managed AI invocation until a phase
+   explicitly targets those operating boundaries.
 
 ## Notes
 
