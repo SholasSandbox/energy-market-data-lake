@@ -42,6 +42,8 @@ Region: **eu-west-2 (London)**
   portfolio views, export metadata, and desktop/mobile evidence.
 - Phase 12 Terraform foundation for private S3 plus CloudFront dashboard
   delivery, disabled by default until a live hosting decision.
+- Phase 13 dashboard hosting publish/runbook proof with plan-only evidence and
+  explicit `--apply` for live S3/CloudFront writes.
 
 ### Deferred AWS Extension
 
@@ -415,6 +417,9 @@ python3 scripts/validate_athena_schema.py \
   filter wiring phase.
 - `docs/phase-12-dashboard-hosting-foundation.md`: optional CloudFront/static
   dashboard delivery foundation.
+- `docs/phase-13-dashboard-hosting-publish-runbook.md`: publish/runbook proof
+  for dashboard build artifacts, S3 sync commands, CloudFront invalidation,
+  and evidence capture.
 - `docs/four-week-project-plan.md`: delivery plan for the energy + news insight MVP.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
