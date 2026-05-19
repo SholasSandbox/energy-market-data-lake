@@ -420,6 +420,9 @@ python3 scripts/validate_athena_schema.py \
 - `docs/phase-13-dashboard-hosting-publish-runbook.md`: publish/runbook proof
   for dashboard build artifacts, S3 sync commands, CloudFront invalidation,
   and evidence capture.
+- `docs/phase-14-dashboard-hosting-live-apply-evidence.md`: conservative
+  preflight, proof commands, safety decision, and rollback path for live
+  dashboard hosting evidence.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
 - `docs/phase-8-operational-runbook.md`: manual run, proof, failure drill, and
