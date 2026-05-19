@@ -327,9 +327,8 @@ Definition of done:
 Goal: capture controlled evidence for the live dashboard hosting apply path
 without broadening into DNS, ACM, alarms, schedules, or managed AI.
 
-Status: preflight. The current decision is safe to run a Terraform plan, but
-not safe to apply until the saved plan shows only the dashboard hosting
-boundary.
+Status: plan reviewed. The Phase 14A plan is not safe to apply because it
+includes an unrelated in-place update to `aws_lambda_function.ingest`.
 
 Working checklist:
 `docs/phase-14-dashboard-hosting-live-apply-evidence.md`
@@ -348,6 +347,13 @@ Definition of done:
 - Terraform plan evidence is captured and reviewed
 - live apply decision is explicit
 - if applied, S3, CloudFront, HTTP, and rollback evidence are captured
+
+Phase 14A decision:
+
+- plan evidence:
+  `docs/evidence/phase14-dashboard-hosting-plan-20260519T202521Z.txt`
+- result: `Plan: 4 to add, 1 to change, 0 to destroy`
+- decision: do not apply until Lambda drift is isolated or neutralized
 
 ## Suggested Immediate Next Steps
 
