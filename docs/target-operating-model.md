@@ -89,6 +89,7 @@ Current proven state:
 - Phase 12 Terraform foundation for private S3 plus CloudFront dashboard
   delivery
 - Phase 13 dashboard hosting publish/runbook proof in plan-only mode
+- Phase 14 live dashboard hosting apply preflight
 - refreshed architecture diagrams
 
 Target follow-up state:
