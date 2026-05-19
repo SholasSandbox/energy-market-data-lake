@@ -69,11 +69,51 @@ Out of scope:
 - [x] Confirm dashboard bucket is already in Terraform state.
 - [x] Confirm CloudFront resources are not yet in Terraform state.
 - [x] Confirm local tfvars is ignored by Git.
-- [ ] Add or temporarily pass `dashboard_cloudfront_enabled = true`.
-- [ ] Run Terraform plan only.
-- [ ] Save plan output as evidence.
-- [ ] Review plan for unrelated creates, updates, replacements, or destroys.
-- [ ] Decide whether to apply.
+- [x] Add or temporarily pass `dashboard_cloudfront_enabled = true`.
+- [x] Run Terraform plan only.
+- [x] Save plan output as evidence.
+- [x] Review plan for unrelated creates, updates, replacements, or destroys.
+- [x] Decide whether to apply.
+
+## Phase 14A Plan Review
+
+Plan evidence:
+
+```text
+docs/evidence/phase14-dashboard-hosting-plan-20260519T202521Z.txt
+```
+
+Command used:
+
+```bash
+terraform -chdir=infra/terraform/lakehouse plan \
+  -var='dashboard_cloudfront_enabled=true' \
+  -out=tfplan-phase14-dashboard-hosting
+```
+
+Plan summary:
+
+```text
+Plan: 4 to add, 1 to change, 0 to destroy.
+```
+
+Expected dashboard-hosting additions:
+
+- `aws_cloudfront_distribution.dashboard_static[0]`
+- `aws_cloudfront_origin_access_control.dashboard_static[0]`
+- `aws_cloudfront_response_headers_policy.dashboard_static[0]`
+- `aws_s3_bucket_policy.dashboard_static_cloudfront[0]`
+
+Blocking unrelated drift:
+
+- `aws_lambda_function.ingest` would be updated in-place.
+
+Phase 14A decision: **do not apply this plan**.
+
+Reason: the plan is not limited to the dashboard hosting boundary. The
+CloudFront additions are expected, but the ingestion Lambda update is outside
+the approved Phase 14 scope. The next safe state is to isolate or neutralize the
+Lambda drift before producing a new apply candidate plan.
 
 ## Proof Commands
 
@@ -208,17 +248,18 @@ scripts/publish_dashboard_static_site.sh \
 
 ## Safety Decision
 
-Current decision: **safe to proceed to Terraform plan, not safe to apply yet**.
+Current decision: **plan reviewed, not safe to apply yet**.
 
 Reasons:
 
-- The current local tfvars does not enable CloudFront.
 - CloudFront resources are not in state yet, so the first live apply will create
   new public delivery infrastructure.
 - The root also manages older lakehouse, Lambda, Step Functions, IAM, and
   schedule resources; any unrelated drift must be reviewed before apply.
 - The dashboard bucket already exists in Terraform state, so this should be a
   narrow add-on if the plan is clean.
+- The Phase 14A plan included an unrelated in-place update to
+  `aws_lambda_function.ingest`.
 
 Apply becomes acceptable only when the saved plan shows a narrow dashboard
 hosting change set and no unrelated replacements, destroys, schedule
