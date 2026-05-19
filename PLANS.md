@@ -21,6 +21,8 @@ Source of truth for this plan:
   CloudFront/static dashboard delivery foundation
 - `docs/phase-13-dashboard-hosting-publish-runbook.md` for the dashboard
   hosting publish and evidence runbook proof
+- `docs/phase-14-dashboard-hosting-live-apply-evidence.md` for the live
+  dashboard hosting preflight, proof commands, and rollback path
 
 Historical planning references:
 
@@ -59,10 +61,12 @@ The current implementation boundary is:
 - Phase 11 is complete: deterministic dashboard filters are URL-backed, local
   to public dashboard JSON, export-aware, and covered by desktop/mobile
   screenshot evidence
-- Phase 12 is in progress: Terraform now has an opt-in private S3 plus
+- Phase 12 is complete: Terraform now has an opt-in private S3 plus
   CloudFront foundation for public-safe dashboard delivery
 - Phase 13 is complete: dashboard static publish commands and evidence
   capture are scripted in plan-only mode before live hosting writes
+- Phase 14 is in preflight: live CloudFront/S3 apply is safe to plan, but not
+  safe to apply until the Terraform plan is reviewed and accepted
 
 ## Delivery Order
 
@@ -318,13 +322,38 @@ Definition of done:
 - React build, contract validation, Terraform validation, Markdown lint, and
   whitespace checks pass
 
+### Phase 14: Dashboard Hosting Live Apply Evidence
+
+Goal: capture controlled evidence for the live dashboard hosting apply path
+without broadening into DNS, ACM, alarms, schedules, or managed AI.
+
+Status: preflight. The current decision is safe to run a Terraform plan, but
+not safe to apply until the saved plan shows only the dashboard hosting
+boundary.
+
+Working checklist:
+`docs/phase-14-dashboard-hosting-live-apply-evidence.md`
+
+Focus:
+
+- review local tfvars and current Terraform state
+- enable CloudFront only for the plan/apply boundary
+- save and review Terraform plan evidence before apply
+- apply only if no unrelated replacements, destroys, schedule changes, or IAM
+  broadening appear
+- publish dashboard assets only after CloudFront outputs are available
+
+Definition of done:
+
+- Terraform plan evidence is captured and reviewed
+- live apply decision is explicit
+- if applied, S3, CloudFront, HTTP, and rollback evidence are captured
+
 ## Suggested Immediate Next Steps
 
-1. Start the next implementation boundary from clean `main`.
-2. Keep the next slice narrow enough to prove with build, contract validation,
-   docs, and visual evidence.
-3. Defer hosting, alarms, or managed AI runtime changes unless the new phase
-   explicitly targets that operating boundary.
+1. Run the Phase 14 Terraform plan only.
+2. Save the plan output under `docs/evidence/`.
+3. Review the plan for unrelated drift before any live apply.
 
 ## Next Branch Preflight Checklist
 
