@@ -66,7 +66,8 @@ The current implementation boundary is:
 - Phase 13 is complete: dashboard static publish commands and evidence
   capture are scripted in plan-only mode before live hosting writes
 - Phase 14 is in preflight: live CloudFront/S3 apply is safe to plan, but not
-  safe to apply until the Terraform plan is reviewed and accepted
+  safe to apply until the ingestion Lambda drift is reconciled or explicitly
+  isolated
 
 ## Delivery Order
 
@@ -327,8 +328,8 @@ Definition of done:
 Goal: capture controlled evidence for the live dashboard hosting apply path
 without broadening into DNS, ACM, alarms, schedules, or managed AI.
 
-Status: plan reviewed. The Phase 14A plan is not safe to apply because it
-includes an unrelated in-place update to `aws_lambda_function.ingest`.
+Status: plan reviewed. The Phase 14A/14B plans are not safe to apply because
+they include an unrelated in-place update to `aws_lambda_function.ingest`.
 
 Working checklist:
 `docs/phase-14-dashboard-hosting-live-apply-evidence.md`
@@ -355,11 +356,27 @@ Phase 14A decision:
 - result: `Plan: 4 to add, 1 to change, 0 to destroy`
 - decision: do not apply until Lambda drift is isolated or neutralized
 
+Phase 14B drift isolation:
+
+- no-apply evidence:
+  `docs/evidence/phase14b-dashboard-hosting-refreshfalse-plan-20260520.txt`
+- Terraform state and live AWS agree on deployed Lambda code hash
+  `LpuQEhsU45t3ne5cbEvumah4ljmMPwo8FaxzhW30Z/Y=`
+- local Terraform package hash is
+  `O+87gZ8+OMKKUwvzsXhA2sCVrAbDOwymkLU7MYS/Goc=`
+- `-refresh=false` still proposes the Lambda update, so this is
+  configuration/state reconciliation rather than refresh-only noise
+- decision: do not apply; reconcile the ingestion Lambda in a separate slice
+  before any normal root dashboard hosting apply
+
 ## Suggested Immediate Next Steps
 
-1. Run the Phase 14 Terraform plan only.
-2. Save the plan output under `docs/evidence/`.
-3. Review the plan for unrelated drift before any live apply.
+1. Produce a Lambda-only reconciliation plan.
+2. Decide whether the repo Lambda package should be redeployed, or whether
+   Terraform ownership should preserve the currently deployed package.
+3. Re-run the dashboard hosting plan only after Lambda drift is resolved.
+4. Apply dashboard hosting only when the root plan is limited to CloudFront,
+   OAC, response headers policy, and dashboard S3 bucket policy.
 
 ## Next Branch Preflight Checklist
 

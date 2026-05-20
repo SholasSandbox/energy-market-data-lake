@@ -115,6 +115,99 @@ CloudFront additions are expected, but the ingestion Lambda update is outside
 the approved Phase 14 scope. The next safe state is to isolate or neutralize the
 Lambda drift before producing a new apply candidate plan.
 
+## Phase 14B Lambda Drift Isolation
+
+Plan evidence:
+
+```text
+docs/evidence/phase14b-dashboard-hosting-refreshfalse-plan-20260520.txt
+```
+
+Commands used:
+
+```bash
+terraform -chdir=infra/terraform/lakehouse state show \
+  aws_lambda_function.ingest
+
+aws lambda get-function-configuration \
+  --function-name energy-market-elexon-ingest \
+  --region eu-west-2 \
+  --query '{FunctionName:FunctionName,LastModified:LastModified,CodeSha256:CodeSha256,Runtime:Runtime,Handler:Handler,MemorySize:MemorySize,Timeout:Timeout,Role:Role,EnvironmentKeys:keys(Environment.Variables)}'
+
+LAMBDA_ARN="arn:aws:lambda:eu-west-2:464975959576:function:energy-market-elexon-ingest"
+
+aws lambda list-tags \
+  --resource "${LAMBDA_ARN}" \
+  --region eu-west-2
+
+terraform -chdir=infra/terraform/lakehouse plan \
+  -refresh=false \
+  -var='dashboard_cloudfront_enabled=true' \
+  -out=tfplan-phase14b-refreshfalse
+```
+
+Findings:
+
+- Terraform state and live AWS agree on the deployed Lambda code hash:
+  `LpuQEhsU45t3ne5cbEvumah4ljmMPwo8FaxzhW30Z/Y=`.
+- The locally generated Terraform archive hash is different:
+  `O+87gZ8+OMKKUwvzsXhA2sCVrAbDOwymkLU7MYS/Goc=`.
+- Terraform state has `source_code_hash = null`, `tags = {}`, and
+  `tags_all = {}` for `aws_lambda_function.ingest`.
+- Live AWS also has no Lambda tags.
+- A `-refresh=false` plan still proposes the same in-place Lambda update.
+
+Conclusion: the Phase 14A Lambda update is not caused by a live refresh during
+planning. It is a Terraform configuration/state reconciliation issue: the root
+configuration now declares a Lambda package hash and common tags that are not
+represented in the current Terraform state/live resource, and the local Lambda
+package differs from the deployed Lambda code.
+
+Phase 14B decision: **do not apply yet**.
+
+Safest isolation path:
+
+1. Keep dashboard hosting live apply blocked until the root plan contains only
+   dashboard-hosting changes.
+2. Do not add broad `ignore_changes` for Lambda code or environment variables;
+   that would hide real ingestion drift.
+3. Reconcile the Lambda in a separate, explicit slice before the dashboard live
+   apply. That slice should decide whether to intentionally redeploy the
+   current repo Lambda package, or to preserve the deployed Lambda package and
+   align Terraform state/configuration around that decision.
+4. Use a targeted dashboard apply only as a break-glass option after an explicit
+   approval, because Terraform `-target` is not a normal release boundary and
+   can hide dependency changes outside the target set.
+
+Next safe state boundary:
+
+- Produce a Lambda-only reconciliation plan.
+- Confirm whether the repo Lambda package is the intended live version.
+- Either accept a controlled Lambda redeploy first, or adjust the Terraform
+  ownership model intentionally.
+- Re-run the Phase 14 dashboard plan and proceed only if it is limited to:
+  CloudFront distribution, OAC, response headers policy, and dashboard S3 bucket
+  policy.
+
+Lambda rollback preparation for the next slice:
+
+```bash
+aws lambda get-function \
+  --function-name energy-market-elexon-ingest \
+  --region eu-west-2 \
+  --query '{Configuration:Configuration,CodeLocation:Code.Location}' \
+  > docs/evidence/phase14b-ingest-lambda-current-config.json
+```
+
+Before any intentional Lambda redeploy, use the `CodeLocation` pre-signed URL
+from that evidence file to download the currently deployed package into a local,
+ignored rollback artifact. Do not commit the downloaded package.
+
+If the Lambda reconciliation causes an ingestion regression, restore the
+previous package with `aws lambda update-function-code` or a controlled
+Terraform rollback plan, then rerun the ingestion smoke checks before returning
+to the dashboard hosting apply boundary.
+
 ## Proof Commands
 
 Run from the repo root unless noted.
@@ -260,6 +353,8 @@ Reasons:
   narrow add-on if the plan is clean.
 - The Phase 14A plan included an unrelated in-place update to
   `aws_lambda_function.ingest`.
+- Phase 14B confirmed the Lambda update is caused by configuration/state
+  reconciliation, not just live refresh noise.
 
 Apply becomes acceptable only when the saved plan shows a narrow dashboard
 hosting change set and no unrelated replacements, destroys, schedule
