@@ -1,0 +1,27 @@
+{
+    "FunctionName": "energy-market-elexon-ingest",
+    "LastModified": "2026-05-21T14:14:19.000+0000",
+    "CodeSha256": "O+87gZ8+OMKKUwvzsXhA2sCVrAbDOwymkLU7MYS/Goc=",
+    "Runtime": "python3.11",
+    "Handler": "ingest_elexon.lambda_handler",
+    "MemorySize": 256,
+    "Timeout": 900,
+    "Role": "arn:aws:iam::464975959576:role/energy-market-lambda-role",
+    "EnvironmentKeys": [
+        "ENTSOG_POINT_DIRECTIONS",
+        "S3_BUCKET",
+        "ENTSOG_BASE_URL",
+        "ENTSOG_LIMIT",
+        "ENTSOG_DEMAND_INDICATOR",
+        "ENTSOE_BASE_URL",
+        "ENTSOG_TIMEZONE",
+        "HTTP_TIMEOUT_SECONDS",
+        "ELEXON_BASE_URL",
+        "ENTSOG_FLOW_INDICATOR",
+        "ENTSOG_INCLUDE_EXEMPTIONS",
+        "ENTSOG_PERIOD_TYPE",
+        "ENTSOE_TOKEN",
+        "BACKFILL_DAYS",
+        "ENTSOE_ZONES"
+    ]
+}

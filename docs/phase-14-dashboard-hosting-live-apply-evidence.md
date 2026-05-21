@@ -301,6 +301,91 @@ Alternatives rejected:
 - Targeted dashboard apply while Lambda drift remains: rejected except as an
   explicit break-glass path, because `-target` is not a normal release boundary.
 
+## Phase 14D Lambda Reconciliation Apply
+
+Evidence:
+
+```text
+docs/evidence/phase14d-lambda-reconcile-apply-20260521.txt
+docs/evidence/phase14d-ingest-lambda-post-apply-config-sanitized-20260521.json
+docs/evidence/phase14d-ingest-lambda-post-apply-tags-20260521.json
+docs/evidence/phase14d-ingest-lambda-smoke-invoke-20260521.json
+docs/evidence/phase14d-ingest-lambda-smoke-response-20260521.json
+docs/evidence/phase14d-ingest-lambda-smoke-s3-head-20260521.json
+docs/evidence/phase14d-post-apply-nochange-plan-20260521.txt
+```
+
+Rollback package captured locally before apply:
+
+```text
+infra/terraform/lakehouse/.terraform/rollback/ingest-elexon-before-phase14d-20260521T141212Z.zip
+```
+
+The rollback ZIP was intentionally not committed. Its SHA-256 base64 hash
+matched the pre-apply deployed Lambda hash:
+
+```text
+LpuQEhsU45t3ne5cbEvumah4ljmMPwo8FaxzhW30Z/Y=
+```
+
+Apply command:
+
+```bash
+terraform -chdir=infra/terraform/lakehouse apply \
+  -no-color \
+  tfplan-phase14d-lambda-reconcile
+```
+
+Apply result:
+
+```text
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+```
+
+Post-apply Lambda state:
+
+- `CodeSha256`: `O+87gZ8+OMKKUwvzsXhA2sCVrAbDOwymkLU7MYS/Goc=`
+- Tags now include `Environment`, `ManagedBy`, `Project`, and `Workload`.
+- Sanitized configuration check retained the expected environment variable
+  keys without exposing secret values.
+
+Smoke test:
+
+```bash
+aws lambda invoke \
+  --function-name energy-market-elexon-ingest \
+  --region eu-west-2 \
+  --cli-binary-format raw-in-base64-out \
+  --payload '{"date":"2026-05-03"}' \
+  docs/evidence/phase14d-ingest-lambda-smoke-response-20260521.json
+```
+
+Smoke result:
+
+- Invoke status code: `200`
+- Handler status: `ok`
+- Warnings: `[]`
+- S3 object evidence confirmed
+  `raw/source=elexon/dataset=atl/date=2026-05-03/payload.json`
+
+Post-apply Terraform plan:
+
+```text
+No changes. Your infrastructure matches the configuration.
+```
+
+Phase 14D decision: **Lambda drift reconciled**.
+
+Next safe state boundary:
+
+- Re-run the Phase 14 dashboard hosting plan with
+  `dashboard_cloudfront_enabled=true`.
+- Proceed to live dashboard hosting apply only if the root plan is limited to
+  CloudFront distribution, OAC, response headers policy, and dashboard S3 bucket
+  policy.
+- Keep the local rollback ZIP until the dashboard hosting apply is complete and
+  the project reaches the next clean pause boundary.
+
 ## Proof Commands
 
 Run from the repo root unless noted.
