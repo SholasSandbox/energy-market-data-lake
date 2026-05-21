@@ -1,0 +1,4 @@
++ aws --region eu-west-2 s3 sync /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui/dist/ s3://energy-market-dashboard-public-464975959576-20260511/ --delete --exclude assets/\* --exclude snapshots/\* --exclude dashboard_snapshot_v1.json --cache-control no-cache
++ aws --region eu-west-2 s3 sync /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui/dist/assets/ s3://energy-market-dashboard-public-464975959576-20260511/assets/ --delete --cache-control public\,max-age=31536000\,immutable
++ aws --region eu-west-2 cloudfront create-invalidation --distribution-id E2H9BGRGYAHKPN --paths /index.html /assets/\* /dashboard-data.json /dashboard_snapshot_v1.sample.json
+Wrote publish evidence: docs/evidence/phase14f-dashboard-hosting-publish-preserve-snapshots-plan-20260521.md
