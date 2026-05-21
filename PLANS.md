@@ -51,8 +51,8 @@ The current implementation boundary is:
 - electricity and gas are proven through the lakehouse/dashboard path
 - news and AI insight are implemented as a local MVP and AWS-managed manual
   orchestration path
-- Terraform now tracks the core lakehouse and Phase 8 resources, with residual
-  ingestion Lambda drift documented
+- Terraform now tracks the core lakehouse and Phase 8 resources, with ingestion
+  Lambda drift reconciled
 - Phase 10 is complete: the React dashboard now has a stronger
   operator-facing `Overview` surface, refreshed demo/docs, responsive
   screenshot evidence, and current architecture diagrams
@@ -439,14 +439,44 @@ Phase 14F dashboard-hosting live apply:
 - publish script was hardened to preserve `dashboard_snapshot_v1.json` and
   `snapshots/*` on future static-site publishes
 
+### Phase 15: CloudFront-Hosted Dashboard Demo Hardening
+
+Goal: make the hosted dashboard demo easy to verify and explain without
+changing infrastructure or repopulating the live AI snapshot.
+
+Status: complete as a docs/runbook hardening slice.
+
+Updated demo guide:
+`docs/demo-walkthrough.md`
+
+Evidence:
+
+- CloudFront demo HTTP check:
+  `docs/evidence/phase15-cloudfront-demo-http-check-20260521.txt`
+
+Focus:
+
+- put the CloudFront dashboard URL into the demo path
+- provide quick hosted verification commands
+- keep the local dashboard path as a fallback
+- explain the private lakehouse versus public static dashboard boundary
+- document that live AI `dashboard_snapshot_v1.json` restore is deferred
+
+Definition of done:
+
+- hosted dashboard verification is documented
+- demo script explains why CloudFront/S3 hosting is now live
+- known follow-up for live AI snapshot restore is explicit
+- no Terraform apply, DNS, ACM, alarms, schedules, or managed AI changes
+
 ## Suggested Immediate Next Steps
 
 1. Decide whether to repopulate the live AI `dashboard_snapshot_v1.json` using
    a Phase 8 publish rerun or controlled snapshot restore.
 2. Keep DNS, ACM, alarms, schedules, and managed AI invocation deferred until a
    phase explicitly targets those operating boundaries.
-3. Prepare a short demo note that the dashboard is now CloudFront-hosted while
-   custom domain and automated schedules remain intentionally deferred.
+3. Keep the hosted dashboard demo path reproducible from
+   `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
 
