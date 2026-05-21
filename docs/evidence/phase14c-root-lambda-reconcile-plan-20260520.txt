@@ -1,0 +1,41 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # aws_lambda_function.ingest will be updated in-place
+  ~ resource "aws_lambda_function" "ingest" {
+      + filename                       = "./.terraform/build/ingest_elexon.zip"
+        id                             = "energy-market-elexon-ingest"
+      ~ last_modified                  = "2026-05-05T14:37:34.000+0000" -> (known after apply)
+      + publish                        = false
+      + source_code_hash               = "O+87gZ8+OMKKUwvzsXhA2sCVrAbDOwymkLU7MYS/Goc="
+      ~ tags                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "energy-market"
+          + "Workload"    = "energy-market-data-lake"
+        }
+      ~ tags_all                       = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "energy-market"
+          + "Workload"    = "energy-market-data-lake"
+        }
+        # (24 unchanged attributes hidden)
+
+      ~ environment {
+          ~ variables = {
+              # Warning: this attribute value will be marked as sensitive and will not
+              # display in UI output after applying this change. The value is unchanged.
+              ~ "ENTSOE_TOKEN"              = (sensitive value)
+                # (14 unchanged elements hidden)
+            }
+        }
+
+        # (3 unchanged blocks hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.

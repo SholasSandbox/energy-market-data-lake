@@ -192,21 +192,114 @@ Next safe state boundary:
 Lambda rollback preparation for the next slice:
 
 ```bash
-aws lambda get-function \
+LAMBDA_CONFIG_QUERY="{FunctionName:FunctionName,LastModified:LastModified,"
+LAMBDA_CONFIG_QUERY+="CodeSha256:CodeSha256,Runtime:Runtime,Handler:Handler,"
+LAMBDA_CONFIG_QUERY+="MemorySize:MemorySize,Timeout:Timeout,Role:Role,"
+LAMBDA_CONFIG_QUERY+="EnvironmentKeys:keys(Environment.Variables)}"
+
+aws lambda get-function-configuration \
   --function-name energy-market-elexon-ingest \
   --region eu-west-2 \
-  --query '{Configuration:Configuration,CodeLocation:Code.Location}' \
-  > docs/evidence/phase14b-ingest-lambda-current-config.json
+  --query "${LAMBDA_CONFIG_QUERY}" \
+  > docs/evidence/phase14b-ingest-lambda-current-config-sanitized.json
 ```
 
-Before any intentional Lambda redeploy, use the `CodeLocation` pre-signed URL
-from that evidence file to download the currently deployed package into a local,
-ignored rollback artifact. Do not commit the downloaded package.
+Before any intentional Lambda redeploy, fetch the `Code.Location` pre-signed
+URL into a shell variable and download the currently deployed package into a
+local, ignored rollback artifact. Do not print the URL and do not commit the
+downloaded package.
 
 If the Lambda reconciliation causes an ingestion regression, restore the
 previous package with `aws lambda update-function-code` or a controlled
 Terraform rollback plan, then rerun the ingestion smoke checks before returning
 to the dashboard hosting apply boundary.
+
+## Phase 14C Lambda Reconciliation Decision
+
+Evidence:
+
+```text
+docs/evidence/phase14c-root-lambda-reconcile-plan-20260520.txt
+docs/evidence/phase14c-ingest-lambda-current-config-sanitized-20260520.json
+docs/evidence/phase14c-ingest-lambda-current-tags-20260520.json
+```
+
+Commands used:
+
+```bash
+LAMBDA_CONFIG_QUERY="{FunctionName:FunctionName,LastModified:LastModified,"
+LAMBDA_CONFIG_QUERY+="CodeSha256:CodeSha256,Runtime:Runtime,Handler:Handler,"
+LAMBDA_CONFIG_QUERY+="MemorySize:MemorySize,Timeout:Timeout,Role:Role,"
+LAMBDA_CONFIG_QUERY+="EnvironmentKeys:keys(Environment.Variables)}"
+
+terraform -chdir=infra/terraform/lakehouse plan \
+  -out=tfplan-phase14c-root-lambda-reconcile
+
+terraform -chdir=infra/terraform/lakehouse show -no-color \
+  tfplan-phase14c-root-lambda-reconcile \
+  > docs/evidence/phase14c-root-lambda-reconcile-plan-20260520.txt
+
+aws lambda get-function-configuration \
+  --function-name energy-market-elexon-ingest \
+  --region eu-west-2 \
+  --query "${LAMBDA_CONFIG_QUERY}" \
+  --output json \
+  > docs/evidence/phase14c-ingest-lambda-current-config-sanitized-20260520.json
+
+LAMBDA_ARN="arn:aws:lambda:eu-west-2:464975959576:function:energy-market-elexon-ingest"
+
+aws lambda list-tags \
+  --resource "${LAMBDA_ARN}" \
+  --region eu-west-2 \
+  --output json \
+  > docs/evidence/phase14c-ingest-lambda-current-tags-20260520.json
+```
+
+Findings:
+
+- With CloudFront disabled, a normal root Terraform plan shows only the
+  ingestion Lambda reconciliation: `Plan: 0 to add, 1 to change, 0 to destroy`.
+- The proposed change still adds `source_code_hash`, `filename`, `publish =
+  false`, and the standard Terraform tags to `aws_lambda_function.ingest`.
+- The currently deployed Lambda ZIP hash remains
+  `LpuQEhsU45t3ne5cbEvumah4ljmMPwo8FaxzhW30Z/Y=`.
+- The Terraform-built local ZIP hash remains
+  `O+87gZ8+OMKKUwvzsXhA2sCVrAbDOwymkLU7MYS/Goc=`.
+- The extracted deployed `ingest_elexon.py` and local
+  `lambda/ingest_elexon.py` have the same SHA-256 file hash:
+  `525ef7109341258906f3ed6b6fbc0ce829666cb8cbfd06c53df78e46caed4997`.
+- Live Lambda tags are currently `{}`.
+
+Conclusion: the Lambda drift is operationally low risk but still a real live
+mutation. The code file content matches, so the ZIP-level difference is likely
+packaging metadata or archive construction rather than application source
+drift. The Terraform plan would still update the Lambda package metadata,
+`last_modified`, `source_code_hash`, and tags.
+
+Phase 14C decision: **do not apply during this decision slice**.
+
+Recommended next state:
+
+1. Run a controlled Lambda-only reconciliation apply as its own explicit state,
+   using the normal root plan with dashboard CloudFront still disabled.
+2. Before apply, download the currently deployed Lambda ZIP into a local,
+   ignored rollback file without printing the pre-signed URL.
+3. Apply only the saved root plan that shows `Plan: 0 to add, 1 to change,
+   0 to destroy`.
+4. Verify Lambda code hash, tags, configuration keys, and an ingestion smoke
+   check.
+5. Re-run the Phase 14 dashboard hosting plan only after the Lambda
+   reconciliation plan is clean.
+
+Alternatives rejected:
+
+- Broad `ignore_changes` on Lambda code or environment variables: rejected
+  because it would hide future ingestion drift.
+- Preserving the deployed ZIP as the Terraform-owned package: rejected for now
+  because the extracted source file matches the repo source, while Terraform
+  already defines the repo source as the ownership boundary.
+- Targeted dashboard apply while Lambda drift remains: rejected except as an
+  explicit break-glass path, because `-target` is not a normal release boundary.
 
 ## Proof Commands
 
