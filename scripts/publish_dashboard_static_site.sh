@@ -197,6 +197,8 @@ npm --prefix dashboard-ui run build
 aws s3 sync dashboard-ui/dist/ s3://${BUCKET}/ \\
   --delete \\
   --exclude "assets/*" \\
+  --exclude "snapshots/*" \\
+  --exclude "dashboard_snapshot_v1.json" \\
   --cache-control "no-cache"
 aws s3 sync dashboard-ui/dist/assets/ s3://${BUCKET}/assets/ \\
   --delete \\
@@ -234,6 +236,8 @@ S3_SYNC_COMMON=(--delete)
 run_or_print aws "${AWS_ARGS[@]}" s3 sync "${DIST_DIR}/" "s3://${BUCKET}/" \
   "${S3_SYNC_COMMON[@]}" \
   --exclude "assets/*" \
+  --exclude "snapshots/*" \
+  --exclude "dashboard_snapshot_v1.json" \
   --cache-control "no-cache"
 
 run_or_print aws "${AWS_ARGS[@]}" s3 sync "${DIST_DIR}/assets/" "s3://${BUCKET}/assets/" \

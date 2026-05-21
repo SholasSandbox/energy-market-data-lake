@@ -1,0 +1,10 @@
+{
+    "Id": "E2H9BGRGYAHKPN",
+    "DomainName": "d28yo76if4k3l1.cloudfront.net",
+    "Status": "Deployed",
+    "Enabled": true,
+    "Origins": [
+        "energy-market-dashboard-public-464975959576-20260511.s3.eu-west-2.amazonaws.com"
+    ],
+    "DefaultRootObject": "index.html"
+}

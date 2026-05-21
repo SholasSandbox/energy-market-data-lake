@@ -46,11 +46,14 @@ Region: **eu-west-2 (London)**
   explicit `--apply` for live S3/CloudFront writes.
 - Phase 14D ingestion Lambda reconciliation applied with rollback evidence,
   smoke invoke proof, Terraform tags, and a clean post-apply Terraform plan.
+- Phase 14E dashboard hosting apply-candidate plan reviewed cleanly:
+  CloudFront/OAC/response headers/S3 bucket policy only.
+- Phase 14F CloudFront hosting live apply completed with dashboard publish,
+  invalidation, HTTP header evidence, and clean post-apply Terraform plan.
 
 ### Deferred AWS Extension
 
 - Run OpenClaw in a clear runtime, or use Bedrock `InvokeModel` as the managed cloud AI path.
-- Apply CloudFront/static-site delivery for the public dashboard.
 - Enable the Phase 8 EventBridge schedule after another operating decision.
 - Add CloudWatch alarms after the manual workflow has settled.
 - Add DNS, ACM certificate, and custom domain for the public dashboard.
@@ -507,8 +510,8 @@ These are historical references, not the current delivery path.
 3. Keep local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
-5. Re-run the dashboard hosting apply-candidate plan now that ingestion Lambda
-   drift is reconciled.
+5. Keep the CloudFront-hosted dashboard evidence reproducible and decide
+   whether to repopulate the live AI `dashboard_snapshot_v1.json`.
 6. Defer DNS, ACM, alarms, schedules, and managed AI invocation until a phase
    explicitly targets those operating boundaries.
 
