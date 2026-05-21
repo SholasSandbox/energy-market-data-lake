@@ -44,6 +44,8 @@ Region: **eu-west-2 (London)**
   delivery, disabled by default until a live hosting decision.
 - Phase 13 dashboard hosting publish/runbook proof with plan-only evidence and
   explicit `--apply` for live S3/CloudFront writes.
+- Phase 14D ingestion Lambda reconciliation applied with rollback evidence,
+  smoke invoke proof, Terraform tags, and a clean post-apply Terraform plan.
 
 ### Deferred AWS Extension
 
@@ -421,8 +423,8 @@ python3 scripts/validate_athena_schema.py \
   for dashboard build artifacts, S3 sync commands, CloudFront invalidation,
   and evidence capture.
 - `docs/phase-14-dashboard-hosting-live-apply-evidence.md`: conservative
-  preflight, proof commands, safety decision, and rollback path for live
-  dashboard hosting evidence.
+  preflight, Lambda reconciliation evidence, proof commands, safety decision,
+  and rollback path for live dashboard hosting evidence.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
 - `docs/phase-8-operational-runbook.md`: manual run, proof, failure drill, and
@@ -505,8 +507,8 @@ These are historical references, not the current delivery path.
 3. Keep local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
-5. Keep the documented ingestion Lambda residual drift visible until redeploy
-   criteria are met.
+5. Re-run the dashboard hosting apply-candidate plan now that ingestion Lambda
+   drift is reconciled.
 6. Defer DNS, ACM, alarms, schedules, and managed AI invocation until a phase
    explicitly targets those operating boundaries.
 
