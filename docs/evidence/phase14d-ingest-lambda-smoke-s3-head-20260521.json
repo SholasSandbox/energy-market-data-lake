@@ -1,0 +1,10 @@
+{
+    "AcceptRanges": "bytes",
+    "Expiration": "expiry-date=\"Wed, 18 Nov 2026 00:00:00 GMT\", rule-id=\"raw-lifecycle\"",
+    "LastModified": "2026-05-21T14:14:58+00:00",
+    "ContentLength": 10993,
+    "ETag": "\"6e43d53427665c22c5af8af8e5552e91\"",
+    "ContentType": "binary/octet-stream",
+    "ServerSideEncryption": "AES256",
+    "Metadata": {}
+}

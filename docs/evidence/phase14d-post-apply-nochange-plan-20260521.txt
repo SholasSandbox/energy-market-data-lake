@@ -1,0 +1,59 @@
+data.archive_file.ingest_lambda: Reading...
+data.archive_file.ingest_lambda: Read complete after 0s [id=756f878a4ea8ff611679ef9d1119e38e3d90d3aa]
+data.aws_iam_policy_document.lambda_s3: Reading...
+data.aws_iam_policy_document.eventbridge_step_functions_assume_role: Reading...
+data.aws_iam_policy_document.lambda_assume_role: Reading...
+data.aws_iam_policy_document.step_functions_assume_role: Reading...
+data.aws_iam_policy_document.glue_assume_role: Reading...
+data.aws_iam_policy_document.glue_s3: Reading...
+aws_glue_catalog_database.lakehouse: Refreshing state... [id=464975959576:energy_market_lake]
+aws_cloudwatch_log_group.lambda: Refreshing state... [id=/aws/lambda/energy-market-elexon-ingest]
+aws_s3_object.glue_script: Refreshing state... [id=scripts/etl_raw_to_parquet.py]
+aws_athena_workgroup.lakehouse: Refreshing state... [id=energy-market-workgroup]
+data.aws_iam_policy_document.lambda_assume_role: Read complete after 0s [id=2690255455]
+data.aws_iam_policy_document.lambda_s3: Read complete after 0s [id=370903980]
+data.aws_iam_policy_document.step_functions_assume_role: Read complete after 0s [id=4022981484]
+data.aws_iam_policy_document.eventbridge_step_functions_assume_role: Read complete after 0s [id=3959961479]
+data.aws_iam_policy_document.glue_assume_role: Read complete after 0s [id=2681768870]
+data.aws_iam_policy_document.glue_s3: Read complete after 0s [id=1490090416]
+aws_cloudwatch_event_rule.daily_ingestion: Refreshing state... [id=energy-market-daily-ingestion]
+data.aws_iam_policy_document.ai_orchestration_lambda_s3[0]: Reading...
+aws_cloudwatch_log_group.ai_orchestration_lambda[0]: Refreshing state... [id=/aws/lambda/energy-market-news-ai-orchestration]
+aws_cloudwatch_event_rule.ai_orchestration_schedule[0]: Refreshing state... [id=energy-market-ai-orchestration-schedule]
+aws_sns_topic.ai_orchestration_failures[0]: Refreshing state... [id=arn:aws:sns:eu-west-2:464975959576:energy-market-ai-orchestration-failures]
+data.aws_iam_policy_document.ai_orchestration_lambda_s3[0]: Read complete after 0s [id=3665975595]
+aws_s3_bucket.dashboard_static[0]: Refreshing state... [id=energy-market-dashboard-public-464975959576-20260511]
+aws_iam_role.lambda: Refreshing state... [id=energy-market-lambda-role]
+aws_iam_role.ai_orchestration_lambda[0]: Refreshing state... [id=energy-market-ai-orchestration-lambda-role]
+aws_iam_role.ai_orchestration_state_machine[0]: Refreshing state... [id=energy-market-ai-orchestration-sfn-role]
+aws_iam_role.glue: Refreshing state... [id=energy-market-glue-role]
+aws_iam_role.ai_orchestration_eventbridge[0]: Refreshing state... [id=energy-market-ai-orchestration-events-role]
+aws_s3_bucket_versioning.dashboard_static[0]: Refreshing state... [id=energy-market-dashboard-public-464975959576-20260511]
+aws_s3_bucket_public_access_block.dashboard_static[0]: Refreshing state... [id=energy-market-dashboard-public-464975959576-20260511]
+aws_s3_bucket_server_side_encryption_configuration.dashboard_static[0]: Refreshing state... [id=energy-market-dashboard-public-464975959576-20260511]
+aws_iam_role_policy.lambda_s3: Refreshing state... [id=energy-market-lambda-role:energy-market-lambda-s3-policy]
+aws_iam_role_policy_attachment.lambda_basic_execution: Refreshing state... [id=energy-market-lambda-role-arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole]
+aws_iam_role_policy_attachment.ai_orchestration_lambda_basic_execution[0]: Refreshing state... [id=energy-market-ai-orchestration-lambda-role-20260511113842599700000001]
+aws_iam_role_policy.ai_orchestration_lambda_s3[0]: Refreshing state... [id=energy-market-ai-orchestration-lambda-role:energy-market-ai-orchestration-lambda-s3-policy]
+aws_iam_role_policy_attachment.glue_service_role: Refreshing state... [id=energy-market-glue-role-arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole]
+aws_iam_role_policy.glue_s3: Refreshing state... [id=energy-market-glue-role:energy-market-glue-s3-policy]
+aws_glue_crawler.raw: Refreshing state... [id=energy-market-raw-crawler]
+aws_glue_crawler.curated: Refreshing state... [id=energy-market-curated-crawler]
+aws_lambda_function.ingest: Refreshing state... [id=energy-market-elexon-ingest]
+aws_lambda_function.ai_orchestration[0]: Refreshing state... [id=energy-market-news-ai-orchestration]
+aws_glue_job.raw_to_parquet: Refreshing state... [id=energy-market-etl-raw-to-parquet]
+aws_lambda_permission.allow_eventbridge: Refreshing state... [id=energy-market-daily-ingestion-invoke]
+aws_cloudwatch_event_target.daily_ingestion: Refreshing state... [id=energy-market-daily-ingestion-1]
+data.aws_iam_policy_document.ai_orchestration_state_machine[0]: Reading...
+data.aws_iam_policy_document.ai_orchestration_state_machine[0]: Read complete after 0s [id=4066223000]
+aws_iam_role_policy.ai_orchestration_state_machine[0]: Refreshing state... [id=energy-market-ai-orchestration-sfn-role:energy-market-ai-orchestration-sfn-policy]
+aws_sfn_state_machine.ai_orchestration[0]: Refreshing state... [id=arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration]
+data.aws_iam_policy_document.ai_orchestration_eventbridge[0]: Reading...
+aws_cloudwatch_event_target.ai_orchestration_schedule[0]: Refreshing state... [id=energy-market-ai-orchestration-schedule-terraform-20260511113907264200000002]
+data.aws_iam_policy_document.ai_orchestration_eventbridge[0]: Read complete after 0s [id=3646704619]
+aws_iam_role_policy.ai_orchestration_eventbridge[0]: Refreshing state... [id=energy-market-ai-orchestration-events-role:energy-market-ai-orchestration-events-policy]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.

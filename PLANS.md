@@ -65,9 +65,8 @@ The current implementation boundary is:
   CloudFront foundation for public-safe dashboard delivery
 - Phase 13 is complete: dashboard static publish commands and evidence
   capture are scripted in plan-only mode before live hosting writes
-- Phase 14 is in preflight: live CloudFront/S3 apply is safe to plan, but not
-  safe to apply until the ingestion Lambda drift is reconciled or explicitly
-  isolated
+- Phase 14 is in preflight: ingestion Lambda drift has been reconciled; live
+  CloudFront/S3 apply is ready for a fresh dashboard-hosting-only plan review
 
 ## Delivery Order
 
@@ -386,16 +385,31 @@ Phase 14C Lambda-only reconciliation decision:
   controlled Lambda-only reconciliation apply with rollback package captured
   locally before any mutation
 
+Phase 14D Lambda-only reconciliation apply:
+
+- apply evidence:
+  `docs/evidence/phase14d-lambda-reconcile-apply-20260521.txt`
+- post-apply Lambda config evidence:
+  `docs/evidence/phase14d-ingest-lambda-post-apply-config-sanitized-20260521.json`
+- post-apply Lambda tag evidence:
+  `docs/evidence/phase14d-ingest-lambda-post-apply-tags-20260521.json`
+- smoke evidence:
+  `docs/evidence/phase14d-ingest-lambda-smoke-response-20260521.json`
+- post-apply root plan:
+  `docs/evidence/phase14d-post-apply-nochange-plan-20260521.txt`
+- result: `Apply complete! Resources: 0 added, 1 changed, 0 destroyed.`
+- Lambda smoke invoke returned `StatusCode` 200, handler status `ok`, and no
+  warnings
+- post-apply Terraform plan reports no changes
+- decision: Lambda drift is reconciled; dashboard hosting can move back to a
+  fresh apply-candidate plan review
+
 ## Suggested Immediate Next Steps
 
-1. Start Phase 14D as a Lambda-only reconciliation apply state.
-2. Capture the currently deployed Lambda ZIP as a local ignored rollback
-   artifact without printing the pre-signed download URL.
-3. Apply only a saved normal root plan with CloudFront disabled and
-   `Plan: 0 to add, 1 to change, 0 to destroy`.
-4. Verify Lambda hash, tags, configuration keys, and ingestion smoke evidence.
-5. Re-run the dashboard hosting plan only after Lambda drift is resolved.
-6. Apply dashboard hosting only when the root plan is limited to CloudFront,
+1. Start the next Phase 14 dashboard-hosting apply-candidate review state.
+2. Re-run the dashboard hosting plan with `dashboard_cloudfront_enabled=true`.
+3. Save the plan output under `docs/evidence/`.
+4. Apply dashboard hosting only when the root plan is limited to CloudFront,
    OAC, response headers policy, and dashboard S3 bucket policy.
 
 ## Next Branch Preflight Checklist
