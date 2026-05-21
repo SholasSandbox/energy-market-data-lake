@@ -50,6 +50,8 @@ Region: **eu-west-2 (London)**
   CloudFront/OAC/response headers/S3 bucket policy only.
 - Phase 14F CloudFront hosting live apply completed with dashboard publish,
   invalidation, HTTP header evidence, and clean post-apply Terraform plan.
+- Phase 15 hosted-dashboard demo hardening adds the live CloudFront URL and
+  verification path to the demo walkthrough.
 
 ### Deferred AWS Extension
 
@@ -434,8 +436,8 @@ python3 scripts/validate_athena_schema.py \
   demo commands for Phase 8.
 - `docs/phase-9-terraform-import-hardening.md`: completed Terraform import and
   operating hardening tracker.
-- `docs/demo-walkthrough.md`: concise demo script for the local MVP and live
-  orchestration story.
+- `docs/demo-walkthrough.md`: concise demo script for the CloudFront-hosted
+  dashboard, local fallback, and live orchestration story.
 - `docs/news-dashboard-merged-execution-model.md`: 4-week news + AI + dashboard expansion plan.
 
 ## Diagrams
@@ -510,7 +512,7 @@ These are historical references, not the current delivery path.
 3. Keep local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
-5. Keep the CloudFront-hosted dashboard evidence reproducible and decide
+5. Keep the CloudFront-hosted dashboard demo path reproducible and decide
    whether to repopulate the live AI `dashboard_snapshot_v1.json`.
 6. Defer DNS, ACM, alarms, schedules, and managed AI invocation until a phase
    explicitly targets those operating boundaries.
