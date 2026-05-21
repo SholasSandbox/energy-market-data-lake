@@ -1,0 +1,61 @@
+
+> energy-market-dashboard-ui@0.1.0 build
+> tsc -b && vite build
+
+vite v8.0.10 building client environment for production...
+[2Ktransforming...✓ 16 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.43 kB │ gzip:  0.29 kB
+dist/assets/index-DP9yyVIZ.css   21.86 kB │ gzip:  4.84 kB
+dist/assets/index-BIShhcF4.js   183.74 kB │ gzip: 57.05 kB
+
+✓ built in 161ms
+Validating energy_input_v1.example.json against energy_input_v1.schema.json...
+Validating news_summary_v1.example.json against news_summary_v1.schema.json...
+Validating ai_input_bundle_v1.example.json against ai_input_bundle_v1.schema.json...
+Validating ai_insight_v1.example.json against ai_insight_v1.schema.json...
+Validating dashboard_snapshot_v1.example.json against dashboard_snapshot_v1.schema.json...
+Validating energy_input_v1.sample.json against energy_input_v1.schema.json...
+Validating news_summary_v1.sample.json against news_summary_v1.schema.json...
+Validating ai_input_bundle_v1.sample.json against ai_input_bundle_v1.schema.json...
+Validating ai_insight_v1.sample.json against ai_insight_v1.schema.json...
+Validating dashboard_snapshot_v1.sample.json against dashboard_snapshot_v1.schema.json...
+Confirming bad_energy_input_v1.sample.json is rejected by energy_input_v1.schema.json...
+Rejected as expected: /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake/docs/evidence/failed/bad_energy_input_v1.sample.json: records.0: Additional properties are not allowed ('consumption_mw' was unexpected)
+Confirming bad_ai_insight_v1.sample.json is rejected by ai_insight_v1.schema.json...
+Rejected as expected: /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake/docs/evidence/failed/bad_ai_insight_v1.sample.json: insights.0.energy_references.0: Additional properties are not allowed ('source2' was unexpected)
+
+All contracts are valid.
++ aws --region eu-west-2 s3 sync /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui/dist/ s3://energy-market-dashboard-public-464975959576-20260511/ --delete --exclude assets/\* --cache-control no-cache
+delete: s3://energy-market-dashboard-public-464975959576-20260511/dashboard_snapshot_v1.json
+Completed 0 Bytes/60.7 KiB (0 Bytes/s) with 5 file(s) remainingdelete: s3://energy-market-dashboard-public-464975959576-20260511/snapshots/run_id=ai-insight-20260511T114236Z-cf2343fc/dashboard_snapshot_v1.json
+Completed 0 Bytes/60.7 KiB (0 Bytes/s) with 4 file(s) remainingCompleted 9.6 KiB/60.7 KiB (95.7 KiB/s) with 4 file(s) remainingupload: dashboard-ui/dist/dashboard_snapshot_v1.sample.json to s3://energy-market-dashboard-public-464975959576-20260511/dashboard_snapshot_v1.sample.json
+Completed 9.6 KiB/60.7 KiB (95.7 KiB/s) with 3 file(s) remainingdelete: s3://energy-market-dashboard-public-464975959576-20260511/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json
+Completed 9.6 KiB/60.7 KiB (95.7 KiB/s) with 2 file(s) remainingCompleted 10.0 KiB/60.7 KiB (75.4 KiB/s) with 2 file(s) remainingupload: dashboard-ui/dist/index.html to s3://energy-market-dashboard-public-464975959576-20260511/index.html
+Completed 10.0 KiB/60.7 KiB (75.4 KiB/s) with 1 file(s) remainingCompleted 31.6 KiB/60.7 KiB (222.7 KiB/s) with 1 file(s) remainingupload: dashboard-ui/dist/dashboard-data.json to s3://energy-market-dashboard-public-464975959576-20260511/dashboard-data.json
++ aws --region eu-west-2 s3 sync /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake/dashboard-ui/dist/assets/ s3://energy-market-dashboard-public-464975959576-20260511/assets/ --delete --cache-control public\,max-age=31536000\,immutable
+Completed 21.4 KiB/200.8 KiB (315.3 KiB/s) with 2 file(s) remainingupload: dashboard-ui/dist/assets/index-DP9yyVIZ.css to s3://energy-market-dashboard-public-464975959576-20260511/assets/index-DP9yyVIZ.css
+Completed 21.4 KiB/200.8 KiB (315.3 KiB/s) with 1 file(s) remainingCompleted 200.8 KiB/200.8 KiB (1.5 MiB/s) with 1 file(s) remaining upload: dashboard-ui/dist/assets/index-BIShhcF4.js to s3://energy-market-dashboard-public-464975959576-20260511/assets/index-BIShhcF4.js
++ aws --region eu-west-2 cloudfront create-invalidation --distribution-id E2H9BGRGYAHKPN --paths /index.html /assets/\* /dashboard-data.json /dashboard_snapshot_v1.sample.json
+{
+    "Location": "https://cloudfront.amazonaws.com/2020-05-31/distribution/E2H9BGRGYAHKPN/invalidation/I5Y1IB9UV28LPLKATYRN0ELGM1",
+    "Invalidation": {
+        "Id": "I5Y1IB9UV28LPLKATYRN0ELGM1",
+        "Status": "InProgress",
+        "CreateTime": "2026-05-21T14:45:40.745000+00:00",
+        "InvalidationBatch": {
+            "Paths": {
+                "Quantity": 4,
+                "Items": [
+                    "/dashboard-data.json",
+                    "/dashboard_snapshot_v1.sample.json",
+                    "/index.html",
+                    "/assets/*"
+                ]
+            },
+            "CallerReference": "cli-1779374740-940469"
+        }
+    }
+}
+Wrote publish evidence: docs/evidence/phase14f-dashboard-hosting-publish-20260521.md

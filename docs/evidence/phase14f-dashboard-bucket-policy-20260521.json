@@ -1,0 +1,1 @@
+{"Version":"2012-10-17","Statement":[{"Sid":"AllowCloudFrontRead","Effect":"Allow","Principal":{"Service":"cloudfront.amazonaws.com"},"Action":"s3:GetObject","Resource":"arn:aws:s3:::energy-market-dashboard-public-464975959576-20260511/*","Condition":{"StringEquals":{"AWS:SourceArn":"arn:aws:cloudfront::464975959576:distribution/E2H9BGRGYAHKPN"}}}]}

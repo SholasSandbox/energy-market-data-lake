@@ -386,6 +386,151 @@ Next safe state boundary:
 - Keep the local rollback ZIP until the dashboard hosting apply is complete and
   the project reaches the next clean pause boundary.
 
+## Phase 14E Dashboard Hosting Apply-Candidate Review
+
+Evidence:
+
+```text
+docs/evidence/phase14e-dashboard-hosting-apply-candidate-plan-20260521.txt
+docs/evidence/phase14e-dashboard-hosting-preapply-outputs-20260521.json
+```
+
+Plan command:
+
+```bash
+terraform -chdir=infra/terraform/lakehouse plan \
+  -var='dashboard_cloudfront_enabled=true' \
+  -out=tfplan-phase14e-dashboard-hosting
+```
+
+Plan result:
+
+```text
+Plan: 4 to add, 0 to change, 0 to destroy.
+```
+
+Expected resources to add:
+
+- `aws_cloudfront_distribution.dashboard_static[0]`
+- `aws_cloudfront_origin_access_control.dashboard_static[0]`
+- `aws_cloudfront_response_headers_policy.dashboard_static[0]`
+- `aws_s3_bucket_policy.dashboard_static_cloudfront[0]`
+
+Pre-apply state:
+
+- Dashboard S3 bucket resources are already in Terraform state.
+- CloudFront resources are not yet in Terraform state.
+- The plan does not include Lambda, Step Functions, EventBridge schedule,
+  Glue/Athena, IAM broadening outside the dashboard bucket policy, replacement,
+  or destroy actions.
+- Current outputs include `dashboard_bucket_name`; CloudFront distribution
+  outputs will be created only after apply.
+
+Phase 14E decision: **apply-candidate plan is clean**.
+
+No live dashboard hosting apply was run in this state.
+
+Next safe state boundary:
+
+- Apply the saved `tfplan-phase14e-dashboard-hosting` plan only after explicit
+  approval.
+- After apply, capture CloudFront distribution ID/domain outputs, distribution
+  status, S3 bucket policy evidence, and HTTP header checks.
+- Publish dashboard assets with
+  `scripts/publish_dashboard_static_site.sh --apply` only after CloudFront
+  outputs are available.
+
+## Phase 14F Dashboard Hosting Live Apply
+
+Evidence:
+
+```text
+docs/evidence/phase14f-dashboard-hosting-apply-20260521.txt
+docs/evidence/phase14f-dashboard-hosting-post-apply-outputs-20260521.json
+docs/evidence/phase14f-cloudfront-distribution-20260521.json
+docs/evidence/phase14f-dashboard-bucket-policy-20260521.json
+docs/evidence/phase14f-dashboard-hosting-publish-20260521.md
+docs/evidence/phase14f-dashboard-hosting-publish-output-20260521.txt
+docs/evidence/phase14f-cloudfront-invalidation-20260521.json
+docs/evidence/phase14f-cloudfront-http-headers-20260521.txt
+docs/evidence/phase14f-dashboard-bucket-objects-20260521.txt
+docs/evidence/phase14f-dashboard-hosting-post-apply-nochange-plan-20260521.txt
+```
+
+Apply command:
+
+```bash
+terraform -chdir=infra/terraform/lakehouse apply \
+  -no-color \
+  tfplan-phase14e-dashboard-hosting
+```
+
+Apply result:
+
+```text
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+```
+
+Created hosting resources:
+
+- CloudFront distribution: `E2H9BGRGYAHKPN`
+- CloudFront domain: `d28yo76if4k3l1.cloudfront.net`
+- Origin Access Control: `E3TCE5PD0QBXWX`
+- Response headers policy: `7c4e1883-9862-4feb-9504-a01908d6d6f6`
+- Dashboard S3 bucket policy scoped to the CloudFront distribution ARN
+
+Dashboard asset publish:
+
+```bash
+scripts/publish_dashboard_static_site.sh \
+  --apply \
+  --evidence-file docs/evidence/phase14f-dashboard-hosting-publish-20260521.md
+```
+
+Publish result:
+
+- Dashboard build passed.
+- Contract validation passed.
+- Static assets were synced to the dashboard bucket.
+- CloudFront invalidation `I5Y1IB9UV28LPLKATYRN0ELGM1` completed.
+
+HTTP proof:
+
+- `https://d28yo76if4k3l1.cloudfront.net/index.html`: `200 OK`
+- `https://d28yo76if4k3l1.cloudfront.net/dashboard-data.json`: `200 OK`
+- `https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.sample.json`:
+  `200 OK`
+- Security headers include HSTS, `DENY` frame options, `nosniff`, and
+  `strict-origin-when-cross-origin`.
+
+Post-apply Terraform plan:
+
+```text
+No changes. Your infrastructure matches the configuration.
+```
+
+Publish script hardening:
+
+- The initial static-site publish used `aws s3 sync --delete` and removed older
+  AI snapshot keys from the dashboard bucket:
+  `dashboard_snapshot_v1.json` and two immutable `snapshots/run_id=...` keys.
+- The React dashboard currently loads `dashboard_snapshot_v1.sample.json`, so
+  the live static dashboard proof is healthy.
+- The publish script was hardened after the apply to preserve
+  `dashboard_snapshot_v1.json` and `snapshots/*` on future static-site
+  publishes.
+- Plan-only evidence for that hardening is captured in
+  `docs/evidence/phase14f-dashboard-hosting-publish-preserve-snapshots-plan-20260521.md`.
+
+Phase 14F decision: **dashboard hosting live apply complete**.
+
+Next safe state boundary:
+
+- Decide whether to repopulate the live AI `dashboard_snapshot_v1.json` by
+  rerunning the Phase 8 publish step or by a controlled snapshot restore.
+- Keep DNS, ACM, alarms, schedules, and managed AI invocation deferred until
+  explicitly targeted.
+
 ## Proof Commands
 
 Run from the repo root unless noted.
@@ -519,21 +664,18 @@ scripts/publish_dashboard_static_site.sh \
 
 ## Safety Decision
 
-Current decision: **plan reviewed, not safe to apply yet**.
+Current decision: **Phase 14F dashboard hosting live apply complete**.
 
 Reasons:
 
-- CloudFront resources are not in state yet, so the first live apply will create
-  new public delivery infrastructure.
+- CloudFront resources are now in Terraform state and deployed.
 - The root also manages older lakehouse, Lambda, Step Functions, IAM, and
-  schedule resources; any unrelated drift must be reviewed before apply.
-- The dashboard bucket already exists in Terraform state, so this should be a
-  narrow add-on if the plan is clean.
-- The Phase 14A plan included an unrelated in-place update to
-  `aws_lambda_function.ingest`.
-- Phase 14B confirmed the Lambda update is caused by configuration/state
-  reconciliation, not just live refresh noise.
+  schedule resources; the post-apply plan confirms no unrelated drift.
+- The dashboard bucket is private and read access is scoped to the CloudFront
+  distribution through the bucket policy.
+- Static dashboard files are served through CloudFront with expected security
+  headers.
 
-Apply becomes acceptable only when the saved plan shows a narrow dashboard
-hosting change set and no unrelated replacements, destroys, schedule
-enablement, or IAM broadening.
+Future applies should still stop if a new plan introduces replacements,
+destroys, schedule enablement, Lambda changes, or IAM broadening outside the
+dashboard bucket policy.

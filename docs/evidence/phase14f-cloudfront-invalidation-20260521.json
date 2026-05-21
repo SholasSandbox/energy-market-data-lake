@@ -1,0 +1,19 @@
+{
+    "Invalidation": {
+        "Id": "I5Y1IB9UV28LPLKATYRN0ELGM1",
+        "Status": "Completed",
+        "CreateTime": "2026-05-21T14:45:40.745000+00:00",
+        "InvalidationBatch": {
+            "Paths": {
+                "Quantity": 4,
+                "Items": [
+                    "/dashboard-data.json",
+                    "/dashboard_snapshot_v1.sample.json",
+                    "/index.html",
+                    "/assets/*"
+                ]
+            },
+            "CallerReference": "cli-1779374740-940469"
+        }
+    }
+}
