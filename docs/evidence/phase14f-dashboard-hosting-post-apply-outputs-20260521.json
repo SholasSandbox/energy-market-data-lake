@@ -1,0 +1,87 @@
+{
+  "ai_orchestration_failure_topic_arn": {
+    "sensitive": false,
+    "type": "string",
+    "value": "arn:aws:sns:eu-west-2:464975959576:energy-market-ai-orchestration-failures"
+  },
+  "ai_orchestration_lambda_function_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-news-ai-orchestration"
+  },
+  "ai_orchestration_state_machine_arn": {
+    "sensitive": false,
+    "type": "string",
+    "value": "arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration"
+  },
+  "athena_output_location": {
+    "sensitive": false,
+    "type": "string",
+    "value": "s3://energy-market-lake-464975959576-20260405/athena-results/"
+  },
+  "athena_workgroup_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-workgroup"
+  },
+  "aws_region": {
+    "sensitive": false,
+    "type": "string",
+    "value": "eu-west-2"
+  },
+  "curated_crawler_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-curated-crawler"
+  },
+  "dashboard_bucket_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-dashboard-public-464975959576-20260511"
+  },
+  "dashboard_cloudfront_distribution_id": {
+    "sensitive": false,
+    "type": "string",
+    "value": "E2H9BGRGYAHKPN"
+  },
+  "dashboard_cloudfront_domain_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "d28yo76if4k3l1.cloudfront.net"
+  },
+  "data_bucket_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-lake-464975959576-20260405"
+  },
+  "glue_database_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy_market_lake"
+  },
+  "glue_job_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-etl-raw-to-parquet"
+  },
+  "glue_role_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-glue-role"
+  },
+  "lambda_function_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-elexon-ingest"
+  },
+  "lambda_role_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-lambda-role"
+  },
+  "raw_crawler_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "energy-market-raw-crawler"
+  }
+}

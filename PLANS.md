@@ -65,8 +65,9 @@ The current implementation boundary is:
   CloudFront foundation for public-safe dashboard delivery
 - Phase 13 is complete: dashboard static publish commands and evidence
   capture are scripted in plan-only mode before live hosting writes
-- Phase 14 is in preflight: ingestion Lambda drift has been reconciled; live
-  CloudFront/S3 apply is ready for a fresh dashboard-hosting-only plan review
+- Phase 14 live hosting is complete: ingestion Lambda drift was reconciled,
+  CloudFront/S3 hosting was applied, dashboard assets were published, and
+  CloudFront HTTP checks passed
 
 ## Delivery Order
 
@@ -404,13 +405,48 @@ Phase 14D Lambda-only reconciliation apply:
 - decision: Lambda drift is reconciled; dashboard hosting can move back to a
   fresh apply-candidate plan review
 
+Phase 14E dashboard-hosting apply-candidate review:
+
+- plan evidence:
+  `docs/evidence/phase14e-dashboard-hosting-apply-candidate-plan-20260521.txt`
+- pre-apply output evidence:
+  `docs/evidence/phase14e-dashboard-hosting-preapply-outputs-20260521.json`
+- result: `Plan: 4 to add, 0 to change, 0 to destroy`
+- expected additions are CloudFront distribution, OAC, response headers policy,
+  and dashboard S3 bucket policy
+- no Lambda, Step Functions, EventBridge schedule, Glue/Athena, replacement, or
+  destroy drift appears in the apply-candidate plan
+- decision: apply-candidate plan is clean; do not apply until explicit approval
+
+Phase 14F dashboard-hosting live apply:
+
+- apply evidence:
+  `docs/evidence/phase14f-dashboard-hosting-apply-20260521.txt`
+- post-apply outputs:
+  `docs/evidence/phase14f-dashboard-hosting-post-apply-outputs-20260521.json`
+- CloudFront distribution evidence:
+  `docs/evidence/phase14f-cloudfront-distribution-20260521.json`
+- publish evidence:
+  `docs/evidence/phase14f-dashboard-hosting-publish-20260521.md`
+- HTTP header evidence:
+  `docs/evidence/phase14f-cloudfront-http-headers-20260521.txt`
+- result: `Apply complete! Resources: 4 added, 0 changed, 0 destroyed.`
+- CloudFront distribution: `E2H9BGRGYAHKPN`
+- CloudFront domain: `d28yo76if4k3l1.cloudfront.net`
+- HTTP checks for `index.html`, `dashboard-data.json`, and
+  `dashboard_snapshot_v1.sample.json` returned `200 OK`
+- post-apply Terraform plan reports no changes
+- publish script was hardened to preserve `dashboard_snapshot_v1.json` and
+  `snapshots/*` on future static-site publishes
+
 ## Suggested Immediate Next Steps
 
-1. Start the next Phase 14 dashboard-hosting apply-candidate review state.
-2. Re-run the dashboard hosting plan with `dashboard_cloudfront_enabled=true`.
-3. Save the plan output under `docs/evidence/`.
-4. Apply dashboard hosting only when the root plan is limited to CloudFront,
-   OAC, response headers policy, and dashboard S3 bucket policy.
+1. Decide whether to repopulate the live AI `dashboard_snapshot_v1.json` using
+   a Phase 8 publish rerun or controlled snapshot restore.
+2. Keep DNS, ACM, alarms, schedules, and managed AI invocation deferred until a
+   phase explicitly targets those operating boundaries.
+3. Prepare a short demo note that the dashboard is now CloudFront-hosted while
+   custom domain and automated schedules remain intentionally deferred.
 
 ## Next Branch Preflight Checklist
 

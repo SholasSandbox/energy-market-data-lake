@@ -1,0 +1,43 @@
+# Phase 14F CloudFront HTTP Headers
+
+Generated at: 2026-05-21T14:46:32.896673+00:00
+
+## /index.html
+Status: 200 OK
+Content-Type: text/html
+Content-Length: 434
+Cache-Control: no-cache
+Server: AmazonS3
+X-Cache: Miss from cloudfront
+Via: 1.1 ed5bf73eea0876436de4cbcd6f6945e4.cloudfront.net (CloudFront)
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+## /dashboard-data.json
+Status: 200 OK
+Content-Type: application/json
+Content-Length: 22100
+Cache-Control: no-cache
+Server: AmazonS3
+X-Cache: Miss from cloudfront
+Via: 1.1 398a51ec785027c0cfb5003d3a46ab0a.cloudfront.net (CloudFront)
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+## /dashboard_snapshot_v1.sample.json
+Status: 200 OK
+Content-Type: application/json
+Content-Length: 9834
+Cache-Control: no-cache
+Server: AmazonS3
+X-Cache: Miss from cloudfront
+Via: 1.1 133321d9ca8be95a19f574700824c0e0.cloudfront.net (CloudFront)
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+
