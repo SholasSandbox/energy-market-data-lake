@@ -1,0 +1,8 @@
+{
+    "Tags": {
+        "Environment": "dev",
+        "ManagedBy": "terraform",
+        "Project": "energy-market",
+        "Workload": "energy-market-data-lake"
+    }
+}
