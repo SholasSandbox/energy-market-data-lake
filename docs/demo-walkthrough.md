@@ -13,7 +13,7 @@ workflow with Lambda handlers, validation gates, S3 artifacts, failed-run
 quarantine, and a schedule that remains disabled by design. Phase 10 adds an
 operator-focused React `Overview` page with alerts, executive KPIs, P&L
 drivers, risk coverage, market/news context, AI insight, and data-quality
-state.
+state. Phase 14F adds live CloudFront/S3 hosting for the React dashboard.
 
 ## 1. Business Problem
 
@@ -135,6 +135,55 @@ snapshot.
 ```
 
 ## 6. Show Dashboard
+
+Preferred live URL:
+
+```text
+https://d28yo76if4k3l1.cloudfront.net/
+https://d28yo76if4k3l1.cloudfront.net/#overview
+https://d28yo76if4k3l1.cloudfront.net/#portfolio-risk
+https://d28yo76if4k3l1.cloudfront.net/#market-context
+https://d28yo76if4k3l1.cloudfront.net/#quality
+```
+
+Live verification evidence:
+
+- `docs/evidence/phase14f-dashboard-hosting-live-apply-summary-20260521.md`
+- `docs/evidence/phase15-cloudfront-demo-http-check-20260521.txt`
+
+Quick hosted checks:
+
+```bash
+python3 - <<'PY'
+from http.client import HTTPSConnection
+
+host = "d28yo76if4k3l1.cloudfront.net"
+for path in ["/", "/dashboard-data.json", "/dashboard_snapshot_v1.sample.json"]:
+    conn = HTTPSConnection(host, timeout=20)
+    conn.request("HEAD", path)
+    resp = conn.getresponse()
+    print(path, resp.status, resp.reason)
+    conn.close()
+PY
+```
+
+Expected result:
+
+```text
+/ 200 OK
+/dashboard-data.json 200 OK
+/dashboard_snapshot_v1.sample.json 200 OK
+```
+
+Say:
+
+```text
+The dashboard is now served through CloudFront with a private S3 origin and
+Origin Access Control. The public surface is static and public-safe; private
+raw, curated, failed, and audit data remain behind the lakehouse boundary.
+```
+
+Local fallback:
 
 Run:
 
@@ -287,7 +336,7 @@ Hiring signal:
   dashboard JSON
 - gas context rendered in the React dashboard from Athena-backed dashboard data
 - live AWS Step Functions proof for the deterministic AI insight workflow
-- static dashboard delivery path
+- live CloudFront static dashboard delivery path
 - cost-aware AWS architecture
 
 ## Known Limitations
@@ -297,8 +346,9 @@ Hiring signal:
 - The energy evidence may be stale because it comes from the current local dashboard data.
 - Gas metrics are rendered in the React dashboard context, but not in the public AI snapshot contract.
 - RSS feed results change over time.
-- Terraform is scaffolded for the AWS lakehouse, but existing resources still need to be imported before Terraform manages them.
 - Phase 8 schedule automation is intentionally disabled until a later operating
   decision.
-- Phase 11 filter evidence is local dashboard evidence; CloudFront hosting is a
-  later state transition.
+- DNS, ACM certificate, CloudWatch alarms, managed AI invocation, and automated
+  schedules remain intentionally deferred.
+- The live AI `dashboard_snapshot_v1.json` restore is intentionally deferred;
+  the hosted React demo currently verifies `dashboard_snapshot_v1.sample.json`.
