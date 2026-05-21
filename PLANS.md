@@ -369,13 +369,33 @@ Phase 14B drift isolation:
 - decision: do not apply; reconcile the ingestion Lambda in a separate slice
   before any normal root dashboard hosting apply
 
+Phase 14C Lambda-only reconciliation decision:
+
+- no-apply evidence:
+  `docs/evidence/phase14c-root-lambda-reconcile-plan-20260520.txt`
+- sanitized live Lambda config evidence:
+  `docs/evidence/phase14c-ingest-lambda-current-config-sanitized-20260520.json`
+- live Lambda tag evidence:
+  `docs/evidence/phase14c-ingest-lambda-current-tags-20260520.json`
+- normal root plan with CloudFront disabled shows only
+  `aws_lambda_function.ingest`: `Plan: 0 to add, 1 to change, 0 to destroy`
+- extracted deployed source and local source have the same SHA-256 hash, so the
+  Lambda drift appears to be package metadata/state/tag reconciliation rather
+  than source-code drift
+- decision: do not apply during the decision slice; next safe state is a
+  controlled Lambda-only reconciliation apply with rollback package captured
+  locally before any mutation
+
 ## Suggested Immediate Next Steps
 
-1. Produce a Lambda-only reconciliation plan.
-2. Decide whether the repo Lambda package should be redeployed, or whether
-   Terraform ownership should preserve the currently deployed package.
-3. Re-run the dashboard hosting plan only after Lambda drift is resolved.
-4. Apply dashboard hosting only when the root plan is limited to CloudFront,
+1. Start Phase 14D as a Lambda-only reconciliation apply state.
+2. Capture the currently deployed Lambda ZIP as a local ignored rollback
+   artifact without printing the pre-signed download URL.
+3. Apply only a saved normal root plan with CloudFront disabled and
+   `Plan: 0 to add, 1 to change, 0 to destroy`.
+4. Verify Lambda hash, tags, configuration keys, and ingestion smoke evidence.
+5. Re-run the dashboard hosting plan only after Lambda drift is resolved.
+6. Apply dashboard hosting only when the root plan is limited to CloudFront,
    OAC, response headers policy, and dashboard S3 bucket policy.
 
 ## Next Branch Preflight Checklist
