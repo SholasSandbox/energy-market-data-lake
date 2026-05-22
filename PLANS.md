@@ -542,13 +542,46 @@ Next implementation slice:
 - no Terraform apply, live model invocation, schedule enablement, DNS, ACM, or
   alarm changes
 
+### Phase 17A: Bedrock Adapter Behind Local Tests
+
+Goal: prove the managed AI provider boundary in code before adding IAM,
+Terraform, live Bedrock invocation, or schedule automation.
+
+Status: implementation complete as a code-only local proof.
+
+Completed scope:
+
+- added `energy_market/managed_ai.py` with Bedrock Runtime request and response
+  parsing helpers
+- added `MergeAiInsightManaged` beside `MergeAiInsightDeterministic`
+- kept deterministic merge as fallback
+- validated managed output against `ai_insight_v1`
+- added fake-client proof through
+  `scripts/check_phase17a_managed_ai_adapter.py`
+
+Guardrails kept:
+
+- no Terraform apply
+- no IAM or state-machine deployment change
+- no live Bedrock invocation
+- no EventBridge schedule enablement
+- no DNS, ACM, alarms, budgets, or dashboard hosting changes
+
+Next implementation slice:
+
+- Phase 17B: controlled live Bedrock invocation plan/apply preflight, with
+  explicit token budget, model choice, IAM delta review, and rollback path
+- OpenClaw/local model comparison remains a later cost-control and creativity
+  slice after the AWS-managed boundary is proven
+
 ## Suggested Immediate Next Steps
 
-1. Implement Phase 17A as a code-only managed AI adapter slice with injected
-   Bedrock client tests and deterministic fallback preserved.
-2. Keep DNS, ACM, alarms, schedules, live model invocation, and Terraform apply
+1. Review and merge Phase 17A.
+2. Plan Phase 17B as a controlled live Bedrock invocation boundary with a hard
+   token budget and no schedule enablement.
+3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
-3. Keep the hosted dashboard demo path reproducible from
+4. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
