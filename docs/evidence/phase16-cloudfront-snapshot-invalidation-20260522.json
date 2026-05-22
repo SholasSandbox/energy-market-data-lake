@@ -1,0 +1,18 @@
+{
+    "Location": "https://cloudfront.amazonaws.com/2020-05-31/distribution/E2H9BGRGYAHKPN/invalidation/IDR5CTSS7OUOG7MA72SDXNSR6J",
+    "Invalidation": {
+        "Id": "IDR5CTSS7OUOG7MA72SDXNSR6J",
+        "Status": "InProgress",
+        "CreateTime": "2026-05-22T09:11:34.709000+00:00",
+        "InvalidationBatch": {
+            "Paths": {
+                "Quantity": 2,
+                "Items": [
+                    "/dashboard_snapshot_v1.json",
+                    "/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json"
+                ]
+            },
+            "CallerReference": "cli-1779441094-277740"
+        }
+    }
+}

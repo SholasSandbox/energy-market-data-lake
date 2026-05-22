@@ -521,13 +521,29 @@ Publish script hardening:
   publishes.
 - Plan-only evidence for that hardening is captured in
   `docs/evidence/phase14f-dashboard-hosting-publish-preserve-snapshots-plan-20260521.md`.
+- Phase 16 restored `dashboard_snapshot_v1.json` and the matching immutable
+  `snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json`
+  object from the successful Phase 8 curated artifacts.
 
 Phase 14F decision: **dashboard hosting live apply complete**.
 
+Phase 16 restore evidence:
+
+- Restored snapshot payload:
+  `docs/evidence/phase16-dashboard-snapshot-v1-restored-20260522.json`
+- S3 latest object proof:
+  `docs/evidence/phase16-dashboard-snapshot-latest-head-20260522.json`
+- S3 immutable object proof:
+  `docs/evidence/phase16-dashboard-snapshot-immutable-head-20260522.json`
+- CloudFront invalidation status:
+  `docs/evidence/phase16-cloudfront-snapshot-invalidation-status-20260522.json`
+- CloudFront JSON proof:
+  `docs/evidence/phase16-cloudfront-snapshot-http-json-check-20260522.txt`
+
 Next safe state boundary:
 
-- Decide whether to repopulate the live AI `dashboard_snapshot_v1.json` by
-  rerunning the Phase 8 publish step or by a controlled snapshot restore.
+- Keep the live dashboard path stable and verify the hosted demo before any
+  future managed AI refresh work.
 - Keep DNS, ACM, alarms, schedules, and managed AI invocation deferred until
   explicitly targeted.
 

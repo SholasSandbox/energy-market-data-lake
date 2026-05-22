@@ -1,0 +1,206 @@
+{
+  "schema_version": "dashboard_snapshot_v1",
+  "generated_at": "2026-05-22T09:11:09Z",
+  "metadata": {
+    "region": "gb",
+    "latest_date": "2026-05-07",
+    "data_freshness": "Local demo evidence snapshot; not live market freshness",
+    "status": "ok"
+  },
+  "summary_cards": [
+    {
+      "label": "Power Price",
+      "value": "105.17 GBP/MWh",
+      "trend": "From validated power evidence",
+      "status": "watch"
+    },
+    {
+      "label": "Power Demand",
+      "value": "25,118.00 MW",
+      "trend": "From validated power evidence",
+      "status": "ok"
+    },
+    {
+      "label": "Energy News",
+      "value": "18",
+      "trend": "Wider energy-sector RSS context",
+      "status": "ok"
+    }
+  ],
+  "insights": [
+    {
+      "id": "insight-2026-05-07-gb-001",
+      "title": "GB energy news context linked to: UK public EV charging network surpasses 120,000 chargers",
+      "summary": "Validated power evidence shows demand at 25,118 MW and power price at 105.17 GBP/MWh. Relevant curated news: <p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/05/RawCharging-150x150.jpg\" width=\"150\" />Zapmap data shows 11% year-on-year growth as ultra-rapid charging and hub numbers hit new...",
+      "risk_level": "low",
+      "confidence": 0.85,
+      "sources": [
+        {
+          "label": "elexon - system_buy_price_gbp_mwh",
+          "url": "s3://energy-market-lake-464975959576-20260405/curated/curated_dataset_electricity_e4e5001aa3d13e5189281de35cbc1cb9/date=2026-05-07/"
+        },
+        {
+          "label": "Energy Live News",
+          "url": "https://www.energylivenews.com/2026/05/08/uk-public-ev-charging-network-surpasses-120000-chargers/"
+        }
+      ]
+    }
+  ],
+  "news_articles": [
+    {
+      "publisher": "Energy Voice",
+      "title": "What next for oil and gas after the local elections?",
+      "url": "https://www.energyvoice.com/insights/energy-opinion/597257/what-next-for-oil-and-gas-after-the-local-elections/",
+      "published_at": "2026-05-11T11:00:21Z",
+      "summary": "Former British diplomat Greg Quinn calls for industry to 'make more noise' after the English, Welsh and Scottish elections.",
+      "topics": [
+        "oil_gas"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "Attenborough most trusted voice on climate but 40% still don\u2019t believe him",
+      "url": "https://www.energylivenews.com/2026/05/08/attenborough-most-trusted-voice-on-climate-but-40-still-dont-believe-him/",
+      "published_at": "2026-05-08T14:19:33Z",
+      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2020/01/david-attenborough-150x150.jpg\" width=\"150\" />On his 100th birthday Sir David is believed by 59% of the public when it comes to...",
+      "topics": [
+        "power_supply"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Voice",
+      "title": "Live updates: US rejects Iran peace deal",
+      "url": "https://www.energyvoice.com/oilandgas/594142/live-blog-iran-war-energy-oil-gas/",
+      "published_at": "2026-05-11T06:04:04Z",
+      "summary": "US launches 'Project Freedom' escort operation through Strait of Hormuz",
+      "topics": [],
+      "regions": []
+    },
+    {
+      "publisher": "Offshore Energy",
+      "title": "$30 billion mega gas project set to enrich Australia\u2019s countrywide GDP by $98.7 billion",
+      "url": "https://www.offshore-energy.biz/30-billion-mega-gas-project-set-to-enrich-australias-countrywide-gdp-by-98-7-billion/",
+      "published_at": "2026-05-11T09:34:36Z",
+      "summary": "<p>Australian energy giant Woodside has highlighted the findings of a new report, which indicates that the development of what is said to be Australia\u2019s largest untapped conventional gas resource could bring a multibillion-dollar boost to the country\u2019s economy, while fortifyin...",
+      "topics": [
+        "oil_gas"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "Port of Blyth \u00a3100m expansion plans",
+      "url": "https://www.energylivenews.com/2026/05/08/port-of-blyth-100m-expansion-plans/",
+      "published_at": "2026-05-08T13:30:00Z",
+      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/03/Shutterstock_1427320211-150x150.jpg\" width=\"150\" />The Northumberland hub is expected to be home to next generation wind</p> <p>...",
+      "topics": [
+        "power_supply",
+        "renewables"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Voice",
+      "title": "Digital transformation in the energy sector: Key factors for success",
+      "url": "https://www.energyvoice.com/all-news/596032/aize-digital-transformation/",
+      "published_at": "2026-05-11T06:00:57Z",
+      "summary": "Digital transformation in the energy sector promises to take businesses to a new level of productivity and success. However, without the full support of humans in user adoption and full engagement of personnel, these tools can fail.",
+      "topics": [],
+      "regions": []
+    },
+    {
+      "publisher": "Offshore Energy",
+      "title": "Seadrill\u2019s new rig deals of over $860 million lift total backlog to $3.1 billion",
+      "url": "https://www.offshore-energy.biz/seadrills-new-rig-deals-of-over-860-million-lift-total-backlog-to-3-1-billion/",
+      "published_at": "2026-05-11T08:34:50Z",
+      "summary": "<p>Seadrill, an offshore drilling contractor, has secured a batch of rig assignments and extensions across the U.S. Gulf, Brazil, and Angola, with LLOG, a subsidiary of Harbour Energy, Brazil\u2019s state-owned oil and gas giant Petrobras, and France\u2019s energy giant TotalEnergies..<...",
+      "topics": [
+        "oil_gas"
+      ],
+      "regions": [
+        "fr"
+      ]
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "UK public EV charging network surpasses 120,000 chargers",
+      "url": "https://www.energylivenews.com/2026/05/08/uk-public-ev-charging-network-surpasses-120000-chargers/",
+      "published_at": "2026-05-08T12:36:00Z",
+      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/05/RawCharging-150x150.jpg\" width=\"150\" />Zapmap data shows 11% year-on-year growth as ultra-rapid charging and hub numbers hit new...",
+      "topics": [
+        "power_supply"
+      ],
+      "regions": [
+        "gb"
+      ]
+    },
+    {
+      "publisher": "Energy Voice",
+      "title": "Energy Voice nominated for major podcast award",
+      "url": "https://www.energyvoice.com/events/597150/energy-voice-nominated-major-podcast-award/",
+      "published_at": "2026-05-11T05:05:04Z",
+      "summary": "Nod is latest in long line of nominations for the brand.",
+      "topics": [],
+      "regions": []
+    },
+    {
+      "publisher": "Oilprice.com",
+      "title": "Morgan Stanley: Oil Buffers Could Run Out Before Hormuz Reopens",
+      "url": "https://oilprice.com/Latest-Energy-News/World-News/Morgan-Stanley-Oil-Buffers-Could-Run-Out-Before-Hormuz-Reopens.html",
+      "published_at": "2026-05-11T11:30:00Z",
+      "summary": "Most of the market buffers that have stopped oil futures prices from rallying to record highs could vanish before the reopening of the Strait of Hormuz, which puts the market in a \u201crace against time,\u201d according to Morgan Stanley. Reduced overall crude imports into China and so...",
+      "topics": [
+        "oil_gas"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "Iberdrola passes 5 million MWh milestone in Italy",
+      "url": "https://www.energylivenews.com/2026/05/08/iberdrola-passes-5-million-mwh-milestone-in-italy/",
+      "published_at": "2026-05-08T11:33:00Z",
+      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2025/12/Shutterstock_2393210151-150x150.jpg\" width=\"150\" />New PPA backed by solar power strengthen industrial decarbonisation and expan...",
+      "topics": [
+        "power_supply",
+        "renewables"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Oilprice.com",
+      "title": "China CPI Jumps as Middle East Crisis Pushes Energy Costs Higher",
+      "url": "https://oilprice.com/Latest-Energy-News/World-News/China-CPI-Jumps-as-Middle-East-Crisis-Pushes-Energy-Costs-Higher.html",
+      "published_at": "2026-05-11T10:30:00Z",
+      "summary": "China's consumer inflation accelerated to 1.2% in April, topping analyst estimates, as the Middle East crisis drove a surge in energy prices. The Chinese consumer price index (CPI) rose by 1.2% last month from a year earlier, accelerating from 1% annual inflation in March, dat...",
+      "topics": [],
+      "regions": []
+    }
+  ],
+  "data_quality": {
+    "status": "ok",
+    "checks": [
+      {
+        "label": "Power evidence contract",
+        "status": "ok",
+        "detail": "Publisher metric input came from local demo power-focused energy_input_v1 evidence."
+      },
+      {
+        "label": "Energy news contract",
+        "status": "ok",
+        "detail": "Publisher input came from local demo curated news_summary_v1 evidence."
+      },
+      {
+        "label": "AI insight contract",
+        "status": "ok",
+        "detail": "Publisher insight came from local demo validated ai_insight_v1 evidence."
+      },
+      {
+        "label": "Public fields",
+        "status": "ok",
+        "detail": "Local demo snapshot includes only dashboard-safe fields."
+      }
+    ]
+  }
+}
