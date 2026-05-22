@@ -511,14 +511,45 @@ Result:
 - static-site publish hardening still preserves `dashboard_snapshot_v1.json`
   and `snapshots/*`
 
+### Phase 17: Managed AI Refresh Path Preflight
+
+Goal: decide how the project should move from deterministic AI insight
+generation to a managed AI refresh path without weakening the Phase 8
+validation and public publish boundary.
+
+Status: planning/preflight complete.
+
+Working document:
+`docs/phase-17-managed-ai-refresh-preflight.md`
+
+Decision:
+
+- prefer a Bedrock-first managed AI refresh path
+- keep deterministic merge as fallback and comparison path
+- keep OpenClaw/ECS runtime deferred until the managed model boundary is proven
+- keep EventBridge schedules disabled
+- do not change DNS, ACM, alarms, budgets, or dashboard hosting in this phase
+
+Evidence:
+
+- read-only preflight:
+  `docs/evidence/phase17-managed-ai-refresh-preflight-readonly-20260522.md`
+
+Next implementation slice:
+
+- Phase 17A: add a Bedrock adapter and `MergeAiInsightManaged` handler path
+  behind local tests and fake-client validation
+- no Terraform apply, live model invocation, schedule enablement, DNS, ACM, or
+  alarm changes
+
 ## Suggested Immediate Next Steps
 
-1. Keep DNS, ACM, alarms, schedules, and managed AI invocation deferred until a
-   phase explicitly targets those operating boundaries.
-2. Keep the hosted dashboard demo path reproducible from
+1. Implement Phase 17A as a code-only managed AI adapter slice with injected
+   Bedrock client tests and deterministic fallback preserved.
+2. Keep DNS, ACM, alarms, schedules, live model invocation, and Terraform apply
+   deferred until a phase explicitly targets those operating boundaries.
+3. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
-3. Consider a later operating slice for a managed AI refresh path once the
-   manual CloudFront demo boundary remains stable.
 
 ## Next Branch Preflight Checklist
 
