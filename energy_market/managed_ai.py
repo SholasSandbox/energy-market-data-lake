@@ -1,0 +1,163 @@
+"""Managed AI adapter helpers for Phase 17.
+
+The adapter is intentionally provider-light and client-injected so it can be
+tested without live Bedrock calls. The first concrete target is Bedrock Runtime
+`invoke_model`, with the existing `ai_insight_v1` schema remaining the safety
+gate outside this module.
+"""
+
+from __future__ import annotations
+
+import json
+import re
+from typing import Any
+
+
+DEFAULT_MAX_TOKENS = 800
+DEFAULT_TEMPERATURE = 0.2
+
+
+class ManagedAIResponseError(ValueError):
+    """Raised when a managed model response cannot be parsed as JSON."""
+
+
+def build_ai_insight_prompt(bundle: dict[str, Any]) -> str:
+    """Return a constrained prompt for producing `ai_insight_v1` JSON."""
+    return "\n".join(
+        [
+            "You are producing a controlled energy-market AI insight.",
+            "Return only valid JSON matching schemas/ai_insight_v1.schema.json.",
+            "Do not include markdown fences, commentary, or private fields.",
+            "Use only the validated bundle content below.",
+            "",
+            json.dumps(bundle, indent=2, sort_keys=True),
+        ],
+    )
+
+
+def build_bedrock_request(
+    bundle: dict[str, Any],
+    *,
+    max_tokens: int = DEFAULT_MAX_TOKENS,
+    temperature: float = DEFAULT_TEMPERATURE,
+) -> dict[str, Any]:
+    """Build an Anthropic-compatible Bedrock request body."""
+    return {
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": max_tokens,
+        "temperature": temperature,
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": build_ai_insight_prompt(bundle),
+                    },
+                ],
+            },
+        ],
+    }
+
+
+def invoke_bedrock_ai_insight(
+    bedrock_client: Any,
+    *,
+    model_id: str,
+    bundle: dict[str, Any],
+    max_tokens: int = DEFAULT_MAX_TOKENS,
+    temperature: float = DEFAULT_TEMPERATURE,
+) -> dict[str, Any]:
+    """Invoke Bedrock Runtime and return the parsed `ai_insight_v1` payload."""
+    request = build_bedrock_request(
+        bundle,
+        max_tokens=max_tokens,
+        temperature=temperature,
+    )
+    response = bedrock_client.invoke_model(
+        modelId=model_id,
+        body=json.dumps(request).encode("utf-8"),
+        contentType="application/json",
+        accept="application/json",
+    )
+    return parse_bedrock_response(response)
+
+
+def parse_bedrock_response(response: dict[str, Any]) -> dict[str, Any]:
+    """Parse common Bedrock response shapes into a JSON object."""
+    payload = _read_response_body(response)
+    if _looks_like_ai_insight(payload):
+        return payload
+
+    text = _extract_text(payload)
+    return _parse_json_text(text)
+
+
+def _read_response_body(response: dict[str, Any]) -> dict[str, Any]:
+    body = response.get("body", response.get("Body", response))
+    if hasattr(body, "read"):
+        body = body.read()
+    if isinstance(body, bytes):
+        body = body.decode("utf-8")
+    if isinstance(body, str):
+        try:
+            return json.loads(body)
+        except json.JSONDecodeError as exc:
+            raise ManagedAIResponseError("Bedrock response body was not JSON") from exc
+    if isinstance(body, dict):
+        return body
+    raise ManagedAIResponseError("Bedrock response body used an unsupported type")
+
+
+def _extract_text(payload: dict[str, Any]) -> str:
+    content = payload.get("content")
+    if isinstance(content, list):
+        text_parts = [
+            item.get("text", "")
+            for item in content
+            if isinstance(item, dict) and item.get("type", "text") == "text"
+        ]
+        text = "\n".join(part for part in text_parts if part)
+        if text:
+            return text
+
+    output = payload.get("output")
+    if isinstance(output, dict):
+        message = output.get("message", {})
+        message_content = message.get("content", [])
+        if isinstance(message_content, list):
+            text = "\n".join(
+                item.get("text", "")
+                for item in message_content
+                if isinstance(item, dict) and item.get("text")
+            )
+            if text:
+                return text
+
+    completion = payload.get("completion")
+    if isinstance(completion, str):
+        return completion
+
+    raise ManagedAIResponseError("Bedrock response did not contain text output")
+
+
+def _parse_json_text(text: str) -> dict[str, Any]:
+    cleaned = _strip_markdown_fences(text.strip())
+    try:
+        payload = json.loads(cleaned)
+    except json.JSONDecodeError as exc:
+        raise ManagedAIResponseError("managed AI text output was not JSON") from exc
+    if not isinstance(payload, dict):
+        raise ManagedAIResponseError("managed AI JSON output must be an object")
+    return payload
+
+
+def _strip_markdown_fences(text: str) -> str:
+    match = re.fullmatch(r"```(?:json)?\s*(.*?)\s*```", text, flags=re.DOTALL)
+    if match:
+        return match.group(1)
+    return text
+
+
+def _looks_like_ai_insight(payload: dict[str, Any]) -> bool:
+    return payload.get("schema_version") == "ai_insight_v1"
