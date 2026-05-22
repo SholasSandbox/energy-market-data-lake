@@ -90,14 +90,19 @@ Current proven state:
   delivery
 - Phase 13 dashboard hosting publish/runbook proof in plan-only mode
 - Phase 14 live dashboard hosting apply preflight
+- Phase 14F live CloudFront/S3 public dashboard apply and asset publishing
+- Phase 16 live AI dashboard snapshot restore from successful Phase 8
+  artifacts
+- Phase 17 managed AI refresh preflight with a Bedrock-first decision and
+  deterministic fallback
 - refreshed architecture diagrams
 
 Target follow-up state:
 
-- live CloudFront/S3 public dashboard apply and asset publishing
 - DNS, ACM certificate, and custom domain for dashboard delivery
 - CloudWatch alarms and budget controls
-- managed AI invocation through Bedrock or OpenClaw runtime
+- managed AI invocation through a Bedrock adapter, followed later by OpenClaw
+  runtime only if explicit model-runtime ownership is needed
 - carefully enabled schedules after manual proof and operating controls are
   accepted
 

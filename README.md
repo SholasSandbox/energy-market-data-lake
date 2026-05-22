@@ -54,10 +54,16 @@ Region: **eu-west-2 (London)**
   verification path to the demo walkthrough.
 - Phase 16 restored the live AI `dashboard_snapshot_v1.json` path from the
   successful Phase 8 curated artifacts without changing infrastructure.
+- Phase 17 managed AI refresh preflight selects a Bedrock-first path while
+  keeping deterministic fallback, schedules disabled, and Terraform apply out
+  of scope.
 
 ### Deferred AWS Extension
 
-- Run OpenClaw in a clear runtime, or use Bedrock `InvokeModel` as the managed cloud AI path.
+- Implement the Bedrock adapter and managed AI handler behind local tests
+  before live model invocation.
+- Run OpenClaw in a clear runtime only after the managed cloud AI boundary is
+  proven.
 - Enable the Phase 8 EventBridge schedule after another operating decision.
 - Add CloudWatch alarms after the manual workflow has settled.
 - Add DNS, ACM certificate, and custom domain for the public dashboard.
@@ -432,6 +438,8 @@ python3 scripts/validate_athena_schema.py \
 - `docs/phase-14-dashboard-hosting-live-apply-evidence.md`: conservative
   preflight, Lambda reconciliation evidence, proof commands, safety decision,
   and rollback path for live dashboard hosting evidence.
+- `docs/phase-17-managed-ai-refresh-preflight.md`: managed AI refresh
+  preflight and Bedrock-first decision with deterministic fallback.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
 - `docs/phase-8-operational-runbook.md`: manual run, proof, failure drill, and
@@ -516,7 +524,9 @@ These are historical references, not the current delivery path.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
 5. Keep the CloudFront-hosted dashboard demo path reproducible, including the
    restored live AI snapshot path and sample fallback.
-6. Defer DNS, ACM, alarms, schedules, and managed AI invocation until a phase
+6. Implement managed AI refresh as a controlled Bedrock-first adapter path
+   before enabling live invocation or schedules.
+7. Defer DNS, ACM, alarms, schedules, and live model invocation until a phase
    explicitly targets those operating boundaries.
 
 ## Notes
