@@ -168,17 +168,37 @@ This planning/preflight state is complete when:
 - The next implementation slice has explicit guardrails, proof commands, and a
   rollback path.
 
+## Phase 17A Result
+
+Phase 17A implemented the first code-only managed AI boundary:
+
+- `energy_market/managed_ai.py` builds constrained Bedrock Runtime requests
+  and parses common Bedrock response shapes
+- `lambda/news_ai_orchestration.py` now has a `MergeAiInsightManaged` action
+  beside `MergeAiInsightDeterministic`
+- `scripts/check_phase17a_managed_ai_adapter.py` proves the managed path with a
+  fake Bedrock client
+- invalid managed output is rejected by `ai_insight_v1` validation and routed
+  to the existing failed-path convention
+
+No live Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+were made.
+
 ## Next Implementation Slice
 
-Recommended next slice: **Phase 17A: Bedrock adapter behind local tests**.
+Recommended next slice: **Phase 17B: controlled live Bedrock invocation
+preflight**.
 
 Scope:
 
-- add a small Bedrock adapter module with injected client support
-- add a `MergeAiInsightManaged` handler path that can be tested with a fake
-  Bedrock response
-- validate model output against `ai_insight_v1`
-- keep Terraform, live model invocation, and schedule enablement out of scope
+- choose one low-cost Bedrock model and region
+- define a hard token and cost budget for a single manual invocation
+- review the exact IAM delta for `bedrock:InvokeModel`
+- decide whether to deploy the handler/state-machine change or perform a
+  separate proof script first
+- keep EventBridge schedules, DNS, ACM, alarms, OpenClaw runtime, and repeated
+  model invocation out of scope
 
-That slice proves the managed-AI seam in code before touching live IAM or model
-permissions.
+OpenClaw/local model comparison remains a later cost-control and creativity
+slice after the AWS-managed boundary is proven.

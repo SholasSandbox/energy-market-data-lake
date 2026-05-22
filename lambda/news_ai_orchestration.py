@@ -29,6 +29,7 @@ from energy_market.ai_orchestration import (  # noqa: E402
     read_s3_json,
     write_s3_json,
 )
+from energy_market.managed_ai import invoke_bedrock_ai_insight  # noqa: E402
 from energy_market.news_ai import (  # noqa: E402
     DEFAULT_FEEDS,
     build_ai_insight,
@@ -57,6 +58,7 @@ def handle_event(event: dict[str, Any], s3_client: Any) -> dict[str, Any]:
         "IngestNewsSummary": ingest_news_summary,
         "CreateAiInputBundle": create_ai_input_bundle,
         "MergeAiInsightDeterministic": merge_ai_insight_deterministic,
+        "MergeAiInsightManaged": merge_ai_insight_managed,
         "PublishDashboardSnapshot": publish_dashboard_snapshot,
     }
 
@@ -202,6 +204,56 @@ def merge_ai_insight_deterministic(
         summary_updates={
             "insight_count": len(payload.get("insights", [])),
             "risk_level": insight.get("risk_level", "watch"),
+        },
+    )
+
+
+def merge_ai_insight_managed(
+    event: dict[str, Any],
+    s3_client: Any,
+    bedrock_client: Any | None = None,
+) -> dict[str, Any]:
+    """Read the AI bundle and write a Bedrock-generated `ai_insight_v1` artifact."""
+    state = _state(event)
+    bundle = read_s3_json(
+        s3_client,
+        state["lake_bucket"],
+        _artifact(state, "ai_input_bundle"),
+    )
+    model_id = str(event.get("bedrock_model_id") or _env("BEDROCK_MODEL_ID"))
+    if not model_id:
+        raise ValueError("bedrock_model_id or BEDROCK_MODEL_ID is required")
+
+    payload = invoke_bedrock_ai_insight(
+        bedrock_client or _bedrock_client(),
+        model_id=model_id,
+        bundle=bundle,
+        max_tokens=int(
+            event.get("bedrock_max_tokens", _env("BEDROCK_MAX_TOKENS", "800")),
+        ),
+        temperature=float(
+            event.get(
+                "bedrock_temperature",
+                _env("BEDROCK_TEMPERATURE", "0.2"),
+            ),
+        ),
+    )
+    _validate_or_raise(payload, "ai_insight", "merge_ai_insight_managed")
+
+    key = artifact_key("ai_insight", state["run_id"])
+    write_s3_json(s3_client, state["lake_bucket"], key, payload)
+    insight = payload.get("insights", [{}])[0]
+
+    return _with_artifact(
+        state,
+        status="ai_insight_managed",
+        artifact_name="ai_insight",
+        artifact_key_value=key,
+        summary_updates={
+            "insight_count": len(payload.get("insights", [])),
+            "risk_level": insight.get("risk_level", "watch"),
+            "ai_provider": "bedrock",
+            "bedrock_model_id": model_id,
         },
     )
 
@@ -385,3 +437,9 @@ def _s3_client() -> Any:
     import boto3  # noqa: WPS433
 
     return boto3.client("s3")
+
+
+def _bedrock_client() -> Any:
+    import boto3  # noqa: WPS433
+
+    return boto3.client("bedrock-runtime")
