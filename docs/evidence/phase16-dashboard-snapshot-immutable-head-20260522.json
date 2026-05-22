@@ -1,0 +1,11 @@
+{
+    "AcceptRanges": "bytes",
+    "LastModified": "2026-05-22T09:11:24+00:00",
+    "ContentLength": 9920,
+    "ETag": "\"b610c544ea43bc42b01d6f6f621bcaab\"",
+    "VersionId": "bRGcVj_0rTVLoOpnuyT0RfOZ7UvkUQLE",
+    "CacheControl": "public,max-age=31536000,immutable",
+    "ContentType": "application/json",
+    "ServerSideEncryption": "AES256",
+    "Metadata": {}
+}
