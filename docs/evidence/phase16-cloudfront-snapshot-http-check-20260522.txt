@@ -1,0 +1,10 @@
+/ 200 OK content-type=text/html cache-control=no-cache bytes-read=434
+/index.html 200 OK content-type=text/html cache-control=no-cache bytes-read=434
+/dashboard-data.json 200 OK content-type=application/json cache-control=no-cache bytes-read=2048
+/dashboard-data.json json_probe_error=Unterminated string starting at: line 67 column 19 (char 2012)
+/dashboard_snapshot_v1.sample.json 200 OK content-type=application/json cache-control=no-cache bytes-read=2048
+/dashboard_snapshot_v1.sample.json json_probe_error=Unterminated string starting at: line 55 column 18 (char 2027)
+/dashboard_snapshot_v1.json 200 OK content-type=application/json cache-control=no-cache bytes-read=2048
+/dashboard_snapshot_v1.json json_probe_error=Unterminated string starting at: line 53 column 14 (char 1949)
+/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json 200 OK content-type=application/json cache-control=public,max-age=31536000,immutable bytes-read=2048
+/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json json_probe_error=Unterminated string starting at: line 53 column 14 (char 1949)

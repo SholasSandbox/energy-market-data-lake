@@ -52,6 +52,8 @@ Region: **eu-west-2 (London)**
   invalidation, HTTP header evidence, and clean post-apply Terraform plan.
 - Phase 15 hosted-dashboard demo hardening adds the live CloudFront URL and
   verification path to the demo walkthrough.
+- Phase 16 restored the live AI `dashboard_snapshot_v1.json` path from the
+  successful Phase 8 curated artifacts without changing infrastructure.
 
 ### Deferred AWS Extension
 
@@ -512,8 +514,8 @@ These are historical references, not the current delivery path.
 3. Keep local and AWS orchestration proof paths reproducible with schema
    validation and failure checks.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
-5. Keep the CloudFront-hosted dashboard demo path reproducible and decide
-   whether to repopulate the live AI `dashboard_snapshot_v1.json`.
+5. Keep the CloudFront-hosted dashboard demo path reproducible, including the
+   restored live AI snapshot path and sample fallback.
 6. Defer DNS, ACM, alarms, schedules, and managed AI invocation until a phase
    explicitly targets those operating boundaries.
 
