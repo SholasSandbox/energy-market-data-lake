@@ -57,11 +57,15 @@ Region: **eu-west-2 (London)**
 - Phase 17 managed AI refresh preflight selects a Bedrock-first path while
   keeping deterministic fallback, schedules disabled, and Terraform apply out
   of scope.
+- Phase 17A adds a code-only Bedrock adapter and `MergeAiInsightManaged`
+  handler path with fake-client validation and no live model invocation.
 
 ### Deferred AWS Extension
 
-- Implement the Bedrock adapter and managed AI handler behind local tests
-  before live model invocation.
+- Use the implemented Bedrock adapter and managed AI handler as the proof
+  boundary before live model invocation.
+- Run the first live Bedrock invocation only behind an explicit token budget,
+  IAM delta review, and rollback path.
 - Run OpenClaw in a clear runtime only after the managed cloud AI boundary is
   proven.
 - Enable the Phase 8 EventBridge schedule after another operating decision.
@@ -524,10 +528,10 @@ These are historical references, not the current delivery path.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
 5. Keep the CloudFront-hosted dashboard demo path reproducible, including the
    restored live AI snapshot path and sample fallback.
-6. Implement managed AI refresh as a controlled Bedrock-first adapter path
-   before enabling live invocation or schedules.
-7. Defer DNS, ACM, alarms, schedules, and live model invocation until a phase
-   explicitly targets those operating boundaries.
+6. Keep managed AI refresh behind the Bedrock adapter contract until the first
+   live invocation phase is explicitly approved.
+7. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+   OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
 
