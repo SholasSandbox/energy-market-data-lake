@@ -175,6 +175,35 @@ Expected result:
 /dashboard_snapshot_v1.sample.json 200 OK
 ```
 
+Live AI snapshot check:
+
+```bash
+python3 - <<'PY'
+import json
+from http.client import HTTPSConnection
+
+host = "d28yo76if4k3l1.cloudfront.net"
+paths = [
+    "/dashboard_snapshot_v1.json",
+    "/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json",
+]
+for path in paths:
+    conn = HTTPSConnection(host, timeout=20)
+    conn.request("GET", path)
+    resp = conn.getresponse()
+    payload = json.loads(resp.read().decode("utf-8"))
+    print(path, resp.status, resp.reason, payload["schema_version"])
+    conn.close()
+PY
+```
+
+Expected result:
+
+```text
+/dashboard_snapshot_v1.json 200 OK dashboard_snapshot_v1
+/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json 200 OK dashboard_snapshot_v1
+```
+
 Say:
 
 ```text
@@ -350,5 +379,6 @@ Hiring signal:
   decision.
 - DNS, ACM certificate, CloudWatch alarms, managed AI invocation, and automated
   schedules remain intentionally deferred.
-- The live AI `dashboard_snapshot_v1.json` restore is intentionally deferred;
-  the hosted React demo currently verifies `dashboard_snapshot_v1.sample.json`.
+- The live AI `dashboard_snapshot_v1.json` path has been restored from the
+  successful Phase 8 curated artifacts; future managed AI refresh remains
+  deferred.

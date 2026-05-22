@@ -469,14 +469,56 @@ Definition of done:
 - known follow-up for live AI snapshot restore is explicit
 - no Terraform apply, DNS, ACM, alarms, schedules, or managed AI changes
 
+### Phase 16: Live AI Dashboard Snapshot Restore
+
+Goal: restore the public-safe live AI dashboard snapshot path that was removed
+by the first static-site publish, without changing infrastructure or replacing
+the working CloudFront-hosted React demo.
+
+Status: complete as a controlled snapshot restore.
+
+Decision:
+
+- use the successful Phase 8 curated artifacts for run
+  `ai-insight-20260511T114815Z-927685a3`
+- rebuild `dashboard_snapshot_v1.json` through the existing repo snapshot
+  builder and schema validator
+- restore only the latest snapshot key and the matching immutable run-id key
+- do not rerun managed AI, do not run Terraform apply, and do not change DNS,
+  ACM, alarms, schedules, or managed AI invocation
+
+Evidence:
+
+- restored snapshot payload:
+  `docs/evidence/phase16-dashboard-snapshot-v1-restored-20260522.json`
+- S3 object proof:
+  `docs/evidence/phase16-dashboard-snapshot-latest-head-20260522.json`
+  and
+  `docs/evidence/phase16-dashboard-snapshot-immutable-head-20260522.json`
+- CloudFront invalidation proof:
+  `docs/evidence/phase16-cloudfront-snapshot-invalidation-status-20260522.json`
+- hosted HTTP/JSON proof:
+  `docs/evidence/phase16-cloudfront-snapshot-http-json-check-20260522.txt`
+
+Result:
+
+- `https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json`
+  returns `200 OK` and parses as `dashboard_snapshot_v1`
+- immutable snapshot path
+  `/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json`
+  returns `200 OK`
+- existing hosted dashboard routes continue to return `200 OK`
+- static-site publish hardening still preserves `dashboard_snapshot_v1.json`
+  and `snapshots/*`
+
 ## Suggested Immediate Next Steps
 
-1. Decide whether to repopulate the live AI `dashboard_snapshot_v1.json` using
-   a Phase 8 publish rerun or controlled snapshot restore.
-2. Keep DNS, ACM, alarms, schedules, and managed AI invocation deferred until a
+1. Keep DNS, ACM, alarms, schedules, and managed AI invocation deferred until a
    phase explicitly targets those operating boundaries.
-3. Keep the hosted dashboard demo path reproducible from
+2. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
+3. Consider a later operating slice for a managed AI refresh path once the
+   manual CloudFront demo boundary remains stable.
 
 ## Next Branch Preflight Checklist
 

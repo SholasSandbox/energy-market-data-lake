@@ -1,0 +1,8 @@
+/dashboard-data.json 200 OK content-type=application/json cache-control=no-cache bytes=22100 sha256=8d2a9099c847aec47c2072050df2a83137e15084da28a6db1175307b37da1e71
+/dashboard-data.json schema_version=<missing> generated_at=<missing>
+/dashboard_snapshot_v1.sample.json 200 OK content-type=application/json cache-control=no-cache bytes=9834 sha256=8d6f9fe4a21621a8330df1213842db8489d2f8c4e3e021e26eecc1e761dac226
+/dashboard_snapshot_v1.sample.json schema_version=dashboard_snapshot_v1 generated_at=2026-05-07T14:45:46Z
+/dashboard_snapshot_v1.json 200 OK content-type=application/json cache-control=no-cache bytes=9920 sha256=897f685faca6f30719a4c881fe51099a0bfc92df3debcfeb6556cd3f143ed30a
+/dashboard_snapshot_v1.json schema_version=dashboard_snapshot_v1 generated_at=2026-05-22T09:11:09Z
+/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json 200 OK content-type=application/json cache-control=public,max-age=31536000,immutable bytes=9920 sha256=897f685faca6f30719a4c881fe51099a0bfc92df3debcfeb6556cd3f143ed30a
+/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json schema_version=dashboard_snapshot_v1 generated_at=2026-05-22T09:11:09Z
