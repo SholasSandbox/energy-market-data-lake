@@ -62,6 +62,8 @@ Region: **eu-west-2 (London)**
 - Phase 17B confirms the first live Bedrock invocation should not run yet:
   Claude 3 Haiku needs model-agreement access, while Mistral Ministral 8B needs
   provider-specific adapter proof first.
+- Phase 17C adds Mistral request/response compatibility behind fake-client
+  proof, keeping Anthropic support and deterministic fallback intact.
 
 ### Deferred AWS Extension
 
@@ -71,6 +73,8 @@ Region: **eu-west-2 (London)**
   IAM delta review, and rollback path.
 - Prefer a Mistral compatibility proof before live invocation if cost control
   is the priority.
+- Run the first live Mistral invocation only as a single approved proof with a
+  hard one-run budget cap.
 - Run OpenClaw in a clear runtime only after the managed cloud AI boundary is
   proven.
 - Enable the Phase 8 EventBridge schedule after another operating decision.
@@ -538,8 +542,8 @@ These are historical references, not the current delivery path.
    restored live AI snapshot path and sample fallback.
 6. Keep managed AI refresh behind the Bedrock adapter contract until the first
    live invocation phase is explicitly approved.
-7. Resolve the Phase 17B model-access/provider-compatibility decision before
-   invoking Bedrock live.
+7. Keep Mistral live invocation as a single explicitly approved proof, not a
+   repeated experimentation path.
 8. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 

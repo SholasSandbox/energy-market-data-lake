@@ -15,6 +15,8 @@ from typing import Any
 
 DEFAULT_MAX_TOKENS = 800
 DEFAULT_TEMPERATURE = 0.2
+PROVIDER_ANTHROPIC = "anthropic"
+PROVIDER_MISTRAL = "mistral"
 
 
 class ManagedAIResponseError(ValueError):
@@ -36,6 +38,28 @@ def build_ai_insight_prompt(bundle: dict[str, Any]) -> str:
 
 
 def build_bedrock_request(
+    bundle: dict[str, Any],
+    *,
+    provider: str = PROVIDER_ANTHROPIC,
+    max_tokens: int = DEFAULT_MAX_TOKENS,
+    temperature: float = DEFAULT_TEMPERATURE,
+) -> dict[str, Any]:
+    """Build a provider-specific Bedrock request body."""
+    normalized_provider = normalize_provider(provider)
+    if normalized_provider == PROVIDER_MISTRAL:
+        return build_mistral_request(
+            bundle,
+            max_tokens=max_tokens,
+            temperature=temperature,
+        )
+    return build_anthropic_request(
+        bundle,
+        max_tokens=max_tokens,
+        temperature=temperature,
+    )
+
+
+def build_anthropic_request(
     bundle: dict[str, Any],
     *,
     max_tokens: int = DEFAULT_MAX_TOKENS,
@@ -60,17 +84,55 @@ def build_bedrock_request(
     }
 
 
+def build_mistral_request(
+    bundle: dict[str, Any],
+    *,
+    max_tokens: int = DEFAULT_MAX_TOKENS,
+    temperature: float = DEFAULT_TEMPERATURE,
+) -> dict[str, Any]:
+    """Build a Mistral chat-completion request body for Bedrock."""
+    return {
+        "messages": [
+            {
+                "role": "user",
+                "content": build_ai_insight_prompt(bundle),
+            },
+        ],
+        "max_tokens": max_tokens,
+        "temperature": temperature,
+    }
+
+
+def normalize_provider(provider: str | None) -> str:
+    """Return the supported provider name for a Bedrock model family."""
+    normalized = (provider or PROVIDER_ANTHROPIC).strip().lower()
+    if normalized in {PROVIDER_ANTHROPIC, PROVIDER_MISTRAL}:
+        return normalized
+    raise ValueError(f"unsupported managed AI provider {provider!r}")
+
+
+def provider_from_model_id(model_id: str) -> str:
+    """Infer provider from the Bedrock model ID prefix."""
+    if model_id.startswith("mistral."):
+        return PROVIDER_MISTRAL
+    if model_id.startswith("anthropic."):
+        return PROVIDER_ANTHROPIC
+    return PROVIDER_ANTHROPIC
+
+
 def invoke_bedrock_ai_insight(
     bedrock_client: Any,
     *,
     model_id: str,
     bundle: dict[str, Any],
+    provider: str | None = None,
     max_tokens: int = DEFAULT_MAX_TOKENS,
     temperature: float = DEFAULT_TEMPERATURE,
 ) -> dict[str, Any]:
     """Invoke Bedrock Runtime and return the parsed `ai_insight_v1` payload."""
     request = build_bedrock_request(
         bundle,
+        provider=provider or provider_from_model_id(model_id),
         max_tokens=max_tokens,
         temperature=temperature,
     )
@@ -133,6 +195,17 @@ def _extract_text(payload: dict[str, Any]) -> str:
             )
             if text:
                 return text
+
+    choices = payload.get("choices")
+    if isinstance(choices, list):
+        for choice in choices:
+            if not isinstance(choice, dict):
+                continue
+            message = choice.get("message", {})
+            if isinstance(message, dict) and isinstance(message.get("content"), str):
+                return message["content"]
+            if isinstance(choice.get("text"), str):
+                return choice["text"]
 
     completion = payload.get("completion")
     if isinstance(completion, str):
