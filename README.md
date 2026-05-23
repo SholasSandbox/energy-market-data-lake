@@ -64,6 +64,9 @@ Region: **eu-west-2 (London)**
   provider-specific adapter proof first.
 - Phase 17C adds Mistral request/response compatibility behind fake-client
   proof, keeping Anthropic support and deterministic fallback intact.
+- Phase 17D performs one live Mistral invocation under the `$0.10` cap; output
+  is rejected by `ai_insight_v1`, proving the validation gate protected the
+  dashboard.
 
 ### Deferred AWS Extension
 
@@ -75,6 +78,8 @@ Region: **eu-west-2 (London)**
   is the priority.
 - Run the first live Mistral invocation only as a single approved proof with a
   hard one-run budget cap.
+- Harden Mistral prompt and response-shape handling locally before any second
+  live invocation.
 - Run OpenClaw in a clear runtime only after the managed cloud AI boundary is
   proven.
 - Enable the Phase 8 EventBridge schedule after another operating decision.
@@ -542,9 +547,10 @@ These are historical references, not the current delivery path.
    restored live AI snapshot path and sample fallback.
 6. Keep managed AI refresh behind the Bedrock adapter contract until the first
    live invocation phase is explicitly approved.
-7. Keep Mistral live invocation as a single explicitly approved proof, not a
-   repeated experimentation path.
-8. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+7. Treat Phase 17D as evidence that validation gates protect the dashboard even
+   when live model output is malformed.
+8. Harden Mistral prompt/response handling locally before any second live call.
+9. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
