@@ -186,6 +186,29 @@ Result:
 Next boundary: local Mistral prompt/response-shape hardening before any second
 live invocation.
 
+## Phase 17E Result
+
+Phase 17E hardened the Mistral prompt and local response-shape handling before
+any second paid call.
+
+Evidence:
+`docs/evidence/phase17e-mistral-response-shape-hardening-20260523.md`
+
+Result:
+
+- prompt wording now requires the `ai_insight_v1` object at the JSON root
+- exact one-key `ai_insight` wrapper output is unwrapped locally before schema
+  validation
+- unsafe wrappers are not broadly unwrapped and still fail validation
+- fake-client proof covers the Phase 17D wrapper pattern without recording raw
+  Phase 17D output
+- no live Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+  were made
+
+Next boundary: one controlled second live Mistral invocation may be considered
+in a separate Phase 17F only after explicit approval.
+
 ## Rollback Path
 
 Because Phase 17B performs no live changes, rollback is simple:
