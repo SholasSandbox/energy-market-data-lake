@@ -679,17 +679,53 @@ Next implementation slice:
 - keep the failed Phase 17D invocation as evidence that schema gates protected
   the public dashboard
 
+### Phase 17E: Local Mistral Prompt/Response-Shape Hardening
+
+Goal: harden the Mistral output contract locally before any second paid model
+call.
+
+Status: implementation complete as a code-only local proof.
+
+Evidence:
+`docs/evidence/phase17e-mistral-response-shape-hardening-20260523.md`
+
+Completed scope:
+
+- tightened the managed AI prompt so the JSON root must be the
+  `ai_insight_v1` object itself
+- explicitly instructs Mistral not to wrap the payload in `ai_insight`,
+  `result`, `output`, `response`, `data`, or any other key
+- added narrow parser support for the observed one-key `ai_insight` wrapper
+  from Phase 17D
+- left unsafe or broader wrapper objects to fail the existing `ai_insight_v1`
+  validation gate
+- expanded the local fake-client proof to cover direct Mistral output, the
+  observed wrapper shape, and an unsafe wrapper failure case
+
+Guardrails kept:
+
+- no live Bedrock invocation
+- no Terraform apply
+- no IAM change
+- no Step Functions/state-machine deployment
+- no EventBridge schedule enablement
+- no DNS, ACM, alarms, budgets, or dashboard hosting changes
+- no raw Phase 17D model response was committed
+
+Next implementation slice:
+
+- Phase 17F: one controlled second live Mistral invocation may be considered
+  only after explicit approval, using the same hard one-run budget cap and no
+  retries unless separately approved
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17A.
-2. Review and merge Phase 17B preflight.
-3. Review and merge Phase 17C Mistral compatibility proof.
-4. Review and merge Phase 17D live-invocation evidence.
-5. Plan Phase 17E as local Mistral prompt/response-shape hardening before any
-   second live invocation.
-6. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
+1. Review and merge Phase 17E local Mistral response-shape hardening.
+2. Plan Phase 17F as a single second live Mistral invocation only if explicitly
+   approved.
+3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
-7. Keep the hosted dashboard demo path reproducible from
+4. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist

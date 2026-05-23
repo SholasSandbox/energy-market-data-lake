@@ -29,6 +29,10 @@ def build_ai_insight_prompt(bundle: dict[str, Any]) -> str:
         [
             "You are producing a controlled energy-market AI insight.",
             "Return only valid JSON matching schemas/ai_insight_v1.schema.json.",
+            "The JSON root object must be the ai_insight_v1 object itself.",
+            "The root object must contain schema_version, generated_at, and insights.",
+            "Do not wrap the payload in ai_insight, result, output, response,",
+            "data, or any other key.",
             "Do not include markdown fences, commentary, or private fields.",
             "Use only the validated bundle content below.",
             "",
@@ -148,6 +152,7 @@ def invoke_bedrock_ai_insight(
 def parse_bedrock_response(response: dict[str, Any]) -> dict[str, Any]:
     """Parse common Bedrock response shapes into a JSON object."""
     payload = _read_response_body(response)
+    payload = _unwrap_ai_insight_payload(payload)
     if _looks_like_ai_insight(payload):
         return payload
 
@@ -222,7 +227,7 @@ def _parse_json_text(text: str) -> dict[str, Any]:
         raise ManagedAIResponseError("managed AI text output was not JSON") from exc
     if not isinstance(payload, dict):
         raise ManagedAIResponseError("managed AI JSON output must be an object")
-    return payload
+    return _unwrap_ai_insight_payload(payload)
 
 
 def _strip_markdown_fences(text: str) -> str:
@@ -234,3 +239,14 @@ def _strip_markdown_fences(text: str) -> str:
 
 def _looks_like_ai_insight(payload: dict[str, Any]) -> bool:
     return payload.get("schema_version") == "ai_insight_v1"
+
+
+def _unwrap_ai_insight_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    """Accept the observed one-key Mistral wrapper without broad unwrapping."""
+    if _looks_like_ai_insight(payload):
+        return payload
+    if set(payload) == {"ai_insight"} and isinstance(payload["ai_insight"], dict):
+        nested = payload["ai_insight"]
+        if _looks_like_ai_insight(nested):
+            return nested
+    return payload

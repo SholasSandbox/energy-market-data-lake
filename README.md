@@ -67,6 +67,9 @@ Region: **eu-west-2 (London)**
 - Phase 17D performs one live Mistral invocation under the `$0.10` cap; output
   is rejected by `ai_insight_v1`, proving the validation gate protected the
   dashboard.
+- Phase 17E hardens the Mistral prompt and response-shape handling locally,
+  accepting only the observed one-key `ai_insight` wrapper before schema
+  validation and proving the behavior with fake-client tests.
 
 ### Deferred AWS Extension
 
@@ -545,11 +548,12 @@ These are historical references, not the current delivery path.
 4. Keep Phase 8 manual orchestration proof reproducible and schedule-disabled.
 5. Keep the CloudFront-hosted dashboard demo path reproducible, including the
    restored live AI snapshot path and sample fallback.
-6. Keep managed AI refresh behind the Bedrock adapter contract until the first
-   live invocation phase is explicitly approved.
+6. Keep managed AI refresh behind the Bedrock adapter contract and schema
+   validation gates.
 7. Treat Phase 17D as evidence that validation gates protect the dashboard even
    when live model output is malformed.
-8. Harden Mistral prompt/response handling locally before any second live call.
+8. Treat Phase 17E as the local hardening proof required before any second
+   live Mistral call.
 9. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
