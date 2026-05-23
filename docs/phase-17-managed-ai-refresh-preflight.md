@@ -270,3 +270,31 @@ Result:
 
 Recommended next slice: **Phase 17E: local Mistral prompt/response-shape
 hardening**, before any second live invocation.
+
+## Phase 17E Result
+
+Phase 17E completed the local Mistral prompt and response-shape hardening
+without a live model call.
+
+Evidence:
+`docs/evidence/phase17e-mistral-response-shape-hardening-20260523.md`
+
+Result:
+
+- the prompt now states that the root JSON object must be the `ai_insight_v1`
+  object itself
+- the prompt explicitly rejects wrapper keys such as `ai_insight`, `result`,
+  `output`, `response`, and `data`
+- the parser accepts only the observed one-key `ai_insight` wrapper from
+  Phase 17D before validation
+- broader or unsafe wrapper objects continue into the existing validation
+  failure path
+- local fake-client proof covers direct Mistral output, the observed wrapper
+  shape, and unsafe wrapper rejection
+- no live Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+  were made
+
+Recommended next slice: **Phase 17F: one controlled second live Mistral
+invocation**, only after explicit approval and using the same hard one-run
+budget cap with no retries unless separately approved.
