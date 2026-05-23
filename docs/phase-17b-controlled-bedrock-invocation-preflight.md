@@ -164,6 +164,28 @@ were made.
 Next boundary: one controlled live Mistral invocation may be considered in a
 separate Phase 17D after explicit approval.
 
+## Phase 17D Result
+
+Phase 17D performed one live Mistral invocation and stopped after validation
+failed.
+
+Evidence:
+
+- `docs/evidence/phase17d-mistral-live-invocation-summary-20260523.md`
+- `docs/evidence/phase17d-mistral-live-invocation-metadata-20260523.json`
+
+Result:
+
+- one live `bedrock-runtime invoke-model` call was made
+- no retry was performed
+- output failed `ai_insight_v1` validation
+- raw model output was not committed
+- no dashboard publish was performed
+- no deployed AWS resources were changed
+
+Next boundary: local Mistral prompt/response-shape hardening before any second
+live invocation.
+
 ## Rollback Path
 
 Because Phase 17B performs no live changes, rollback is simple:

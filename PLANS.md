@@ -645,16 +645,51 @@ Next implementation slice:
   approval, with a hard `$0.10` one-run budget cap and no retries unless
   approved
 
+### Phase 17D: One Controlled Live Mistral Invocation
+
+Goal: perform one live Bedrock Runtime invocation against Mistral Ministral 8B
+under the Phase 17B cost and safety boundary.
+
+Status: complete; live invocation attempted once and rejected by validation.
+
+Evidence:
+
+- summary:
+  `docs/evidence/phase17d-mistral-live-invocation-summary-20260523.md`
+- sanitized metadata:
+  `docs/evidence/phase17d-mistral-live-invocation-metadata-20260523.json`
+
+Result:
+
+- one `bedrock-runtime invoke-model` call was made against
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- hard budget cap: `$0.10`
+- output did not validate as `ai_insight_v1`
+- the public dashboard snapshot was not changed
+- the model output was not published
+- no Terraform apply, IAM change, state-machine deployment, EventBridge
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+
+Next implementation slice:
+
+- Phase 17E: local prompt/response-shape hardening for Mistral
+- prove the corrected Mistral output contract with fake-client tests before
+  any second live invocation
+- keep the failed Phase 17D invocation as evidence that schema gates protected
+  the public dashboard
+
 ## Suggested Immediate Next Steps
 
 1. Review and merge Phase 17A.
 2. Review and merge Phase 17B preflight.
 3. Review and merge Phase 17C Mistral compatibility proof.
-4. Plan Phase 17D as one controlled live Mistral invocation, not repeated
-   experimentation.
-5. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
+4. Review and merge Phase 17D live-invocation evidence.
+5. Plan Phase 17E as local Mistral prompt/response-shape hardening before any
+   second live invocation.
+6. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
-6. Keep the hosted dashboard demo path reproducible from
+7. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
