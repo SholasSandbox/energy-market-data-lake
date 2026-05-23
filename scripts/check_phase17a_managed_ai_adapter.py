@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-check the Phase 17A Bedrock adapter with fake clients only."""
+"""Self-check the Phase 17 managed AI adapter with fake clients only."""
 
 from __future__ import annotations
 
@@ -122,8 +122,11 @@ def main() -> int:
     raise_for_validation_errors(managed_payload, "ai_insight", "phase17a_fake_payload")
 
     request = build_bedrock_request(bundle, max_tokens=700, temperature=0.1)
-    if "Return only valid JSON" not in request["messages"][0]["content"][0]["text"]:
+    prompt = request["messages"][0]["content"][0]["text"]
+    if "Return only valid JSON" not in prompt:
         raise AssertionError("prompt does not constrain the model response")
+    if "Do not wrap the payload" not in prompt:
+        raise AssertionError("prompt does not reject wrapper objects")
     mistral_request = build_mistral_request(bundle, max_tokens=700, temperature=0.1)
     if "anthropic_version" in mistral_request:
         raise AssertionError("Mistral request should not include Anthropic version")
@@ -148,6 +151,68 @@ def main() -> int:
     )
     if mistral_parsed["schema_version"] != "ai_insight_v1":
         raise AssertionError("Mistral choices response parsing failed")
+    wrapped_parsed = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps({"ai_insight": managed_payload}).encode("utf-8"),
+            ),
+        },
+    )
+    if wrapped_parsed["schema_version"] != "ai_insight_v1":
+        raise AssertionError("exact ai_insight wrapper response parsing failed")
+    mistral_wrapped_parsed = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps(
+                    {
+                        "choices": [
+                            {
+                                "message": {
+                                    "content": json.dumps(
+                                        {"ai_insight": managed_payload},
+                                    ),
+                                },
+                            },
+                        ],
+                    },
+                ).encode("utf-8"),
+            ),
+        },
+    )
+    if mistral_wrapped_parsed["schema_version"] != "ai_insight_v1":
+        raise AssertionError("Mistral ai_insight wrapper parsing failed")
+    unsafe_wrapper = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps(
+                    {
+                        "choices": [
+                            {
+                                "message": {
+                                    "content": json.dumps(
+                                        {
+                                            "ai_insight": managed_payload,
+                                            "commentary": "unexpected wrapper field",
+                                        },
+                                    ),
+                                },
+                            },
+                        ],
+                    },
+                ).encode("utf-8"),
+            ),
+        },
+    )
+    try:
+        raise_for_validation_errors(
+            unsafe_wrapper,
+            "ai_insight",
+            "phase17e_unsafe_wrapper",
+        )
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("unsafe wrapped Mistral response unexpectedly passed")
 
     handlers = load_handler_module()
     run_id = generate_run_id(
