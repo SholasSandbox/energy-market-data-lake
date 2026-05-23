@@ -608,15 +608,53 @@ Next implementation slice:
 - keep OpenClaw/local model comparison as a later cost-control and creativity
   slice after one AWS-managed live invocation is proven
 
+### Phase 17C: Mistral Compatibility Proof
+
+Goal: prove the lower-cost Mistral path locally before any live model
+invocation, IAM change, Terraform apply, or state-machine deployment.
+
+Status: implementation complete as a code-only local proof.
+
+Completed scope:
+
+- added provider-aware Bedrock request construction in
+  `energy_market/managed_ai.py`
+- kept the Anthropic-compatible request path intact
+- added Mistral chat-completion request support for
+  `mistral.ministral-3-8b-instruct`
+- added Mistral `choices[].message.content` response parsing
+- expanded the fake-client proof in
+  `scripts/check_phase17a_managed_ai_adapter.py`
+- preserved deterministic fallback through `MergeAiInsightDeterministic`
+
+Evidence:
+`docs/evidence/phase17c-mistral-compatibility-proof-20260523.md`
+
+Guardrails kept:
+
+- no live Bedrock invocation
+- no Terraform apply
+- no IAM change
+- no Step Functions/state-machine deployment
+- no EventBridge schedule enablement
+- no DNS, ACM, alarms, budgets, or dashboard hosting changes
+
+Next implementation slice:
+
+- Phase 17D: one controlled live Mistral invocation, only after explicit
+  approval, with a hard `$0.10` one-run budget cap and no retries unless
+  approved
+
 ## Suggested Immediate Next Steps
 
 1. Review and merge Phase 17A.
 2. Review and merge Phase 17B preflight.
-3. Begin Phase 17C as a Mistral compatibility proof or Anthropic access
-   decision, not as an immediate live invocation.
-4. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
+3. Review and merge Phase 17C Mistral compatibility proof.
+4. Plan Phase 17D as one controlled live Mistral invocation, not repeated
+   experimentation.
+5. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
-5. Keep the hosted dashboard demo path reproducible from
+6. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist

@@ -225,3 +225,24 @@ Decision summary:
 
 Recommended next slice: **Phase 17C: Mistral compatibility proof**, unless the
 Anthropic access prerequisite is deliberately completed first.
+
+## Phase 17C Result
+
+Phase 17C completed the Mistral compatibility proof locally.
+
+Evidence:
+`docs/evidence/phase17c-mistral-compatibility-proof-20260523.md`
+
+Result:
+
+- the existing Anthropic request path remains intact
+- Mistral chat-completion request shape is supported
+- Mistral `choices[].message.content` responses parse into the existing
+  `ai_insight_v1` validation path
+- invalid managed output still reaches the failed-path quarantine
+- no live model invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+  were made
+
+Recommended next slice: **Phase 17D: one controlled live Mistral invocation**,
+only after explicit approval.

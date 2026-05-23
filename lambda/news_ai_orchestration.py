@@ -228,6 +228,7 @@ def merge_ai_insight_managed(
         bedrock_client or _bedrock_client(),
         model_id=model_id,
         bundle=bundle,
+        provider=event.get("bedrock_provider") or _env("BEDROCK_PROVIDER"),
         max_tokens=int(
             event.get("bedrock_max_tokens", _env("BEDROCK_MAX_TOKENS", "800")),
         ),
@@ -253,6 +254,7 @@ def merge_ai_insight_managed(
             "insight_count": len(payload.get("insights", [])),
             "risk_level": insight.get("risk_level", "watch"),
             "ai_provider": "bedrock",
+            "bedrock_provider": event.get("bedrock_provider") or _env("BEDROCK_PROVIDER", "auto"),
             "bedrock_model_id": model_id,
         },
     )
