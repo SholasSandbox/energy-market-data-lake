@@ -202,3 +202,26 @@ Scope:
 
 OpenClaw/local model comparison remains a later cost-control and creativity
 slice after the AWS-managed boundary is proven.
+
+## Phase 17B Result
+
+Phase 17B completed the live-invocation preflight and decided **not** to invoke
+Bedrock yet.
+
+Read-only evidence:
+`docs/evidence/phase17b-bedrock-preflight-readonly-20260523.md`
+
+Detailed plan:
+`docs/phase-17b-controlled-bedrock-invocation-preflight.md`
+
+Decision summary:
+
+- Claude 3 Haiku matches the current Anthropic-compatible adapter, but the
+  model agreement is not available yet in this account/region.
+- Mistral Ministral 8B is available in `eu-west-2` and is lower cost, but it
+  needs provider-specific request/response support before live invocation.
+- No Terraform apply, IAM change, live model invocation, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes were made.
+
+Recommended next slice: **Phase 17C: Mistral compatibility proof**, unless the
+Anthropic access prerequisite is deliberately completed first.
