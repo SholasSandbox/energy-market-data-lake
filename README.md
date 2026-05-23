@@ -59,6 +59,9 @@ Region: **eu-west-2 (London)**
   of scope.
 - Phase 17A adds a code-only Bedrock adapter and `MergeAiInsightManaged`
   handler path with fake-client validation and no live model invocation.
+- Phase 17B confirms the first live Bedrock invocation should not run yet:
+  Claude 3 Haiku needs model-agreement access, while Mistral Ministral 8B needs
+  provider-specific adapter proof first.
 
 ### Deferred AWS Extension
 
@@ -66,6 +69,8 @@ Region: **eu-west-2 (London)**
   boundary before live model invocation.
 - Run the first live Bedrock invocation only behind an explicit token budget,
   IAM delta review, and rollback path.
+- Prefer a Mistral compatibility proof before live invocation if cost control
+  is the priority.
 - Run OpenClaw in a clear runtime only after the managed cloud AI boundary is
   proven.
 - Enable the Phase 8 EventBridge schedule after another operating decision.
@@ -444,6 +449,9 @@ python3 scripts/validate_athena_schema.py \
   and rollback path for live dashboard hosting evidence.
 - `docs/phase-17-managed-ai-refresh-preflight.md`: managed AI refresh
   preflight and Bedrock-first decision with deterministic fallback.
+- `docs/phase-17b-controlled-bedrock-invocation-preflight.md`: read-only
+  model-access, cost, IAM, and go/no-go decision for first live Bedrock
+  invocation.
 - `docs/phase-8-aws-ai-insight-orchestration.md`: completed plan and checklist
   for AWS AI insight orchestration.
 - `docs/phase-8-operational-runbook.md`: manual run, proof, failure drill, and
@@ -530,7 +538,9 @@ These are historical references, not the current delivery path.
    restored live AI snapshot path and sample fallback.
 6. Keep managed AI refresh behind the Bedrock adapter contract until the first
    live invocation phase is explicitly approved.
-7. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+7. Resolve the Phase 17B model-access/provider-compatibility decision before
+   invoking Bedrock live.
+8. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes

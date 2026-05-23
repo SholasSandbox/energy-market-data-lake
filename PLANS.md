@@ -574,14 +574,49 @@ Next implementation slice:
 - OpenClaw/local model comparison remains a later cost-control and creativity
   slice after the AWS-managed boundary is proven
 
+### Phase 17B: Controlled Live Bedrock Invocation Preflight
+
+Goal: decide whether the first live Bedrock invocation is safe, cheap, and
+controlled.
+
+Status: preflight complete; **do not invoke yet**.
+
+Working document:
+`docs/phase-17b-controlled-bedrock-invocation-preflight.md`
+
+Evidence:
+`docs/evidence/phase17b-bedrock-preflight-readonly-20260523.md`
+
+Decision:
+
+- Claude 3 Haiku matches the current Anthropic-compatible adapter, but its
+  Bedrock agreement availability is `NOT_AVAILABLE` in the read-only check
+- Mistral Ministral 8B is available in `eu-west-2` and has a lower London
+  pricing profile, but the current adapter needs provider-specific Mistral
+  request/response support before a live call
+- Phase 17B remains preflight-only
+- no Terraform apply, IAM change, live model invocation, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes
+
+Next implementation slice:
+
+- Phase 17C: choose either the Anthropic access path or the Mistral
+  compatibility path
+- recommendation: implement Mistral request/response support behind fake-client
+  tests first, then run one controlled Mistral live invocation in a later
+  explicitly approved boundary
+- keep OpenClaw/local model comparison as a later cost-control and creativity
+  slice after one AWS-managed live invocation is proven
+
 ## Suggested Immediate Next Steps
 
 1. Review and merge Phase 17A.
-2. Plan Phase 17B as a controlled live Bedrock invocation boundary with a hard
-   token budget and no schedule enablement.
-3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
+2. Review and merge Phase 17B preflight.
+3. Begin Phase 17C as a Mistral compatibility proof or Anthropic access
+   decision, not as an immediate live invocation.
+4. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
-4. Keep the hosted dashboard demo path reproducible from
+5. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
