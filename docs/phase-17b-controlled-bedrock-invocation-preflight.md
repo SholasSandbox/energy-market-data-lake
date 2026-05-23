@@ -141,6 +141,29 @@ is available in `eu-west-2`.
 OpenClaw/local model comparison remains a later cost-control and creativity
 slice after one AWS-managed live invocation is proven.
 
+## Phase 17C Result
+
+Phase 17C implemented the Mistral compatibility path locally.
+
+Completed scope:
+
+- provider-aware Bedrock request construction
+- Mistral chat-completion request support for
+  `mistral.ministral-3-8b-instruct`
+- Mistral `choices[].message.content` response parsing
+- fake-client proof for both Anthropic and Mistral response shapes
+- existing deterministic fallback preserved
+
+Evidence:
+`docs/evidence/phase17c-mistral-compatibility-proof-20260523.md`
+
+No live Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+were made.
+
+Next boundary: one controlled live Mistral invocation may be considered in a
+separate Phase 17D after explicit approval.
+
 ## Rollback Path
 
 Because Phase 17B performs no live changes, rollback is simple:
