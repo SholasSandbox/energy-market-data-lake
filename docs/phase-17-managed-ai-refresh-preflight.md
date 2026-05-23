@@ -246,3 +246,27 @@ Result:
 
 Recommended next slice: **Phase 17D: one controlled live Mistral invocation**,
 only after explicit approval.
+
+## Phase 17D Result
+
+Phase 17D performed one controlled live Mistral invocation and stopped at the
+validation boundary.
+
+Evidence:
+
+- `docs/evidence/phase17d-mistral-live-invocation-summary-20260523.md`
+- `docs/evidence/phase17d-mistral-live-invocation-metadata-20260523.json`
+
+Result:
+
+- one live Bedrock Runtime call was made to
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- output failed `ai_insight_v1` validation
+- the public dashboard snapshot was not changed
+- raw model output was not committed
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes were made
+
+Recommended next slice: **Phase 17E: local Mistral prompt/response-shape
+hardening**, before any second live invocation.
