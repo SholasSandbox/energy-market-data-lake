@@ -13,7 +13,7 @@ import re
 from typing import Any
 
 
-DEFAULT_MAX_TOKENS = 800
+DEFAULT_MAX_TOKENS = 1600
 DEFAULT_TEMPERATURE = 0.2
 PROVIDER_ANTHROPIC = "anthropic"
 PROVIDER_MISTRAL = "mistral"
@@ -31,9 +31,13 @@ def build_ai_insight_prompt(bundle: dict[str, Any]) -> str:
             "Return only valid JSON matching schemas/ai_insight_v1.schema.json.",
             "The JSON root object must be the ai_insight_v1 object itself.",
             "The root object must contain schema_version, generated_at, and insights.",
+            "Return exactly one concise insight unless the input requires more.",
+            "Keep summary and validation_notes brief.",
+            "Never truncate JSON; shorten prose if the token budget is tight.",
             "Do not wrap the payload in ai_insight, result, output, response,",
             "data, or any other key.",
             "Do not include markdown fences, commentary, or private fields.",
+            "The first output character must be { and the final character must be }.",
             "Use only the validated bundle content below.",
             "",
             json.dumps(bundle, indent=2, sort_keys=True),
@@ -224,7 +228,7 @@ def _parse_json_text(text: str) -> dict[str, Any]:
     try:
         payload = json.loads(cleaned)
     except json.JSONDecodeError as exc:
-        raise ManagedAIResponseError("managed AI text output was not JSON") from exc
+        raise ManagedAIResponseError(_json_parse_error_message(text, cleaned)) from exc
     if not isinstance(payload, dict):
         raise ManagedAIResponseError("managed AI JSON output must be an object")
     return _unwrap_ai_insight_payload(payload)
@@ -235,6 +239,28 @@ def _strip_markdown_fences(text: str) -> str:
     if match:
         return match.group(1)
     return text
+
+
+def _json_parse_error_message(original: str, cleaned: str) -> str:
+    stripped = original.lstrip()
+    if stripped.startswith("```") and not re.fullmatch(
+        r"```(?:json)?\s*.*?\s*```",
+        original.strip(),
+        flags=re.DOTALL,
+    ):
+        return "managed AI text output used an incomplete markdown fence"
+    if _looks_truncated_json(cleaned):
+        return "managed AI text output appears truncated before valid JSON completed"
+    return "managed AI text output was not JSON"
+
+
+def _looks_truncated_json(text: str) -> bool:
+    stripped = text.strip()
+    if not stripped:
+        return False
+    if stripped[0] not in "{[":
+        return False
+    return stripped.count("{") != stripped.count("}") or stripped.count("[") != stripped.count("]")
 
 
 def _looks_like_ai_insight(payload: dict[str, Any]) -> bool:

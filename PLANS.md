@@ -763,11 +763,52 @@ Next implementation slice:
 - prove fenced/incomplete JSON handling with fake-client tests
 - keep any further live Mistral invocation behind explicit approval
 
+### Phase 17G: Local Mistral JSON-Completion Hardening
+
+Goal: harden the local managed-AI prompt, parser, and output-token budget after
+Phase 17F returned incomplete fenced JSON.
+
+Status: implementation complete as a local-only proof.
+
+Evidence:
+`docs/evidence/phase17g-mistral-json-completion-hardening-20260524.md`
+
+Completed scope:
+
+- tightened the prompt to require complete JSON, discourage markdown fences,
+  and shorten prose rather than truncate JSON
+- raised the managed AI default output-token cap from `800` to `1600`
+- aligned the Lambda managed path so `BEDROCK_MAX_TOKENS` defaults to the
+  shared managed-AI constant
+- added sanitized parser errors for incomplete markdown fences and truncated
+  JSON
+- expanded fake-client proof for complete fenced JSON, incomplete fenced JSON,
+  truncated JSON, exact wrapper handling, unsafe wrapper rejection, and
+  managed-handler success/failure paths
+
+Guardrails kept:
+
+- no live Bedrock invocation
+- no Terraform apply
+- no IAM change
+- no Step Functions/state-machine deployment
+- no EventBridge schedule enablement
+- no DNS, ACM, alarms, budgets, or dashboard hosting changes
+- no raw model response was committed
+
+Next implementation slice:
+
+- Phase 17H: one controlled third live Mistral invocation may be considered
+  only after explicit approval
+- use the raised `1600` output-token cap
+- keep one-call discipline, no retry unless separately approved, no dashboard
+  publish, and sanitized evidence only
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17F second live Mistral invocation evidence.
-2. Plan Phase 17G as local prompt/token-budget hardening before any further
-   live Mistral invocation.
+1. Review and merge Phase 17G local Mistral JSON-completion hardening.
+2. Plan Phase 17H as a single third live Mistral invocation only if explicitly
+   approved.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
