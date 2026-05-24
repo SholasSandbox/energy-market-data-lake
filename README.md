@@ -70,6 +70,10 @@ Region: **eu-west-2 (London)**
 - Phase 17E hardens the Mistral prompt and response-shape handling locally,
   accepting only the observed one-key `ai_insight` wrapper before schema
   validation and proving the behavior with fake-client tests.
+- Phase 17F performs one controlled second live Mistral invocation; the output
+  is stopped before validation because it is incomplete fenced JSON, proving no
+  live retry or dashboard publish should happen without another local hardening
+  slice.
 
 ### Deferred AWS Extension
 
@@ -554,7 +558,9 @@ These are historical references, not the current delivery path.
    when live model output is malformed.
 8. Treat Phase 17E as the local hardening proof required before any second
    live Mistral call.
-9. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+9. Treat Phase 17F as evidence that prompt/token-budget hardening is needed
+   before any further live Mistral call.
+10. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes

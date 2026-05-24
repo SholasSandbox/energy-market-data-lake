@@ -209,6 +209,30 @@ Result:
 Next boundary: one controlled second live Mistral invocation may be considered
 in a separate Phase 17F only after explicit approval.
 
+## Phase 17F Result
+
+Phase 17F performed the approved second live Mistral invocation and stopped
+safely.
+
+Evidence:
+
+- `docs/evidence/phase17f-mistral-second-live-invocation-summary-20260524.md`
+- `docs/evidence/phase17f-mistral-second-live-invocation-metadata-20260524.json`
+
+Result:
+
+- one live `bedrock-runtime invoke-model` call was made
+- no retry was performed
+- output failed before schema validation because it was not complete JSON
+- sanitized response shape shows a `length` finish reason
+- no validated `ai_insight_v1` payload was produced
+- raw model output was not committed
+- no dashboard publish was performed
+- no deployed AWS resources were changed
+
+Next boundary: local Mistral JSON-completion hardening before any third live
+invocation.
+
 ## Rollback Path
 
 Because Phase 17B performs no live changes, rollback is simple:
