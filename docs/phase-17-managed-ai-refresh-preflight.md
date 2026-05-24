@@ -353,3 +353,32 @@ Result:
 Recommended next slice: **Phase 17H: one controlled third live Mistral
 invocation**, only after explicit approval and using the raised `1600`
 output-token cap with no retry unless separately approved.
+
+## Phase 17H Result
+
+Phase 17H performed one controlled third live Mistral invocation and stopped at
+the validation boundary.
+
+Evidence:
+
+- `docs/evidence/phase17h-mistral-third-live-invocation-summary-20260524.md`
+- `docs/evidence/phase17h-mistral-third-live-invocation-metadata-20260524.json`
+
+Result:
+
+- one live Bedrock Runtime call was made to
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- estimated invocation cost: `$0.00126615`
+- raised `1600` output-token cap prevented truncation
+- sanitized response shape shows `finish_reason` was `stop`
+- output failed `ai_insight_v1` validation because it used a root
+  `ai_insight_v1` wrapper
+- no validated AI insight was produced
+- the public dashboard snapshot was not changed
+- raw prompt and raw model output were not committed
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes were made
+
+Recommended next slice: **Phase 17I: local Mistral root-wrapper hardening**,
+before any fourth live invocation.

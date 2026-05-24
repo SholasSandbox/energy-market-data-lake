@@ -253,6 +253,30 @@ Result:
 Next boundary: one controlled third live Mistral invocation may be considered
 in a separate Phase 17H only after explicit approval.
 
+## Phase 17H Result
+
+Phase 17H performed the approved third live Mistral invocation and stopped
+safely at validation.
+
+Evidence:
+
+- `docs/evidence/phase17h-mistral-third-live-invocation-summary-20260524.md`
+- `docs/evidence/phase17h-mistral-third-live-invocation-metadata-20260524.json`
+
+Result:
+
+- one live `bedrock-runtime invoke-model` call was made
+- no retry was performed
+- the raised `1600` output-token cap avoided truncation
+- output failed schema validation because it returned a root `ai_insight_v1`
+  wrapper
+- raw model output was not committed
+- no dashboard publish was performed
+- no deployed AWS resources were changed
+
+Next boundary: local Mistral root-wrapper hardening before any fourth live
+invocation.
+
 ## Rollback Path
 
 Because Phase 17B performs no live changes, rollback is simple:
