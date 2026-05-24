@@ -298,3 +298,30 @@ Result:
 Recommended next slice: **Phase 17F: one controlled second live Mistral
 invocation**, only after explicit approval and using the same hard one-run
 budget cap with no retries unless separately approved.
+
+## Phase 17F Result
+
+Phase 17F performed one controlled second live Mistral invocation and stopped
+before validation because the response text was not complete JSON.
+
+Evidence:
+
+- `docs/evidence/phase17f-mistral-second-live-invocation-summary-20260524.md`
+- `docs/evidence/phase17f-mistral-second-live-invocation-metadata-20260524.json`
+
+Result:
+
+- one live Bedrock Runtime call was made to
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- estimated invocation cost: `$0.00135217`
+- output failed at parse time before `ai_insight_v1` validation
+- sanitized response shape shows `finish_reason` was `length`
+- no validated AI insight was produced
+- the public dashboard snapshot was not changed
+- raw prompt and raw model output were not committed
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes were made
+
+Recommended next slice: **Phase 17G: local Mistral JSON-completion
+hardening**, before any third live invocation.
