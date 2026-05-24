@@ -80,6 +80,8 @@ Region: **eu-west-2 (London)**
 - Phase 17H performs one controlled third live Mistral invocation; the raised
   token cap prevents truncation, but validation still rejects a root
   `ai_insight_v1` wrapper before any dashboard publish.
+- Phase 17I hardens root-wrapper handling locally, accepting only the exact
+  `ai_insight_v1` wrapper while keeping broad wrapper shapes rejected.
 
 ### Deferred AWS Extension
 
@@ -570,7 +572,9 @@ These are historical references, not the current delivery path.
     invocation.
 11. Treat Phase 17H as evidence that root-wrapper handling needs local
     hardening before any further live Mistral call.
-12. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+12. Treat Phase 17I as the local proof boundary before any fourth live Mistral
+    invocation.
+13. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes

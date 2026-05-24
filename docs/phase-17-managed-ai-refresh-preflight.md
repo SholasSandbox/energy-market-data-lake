@@ -382,3 +382,26 @@ Result:
 
 Recommended next slice: **Phase 17I: local Mistral root-wrapper hardening**,
 before any fourth live invocation.
+
+## Phase 17I Result
+
+Phase 17I completed local Mistral root-wrapper hardening without a live model
+call.
+
+Evidence:
+`docs/evidence/phase17i-mistral-root-wrapper-hardening-20260524.md`
+
+Result:
+
+- exact one-key `ai_insight_v1` wrappers now normalize before schema validation
+- broad `ai_insight_v1` wrappers with sibling keys remain rejected
+- prompt wording explicitly rejects both `ai_insight_v1` and `ai_insight`
+  wrapper keys
+- local fake-client proof covers direct and Mistral response forms
+- no live Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+  were made
+
+Recommended next slice: **Phase 17J: one controlled fourth live Mistral
+invocation**, only after explicit approval with no retry unless separately
+approved.
