@@ -233,6 +233,26 @@ Result:
 Next boundary: local Mistral JSON-completion hardening before any third live
 invocation.
 
+## Phase 17G Result
+
+Phase 17G completed the local Mistral JSON-completion hardening boundary.
+
+Evidence:
+`docs/evidence/phase17g-mistral-json-completion-hardening-20260524.md`
+
+Result:
+
+- no live `bedrock-runtime invoke-model` call was made
+- prompt wording now discourages markdown fences and incomplete JSON
+- the managed default output-token cap is raised to `1600`
+- parser failures for incomplete fences and truncated JSON are sanitized
+- fake-client proof covers the Phase 17F failure pattern locally
+- no dashboard publish was performed
+- no deployed AWS resources were changed
+
+Next boundary: one controlled third live Mistral invocation may be considered
+in a separate Phase 17H only after explicit approval.
+
 ## Rollback Path
 
 Because Phase 17B performs no live changes, rollback is simple:

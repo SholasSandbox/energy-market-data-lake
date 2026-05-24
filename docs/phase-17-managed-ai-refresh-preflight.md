@@ -325,3 +325,31 @@ Result:
 
 Recommended next slice: **Phase 17G: local Mistral JSON-completion
 hardening**, before any third live invocation.
+
+## Phase 17G Result
+
+Phase 17G completed local Mistral JSON-completion hardening without a live model
+call.
+
+Evidence:
+`docs/evidence/phase17g-mistral-json-completion-hardening-20260524.md`
+
+Result:
+
+- prompt wording now requires complete JSON and tells the model to shorten
+  prose rather than truncate JSON
+- the managed AI default output-token cap is raised from `800` to `1600`
+- the Lambda managed path uses the shared managed-AI default when
+  `BEDROCK_MAX_TOKENS` is unset
+- incomplete markdown fences and truncated JSON now produce sanitized local
+  parser errors
+- local fake-client proof covers complete fenced JSON, incomplete fenced JSON,
+  truncated JSON, exact wrapper handling, unsafe wrapper rejection, and the
+  existing managed-handler paths
+- no live Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+  were made
+
+Recommended next slice: **Phase 17H: one controlled third live Mistral
+invocation**, only after explicit approval and using the raised `1600`
+output-token cap with no retry unless separately approved.

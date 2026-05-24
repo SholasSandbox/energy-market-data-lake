@@ -29,7 +29,10 @@ from energy_market.ai_orchestration import (  # noqa: E402
     read_s3_json,
     write_s3_json,
 )
-from energy_market.managed_ai import invoke_bedrock_ai_insight  # noqa: E402
+from energy_market.managed_ai import (  # noqa: E402
+    DEFAULT_MAX_TOKENS,
+    invoke_bedrock_ai_insight,
+)
 from energy_market.news_ai import (  # noqa: E402
     DEFAULT_FEEDS,
     build_ai_insight,
@@ -230,7 +233,10 @@ def merge_ai_insight_managed(
         bundle=bundle,
         provider=event.get("bedrock_provider") or _env("BEDROCK_PROVIDER"),
         max_tokens=int(
-            event.get("bedrock_max_tokens", _env("BEDROCK_MAX_TOKENS", "800")),
+            event.get(
+                "bedrock_max_tokens",
+                _env("BEDROCK_MAX_TOKENS", str(DEFAULT_MAX_TOKENS)),
+            ),
         ),
         temperature=float(
             event.get(
