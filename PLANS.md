@@ -804,11 +804,56 @@ Next implementation slice:
 - keep one-call discipline, no retry unless separately approved, no dashboard
   publish, and sanitized evidence only
 
+### Phase 17H: One Controlled Third Live Mistral Invocation
+
+Goal: test the Phase 17G local hardening with one controlled live Mistral
+invocation using the raised `1600` output-token cap.
+
+Status: complete; live invocation attempted once and rejected by validation.
+
+Evidence:
+
+- summary:
+  `docs/evidence/phase17h-mistral-third-live-invocation-summary-20260524.md`
+- sanitized metadata:
+  `docs/evidence/phase17h-mistral-third-live-invocation-metadata-20260524.json`
+
+Result:
+
+- one `bedrock-runtime invoke-model` call was made against
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- hard budget cap: `$0.10`
+- estimated invocation cost: `$0.00126615`
+- raised `1600` output-token cap prevented the Phase 17F truncation failure
+- sanitized response shape shows `finish_reason` was `stop`
+- output still failed `ai_insight_v1` validation because the model returned a
+  root wrapper key named `ai_insight_v1`
+- no validated `ai_insight_v1` evidence was produced
+- the public dashboard snapshot was not changed
+- no Terraform apply, IAM change, state-machine deployment, EventBridge
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+
+Red-green evidence:
+
+- Red: the third live call must not accept managed output unless it validates
+  as `ai_insight_v1`
+- Green: the token-budget failure was fixed, but schema validation still
+  rejected the wrapper shape safely
+- Regression: local adapter proof and deterministic fallback remain intact
+
+Next implementation slice:
+
+- Phase 17I: local Mistral root-wrapper hardening before any fourth live call
+- decide whether to accept the exact `ai_insight_v1` wrapper shape locally
+- keep broad wrapper unwrapping rejected
+- add fake-client coverage before any further live invocation
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17G local Mistral JSON-completion hardening.
-2. Plan Phase 17H as a single third live Mistral invocation only if explicitly
-   approved.
+1. Review and merge Phase 17H third live Mistral invocation evidence.
+2. Plan Phase 17I as local Mistral root-wrapper hardening before any further
+   live Mistral invocation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
