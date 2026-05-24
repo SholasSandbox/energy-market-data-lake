@@ -77,6 +77,9 @@ Region: **eu-west-2 (London)**
 - Phase 17G hardens the Mistral JSON-completion path locally, raises the
   managed output-token default to `1600`, and adds fake-client coverage for
   incomplete fenced JSON before any third live call.
+- Phase 17H performs one controlled third live Mistral invocation; the raised
+  token cap prevents truncation, but validation still rejects a root
+  `ai_insight_v1` wrapper before any dashboard publish.
 
 ### Deferred AWS Extension
 
@@ -565,7 +568,9 @@ These are historical references, not the current delivery path.
    before any further live Mistral call.
 10. Treat Phase 17G as the local proof boundary before any third live Mistral
     invocation.
-11. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+11. Treat Phase 17H as evidence that root-wrapper handling needs local
+    hardening before any further live Mistral call.
+12. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
