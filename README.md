@@ -74,6 +74,9 @@ Region: **eu-west-2 (London)**
   is stopped before validation because it is incomplete fenced JSON, proving no
   live retry or dashboard publish should happen without another local hardening
   slice.
+- Phase 17G hardens the Mistral JSON-completion path locally, raises the
+  managed output-token default to `1600`, and adds fake-client coverage for
+  incomplete fenced JSON before any third live call.
 
 ### Deferred AWS Extension
 
@@ -560,7 +563,9 @@ These are historical references, not the current delivery path.
    live Mistral call.
 9. Treat Phase 17F as evidence that prompt/token-budget hardening is needed
    before any further live Mistral call.
-10. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+10. Treat Phase 17G as the local proof boundary before any third live Mistral
+    invocation.
+11. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
