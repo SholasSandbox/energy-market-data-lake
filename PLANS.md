@@ -718,11 +718,56 @@ Next implementation slice:
   only after explicit approval, using the same hard one-run budget cap and no
   retries unless separately approved
 
+### Phase 17F: One Controlled Second Live Mistral Invocation
+
+Goal: run one controlled second live Mistral invocation after Phase 17E local
+hardening and decide whether the result is schema-valid and safe for a later
+publish or deployment boundary.
+
+Status: complete; live invocation attempted once and stopped before validation.
+
+Evidence:
+
+- summary:
+  `docs/evidence/phase17f-mistral-second-live-invocation-summary-20260524.md`
+- sanitized metadata:
+  `docs/evidence/phase17f-mistral-second-live-invocation-metadata-20260524.json`
+
+Result:
+
+- one `bedrock-runtime invoke-model` call was made against
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- hard budget cap: `$0.10`
+- estimated invocation cost: `$0.00135217`
+- output did not parse as complete JSON
+- sanitized response shape shows `finish_reason` was `length`
+- the output started with a markdown fence and did not end as a complete JSON
+  object
+- no validated `ai_insight_v1` evidence was produced
+- the public dashboard snapshot was not changed
+- no Terraform apply, IAM change, state-machine deployment, EventBridge
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+
+Red-green evidence:
+
+- Red: live Mistral output must not be accepted unless it parses and validates
+  as `ai_insight_v1`
+- Green: the second live output failed safely and was not published
+- Regression: local adapter proof and deterministic fallback remain intact
+
+Next implementation slice:
+
+- Phase 17G: local Mistral JSON-completion hardening before any third live call
+- decide locally whether prompt wording or `max_tokens` should change
+- prove fenced/incomplete JSON handling with fake-client tests
+- keep any further live Mistral invocation behind explicit approval
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17E local Mistral response-shape hardening.
-2. Plan Phase 17F as a single second live Mistral invocation only if explicitly
-   approved.
+1. Review and merge Phase 17F second live Mistral invocation evidence.
+2. Plan Phase 17G as local prompt/token-budget hardening before any further
+   live Mistral invocation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
