@@ -34,8 +34,8 @@ def build_ai_insight_prompt(bundle: dict[str, Any]) -> str:
             "Return exactly one concise insight unless the input requires more.",
             "Keep summary and validation_notes brief.",
             "Never truncate JSON; shorten prose if the token budget is tight.",
-            "Do not wrap the payload in ai_insight, result, output, response,",
-            "data, or any other key.",
+            "Do not wrap the payload in ai_insight_v1, ai_insight, result,",
+            "output, response, data, or any other key.",
             "Do not include markdown fences, commentary, or private fields.",
             "The first output character must be { and the final character must be }.",
             "Use only the validated bundle content below.",
@@ -271,6 +271,10 @@ def _unwrap_ai_insight_payload(payload: dict[str, Any]) -> dict[str, Any]:
     """Accept the observed one-key Mistral wrapper without broad unwrapping."""
     if _looks_like_ai_insight(payload):
         return payload
+    if set(payload) == {"ai_insight_v1"} and isinstance(payload["ai_insight_v1"], dict):
+        nested = payload["ai_insight_v1"]
+        if _looks_like_ai_insight(nested):
+            return nested
     if set(payload) == {"ai_insight"} and isinstance(payload["ai_insight"], dict):
         nested = payload["ai_insight"]
         if _looks_like_ai_insight(nested):
