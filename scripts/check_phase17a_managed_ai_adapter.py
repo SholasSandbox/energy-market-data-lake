@@ -129,6 +129,8 @@ def main() -> int:
         raise AssertionError("prompt does not constrain the model response")
     if "Do not wrap the payload" not in prompt:
         raise AssertionError("prompt does not reject wrapper objects")
+    if "ai_insight_v1, ai_insight" not in prompt:
+        raise AssertionError("prompt does not reject known wrapper keys")
     if "final character must be }" not in prompt:
         raise AssertionError("prompt does not require complete JSON output")
     default_request = build_mistral_request(bundle, temperature=0.1)
@@ -188,6 +190,36 @@ def main() -> int:
     )
     if mistral_wrapped_parsed["schema_version"] != "ai_insight_v1":
         raise AssertionError("Mistral ai_insight wrapper parsing failed")
+    mistral_schema_wrapped_parsed = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps(
+                    {
+                        "choices": [
+                            {
+                                "message": {
+                                    "content": json.dumps(
+                                        {"ai_insight_v1": managed_payload},
+                                    ),
+                                },
+                            },
+                        ],
+                    },
+                ).encode("utf-8"),
+            ),
+        },
+    )
+    if mistral_schema_wrapped_parsed["schema_version"] != "ai_insight_v1":
+        raise AssertionError("Mistral ai_insight_v1 wrapper parsing failed")
+    direct_schema_wrapped_parsed = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps({"ai_insight_v1": managed_payload}).encode("utf-8"),
+            ),
+        },
+    )
+    if direct_schema_wrapped_parsed["schema_version"] != "ai_insight_v1":
+        raise AssertionError("direct ai_insight_v1 wrapper parsing failed")
     unsafe_wrapper = parse_bedrock_response(
         {
             "body": io.BytesIO(
@@ -220,6 +252,38 @@ def main() -> int:
         pass
     else:
         raise AssertionError("unsafe wrapped Mistral response unexpectedly passed")
+    unsafe_schema_wrapper = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps(
+                    {
+                        "choices": [
+                            {
+                                "message": {
+                                    "content": json.dumps(
+                                        {
+                                            "ai_insight_v1": managed_payload,
+                                            "commentary": "unexpected wrapper field",
+                                        },
+                                    ),
+                                },
+                            },
+                        ],
+                    },
+                ).encode("utf-8"),
+            ),
+        },
+    )
+    try:
+        raise_for_validation_errors(
+            unsafe_schema_wrapper,
+            "ai_insight",
+            "phase17i_unsafe_schema_wrapper",
+        )
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("unsafe ai_insight_v1 wrapper unexpectedly passed")
     fenced_parsed = parse_bedrock_response(
         {
             "body": io.BytesIO(
