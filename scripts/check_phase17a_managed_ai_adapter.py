@@ -23,6 +23,8 @@ from energy_market.ai_orchestration import (  # noqa: E402
     write_s3_json,
 )
 from energy_market.managed_ai import (  # noqa: E402
+    DEFAULT_MAX_TOKENS,
+    ManagedAIResponseError,
     build_bedrock_request,
     build_mistral_request,
     parse_bedrock_response,
@@ -55,7 +57,7 @@ class FakeBedrock:
         self,
         payload: dict[str, Any],
         *,
-        expected_max_tokens: int = 800,
+        expected_max_tokens: int = DEFAULT_MAX_TOKENS,
         expected_temperature: float = 0.2,
         expected_provider: str = "anthropic",
         response_shape: str = "anthropic",
@@ -127,6 +129,11 @@ def main() -> int:
         raise AssertionError("prompt does not constrain the model response")
     if "Do not wrap the payload" not in prompt:
         raise AssertionError("prompt does not reject wrapper objects")
+    if "final character must be }" not in prompt:
+        raise AssertionError("prompt does not require complete JSON output")
+    default_request = build_mistral_request(bundle, temperature=0.1)
+    if default_request["max_tokens"] != DEFAULT_MAX_TOKENS:
+        raise AssertionError("Mistral default max token budget drifted")
     mistral_request = build_mistral_request(bundle, max_tokens=700, temperature=0.1)
     if "anthropic_version" in mistral_request:
         raise AssertionError("Mistral request should not include Anthropic version")
@@ -213,6 +220,72 @@ def main() -> int:
         pass
     else:
         raise AssertionError("unsafe wrapped Mistral response unexpectedly passed")
+    fenced_parsed = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps(
+                    {
+                        "choices": [
+                            {
+                                "message": {
+                                    "content": "```json\n"
+                                    + json.dumps(managed_payload)
+                                    + "\n```",
+                                },
+                            },
+                        ],
+                    },
+                ).encode("utf-8"),
+            ),
+        },
+    )
+    if fenced_parsed["schema_version"] != "ai_insight_v1":
+        raise AssertionError("complete fenced Mistral response parsing failed")
+    incomplete_fenced = {
+        "body": io.BytesIO(
+            json.dumps(
+                {
+                    "choices": [
+                        {
+                            "message": {
+                                "content": "```json\n{\"schema_version\":\"ai_insight_v1\"",
+                            },
+                        },
+                    ],
+                },
+            ).encode("utf-8"),
+        ),
+    }
+    try:
+        parse_bedrock_response(incomplete_fenced)
+    except ManagedAIResponseError as exc:
+        if "incomplete markdown fence" not in str(exc):
+            raise AssertionError("incomplete fenced JSON used the wrong error") from exc
+    else:
+        raise AssertionError("incomplete fenced Mistral response unexpectedly parsed")
+    try:
+        parse_bedrock_response(
+            {
+                "body": io.BytesIO(
+                    json.dumps(
+                        {
+                            "choices": [
+                                {
+                                    "message": {
+                                        "content": "{\"schema_version\":\"ai_insight_v1\"",
+                                    },
+                                },
+                            ],
+                        },
+                    ).encode("utf-8"),
+                ),
+            },
+        )
+    except ManagedAIResponseError as exc:
+        if "appears truncated" not in str(exc):
+            raise AssertionError("truncated JSON used the wrong error") from exc
+    else:
+        raise AssertionError("truncated Mistral response unexpectedly parsed")
 
     handlers = load_handler_module()
     run_id = generate_run_id(
