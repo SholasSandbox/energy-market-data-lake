@@ -849,11 +849,49 @@ Next implementation slice:
 - keep broad wrapper unwrapping rejected
 - add fake-client coverage before any further live invocation
 
+### Phase 17I: Local Mistral Root-Wrapper Hardening
+
+Goal: harden the local managed-AI parser for the exact root-wrapper shape
+observed in Phase 17H while keeping broad wrapper handling rejected.
+
+Status: implementation complete as a local-only proof.
+
+Evidence:
+`docs/evidence/phase17i-mistral-root-wrapper-hardening-20260524.md`
+
+Completed scope:
+
+- added narrow parser support for a single-key `ai_insight_v1` wrapper
+- accepts the wrapper only when the nested object declares
+  `schema_version: ai_insight_v1`
+- keeps broad `ai_insight_v1` wrappers with sibling keys rejected by schema
+  validation
+- updated prompt wording to explicitly reject both `ai_insight_v1` and
+  `ai_insight` wrapper keys
+- expanded fake-client proof for direct and Mistral response wrapper shapes
+
+Guardrails kept:
+
+- no live Bedrock invocation
+- no Terraform apply
+- no IAM change
+- no Step Functions/state-machine deployment
+- no EventBridge schedule enablement
+- no DNS, ACM, alarms, budgets, or dashboard hosting changes
+- no raw model response was committed
+
+Next implementation slice:
+
+- Phase 17J: one controlled fourth live Mistral invocation may be considered
+  only after explicit approval
+- keep one-call discipline, no retry unless separately approved, no dashboard
+  publish, and sanitized evidence only
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17H third live Mistral invocation evidence.
-2. Plan Phase 17I as local Mistral root-wrapper hardening before any further
-   live Mistral invocation.
+1. Review and merge Phase 17I local Mistral root-wrapper hardening.
+2. Plan Phase 17J as a single fourth live Mistral invocation only if explicitly
+   approved.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from

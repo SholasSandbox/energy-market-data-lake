@@ -277,6 +277,25 @@ Result:
 Next boundary: local Mistral root-wrapper hardening before any fourth live
 invocation.
 
+## Phase 17I Result
+
+Phase 17I completed the local root-wrapper hardening boundary.
+
+Evidence:
+`docs/evidence/phase17i-mistral-root-wrapper-hardening-20260524.md`
+
+Result:
+
+- no live `bedrock-runtime invoke-model` call was made
+- exact `ai_insight_v1` wrapper output is now normalized locally
+- broad `ai_insight_v1` wrapper shapes still fail validation
+- fake-client proof covers the Phase 17H failure pattern locally
+- no dashboard publish was performed
+- no deployed AWS resources were changed
+
+Next boundary: one controlled fourth live Mistral invocation may be considered
+in a separate Phase 17J only after explicit approval.
+
 ## Rollback Path
 
 Because Phase 17B performs no live changes, rollback is simple:
