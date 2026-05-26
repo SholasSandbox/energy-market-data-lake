@@ -84,6 +84,9 @@ Region: **eu-west-2 (London)**
   `ai_insight_v1` wrapper while keeping broad wrapper shapes rejected.
 - Phase 17J preflight recommends a fourth controlled live Mistral invocation
   as a go candidate, but does not invoke Bedrock without explicit approval.
+- Phase 17J execution performs one controlled fourth live Mistral invocation;
+  root-wrapper normalization works live, but schema validation still rejects
+  missing nested insight fields before any dashboard publish.
 
 ### Deferred AWS Extension
 
@@ -578,7 +581,9 @@ These are historical references, not the current delivery path.
     invocation.
 13. Keep Phase 17J execution separate from the preflight decision: one call
     only after explicit approval, no retry, no dashboard publish.
-14. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+14. Treat Phase 17J execution as evidence that nested schema-field hardening is
+    needed before any further live Mistral call.
+15. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
