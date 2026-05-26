@@ -91,6 +91,8 @@ Region: **eu-west-2 (London)**
   Phase 17J validation failure, requiring exact insight fields, separate
   energy/news reference arrays, and `validation_notes` as an array before any
   fifth live call.
+- Phase 17L preflight recommends a fifth controlled live Mistral invocation as
+  a go-candidate, but does not invoke Bedrock without explicit approval.
 
 ### Deferred AWS Extension
 
@@ -589,7 +591,9 @@ These are historical references, not the current delivery path.
     needed before any further live Mistral call.
 15. Treat Phase 17K as the local schema-field proof boundary before any fifth
     live Mistral invocation.
-16. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+16. Keep Phase 17L execution separate from the preflight decision: one call
+    only after explicit approval, no retry, no dashboard publish.
+17. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
