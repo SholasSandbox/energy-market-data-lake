@@ -456,3 +456,29 @@ Result:
 
 Recommended next slice: **Phase 17K: local Mistral schema-field hardening**,
 before any fifth live invocation.
+
+## Phase 17K Result
+
+Phase 17K completed local Mistral schema-field hardening without a live model
+call.
+
+Evidence:
+
+- `docs/evidence/phase17k-mistral-schema-field-hardening-20260526.md`
+
+Result:
+
+- no live Bedrock Runtime call was made
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, dashboard hosting change, or dashboard publish was
+  performed
+- prompt now explicitly lists required insight fields
+- prompt rejects generic `references` as a substitute for separate
+  `energy_references` and `news_references`
+- prompt requires `validation_notes` as an array of strings
+- local fake-client proof reproduces the Phase 17J nested-field failure shape
+  and confirms schema validation still rejects unsafe output
+- deterministic fallback remains unchanged
+
+Recommended next slice: **Phase 17L preflight decision**, before any fifth live
+Mistral invocation.
