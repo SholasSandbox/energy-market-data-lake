@@ -887,11 +887,48 @@ Next implementation slice:
 - keep one-call discipline, no retry unless separately approved, no dashboard
   publish, and sanitized evidence only
 
+### Phase 17J: Live Mistral Invocation Preflight Decision
+
+Goal: decide whether a fourth controlled live Mistral invocation is justified
+after Phase 17I local root-wrapper hardening.
+
+Status: preflight complete; **do not invoke until explicitly approved**.
+
+Evidence:
+`docs/evidence/phase17j-live-mistral-preflight-decision-20260526.md`
+
+Decision:
+
+- recommendation: **GO candidate, pending explicit approval**
+- Phase 17I addresses the exact Phase 17H failure locally
+- local adapter proof passed
+- Bedrock model lookup confirmed `mistral.ministral-3-8b-instruct` in
+  `eu-west-2`
+- estimated one-call cost is approximately `$0.001294210`
+- hard budget cap remains `$0.10`
+
+Guardrails retained:
+
+- no live Bedrock invocation in this preflight state
+- no Terraform apply
+- no IAM change
+- no Step Functions/state-machine deployment
+- no EventBridge schedule enablement
+- no DNS, ACM, alarms, budgets, or dashboard hosting changes
+- no dashboard publish
+
+Next implementation slice:
+
+- Phase 17J execution may perform one controlled fourth live Mistral invocation
+  only after explicit approval
+- keep one-call discipline, no retry unless separately approved, no dashboard
+  publish, and sanitized evidence only
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17I local Mistral root-wrapper hardening.
-2. Plan Phase 17J as a single fourth live Mistral invocation only if explicitly
-   approved.
+1. Review and merge Phase 17J preflight decision evidence.
+2. If explicitly approved, run Phase 17J execution as a separate one-call
+   live-invocation boundary.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from

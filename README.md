@@ -82,6 +82,8 @@ Region: **eu-west-2 (London)**
   `ai_insight_v1` wrapper before any dashboard publish.
 - Phase 17I hardens root-wrapper handling locally, accepting only the exact
   `ai_insight_v1` wrapper while keeping broad wrapper shapes rejected.
+- Phase 17J preflight recommends a fourth controlled live Mistral invocation
+  as a go candidate, but does not invoke Bedrock without explicit approval.
 
 ### Deferred AWS Extension
 
@@ -574,7 +576,9 @@ These are historical references, not the current delivery path.
     hardening before any further live Mistral call.
 12. Treat Phase 17I as the local proof boundary before any fourth live Mistral
     invocation.
-13. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+13. Keep Phase 17J execution separate from the preflight decision: one call
+    only after explicit approval, no retry, no dashboard publish.
+14. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
