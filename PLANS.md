@@ -924,11 +924,57 @@ Next implementation slice:
 - keep one-call discipline, no retry unless separately approved, no dashboard
   publish, and sanitized evidence only
 
+### Phase 17J: One Controlled Fourth Live Mistral Invocation
+
+Goal: run the explicitly approved Phase 17J execution substate and test the
+Phase 17I root-wrapper hardening against one live Mistral invocation.
+
+Status: complete; live invocation attempted once and rejected by validation.
+
+Evidence:
+
+- summary:
+  `docs/evidence/phase17j-mistral-fourth-live-invocation-summary-20260526.md`
+- sanitized metadata:
+  `docs/evidence/phase17j-mistral-fourth-live-invocation-metadata-20260526.json`
+
+Result:
+
+- one `bedrock-runtime invoke-model` call was made against
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- hard budget cap: `$0.10`
+- estimated invocation cost: `$0.00127788`
+- Phase 17I root-wrapper normalization worked live: root schema version parsed
+  as `ai_insight_v1`
+- output still failed `ai_insight_v1` validation because the nested insight
+  object missed required fields and used a `references` substitute
+- no validated `ai_insight_v1` evidence was produced
+- the public dashboard snapshot was not changed
+- no Terraform apply, IAM change, state-machine deployment, EventBridge
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+
+Red-green evidence:
+
+- Red: Phase 17H failed on exact root wrapper shape
+- Green: Phase 17J live output parsed through that wrapper to
+  `schema_version: ai_insight_v1`
+- Regression: schema validation still rejected nested insight fields, so
+  nothing was published
+
+Next implementation slice:
+
+- Phase 17K: local Mistral schema-field hardening before any fifth live call
+- make required insight fields harder to omit
+- require `validation_notes` as an array
+- reject `references` as a substitute for separate energy/news references
+- keep any further live invocation behind explicit approval
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17J preflight decision evidence.
-2. If explicitly approved, run Phase 17J execution as a separate one-call
-   live-invocation boundary.
+1. Review and merge Phase 17J execution evidence.
+2. Plan Phase 17K as local Mistral schema-field hardening before any further
+   live Mistral invocation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
