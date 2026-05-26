@@ -427,3 +427,32 @@ Decision:
 
 Recommended next slice: **Phase 17J execution**, only after explicit approval
 and with one-call, no-retry, no-publish guardrails.
+
+## Phase 17J Execution Result
+
+Phase 17J execution performed one controlled fourth live Mistral invocation and
+stopped at the validation boundary.
+
+Evidence:
+
+- `docs/evidence/phase17j-mistral-fourth-live-invocation-summary-20260526.md`
+- `docs/evidence/phase17j-mistral-fourth-live-invocation-metadata-20260526.json`
+
+Result:
+
+- one live Bedrock Runtime call was made to
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- estimated invocation cost: `$0.00127788`
+- Phase 17I root-wrapper normalization worked live
+- parsed payload had `schema_version: ai_insight_v1`
+- output failed `ai_insight_v1` validation because nested insight fields were
+  missing or shaped incorrectly
+- no validated AI insight was produced
+- the public dashboard snapshot was not changed
+- raw prompt and raw model output were not committed
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes were made
+
+Recommended next slice: **Phase 17K: local Mistral schema-field hardening**,
+before any fifth live invocation.
