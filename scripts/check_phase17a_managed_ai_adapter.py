@@ -133,6 +133,10 @@ def main() -> int:
         raise AssertionError("prompt does not reject known wrapper keys")
     if "final character must be }" not in prompt:
         raise AssertionError("prompt does not require complete JSON output")
+    if "Do not use a generic references field" not in prompt:
+        raise AssertionError("prompt does not reject generic references")
+    if "validation_notes must be an array" not in prompt:
+        raise AssertionError("prompt does not require validation_notes array")
     default_request = build_mistral_request(bundle, temperature=0.1)
     if default_request["max_tokens"] != DEFAULT_MAX_TOKENS:
         raise AssertionError("Mistral default max token budget drifted")
@@ -284,6 +288,62 @@ def main() -> int:
         pass
     else:
         raise AssertionError("unsafe ai_insight_v1 wrapper unexpectedly passed")
+    phase17j_shape = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps(
+                    {
+                        "choices": [
+                            {
+                                "message": {
+                                    "content": json.dumps(
+                                        {
+                                            "schema_version": "ai_insight_v1",
+                                            "generated_at": managed_payload["generated_at"],
+                                            "insights": [
+                                                {
+                                                    "summary": "Demand risk remains watch.",
+                                                    "risk_level": "watch",
+                                                    "confidence": 0.85,
+                                                    "references": [],
+                                                    "validation_notes": "single note",
+                                                },
+                                            ],
+                                        },
+                                    ),
+                                },
+                            },
+                        ],
+                    },
+                ).encode("utf-8"),
+            ),
+        },
+    )
+    try:
+        raise_for_validation_errors(
+            phase17j_shape,
+            "ai_insight",
+            "phase17k_schema_field_shape",
+        )
+    except ValueError as exc:
+        text = "\n".join(getattr(exc, "errors", [str(exc)]))
+        expected_fragments = [
+            "'references' was unexpected",
+            "'id' is a required property",
+            "'title' is a required property",
+            "'region' is a required property",
+            "'time_window' is a required property",
+            "'energy_references' is a required property",
+            "'news_references' is a required property",
+            "is not of type 'array'",
+        ]
+        missing = [fragment for fragment in expected_fragments if fragment not in text]
+        if missing:
+            raise AssertionError(
+                f"Phase 17J schema-field failure changed unexpectedly: {missing}",
+            ) from exc
+    else:
+        raise AssertionError("Phase 17J schema-field failure unexpectedly passed")
     fenced_parsed = parse_bedrock_response(
         {
             "body": io.BytesIO(
