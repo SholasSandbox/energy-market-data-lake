@@ -296,6 +296,25 @@ Result:
 Next boundary: one controlled fourth live Mistral invocation may be considered
 in a separate Phase 17J only after explicit approval.
 
+## Phase 17J and 17K Results
+
+Phase 17J execution performed one controlled fourth live Mistral invocation.
+The Phase 17I root-wrapper normalization worked live, but schema validation
+still rejected nested insight fields before any dashboard publish.
+
+Phase 17K then completed local schema-field hardening:
+
+- no live Bedrock Runtime call was made
+- prompt now explicitly lists the required fields for each insight
+- prompt rejects generic `references`
+- prompt requires separate `energy_references` and `news_references` arrays
+- prompt requires `validation_notes` as an array of strings
+- local fake-client proof reproduces the Phase 17J nested-field failure shape
+  and keeps unsafe output rejected
+
+Next boundary: Phase 17L should begin as a preflight decision before any fifth
+live Mistral invocation.
+
 ## Rollback Path
 
 Because Phase 17B performs no live changes, rollback is simple:

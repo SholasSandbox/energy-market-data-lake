@@ -970,11 +970,54 @@ Next implementation slice:
 - reject `references` as a substitute for separate energy/news references
 - keep any further live invocation behind explicit approval
 
+### Phase 17K: Local Mistral Schema-Field Hardening
+
+Goal: harden the nested insight-field contract locally after Phase 17J proved
+root-wrapper normalization worked live, but `ai_insight_v1` validation still
+rejected the nested `insights[0]` object.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17k-mistral-schema-field-hardening-20260526.md`
+
+Completed scope:
+
+- no live Bedrock invocation was made
+- no Terraform apply, IAM change, state-machine deploy, EventBridge schedule
+  enablement, DNS, ACM, alarms, budgets, dashboard hosting change, or dashboard
+  publish was performed
+- prompt now explicitly lists required fields for each insight
+- prompt rejects generic `references` as a substitute for
+  `energy_references` and `news_references`
+- prompt requires `validation_notes` as an array of strings
+- local fake-client proof reproduces the Phase 17J nested-field failure shape
+  and confirms schema validation still rejects unsafe output
+- deterministic fallback remains unchanged
+
+Red-green evidence:
+
+- Red: Phase 17J parsed to `schema_version: ai_insight_v1`, but nested insight
+  validation rejected missing required fields, generic `references`, and a
+  string `validation_notes` value.
+- Green: Phase 17K tightens the prompt contract and proves the Phase 17J
+  failure shape is still rejected locally before any further live call.
+- Regression: root-wrapper normalization, broad-wrapper rejection, fenced JSON
+  handling, and deterministic fallback remain covered by the local proof.
+
+Next implementation slice:
+
+- Phase 17L should begin as a preflight decision before any fifth live Mistral
+  invocation.
+- Any further live invocation remains explicit-approval only, one call only, no
+  retry, no dashboard publish, and sanitized evidence only.
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17J execution evidence.
-2. Plan Phase 17K as local Mistral schema-field hardening before any further
-   live Mistral invocation.
+1. Review and merge Phase 17K local schema-field hardening.
+2. Plan Phase 17L as a preflight decision before any fifth live Mistral
+   invocation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
