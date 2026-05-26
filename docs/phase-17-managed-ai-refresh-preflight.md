@@ -482,3 +482,28 @@ Result:
 
 Recommended next slice: **Phase 17L preflight decision**, before any fifth live
 Mistral invocation.
+
+## Phase 17L Preflight Decision
+
+Phase 17L reviewed whether a fifth controlled live Mistral invocation is
+justified after Phase 17K local schema-field hardening.
+
+Evidence:
+
+- `docs/evidence/phase17l-live-mistral-preflight-decision-20260526.md`
+
+Decision:
+
+- recommendation: **go-candidate for one controlled fifth live invocation**
+- no live Bedrock Runtime call was made in this preflight state
+- execution remains blocked until explicit approval in a separate substate
+
+Preflight facts:
+
+- four controlled Mistral live calls have been made so far
+- cumulative estimated live Mistral cost is `$0.00516320`
+- previous calls used no retry and did not publish to the public dashboard
+- Phase 17K locally targets the exact Phase 17J nested schema-field failure
+
+Recommended next slice: **Phase 17L execution**, only after explicit approval
+for one controlled fifth live Mistral invocation.
