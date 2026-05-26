@@ -405,3 +405,25 @@ Result:
 Recommended next slice: **Phase 17J: one controlled fourth live Mistral
 invocation**, only after explicit approval with no retry unless separately
 approved.
+
+## Phase 17J Preflight Decision
+
+Phase 17J preflight reviewed whether a fourth controlled live Mistral
+invocation is justified after Phase 17I local root-wrapper hardening.
+
+Evidence:
+`docs/evidence/phase17j-live-mistral-preflight-decision-20260526.md`
+
+Decision:
+
+- recommendation: **GO candidate, pending explicit approval**
+- no live Bedrock invocation was made in this preflight state
+- Phase 17I locally addresses the exact Phase 17H root-wrapper failure
+- local adapter proof passed
+- Bedrock model lookup confirmed `mistral.ministral-3-8b-instruct` in
+  `eu-west-2`
+- estimated one-call cost is approximately `$0.001294210`
+- dashboard publish remains blocked
+
+Recommended next slice: **Phase 17J execution**, only after explicit approval
+and with one-call, no-retry, no-publish guardrails.
