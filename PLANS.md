@@ -1100,11 +1100,55 @@ Next implementation slice:
 - forbid extra fields such as `value` in `energy_references`
 - keep any further live invocation behind explicit approval
 
+### Phase 17M: Local Mistral Object-Shape Hardening
+
+Goal: harden the nested object-shape contract locally after Phase 17L execution
+showed Mistral output could parse as `ai_insight_v1`, but still failed schema
+validation on exact object shapes.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17m-mistral-object-shape-hardening-20260528.md`
+
+Completed scope:
+
+- no live Bedrock invocation was made
+- no Terraform apply, IAM change, state-machine deploy, EventBridge schedule
+  enablement, DNS, ACM, alarms, budgets, dashboard hosting change, or dashboard
+  publish was performed
+- prompt now requires `time_window` as an object with `start` and `end`
+  date-time strings
+- prompt explicitly rejects string `time_window`
+- prompt forbids extra fields such as `value`, `date`, and `timestamp` in
+  reference objects
+- local fake-client proof reproduces the Phase 17L object-shape failure and
+  confirms schema validation still rejects unsafe output
+- deterministic fallback remains unchanged
+
+Red-green evidence:
+
+- Red: Phase 17L parsed as `ai_insight_v1`, but validation rejected string
+  `time_window` and extra `value` fields in `energy_references`.
+- Green: Phase 17M tightens the prompt contract and locally proves the Phase
+  17L object-shape failure remains rejected before any further live call.
+- Regression: previous Phase 17 failure shapes, wrapper normalization,
+  broad-wrapper rejection, fenced JSON handling, deterministic fallback, and
+  dashboard publish blocking remain covered.
+
+Next implementation slice:
+
+- Phase 17N should begin as a preflight decision before any sixth live Mistral
+  invocation.
+- Any further live invocation remains explicit-approval only, one call only, no
+  retry, no dashboard publish, and sanitized evidence only.
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17L execution evidence.
-2. Plan Phase 17M as local Mistral object-shape hardening before any sixth live
-   Mistral invocation.
+1. Review and merge Phase 17M local object-shape hardening.
+2. Plan Phase 17N as a preflight decision before any sixth live Mistral
+   invocation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
