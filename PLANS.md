@@ -1186,11 +1186,56 @@ Next implementation slice:
   only after explicit approval.
 - If approval is not granted, keep the next slice local-only.
 
+### Phase 17N: One Controlled Sixth Live Mistral Invocation
+
+Goal: run the explicitly approved Phase 17N execution substate and test the
+Phase 17M object-shape hardening against one live Mistral invocation.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17n-mistral-sixth-live-invocation-summary-20260528.md`
+- `docs/evidence/phase17n-mistral-sixth-live-invocation-metadata-20260528.json`
+
+Result:
+
+- one `bedrock-runtime invoke-model` call was made against
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- hard budget cap: `$0.10`
+- estimated invocation cost: `$0.00136229`
+- parsed payload had `schema_version: ai_insight_v1`
+- output passed `ai_insight_v1` validation in memory
+- no validated payload was committed because the approved boundary was
+  sanitized metadata only
+- the public dashboard snapshot was not changed
+- no Terraform apply, IAM change, state-machine deployment, EventBridge
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+- total estimated live Mistral cost across all controlled calls so far is
+  `$0.00786800`
+
+Red-green evidence:
+
+- Red: Phase 17L failed on nested object shape after schema-field hardening
+  improved the live output.
+- Green: Phase 17N live output parsed and validated as `ai_insight_v1`.
+- Regression: deterministic fallback remains intact and nothing was published.
+
+Next implementation slice:
+
+- Phase 17O: managed AI publish/deployment preflight before any dashboard update
+  or handler/state-machine switch
+- decide whether to capture a public-safe validated payload in a future
+  controlled run
+- keep dashboard publish, Terraform, IAM, schedules, DNS, ACM, alarms, and
+  budgets unchanged unless a future phase explicitly targets them
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17N preflight decision evidence.
-2. Decide whether to approve Phase 17N execution as one controlled sixth live
-   Mistral invocation.
+1. Review and merge Phase 17N execution evidence.
+2. Plan Phase 17O as managed AI publish/deployment preflight before any
+   dashboard update or handler/state-machine switch.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
