@@ -537,3 +537,30 @@ Result:
 
 Recommended next slice: **Phase 17M: local Mistral object-shape hardening**,
 before any sixth live invocation.
+
+## Phase 17M Result
+
+Phase 17M completed local Mistral object-shape hardening without a live model
+call.
+
+Evidence:
+
+- `docs/evidence/phase17m-mistral-object-shape-hardening-20260528.md`
+
+Result:
+
+- no live Bedrock Runtime call was made
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, dashboard hosting change, or dashboard publish was
+  performed
+- prompt now requires `time_window` as an object with `start` and `end`
+  date-time strings
+- prompt explicitly rejects string `time_window`
+- prompt forbids extra reference fields such as `value`, `date`, and
+  `timestamp`
+- local fake-client proof reproduces the Phase 17L object-shape failure and
+  confirms schema validation still rejects unsafe output
+- deterministic fallback remains unchanged
+
+Recommended next slice: **Phase 17N preflight decision**, before any sixth live
+Mistral invocation.

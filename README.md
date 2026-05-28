@@ -96,6 +96,9 @@ Region: **eu-west-2 (London)**
 - Phase 17L execution performs one controlled fifth live Mistral invocation;
   output advances beyond the Phase 17J missing-field failure but still fails
   validation on nested object shape before any dashboard publish.
+- Phase 17M hardens nested Mistral object shapes locally, requiring
+  `time_window` as a `{start,end}` object and forbidding extra reference fields
+  such as `value` before any sixth live call.
 
 ### Deferred AWS Extension
 
@@ -598,7 +601,9 @@ These are historical references, not the current delivery path.
     only after explicit approval, no retry, no dashboard publish.
 17. Treat Phase 17L execution as evidence that local object-shape hardening is
     needed before any sixth live Mistral call.
-18. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+18. Treat Phase 17M as the local object-shape proof boundary before any sixth
+    live Mistral invocation.
+19. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes

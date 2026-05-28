@@ -137,6 +137,12 @@ def main() -> int:
         raise AssertionError("prompt does not reject generic references")
     if "validation_notes must be an array" not in prompt:
         raise AssertionError("prompt does not require validation_notes array")
+    if "Do not add value, date, timestamp, or other fields to references" not in prompt:
+        raise AssertionError("prompt does not reject reference extra fields")
+    if "time_window must be an object with start and end" not in prompt:
+        raise AssertionError("prompt does not require time_window object shape")
+    if "Do not return time_window as a plain string" not in prompt:
+        raise AssertionError("prompt does not reject string time_window")
     default_request = build_mistral_request(bundle, temperature=0.1)
     if default_request["max_tokens"] != DEFAULT_MAX_TOKENS:
         raise AssertionError("Mistral default max token budget drifted")
@@ -344,6 +350,77 @@ def main() -> int:
             ) from exc
     else:
         raise AssertionError("Phase 17J schema-field failure unexpectedly passed")
+    phase17l_shape = parse_bedrock_response(
+        {
+            "body": io.BytesIO(
+                json.dumps(
+                    {
+                        "choices": [
+                            {
+                                "message": {
+                                    "content": json.dumps(
+                                        {
+                                            "schema_version": "ai_insight_v1",
+                                            "generated_at": managed_payload["generated_at"],
+                                            "insights": [
+                                                {
+                                                    "id": "phase17l-shape",
+                                                    "title": "Object shape remains strict",
+                                                    "summary": "Demand risk remains watch.",
+                                                    "region": "GB",
+                                                    "risk_level": "watch",
+                                                    "confidence": 0.85,
+                                                    "time_window": "2026-05-07 (10:03 UTC)",
+                                                    "energy_references": [
+                                                        {
+                                                            "source": "Elexon",
+                                                            "metric": "demand",
+                                                            "reference": "latest",
+                                                            "value": "25118 MW",
+                                                        },
+                                                    ],
+                                                    "news_references": [
+                                                        {
+                                                            "publisher": "Energy Live News",
+                                                            "title": "Market update",
+                                                            "url": "https://example.com/news",
+                                                        },
+                                                    ],
+                                                    "validation_notes": [
+                                                        "Object-shape proof for Phase 17M.",
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                    ),
+                                },
+                            },
+                        ],
+                    },
+                ).encode("utf-8"),
+            ),
+        },
+    )
+    try:
+        raise_for_validation_errors(
+            phase17l_shape,
+            "ai_insight",
+            "phase17m_object_shape",
+        )
+    except ValueError as exc:
+        text = "\n".join(getattr(exc, "errors", [str(exc)]))
+        expected_fragments = [
+            "'value' was unexpected",
+            "time_window",
+            "is not of type 'object'",
+        ]
+        missing = [fragment for fragment in expected_fragments if fragment not in text]
+        if missing:
+            raise AssertionError(
+                f"Phase 17L object-shape failure changed unexpectedly: {missing}",
+            ) from exc
+    else:
+        raise AssertionError("Phase 17L object-shape failure unexpectedly passed")
     fenced_parsed = parse_bedrock_response(
         {
             "body": io.BytesIO(
