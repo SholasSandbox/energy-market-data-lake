@@ -1055,10 +1055,55 @@ Next implementation slice:
   only after explicit approval.
 - If approval is not granted, keep the next slice local-only.
 
+### Phase 17L: One Controlled Fifth Live Mistral Invocation
+
+Goal: run the explicitly approved Phase 17L execution substate and test the
+Phase 17K schema-field hardening against one live Mistral invocation.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17l-mistral-fifth-live-invocation-summary-20260527.md`
+- `docs/evidence/phase17l-mistral-fifth-live-invocation-metadata-20260527.json`
+
+Result:
+
+- one `bedrock-runtime invoke-model` call was made against
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- hard budget cap: `$0.10`
+- estimated invocation cost: `$0.00134251`
+- parsed payload had `schema_version: ai_insight_v1`
+- Phase 17K improved the live output shape: the output produced one insight
+  and no longer failed on the broad missing-field pattern from Phase 17J
+- output still failed `ai_insight_v1` validation because nested object fields
+  were shaped incorrectly
+- no validated `ai_insight_v1` evidence was produced
+- the public dashboard snapshot was not changed
+- no Terraform apply, IAM change, state-machine deployment, EventBridge
+  schedule enablement, DNS, ACM, alarms, budgets, or dashboard hosting changes
+
+Red-green evidence:
+
+- Red: Phase 17J failed on missing nested insight fields, generic
+  `references`, and string `validation_notes`.
+- Green: Phase 17L live output parsed as `ai_insight_v1` and advanced to
+  narrower nested object-shape validation failures.
+- Regression: schema validation still rejected invalid output, so nothing was
+  published.
+
+Next implementation slice:
+
+- Phase 17M: local Mistral object-shape hardening before any sixth live call
+- require `time_window` as an object with `start` and `end`
+- forbid extra fields such as `value` in `energy_references`
+- keep any further live invocation behind explicit approval
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17L preflight decision evidence.
-2. Decide whether to approve Phase 17L execution as one controlled fifth live
+1. Review and merge Phase 17L execution evidence.
+2. Plan Phase 17M as local Mistral object-shape hardening before any sixth live
    Mistral invocation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
