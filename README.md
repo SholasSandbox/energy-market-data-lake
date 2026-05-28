@@ -101,6 +101,9 @@ Region: **eu-west-2 (London)**
   such as `value` before any sixth live call.
 - Phase 17N preflight recommends a sixth controlled live Mistral invocation as
   a go-candidate, but does not invoke Bedrock without explicit approval.
+- Phase 17N execution performs one controlled sixth live Mistral invocation;
+  output passes `ai_insight_v1` validation in memory, but no payload is
+  committed or published because the boundary was sanitized metadata only.
 
 ### Deferred AWS Extension
 
@@ -607,7 +610,9 @@ These are historical references, not the current delivery path.
     live Mistral invocation.
 19. Keep Phase 17N execution separate from the preflight decision: one call
     only after explicit approval, no retry, no dashboard publish.
-20. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+20. Treat Phase 17N execution as evidence that managed Mistral can produce
+    schema-valid `ai_insight_v1`, while dashboard publication remains blocked.
+21. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes

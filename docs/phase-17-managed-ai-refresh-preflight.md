@@ -589,3 +589,31 @@ Preflight facts:
 
 Recommended next slice: **Phase 17N execution**, only after explicit approval
 for one controlled sixth live Mistral invocation.
+
+## Phase 17N Execution Result
+
+Phase 17N execution performed one controlled sixth live Mistral invocation and
+stopped before any dashboard publish.
+
+Evidence:
+
+- `docs/evidence/phase17n-mistral-sixth-live-invocation-summary-20260528.md`
+- `docs/evidence/phase17n-mistral-sixth-live-invocation-metadata-20260528.json`
+
+Result:
+
+- one live Bedrock Runtime call was made to
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- estimated invocation cost: `$0.00136229`
+- parsed payload had `schema_version: ai_insight_v1`
+- output passed `ai_insight_v1` validation in memory
+- no validated payload was committed because the approved boundary was
+  sanitized metadata only
+- the public dashboard snapshot was not changed
+- raw prompt and raw model output were not committed
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes were made
+
+Recommended next slice: **Phase 17O: managed AI publish/deployment
+preflight**, before any dashboard update or handler/state-machine switch.
