@@ -99,6 +99,8 @@ Region: **eu-west-2 (London)**
 - Phase 17M hardens nested Mistral object shapes locally, requiring
   `time_window` as a `{start,end}` object and forbidding extra reference fields
   such as `value` before any sixth live call.
+- Phase 17N preflight recommends a sixth controlled live Mistral invocation as
+  a go-candidate, but does not invoke Bedrock without explicit approval.
 
 ### Deferred AWS Extension
 
@@ -603,7 +605,9 @@ These are historical references, not the current delivery path.
     needed before any sixth live Mistral call.
 18. Treat Phase 17M as the local object-shape proof boundary before any sixth
     live Mistral invocation.
-19. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+19. Keep Phase 17N execution separate from the preflight decision: one call
+    only after explicit approval, no retry, no dashboard publish.
+20. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes

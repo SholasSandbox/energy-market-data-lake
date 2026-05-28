@@ -1144,11 +1144,53 @@ Next implementation slice:
 - Any further live invocation remains explicit-approval only, one call only, no
   retry, no dashboard publish, and sanitized evidence only.
 
+### Phase 17N: Live Mistral Preflight Decision
+
+Goal: decide whether a sixth controlled live Mistral invocation is justified
+after Phase 17M local object-shape hardening.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17n-live-mistral-preflight-decision-20260528.md`
+
+Decision:
+
+- recommendation is **go-candidate**, not automatic execution
+- a sixth live call remains blocked until explicit approval in a separate
+  execution substate
+- if approved, the next call must remain one invocation only, no retry, hard
+  `$0.10` cap, sanitized metadata only, no dashboard publish, and no Terraform
+  or AWS infrastructure changes
+
+Preflight facts:
+
+- five controlled live Mistral calls have been made so far
+- cumulative estimated live Mistral cost is `$0.00650571`
+- every prior live call used no retry and performed no dashboard publish
+- Phase 17M locally targets the exact Phase 17L nested object-shape failure
+
+Red-green evidence:
+
+- Red: Phase 17L failed nested `ai_insight_v1` object-shape validation after
+  schema-field hardening improved the live output.
+- Green: Phase 17M locally tightened object-shape instructions and kept the
+  observed unsafe shape rejected.
+- Regression: deterministic fallback, wrapper handling, schema validation, and
+  dashboard publish blocking remain intact.
+
+Next implementation slice:
+
+- Phase 17N execution may perform one controlled sixth live Mistral invocation
+  only after explicit approval.
+- If approval is not granted, keep the next slice local-only.
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17M local object-shape hardening.
-2. Plan Phase 17N as a preflight decision before any sixth live Mistral
-   invocation.
+1. Review and merge Phase 17N preflight decision evidence.
+2. Decide whether to approve Phase 17N execution as one controlled sixth live
+   Mistral invocation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
