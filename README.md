@@ -93,6 +93,9 @@ Region: **eu-west-2 (London)**
   fifth live call.
 - Phase 17L preflight recommends a fifth controlled live Mistral invocation as
   a go-candidate, but does not invoke Bedrock without explicit approval.
+- Phase 17L execution performs one controlled fifth live Mistral invocation;
+  output advances beyond the Phase 17J missing-field failure but still fails
+  validation on nested object shape before any dashboard publish.
 
 ### Deferred AWS Extension
 
@@ -593,7 +596,9 @@ These are historical references, not the current delivery path.
     live Mistral invocation.
 16. Keep Phase 17L execution separate from the preflight decision: one call
     only after explicit approval, no retry, no dashboard publish.
-17. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+17. Treat Phase 17L execution as evidence that local object-shape hardening is
+    needed before any sixth live Mistral call.
+18. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
