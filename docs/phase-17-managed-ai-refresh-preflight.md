@@ -564,3 +564,28 @@ Result:
 
 Recommended next slice: **Phase 17N preflight decision**, before any sixth live
 Mistral invocation.
+
+## Phase 17N Preflight Decision
+
+Phase 17N reviewed whether a sixth controlled live Mistral invocation is
+justified after Phase 17M local object-shape hardening.
+
+Evidence:
+
+- `docs/evidence/phase17n-live-mistral-preflight-decision-20260528.md`
+
+Decision:
+
+- recommendation: **go-candidate for one controlled sixth live invocation**
+- no live Bedrock Runtime call was made in this preflight state
+- execution remains blocked until explicit approval in a separate substate
+
+Preflight facts:
+
+- five controlled Mistral live calls have been made so far
+- cumulative estimated live Mistral cost is `$0.00650571`
+- previous calls used no retry and did not publish to the public dashboard
+- Phase 17M locally targets the exact Phase 17L nested object-shape failure
+
+Recommended next slice: **Phase 17N execution**, only after explicit approval
+for one controlled sixth live Mistral invocation.
