@@ -507,3 +507,33 @@ Preflight facts:
 
 Recommended next slice: **Phase 17L execution**, only after explicit approval
 for one controlled fifth live Mistral invocation.
+
+## Phase 17L Execution Result
+
+Phase 17L execution performed one controlled fifth live Mistral invocation and
+stopped at the validation boundary.
+
+Evidence:
+
+- `docs/evidence/phase17l-mistral-fifth-live-invocation-summary-20260527.md`
+- `docs/evidence/phase17l-mistral-fifth-live-invocation-metadata-20260527.json`
+
+Result:
+
+- one live Bedrock Runtime call was made to
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- estimated invocation cost: `$0.00134251`
+- parsed payload had `schema_version: ai_insight_v1`
+- output still failed `ai_insight_v1` validation, but the remaining failures
+  were narrower nested object-shape issues
+- `time_window` was returned as a string instead of an object
+- `energy_references` included unexpected `value` fields
+- no validated AI insight was produced
+- the public dashboard snapshot was not changed
+- raw prompt and raw model output were not committed
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes were made
+
+Recommended next slice: **Phase 17M: local Mistral object-shape hardening**,
+before any sixth live invocation.
