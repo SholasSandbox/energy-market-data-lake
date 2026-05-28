@@ -377,8 +377,9 @@ Hiring signal:
 - RSS feed results change over time.
 - Phase 8 schedule automation is intentionally disabled until a later operating
   decision.
-- DNS, ACM certificate, CloudWatch alarms, managed AI invocation, and automated
-  schedules remain intentionally deferred.
-- The live AI `dashboard_snapshot_v1.json` path has been restored from the
-  successful Phase 8 curated artifacts; future managed AI refresh remains
+- DNS, ACM certificate, CloudWatch alarms, managed AI dashboard publication,
+  managed workflow deployment, and automated schedules remain intentionally
   deferred.
+- The live AI `dashboard_snapshot_v1.json` path has been restored from the
+  successful Phase 8 curated artifacts; managed AI invocation has been proven
+  separately, but managed AI dashboard publication remains deferred.

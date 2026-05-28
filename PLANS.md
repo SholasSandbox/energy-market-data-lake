@@ -1231,11 +1231,55 @@ Next implementation slice:
 - keep dashboard publish, Terraform, IAM, schedules, DNS, ACM, alarms, and
   budgets unchanged unless a future phase explicitly targets them
 
+### Phase 17O: Managed AI Publish/Deployment Preflight
+
+Goal: decide whether Phase 17N validation success is sufficient to publish
+managed AI output or deploy managed handler/state-machine wiring.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17o-managed-ai-publish-deployment-preflight-20260528.md`
+
+Decision:
+
+- **no-go** for immediate dashboard publish
+- **no-go** for immediate handler/state-machine deployment
+- next safest boundary is public-safe validated payload capture, not dashboard
+  mutation or workflow switching
+
+Preflight facts:
+
+- Phase 17N produced schema-valid `ai_insight_v1` in memory
+- Phase 17N did not commit the parsed payload because the approved boundary was
+  sanitized metadata only
+- public dashboard snapshot remains unchanged
+- current Terraform Step Functions definition still uses
+  `MergeAiInsightDeterministic`
+- `MergeAiInsightManaged` exists in code, but production deployment would need
+  IAM, environment, state-machine, rollback, and failure-path proof
+
+Recommended next boundary:
+
+- Phase 17P: managed AI validated payload capture
+- one controlled managed invocation only after explicit approval
+- commit only a public-safe parsed `ai_insight_v1` artifact if it validates
+- do not publish the dashboard and do not deploy handler/state-machine changes
+- keep raw prompt and raw model response uncommitted
+- preserve deterministic fallback
+
+Future decisions must stay separate:
+
+- validated payload capture
+- dashboard snapshot publish
+- Step Functions managed-handler deployment
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17N execution evidence.
-2. Plan Phase 17O as managed AI publish/deployment preflight before any
-   dashboard update or handler/state-machine switch.
+1. Review and merge Phase 17O managed AI publish/deployment preflight.
+2. Plan Phase 17P as managed AI validated payload capture before any dashboard
+   publish or handler/state-machine switch.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from

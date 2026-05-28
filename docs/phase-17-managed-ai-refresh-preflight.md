@@ -617,3 +617,31 @@ Result:
 
 Recommended next slice: **Phase 17O: managed AI publish/deployment
 preflight**, before any dashboard update or handler/state-machine switch.
+
+## Phase 17O Publish/Deployment Preflight
+
+Phase 17O reviewed whether Phase 17N validation success is enough to publish
+managed AI output or deploy managed handler/state-machine wiring.
+
+Evidence:
+
+- `docs/evidence/phase17o-managed-ai-publish-deployment-preflight-20260528.md`
+
+Decision:
+
+- no-go for immediate dashboard publish
+- no-go for immediate handler/state-machine deployment
+- next safest boundary is public-safe validated payload capture
+
+Preflight facts:
+
+- Phase 17N proved Mistral can produce schema-valid `ai_insight_v1` in memory
+- Phase 17N did not commit the parsed payload because the approved boundary was
+  sanitized metadata only
+- current Terraform Step Functions definition still routes through
+  `MergeAiInsightDeterministic`
+- `MergeAiInsightManaged` exists in code, but production deployment needs IAM,
+  environment, state-machine, rollback, and failure-path proof
+
+Recommended next slice: **Phase 17P: managed AI validated payload capture**,
+before any dashboard publish or handler/state-machine switch.
