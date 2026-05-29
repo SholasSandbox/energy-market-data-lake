@@ -383,3 +383,6 @@ Hiring signal:
 - The live AI `dashboard_snapshot_v1.json` path now serves the approved managed
   AI dashboard snapshot from Phase 17S execution; managed workflow deployment
   remains deferred.
+- Phase 17T read-only checks verify the hosted dashboard, latest managed AI
+  snapshot, immutable managed AI snapshot, schema validity, and source-link
+  hardening.
