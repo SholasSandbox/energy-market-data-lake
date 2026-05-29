@@ -750,3 +750,32 @@ Result:
 Recommended next slice: **Phase 17S execution substate: managed AI dashboard
 publish**, only after explicit approval for S3 writes and CloudFront
 invalidation.
+
+## Phase 17S Dashboard Publish Execution Result
+
+Phase 17S execution published the approved Phase 17R managed AI dashboard
+candidate to the live CloudFront-backed dashboard snapshot path.
+
+Evidence:
+
+- `docs/evidence/phase17s-managed-ai-dashboard-publish-execution-summary-20260529.md`
+- `docs/evidence/phase17s-dashboard-publish-cloudfront-http-check-20260529.txt`
+- `docs/evidence/phase17s-dashboard-publish-cloudfront-invalidation-status-20260529.json`
+- `docs/evidence/phase17s-dashboard-publish-latest-head-20260529.json`
+- `docs/evidence/phase17s-dashboard-publish-immutable-head-20260529.json`
+
+Result:
+
+- no Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, static-site rebuild, or
+  managed workflow deployment was performed
+- latest `dashboard_snapshot_v1.json` now serves the approved managed AI
+  dashboard snapshot
+- immutable snapshot was published at
+  `snapshots/run_id=managed-ai-phase17p-20260528T213401Z/dashboard_snapshot_v1.json`
+- CloudFront invalidation `I9MCXBX6M0BCO1HN0BWCKZO5H9` completed
+- CloudFront latest and immutable paths both match the approved candidate
+  SHA256
+
+Recommended next slice: **Phase 17T: managed AI dashboard post-publish demo
+verification**, read-only.

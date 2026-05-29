@@ -1,0 +1,18 @@
+{
+    "Location": "https://cloudfront.amazonaws.com/2020-05-31/distribution/E2H9BGRGYAHKPN/invalidation/I9MCXBX6M0BCO1HN0BWCKZO5H9",
+    "Invalidation": {
+        "Id": "I9MCXBX6M0BCO1HN0BWCKZO5H9",
+        "Status": "InProgress",
+        "CreateTime": "2026-05-29T12:59:53.167000+00:00",
+        "InvalidationBatch": {
+            "Paths": {
+                "Quantity": 2,
+                "Items": [
+                    "/dashboard_snapshot_v1.json",
+                    "/snapshots/run_id=managed-ai-phase17p-20260528T213401Z/dashboard_snapshot_v1.json"
+                ]
+            },
+            "CallerReference": "cli-1780059592-730477"
+        }
+    }
+}

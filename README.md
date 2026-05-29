@@ -118,6 +118,8 @@ Region: **eu-west-2 (London)**
 - Phase 17S makes the managed AI dashboard publish a go-candidate, but keeps
   S3 writes and CloudFront invalidation blocked until explicit execution
   approval.
+- Phase 17S execution publishes the approved managed AI dashboard snapshot to
+  CloudFront latest plus immutable snapshot paths, with rollback evidence.
 
 ### Deferred AWS Extension
 
@@ -636,7 +638,9 @@ These are historical references, not the current delivery path.
     AI dashboard publish decision.
 25. Treat Phase 17S as a decision boundary only; publishing requires explicit
     execution approval.
-26. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+26. Treat Phase 17S execution as the live managed AI dashboard publish proof;
+    managed workflow deployment remains separate.
+27. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
