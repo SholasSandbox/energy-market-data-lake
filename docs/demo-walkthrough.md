@@ -378,10 +378,8 @@ Hiring signal:
 - Phase 8 schedule automation is intentionally disabled until a later operating
   decision.
 - DNS, ACM certificate, CloudWatch alarms, managed AI dashboard publication,
-  managed workflow deployment, and automated schedules remain intentionally
-  deferred.
-- The live AI `dashboard_snapshot_v1.json` path has been restored from the
-  successful Phase 8 curated artifacts; managed AI invocation has been proven
-  separately. Phase 17Q produced a local managed-AI dashboard candidate, but
-  managed AI dashboard publication remains deferred until source-link hardening
-  is complete.
+  managed workflow deployment, and automated schedules are intentionally
+  separated into explicit operating boundaries.
+- The live AI `dashboard_snapshot_v1.json` path now serves the approved managed
+  AI dashboard snapshot from Phase 17S execution; managed workflow deployment
+  remains deferred.

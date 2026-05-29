@@ -1,0 +1,31 @@
+# Phase 17S Dashboard Publish CloudFront HTTP Check
+
+Expected candidate SHA256: d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741
+## https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+Status: HTTP/2 200 
+Bytes: 10022
+SHA256: d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741
+SHA256 matches candidate: true
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-05-29T12:29:09Z
+metadata.status: watch
+insight_count: 1
+primary_insight_id: gb-renewable-investment-2026-05-07
+cache-control: no-cache
+content-type: application/json
+x-cache: RefreshHit from cloudfront
+
+## https://d28yo76if4k3l1.cloudfront.net/snapshots/run_id=managed-ai-phase17p-20260528T213401Z/dashboard_snapshot_v1.json
+Status: HTTP/2 200 
+Bytes: 10022
+SHA256: d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741
+SHA256 matches candidate: true
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-05-29T12:29:09Z
+metadata.status: watch
+insight_count: 1
+primary_insight_id: gb-renewable-investment-2026-05-07
+cache-control: public,max-age=31536000,immutable
+content-type: application/json
+x-cache: Miss from cloudfront
+
