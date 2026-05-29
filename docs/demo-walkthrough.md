@@ -389,3 +389,5 @@ Hiring signal:
 - Phase 17U keeps managed workflow deployment in preflight; the hosted demo can
   show the managed AI snapshot, but the scheduled workflow still remains
   deployment-blocked.
+- Phase 17V models managed workflow deployment in Terraform only; do not demo
+  it as deployed until a later apply boundary proves the state-machine switch.

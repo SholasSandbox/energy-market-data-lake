@@ -838,3 +838,34 @@ Preflight facts:
 
 Recommended next slice: **Phase 17V: managed workflow Terraform/IAM delta
 preflight**, plan-only unless explicitly approved.
+
+## Phase 17V Managed Workflow Terraform/IAM Delta Preflight Result
+
+Phase 17V modeled the managed workflow deployment delta in Terraform without
+applying it.
+
+Evidence:
+
+- `docs/evidence/phase17v-managed-workflow-terraform-iam-delta-preflight-20260529.md`
+- `docs/evidence/phase17v-managed-workflow-terraform-plan-isolated-refreshfalse-20260529.txt`
+- `docs/evidence/phase17v-deterministic-rollback-terraform-plan-refreshfalse-20260529.txt`
+
+Result:
+
+- no Bedrock invocation, Terraform apply, IAM mutation, Lambda deploy,
+  Step Functions deploy, schedule enablement, dashboard publish, or live
+  workflow execution was performed
+- managed workflow routing is now modeled behind
+  `ai_orchestration_managed_ai_enabled`
+- the isolated managed plan showed `Plan: 1 to add, 4 to change, 0 to destroy`
+- the deterministic rollback/default plan showed `No changes`
+- an unsafe local plan also showed unrelated CloudFront destroys when
+  `dashboard_cloudfront_enabled = true` was not preserved, so any future apply
+  review must explicitly keep the live dashboard hosting toggle enabled
+
+Decision:
+
+- immediate managed workflow deployment remains a no-go
+- next slice should be a deployment decision, not an automatic apply
+
+Recommended next slice: **Phase 17W: managed workflow deployment decision**.
