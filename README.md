@@ -109,6 +109,9 @@ Region: **eu-west-2 (London)**
   separate evidence boundary.
 - Phase 17P captures a public-safe, schema-valid managed AI payload as evidence
   while keeping dashboard publish and managed workflow deployment blocked.
+- Phase 17Q converts the Phase 17P payload into a local
+  `dashboard_snapshot_v1` candidate and keeps publish blocked until managed
+  source links are hardened for the public dashboard.
 
 ### Deferred AWS Extension
 
@@ -621,8 +624,11 @@ These are historical references, not the current delivery path.
     dashboard publish, and managed workflow deployment.
 22. Treat Phase 17P as evidence that a public-safe managed AI payload can be
     captured before any dashboard publication decision.
-23. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
-   OpenClaw runtime until a phase explicitly targets those operating boundaries.
+23. Treat Phase 17Q as evidence that dashboard publish also needs
+    public-link readiness, not just schema validity.
+24. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+    OpenClaw runtime until a phase explicitly targets those operating
+    boundaries.
 
 ## Notes
 

@@ -382,4 +382,6 @@ Hiring signal:
   deferred.
 - The live AI `dashboard_snapshot_v1.json` path has been restored from the
   successful Phase 8 curated artifacts; managed AI invocation has been proven
-  separately, but managed AI dashboard publication remains deferred.
+  separately. Phase 17Q produced a local managed-AI dashboard candidate, but
+  managed AI dashboard publication remains deferred until source-link hardening
+  is complete.
