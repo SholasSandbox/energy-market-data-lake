@@ -673,3 +673,28 @@ Result:
 
 Recommended next slice: **Phase 17Q: managed AI dashboard publish preflight**,
 before any public dashboard update.
+
+## Phase 17Q Dashboard Publish Preflight Result
+
+Phase 17Q converted the Phase 17P validated managed AI payload into a local
+candidate `dashboard_snapshot_v1` evidence file.
+
+Evidence:
+
+- `docs/evidence/phase17q-managed-ai-dashboard-publish-preflight-20260529.md`
+- `docs/evidence/phase17q-managed-ai-dashboard-publish-candidate-20260529.json`
+- `docs/evidence/phase17q-current-live-dashboard-snapshot-http-check-20260529.txt`
+
+Result:
+
+- no Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, hosting change, S3 write,
+  CloudFront invalidation, or dashboard publish was performed
+- the local candidate validates against `dashboard_snapshot_v1`
+- the current live CloudFront snapshot remains healthy and unchanged
+- dashboard publish remains a no-go because one managed energy source becomes a
+  non-URL anchor target in the React dashboard
+- managed handler/state-machine deployment remains separate and blocked
+
+Recommended next slice: **Phase 17R: local managed AI dashboard source-link
+hardening**, before any public dashboard publish.
