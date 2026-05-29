@@ -647,7 +647,9 @@ These are historical references, not the current delivery path.
     managed AI dashboard publication.
 28. Treat Phase 17U as the preflight boundary before any managed workflow
     deployment; the deployed workflow still routes through deterministic merge.
-29. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+29. Treat Phase 17V as the plan-only Terraform/IAM delta boundary; managed
+    workflow routing remains disabled unless explicitly approved later.
+30. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -663,3 +665,6 @@ These are historical references, not the current delivery path.
 - Phase 17U keeps managed workflow deployment blocked until the Terraform/IAM,
   Lambda environment, Step Functions routing, rollback, and failure-path delta
   is reviewed plan-only.
+- Phase 17V models that delta behind an opt-in Terraform switch and captures
+  both an isolated managed plan and deterministic rollback plan; no deployment
+  has occurred.

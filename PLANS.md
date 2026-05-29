@@ -1581,11 +1581,70 @@ Next implementation slice:
   state-machine routing change, rollback path, and schedule-disabled posture
   before any deployment
 
+### Phase 17V: Managed Workflow Terraform/IAM Delta Preflight
+
+Goal: model the managed AI workflow deployment delta in Terraform without
+applying it.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17v-managed-workflow-terraform-iam-delta-preflight-20260529.md`
+- `docs/evidence/phase17v-managed-workflow-terraform-plan-refreshfalse-20260529.txt`
+- `docs/evidence/phase17v-managed-workflow-terraform-plan-isolated-refreshfalse-20260529.txt`
+- `docs/evidence/phase17v-deterministic-rollback-terraform-plan-refreshfalse-20260529.txt`
+
+Result:
+
+- no Bedrock invocation was run
+- no Terraform apply, IAM change, Lambda deploy, Step Functions deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, S3 write, CloudFront
+  invalidation, dashboard publish, or live workflow execution was performed
+- added opt-in Terraform variables for managed AI workflow routing and Bedrock
+  invocation settings
+- added an opt-in, least-privilege `bedrock:InvokeModel` policy scoped to the
+  configured Bedrock foundation model ARN
+- made Lambda environment variables switch between deterministic and managed
+  mode based on `ai_orchestration_managed_ai_enabled`
+- made Step Functions route to `MergeAiInsightManaged` only when the managed
+  toggle is enabled
+- schedule enablement remains controlled by
+  `ai_orchestration_schedule_enabled`, which stays false in the example
+  configuration
+
+Plan evidence:
+
+- the first local `-refresh=false` plan surfaced unrelated CloudFront destroys
+  because local tfvars did not preserve `dashboard_cloudfront_enabled = true`
+- the isolated managed plan explicitly preserved CloudFront and showed
+  `Plan: 1 to add, 4 to change, 0 to destroy`
+- the deterministic rollback/default plan with CloudFront preserved showed
+  `No changes`
+
+Red-green evidence:
+
+- Red: Phase 17U found that managed workflow deployment needed Terraform/IAM,
+  Lambda environment, Step Functions routing, rollback, and failure-path review.
+- Green: Phase 17V models that delta plan-only and proves the isolated managed
+  plan has no destroys.
+- Regression: deterministic rollback plan is no-op when managed mode is
+  disabled, local managed AI adapter proof remains green, and dashboard publish
+  is unchanged.
+
+Next implementation slice:
+
+- Phase 17W: managed workflow deployment decision
+- review the Phase 17V plans before any apply
+- require explicit approval before any Terraform apply, IAM mutation, Lambda
+  deploy, Step Functions deploy, managed workflow execution, or schedule
+  enablement
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17U managed workflow deployment preflight.
-2. Plan Phase 17V as a managed workflow Terraform/IAM delta preflight before
-   any Step Functions or IAM changes.
+1. Review and merge Phase 17V managed workflow Terraform/IAM delta preflight.
+2. Plan Phase 17W as a managed workflow deployment decision before any
+   Terraform apply or Step Functions/IAM mutation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from

@@ -9,6 +9,8 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
+data "aws_partition" "current" {}
+
 resource "aws_iam_role" "lambda" {
   name               = "${var.project_prefix}-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
@@ -95,6 +97,28 @@ resource "aws_iam_role_policy" "ai_orchestration_lambda_s3" {
   name   = "${var.project_prefix}-ai-orchestration-lambda-s3-policy"
   role   = aws_iam_role.ai_orchestration_lambda[0].id
   policy = data.aws_iam_policy_document.ai_orchestration_lambda_s3[0].json
+}
+
+data "aws_iam_policy_document" "ai_orchestration_lambda_bedrock" {
+  count = var.ai_orchestration_enabled && var.ai_orchestration_managed_ai_enabled ? 1 : 0
+
+  statement {
+    actions = [
+      "bedrock:InvokeModel",
+    ]
+
+    resources = [
+      var.ai_orchestration_bedrock_model_arn != "" ? var.ai_orchestration_bedrock_model_arn : "arn:${data.aws_partition.current.partition}:bedrock:${var.aws_region}::foundation-model/${var.ai_orchestration_bedrock_model_id}",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "ai_orchestration_lambda_bedrock" {
+  count = var.ai_orchestration_enabled && var.ai_orchestration_managed_ai_enabled ? 1 : 0
+
+  name   = "${var.project_prefix}-ai-orchestration-lambda-bedrock-policy"
+  role   = aws_iam_role.ai_orchestration_lambda[0].id
+  policy = data.aws_iam_policy_document.ai_orchestration_lambda_bedrock[0].json
 }
 
 data "aws_iam_policy_document" "step_functions_assume_role" {
