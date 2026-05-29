@@ -651,7 +651,9 @@ These are historical references, not the current delivery path.
     workflow routing remains disabled unless explicitly approved later.
 30. Treat Phase 17W as the deployment decision boundary; managed workflow
     deployment is a go-candidate, not an apply-by-default state.
-31. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+31. Treat Phase 17W execution as the controlled Terraform apply that switches
+    workflow routing to managed mode while keeping schedules disabled.
+32. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -673,3 +675,6 @@ These are historical references, not the current delivery path.
 - Phase 17W records the managed workflow deployment as a go-candidate only;
   execution still requires explicit approval, CloudFront preservation, and
   schedules disabled.
+- Phase 17W execution applied the managed workflow Terraform delta; the
+  state-machine now routes to managed AI, but no live workflow execution or
+  schedule enablement has occurred.

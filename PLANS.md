@@ -1688,11 +1688,64 @@ Next implementation slice:
 - keep managed workflow execution and EventBridge schedule enablement out of
   the apply boundary unless explicitly approved later
 
+### Phase 17W: Controlled Managed Workflow Terraform Apply
+
+Goal: apply the approved Phase 17W managed workflow Terraform delta while
+preserving CloudFront hosting and keeping schedules disabled.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17w-managed-workflow-terraform-apply-summary-20260529.md`
+- `docs/evidence/phase17w-managed-workflow-terraform-apply-plan-20260529.txt`
+- `docs/evidence/phase17w-managed-workflow-terraform-apply-20260529.txt`
+- `docs/evidence/phase17w-managed-workflow-postapply-plan-refreshfalse-20260529.txt`
+- `docs/evidence/phase17w-managed-workflow-lambda-config-20260529.json`
+- `docs/evidence/phase17w-managed-workflow-state-machine-20260529.json`
+- `docs/evidence/phase17w-managed-workflow-schedule-state-20260529.json`
+- `docs/evidence/phase17w-managed-workflow-bedrock-policy-20260529.json`
+- `docs/evidence/phase17w-managed-workflow-cloudfront-status-20260529.json`
+- `docs/evidence/phase17w-managed-workflow-cloudfront-snapshot-http-check-20260529.txt`
+
+Result:
+
+- explicit approval was granted for the controlled apply substate
+- saved Terraform plan used the isolated no-destroy apply shape:
+  `Plan: 1 to add, 4 to change, 0 to destroy`
+- Terraform apply completed with `Resources: 1 added, 2 changed, 0 destroyed`
+- added the AI orchestration Lambda Bedrock `InvokeModel` policy
+- updated the AI orchestration Lambda environment to managed mode
+- updated the Step Functions definition to route through
+  `MergeAiInsightManaged`
+- EventBridge schedule remains `DISABLED`
+- CloudFront distribution `E2H9BGRGYAHKPN` remains deployed
+- live dashboard snapshot still returns `200`
+- no Bedrock invocation, live workflow execution, schedule enablement,
+  dashboard publish, DNS, ACM, alarms, budgets, or CloudFront invalidation was
+  performed
+
+Red-green evidence:
+
+- Red: managed workflow deployment was only a go-candidate before this apply.
+- Green: Terraform applied the managed workflow routing delta with no destroys
+  and kept schedules disabled.
+- Regression: post-apply plan is no-op with managed mode and CloudFront
+  preserved; hosted dashboard snapshot remains reachable.
+
+Next implementation slice:
+
+- Phase 17X: managed workflow smoke decision
+- do not execute the managed workflow until an explicit decision reviews cost,
+  failure path, dashboard impact, and rollback
+- keep EventBridge schedule enablement blocked
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17W managed workflow deployment decision.
-2. If approved later, run Phase 17W execution as a controlled apply substate
-   that preserves CloudFront and keeps schedules disabled.
+1. Review and merge Phase 17W controlled managed workflow Terraform apply
+   evidence.
+2. Plan Phase 17X as a managed workflow smoke decision before any live workflow
+   execution.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from

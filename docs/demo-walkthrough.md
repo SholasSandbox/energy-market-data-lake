@@ -393,3 +393,6 @@ Hiring signal:
   it as deployed until a later apply boundary proves the state-machine switch.
 - Phase 17W marks managed workflow deployment as a go-candidate only; the demo
   should still describe managed workflow deployment as pending explicit apply.
+- Phase 17W execution applied managed workflow routing, but the demo should
+  describe live managed workflow execution and schedule automation as pending
+  later approval.
