@@ -120,6 +120,9 @@ Region: **eu-west-2 (London)**
   approval.
 - Phase 17S execution publishes the approved managed AI dashboard snapshot to
   CloudFront latest plus immutable snapshot paths, with rollback evidence.
+- Phase 17T verifies the hosted dashboard demo after managed AI publication:
+  CloudFront routes, latest snapshot, immutable snapshot, schema validation,
+  and source-link hardening all pass read-only checks.
 
 ### Deferred AWS Extension
 
@@ -640,7 +643,9 @@ These are historical references, not the current delivery path.
     execution approval.
 26. Treat Phase 17S execution as the live managed AI dashboard publish proof;
     managed workflow deployment remains separate.
-27. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+27. Treat Phase 17T as the read-only hosted-demo verification boundary after
+    managed AI dashboard publication.
+28. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -650,5 +655,6 @@ These are historical references, not the current delivery path.
 - ENTSO-E requires registration and an API token stored in SSM or Secrets Manager.
 - ENTSOG is public; the current gas proof uses a four-point seed and the `Physical Flow` plus `Allocation` indicators.
 - OpenClaw/local model execution is outside AWS unless moved into Bedrock or managed compute.
-- Phase 8 currently proves orchestration, validation, and publish controls with
-  deterministic logic; model invocation remains deferred.
+- Phase 8 still proves orchestration, validation, and publish controls through
+  deterministic workflow logic; the live dashboard snapshot has separately
+  published a managed Bedrock/Mistral evidence payload.
