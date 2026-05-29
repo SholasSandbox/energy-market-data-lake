@@ -806,3 +806,35 @@ Result:
 
 Recommended next slice: **Phase 17U: managed workflow deployment preflight**,
 before any Step Functions routing, IAM, or schedule changes.
+
+## Phase 17U Managed Workflow Deployment Preflight Result
+
+Phase 17U reviewed whether the managed AI handler is ready to become the
+deployed Step Functions workflow path.
+
+Evidence:
+
+- `docs/evidence/phase17u-managed-workflow-deployment-preflight-20260529.md`
+
+Decision:
+
+- immediate managed workflow deployment is a no-go
+- the next safest boundary is a plan-only Terraform/IAM/Step Functions delta
+  preflight
+- schedules remain disabled
+- deterministic fallback remains the rollback posture
+
+Preflight facts:
+
+- `MergeAiInsightManaged` exists in the Lambda handler and remains covered by
+  the local fake-client proof
+- Terraform still sets `AI_ORCHESTRATION_MODE = "deterministic"`
+- Terraform still routes the state machine through
+  `MergeAiInsightDeterministic`
+- Terraform does not yet model the Bedrock invocation IAM delta for the
+  orchestration Lambda
+- managed dashboard publication has been proven separately from managed
+  workflow deployment
+
+Recommended next slice: **Phase 17V: managed workflow Terraform/IAM delta
+preflight**, plan-only unless explicitly approved.
