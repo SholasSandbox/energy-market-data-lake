@@ -115,6 +115,9 @@ Region: **eu-west-2 (London)**
 - Phase 17R hardens dashboard source-link generation locally so managed energy
   references use public dashboard targets while external news URLs are
   preserved.
+- Phase 17S makes the managed AI dashboard publish a go-candidate, but keeps
+  S3 writes and CloudFront invalidation blocked until explicit execution
+  approval.
 
 ### Deferred AWS Extension
 
@@ -631,7 +634,9 @@ These are historical references, not the current delivery path.
     public-link readiness, not just schema validity.
 24. Treat Phase 17R as the local source-link proof boundary before any managed
     AI dashboard publish decision.
-25. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+25. Treat Phase 17S as a decision boundary only; publishing requires explicit
+    execution approval.
+26. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 

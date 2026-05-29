@@ -723,3 +723,30 @@ Result:
 
 Recommended next slice: **Phase 17S: managed AI dashboard publish decision**,
 only with explicit approval before any S3 write or CloudFront invalidation.
+
+## Phase 17S Dashboard Publish Decision Result
+
+Phase 17S reviewed whether the Phase 17R managed AI dashboard candidate is
+ready for public dashboard publish execution.
+
+Evidence:
+
+- `docs/evidence/phase17s-managed-ai-dashboard-publish-decision-20260529.md`
+- `docs/evidence/phase17s-current-live-dashboard-snapshot-http-check-20260529.txt`
+- `docs/evidence/phase17r-managed-ai-dashboard-source-link-candidate-20260529.json`
+
+Result:
+
+- no Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, hosting change, S3 write,
+  CloudFront invalidation, or dashboard publish was performed
+- current live CloudFront snapshot still matches the Phase 16 rollback payload
+  by SHA256
+- Phase 17R source-link proof remains green
+- decision is go-candidate for publish execution, but execution still requires
+  explicit approval
+- managed handler/state-machine deployment remains separate and blocked
+
+Recommended next slice: **Phase 17S execution substate: managed AI dashboard
+publish**, only after explicit approval for S3 writes and CloudFront
+invalidation.
