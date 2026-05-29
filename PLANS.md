@@ -1319,11 +1319,55 @@ Next implementation slice:
 - review rollback for the current live dashboard snapshot
 - keep handler/state-machine deployment separate from dashboard publish
 
+### Phase 17Q: Managed AI Dashboard Publish Preflight
+
+Goal: decide whether the Phase 17P validated managed AI payload can safely move
+toward the public `dashboard_snapshot_v1.json` path.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17q-managed-ai-dashboard-publish-preflight-20260529.md`
+- `docs/evidence/phase17q-managed-ai-dashboard-publish-candidate-20260529.json`
+- `docs/evidence/phase17q-current-live-dashboard-snapshot-http-check-20260529.txt`
+
+Result:
+
+- no Bedrock invocation was run
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, dashboard hosting change, S3 write, CloudFront
+  invalidation, or public dashboard publish was performed
+- Phase 17P `ai_insight_v1` evidence was converted locally into a candidate
+  `dashboard_snapshot_v1` evidence file
+- the candidate validates against `schemas/dashboard_snapshot_v1.schema.json`
+- the current live CloudFront `dashboard_snapshot_v1.json` remains healthy
+- the preflight found a publish-quality issue: the React dashboard renders
+  every insight source as an anchor, and the managed energy reference currently
+  becomes a non-URL `href`
+
+Red-green evidence:
+
+- Red: Phase 17P captured a valid managed AI payload but did not prove public
+  dashboard publish readiness.
+- Green: Phase 17Q proves the payload can produce a schema-valid candidate
+  dashboard snapshot locally.
+- Regression: live dashboard remains unchanged, deterministic fallback remains
+  intact, and managed workflow deployment remains blocked.
+
+Next implementation slice:
+
+- Phase 17R: local managed AI dashboard source-link hardening
+- keep Bedrock invocation and dashboard publish out of scope
+- normalize managed energy references into dashboard-safe labels and links
+- preserve external news URLs and reject or neutralize private/non-public
+  source references before any publish boundary
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17P managed AI validated payload capture.
-2. Plan Phase 17Q as managed AI dashboard publish preflight before any public
-   dashboard update.
+1. Review and merge Phase 17Q managed AI dashboard publish preflight.
+2. Plan Phase 17R as local managed AI dashboard source-link hardening before
+   any public dashboard update.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
