@@ -92,22 +92,31 @@ resource "aws_lambda_function" "ai_orchestration" {
   tags             = local.phase8_tags
 
   environment {
-    variables = {
-      AI_ORCHESTRATION_MODE  = "deterministic"
-      ATHENA_DATABASE        = var.glue_database_name
-      ATHENA_OUTPUT_LOCATION = local.athena_output_location
-      ATHENA_WORKGROUP       = var.athena_workgroup_name
-      DASHBOARD_BUCKET       = local.dashboard_bucket_name
-      DASHBOARD_DATA_KEY     = var.ai_orchestration_dashboard_data_key
-      DATA_BUCKET            = local.data_bucket_name
-      NEWS_FEEDS             = join(",", var.ai_orchestration_feeds)
-      NEWS_LIMIT_PER_FEED    = tostring(var.ai_orchestration_news_limit_per_feed)
-      NEWS_MAX_ARTICLES      = tostring(var.ai_orchestration_news_max_articles)
-    }
+    variables = merge(
+      {
+        AI_ORCHESTRATION_MODE  = var.ai_orchestration_managed_ai_enabled ? "managed" : "deterministic"
+        ATHENA_DATABASE        = var.glue_database_name
+        ATHENA_OUTPUT_LOCATION = local.athena_output_location
+        ATHENA_WORKGROUP       = var.athena_workgroup_name
+        DASHBOARD_BUCKET       = local.dashboard_bucket_name
+        DASHBOARD_DATA_KEY     = var.ai_orchestration_dashboard_data_key
+        DATA_BUCKET            = local.data_bucket_name
+        NEWS_FEEDS             = join(",", var.ai_orchestration_feeds)
+        NEWS_LIMIT_PER_FEED    = tostring(var.ai_orchestration_news_limit_per_feed)
+        NEWS_MAX_ARTICLES      = tostring(var.ai_orchestration_news_max_articles)
+      },
+      var.ai_orchestration_managed_ai_enabled ? {
+        BEDROCK_MAX_TOKENS  = tostring(var.ai_orchestration_bedrock_max_tokens)
+        BEDROCK_MODEL_ID    = var.ai_orchestration_bedrock_model_id
+        BEDROCK_PROVIDER    = var.ai_orchestration_bedrock_provider
+        BEDROCK_TEMPERATURE = tostring(var.ai_orchestration_bedrock_temperature)
+      } : {},
+    )
   }
 
   depends_on = [
     aws_cloudwatch_log_group.ai_orchestration_lambda,
     aws_iam_role_policy_attachment.ai_orchestration_lambda_basic_execution,
+    aws_iam_role_policy.ai_orchestration_lambda_bedrock,
   ]
 }

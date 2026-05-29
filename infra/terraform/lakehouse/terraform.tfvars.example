@@ -30,6 +30,11 @@ ai_orchestration_dashboard_data_key    = "dashboard/dashboard-data.json"
 ai_orchestration_news_limit_per_feed   = 4
 ai_orchestration_news_max_articles     = 18
 ai_orchestration_sns_email             = ""
+ai_orchestration_managed_ai_enabled    = false
+ai_orchestration_bedrock_model_id      = "mistral.ministral-3-8b-instruct"
+ai_orchestration_bedrock_provider      = "mistral"
+ai_orchestration_bedrock_max_tokens    = 1600
+ai_orchestration_bedrock_temperature   = 0.2
 
 entsog_point_directions = "BE-TSO-0001ITP-00061entry,BE-TSO-0001ITP-00115exit,CZ-TSO-0001ITP-00537entry,BE-TSO-0001ITP-00555exit"
 entsog_flow_indicator   = "Physical Flow"

@@ -118,6 +118,18 @@ ai_orchestration_dashboard_data_key  = "dashboard/dashboard-data.json"
 ai_orchestration_sns_email           = ""
 ```
 
+Managed AI workflow routing is also opt-in. Keep it disabled until a separate
+plan/apply boundary has reviewed IAM, Lambda environment variables,
+Step Functions routing, rollback, and failure handling:
+
+```hcl
+ai_orchestration_managed_ai_enabled  = false
+ai_orchestration_bedrock_model_id    = "mistral.ministral-3-8b-instruct"
+ai_orchestration_bedrock_provider    = "mistral"
+ai_orchestration_bedrock_max_tokens  = 1600
+ai_orchestration_bedrock_temperature = 0.2
+```
+
 Set `ai_orchestration_enabled = true` only after the Lambda zip exists and the
 dashboard input JSON has been uploaded to the data lake bucket at
 `ai_orchestration_dashboard_data_key`.
