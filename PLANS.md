@@ -1406,11 +1406,54 @@ Next implementation slice:
 - keep Bedrock invocation, Terraform, IAM, schedules, DNS, ACM, alarms, budgets,
   and managed workflow deployment out of scope
 
+### Phase 17S: Managed AI Dashboard Publish Decision
+
+Goal: decide whether the Phase 17R managed AI dashboard candidate is ready for
+a controlled public dashboard publish execution boundary.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17s-managed-ai-dashboard-publish-decision-20260529.md`
+- `docs/evidence/phase17s-current-live-dashboard-snapshot-http-check-20260529.txt`
+- `docs/evidence/phase17r-managed-ai-dashboard-source-link-candidate-20260529.json`
+
+Result:
+
+- no Bedrock invocation was run
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, dashboard hosting change, S3 write, CloudFront
+  invalidation, or public dashboard publish was performed
+- current live CloudFront snapshot still matches the Phase 16 rollback payload
+  by SHA256
+- Phase 17R source-link proof remains green
+- Phase 17R candidate remains the intended publish payload
+- decision is go-candidate for publish execution, but execution still requires
+  explicit approval
+
+Red-green evidence:
+
+- Red: Phase 17Q blocked publish because managed source links were not public
+  dashboard ready.
+- Green: Phase 17R removed that blocker, and Phase 17S confirms the candidate
+  and rollback baseline.
+- Regression: live dashboard remains unchanged, deterministic fallback remains
+  intact, and managed workflow deployment remains blocked.
+
+Next implementation slice:
+
+- Phase 17S execution substate: managed AI dashboard publish
+- publish latest plus immutable snapshot only after explicit approval
+- invalidate only `/dashboard_snapshot_v1.json` and the immutable snapshot path
+- keep Bedrock invocation, Terraform, IAM, schedules, DNS, ACM, alarms, budgets,
+  static-site rebuild, and managed workflow deployment out of scope
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17R local managed AI dashboard source-link hardening.
-2. Plan Phase 17S as the managed AI dashboard publish decision before any S3
-   write or CloudFront invalidation.
+1. Review and merge Phase 17S managed AI dashboard publish decision.
+2. Proceed to Phase 17S execution only after explicit approval for S3 writes
+   and CloudFront invalidation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
