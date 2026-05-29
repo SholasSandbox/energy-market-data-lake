@@ -391,3 +391,5 @@ Hiring signal:
   deployment-blocked.
 - Phase 17V models managed workflow deployment in Terraform only; do not demo
   it as deployed until a later apply boundary proves the state-machine switch.
+- Phase 17W marks managed workflow deployment as a go-candidate only; the demo
+  should still describe managed workflow deployment as pending explicit apply.

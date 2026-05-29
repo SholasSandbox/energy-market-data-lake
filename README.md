@@ -649,7 +649,9 @@ These are historical references, not the current delivery path.
     deployment; the deployed workflow still routes through deterministic merge.
 29. Treat Phase 17V as the plan-only Terraform/IAM delta boundary; managed
     workflow routing remains disabled unless explicitly approved later.
-30. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+30. Treat Phase 17W as the deployment decision boundary; managed workflow
+    deployment is a go-candidate, not an apply-by-default state.
+31. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -668,3 +670,6 @@ These are historical references, not the current delivery path.
 - Phase 17V models that delta behind an opt-in Terraform switch and captures
   both an isolated managed plan and deterministic rollback plan; no deployment
   has occurred.
+- Phase 17W records the managed workflow deployment as a go-candidate only;
+  execution still requires explicit approval, CloudFront preservation, and
+  schedules disabled.

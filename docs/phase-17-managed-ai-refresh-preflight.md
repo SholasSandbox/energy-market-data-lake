@@ -869,3 +869,25 @@ Decision:
 - next slice should be a deployment decision, not an automatic apply
 
 Recommended next slice: **Phase 17W: managed workflow deployment decision**.
+
+## Phase 17W Managed Workflow Deployment Decision Result
+
+Phase 17W reviewed the Phase 17V Terraform/IAM delta and decided whether it is
+safe to proceed toward a managed workflow deployment execution boundary.
+
+Evidence:
+
+- `docs/evidence/phase17w-managed-workflow-deployment-decision-20260529.md`
+
+Decision:
+
+- managed workflow deployment is a go-candidate, not an automatic apply
+- execution requires explicit approval in a separate substate
+- the unsafe local Phase 17V plan must not be applied
+- any execution must preserve `dashboard_cloudfront_enabled = true`
+- any execution must keep `ai_orchestration_schedule_enabled = false`
+- managed workflow execution and schedule enablement remain separate later
+  boundaries
+
+Recommended next slice: **Phase 17W execution substate**, only after explicit
+approval for a controlled Terraform apply.
