@@ -891,3 +891,30 @@ Decision:
 
 Recommended next slice: **Phase 17W execution substate**, only after explicit
 approval for a controlled Terraform apply.
+
+## Phase 17W Controlled Terraform Apply Result
+
+Phase 17W execution applied the managed workflow Terraform delta after explicit
+approval.
+
+Evidence:
+
+- `docs/evidence/phase17w-managed-workflow-terraform-apply-summary-20260529.md`
+- `docs/evidence/phase17w-managed-workflow-terraform-apply-plan-20260529.txt`
+- `docs/evidence/phase17w-managed-workflow-terraform-apply-20260529.txt`
+- `docs/evidence/phase17w-managed-workflow-postapply-plan-refreshfalse-20260529.txt`
+
+Result:
+
+- saved plan showed `Plan: 1 to add, 4 to change, 0 to destroy`
+- apply completed with `Resources: 1 added, 2 changed, 0 destroyed`
+- Lambda environment now uses managed mode
+- Step Functions now routes through `MergeAiInsightManaged`
+- EventBridge schedule remains disabled
+- CloudFront dashboard distribution remains deployed
+- no Bedrock invocation, live workflow execution, dashboard publish, schedule
+  enablement, DNS, ACM, alarms, budgets, or CloudFront invalidation was
+  performed
+
+Recommended next slice: **Phase 17X: managed workflow smoke decision** before
+any live workflow execution.
