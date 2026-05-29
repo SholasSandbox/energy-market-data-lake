@@ -1,0 +1,17 @@
+# Phase 17S Execution Pre-Publish Live Dashboard Snapshot HTTP Check
+
+URL: https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+Status: HTTP/2 200 
+Bytes: 9920
+SHA256: 897f685faca6f30719a4c881fe51099a0bfc92df3debcfeb6556cd3f143ed30a
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-05-22T09:11:09Z
+metadata.status: ok
+insight_count: 1
+
+Headers:
+- content-type: application/json
+- last-modified: Fri, 22 May 2026 09:11:23 GMT
+- cache-control: no-cache
+- etag: "b610c544ea43bc42b01d6f6f621bcaab"
+- x-cache: RefreshHit from cloudfront
