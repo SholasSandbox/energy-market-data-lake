@@ -645,7 +645,9 @@ These are historical references, not the current delivery path.
     managed workflow deployment remains separate.
 27. Treat Phase 17T as the read-only hosted-demo verification boundary after
     managed AI dashboard publication.
-28. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+28. Treat Phase 17U as the preflight boundary before any managed workflow
+    deployment; the deployed workflow still routes through deterministic merge.
+29. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -658,3 +660,6 @@ These are historical references, not the current delivery path.
 - Phase 8 still proves orchestration, validation, and publish controls through
   deterministic workflow logic; the live dashboard snapshot has separately
   published a managed Bedrock/Mistral evidence payload.
+- Phase 17U keeps managed workflow deployment blocked until the Terraform/IAM,
+  Lambda environment, Step Functions routing, rollback, and failure-path delta
+  is reviewed plan-only.

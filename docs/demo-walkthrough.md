@@ -386,3 +386,6 @@ Hiring signal:
 - Phase 17T read-only checks verify the hosted dashboard, latest managed AI
   snapshot, immutable managed AI snapshot, schema validity, and source-link
   hardening.
+- Phase 17U keeps managed workflow deployment in preflight; the hosted demo can
+  show the managed AI snapshot, but the scheduled workflow still remains
+  deployment-blocked.
