@@ -107,6 +107,8 @@ Region: **eu-west-2 (London)**
 - Phase 17O preflight holds dashboard publish and managed workflow deployment
   as no-go decisions until a public-safe validated payload is captured as a
   separate evidence boundary.
+- Phase 17P captures a public-safe, schema-valid managed AI payload as evidence
+  while keeping dashboard publish and managed workflow deployment blocked.
 
 ### Deferred AWS Extension
 
@@ -617,7 +619,9 @@ These are historical references, not the current delivery path.
     schema-valid `ai_insight_v1`, while dashboard publication remains blocked.
 21. Treat Phase 17O as the boundary that separates validated payload capture,
     dashboard publish, and managed workflow deployment.
-22. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+22. Treat Phase 17P as evidence that a public-safe managed AI payload can be
+    captured before any dashboard publication decision.
+23. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
    OpenClaw runtime until a phase explicitly targets those operating boundaries.
 
 ## Notes
