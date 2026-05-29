@@ -1538,12 +1538,54 @@ Next implementation slice:
 - review IAM, Lambda environment, Step Functions routing, rollback, and
   failure-path controls before any managed handler/state-machine deployment
 
+### Phase 17U: Managed Workflow Deployment Preflight
+
+Goal: decide whether the managed AI handler can be deployed into the Step
+Functions workflow after the managed AI dashboard snapshot has been published
+and read-only verified.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17u-managed-workflow-deployment-preflight-20260529.md`
+
+Result:
+
+- preflight-only review
+- no Bedrock invocation was run
+- no Terraform apply, IAM change, Lambda deploy, state-machine deploy, schedule
+  enablement, DNS, ACM, alarms, budgets, S3 write, CloudFront invalidation, or
+  dashboard publish was performed
+- `MergeAiInsightManaged` exists in the Lambda handler and remains covered by
+  the local fake-client proof
+- Terraform still sets `AI_ORCHESTRATION_MODE = "deterministic"` and routes
+  the Step Functions workflow through `MergeAiInsightDeterministic`
+- the managed workflow deployment remains a no-go until the IAM, Lambda
+  environment, Step Functions routing, rollback, and failure-path delta is
+  reviewed as a plan-only slice
+
+Red-green evidence:
+
+- Red: Phase 17S and Phase 17T proved the managed AI snapshot can be published
+  and demo-verified, but the deployed workflow still uses deterministic merge.
+- Green: Phase 17U identifies the exact deployment gap without mutating AWS.
+- Regression: local managed AI adapter proof, source-link proof, Terraform
+  validation, and deterministic fallback remain green.
+
+Next implementation slice:
+
+- Phase 17V: managed workflow Terraform/IAM delta preflight
+- keep the next slice plan-only unless explicitly approved
+- model the least-privilege Bedrock permission, managed mode variables,
+  state-machine routing change, rollback path, and schedule-disabled posture
+  before any deployment
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17T managed AI dashboard post-publish demo
-   verification.
-2. Plan Phase 17U as managed workflow deployment preflight before any
-   Step Functions or IAM changes.
+1. Review and merge Phase 17U managed workflow deployment preflight.
+2. Plan Phase 17V as a managed workflow Terraform/IAM delta preflight before
+   any Step Functions or IAM changes.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
