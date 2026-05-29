@@ -698,3 +698,28 @@ Result:
 
 Recommended next slice: **Phase 17R: local managed AI dashboard source-link
 hardening**, before any public dashboard publish.
+
+## Phase 17R Source-Link Hardening Result
+
+Phase 17R locally hardened dashboard source-link generation before any managed
+AI dashboard publish.
+
+Evidence:
+
+- `docs/evidence/phase17r-managed-ai-dashboard-source-link-hardening-20260529.md`
+- `docs/evidence/phase17r-managed-ai-dashboard-source-link-candidate-20260529.json`
+- `scripts/check_phase17r_dashboard_source_links.py`
+
+Result:
+
+- no Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, hosting change, S3 write,
+  CloudFront invalidation, or dashboard publish was performed
+- public `http` and `https` news source URLs are preserved
+- private, custom-scheme, or plain-text managed energy references use the
+  public dashboard fallback `dashboard-data.json`
+- source context is retained in the source label
+- the Phase 17R candidate validates against `dashboard_snapshot_v1`
+
+Recommended next slice: **Phase 17S: managed AI dashboard publish decision**,
+only with explicit approval before any S3 write or CloudFront invalidation.
