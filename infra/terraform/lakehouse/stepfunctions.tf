@@ -1,4 +1,7 @@
 locals {
+  ai_orchestration_merge_action     = var.ai_orchestration_managed_ai_enabled ? "MergeAiInsightManaged" : "MergeAiInsightDeterministic"
+  ai_orchestration_workflow_comment = var.ai_orchestration_managed_ai_enabled ? "Managed Phase 17 AI insight orchestration with validation gates, deterministic rollback, and failure quarantine." : "Deterministic Phase 8 AI insight orchestration with validation gates and failure quarantine."
+
   ai_orchestration_lambda_retry = [
     {
       ErrorEquals = [
@@ -48,7 +51,7 @@ resource "aws_sfn_state_machine" "ai_orchestration" {
   ]
 
   definition = jsonencode({
-    Comment = "Deterministic Phase 8 AI insight orchestration with validation gates and failure quarantine."
+    Comment = local.ai_orchestration_workflow_comment
     StartAt = "InitializeRun"
     States = {
       InitializeRun = {
@@ -123,15 +126,15 @@ resource "aws_sfn_state_machine" "ai_orchestration" {
         OutputPath = "$.Payload"
         Retry      = local.ai_orchestration_lambda_retry
         Catch      = local.ai_orchestration_lambda_catch
-        Next       = "MergeAiInsightDeterministic"
+        Next       = local.ai_orchestration_merge_action
       }
-      MergeAiInsightDeterministic = {
+      (local.ai_orchestration_merge_action) = {
         Type     = "Task"
         Resource = "arn:aws:states:::lambda:invoke"
         Parameters = {
           FunctionName = aws_lambda_function.ai_orchestration[0].arn
           Payload = {
-            action               = "MergeAiInsightDeterministic"
+            action               = local.ai_orchestration_merge_action
             "run_id.$"           = "$.run_id"
             "lake_bucket.$"      = "$.lake_bucket"
             "dashboard_bucket.$" = "$.dashboard_bucket"

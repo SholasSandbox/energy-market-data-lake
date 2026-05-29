@@ -176,6 +176,57 @@ variable "ai_orchestration_sns_email" {
   default     = ""
 }
 
+variable "ai_orchestration_managed_ai_enabled" {
+  description = "When true, route the AI orchestration workflow through the managed Bedrock AI merge step. Keep false until an explicit deployment boundary."
+  type        = bool
+  default     = false
+}
+
+variable "ai_orchestration_bedrock_model_id" {
+  description = "Bedrock model ID used by the managed AI orchestration path."
+  type        = string
+  default     = "mistral.ministral-3-8b-instruct"
+}
+
+variable "ai_orchestration_bedrock_model_arn" {
+  description = "Optional explicit Bedrock foundation model ARN for least-privilege InvokeModel permission. Leave blank to derive from region and model ID."
+  type        = string
+  default     = ""
+}
+
+variable "ai_orchestration_bedrock_provider" {
+  description = "Managed AI provider request shape used by the Bedrock adapter."
+  type        = string
+  default     = "mistral"
+
+  validation {
+    condition     = contains(["anthropic", "mistral"], var.ai_orchestration_bedrock_provider)
+    error_message = "ai_orchestration_bedrock_provider must be anthropic or mistral."
+  }
+}
+
+variable "ai_orchestration_bedrock_max_tokens" {
+  description = "Maximum output tokens for the managed AI Bedrock invocation."
+  type        = number
+  default     = 1600
+
+  validation {
+    condition     = var.ai_orchestration_bedrock_max_tokens >= 1 && var.ai_orchestration_bedrock_max_tokens <= 4096
+    error_message = "ai_orchestration_bedrock_max_tokens must be between 1 and 4096."
+  }
+}
+
+variable "ai_orchestration_bedrock_temperature" {
+  description = "Temperature for the managed AI Bedrock invocation."
+  type        = number
+  default     = 0.2
+
+  validation {
+    condition     = var.ai_orchestration_bedrock_temperature >= 0 && var.ai_orchestration_bedrock_temperature <= 1
+    error_message = "ai_orchestration_bedrock_temperature must be between 0 and 1."
+  }
+}
+
 variable "backfill_days" {
   description = "Default ingestion backfill window."
   type        = number
