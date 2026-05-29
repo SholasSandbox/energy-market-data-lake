@@ -779,3 +779,30 @@ Result:
 
 Recommended next slice: **Phase 17T: managed AI dashboard post-publish demo
 verification**, read-only.
+
+## Phase 17T Post-Publish Demo Verification Result
+
+Phase 17T performed read-only hosted dashboard verification after Phase 17S
+published the managed AI dashboard snapshot.
+
+Evidence:
+
+- `docs/evidence/phase17t-managed-ai-dashboard-demo-verification-20260529.md`
+- `docs/evidence/phase17t-managed-ai-dashboard-demo-http-check-20260529.txt`
+- `docs/evidence/phase17t-managed-ai-dashboard-demo-json-check-20260529.txt`
+
+Result:
+
+- no Bedrock invocation, Terraform apply, IAM change, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, S3 write, CloudFront
+  invalidation, static-site rebuild, or managed workflow deployment was
+  performed
+- CloudFront returned `200` for root, `index.html`, `dashboard-data.json`,
+  latest snapshot, and immutable managed AI snapshot paths
+- latest and immutable snapshot paths match the approved Phase 17R candidate
+  SHA256
+- both snapshot paths validate against `dashboard_snapshot_v1`
+- managed source-link hardening is visible in the live snapshot
+
+Recommended next slice: **Phase 17U: managed workflow deployment preflight**,
+before any Step Functions routing, IAM, or schedule changes.

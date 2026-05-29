@@ -1494,11 +1494,56 @@ Next implementation slice:
 - keep Bedrock invocation, Terraform, IAM, schedules, DNS, ACM, alarms, budgets,
   and managed workflow deployment out of scope
 
+### Phase 17T: Managed AI Dashboard Post-Publish Demo Verification
+
+Goal: verify the hosted dashboard demo after Phase 17S published the managed AI
+dashboard snapshot.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17t-managed-ai-dashboard-demo-verification-20260529.md`
+- `docs/evidence/phase17t-managed-ai-dashboard-demo-http-check-20260529.txt`
+- `docs/evidence/phase17t-managed-ai-dashboard-demo-json-check-20260529.txt`
+
+Result:
+
+- read-only verification only
+- no Bedrock invocation was run
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, S3 write, CloudFront invalidation, static-site
+  rebuild, or managed workflow deployment was performed
+- CloudFront returned `200` for `/`, `/index.html`, `dashboard-data.json`,
+  latest `dashboard_snapshot_v1.json`, and the immutable managed AI snapshot
+  path
+- latest and immutable snapshot paths match the approved Phase 17R candidate
+  SHA256
+- both snapshot paths validate against `dashboard_snapshot_v1`
+- source-link hardening is visible in the live snapshot
+
+Red-green evidence:
+
+- Red: Phase 17S execution published the managed AI snapshot, but still needed
+  a read-only hosted-demo verification pass.
+- Green: Phase 17T confirms the hosted dashboard and snapshot paths serve the
+  expected managed AI payload.
+- Regression: no dashboard mutation occurred in Phase 17T; managed workflow
+  deployment remains blocked.
+
+Next implementation slice:
+
+- Phase 17U: managed workflow deployment preflight
+- keep the next slice preflight-only unless explicitly approved
+- review IAM, Lambda environment, Step Functions routing, rollback, and
+  failure-path controls before any managed handler/state-machine deployment
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17S managed AI dashboard publish execution.
-2. Plan Phase 17T as read-only managed AI dashboard post-publish demo
+1. Review and merge Phase 17T managed AI dashboard post-publish demo
    verification.
+2. Plan Phase 17U as managed workflow deployment preflight before any
+   Step Functions or IAM changes.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
