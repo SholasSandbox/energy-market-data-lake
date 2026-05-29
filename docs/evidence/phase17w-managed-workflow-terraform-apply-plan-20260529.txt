@@ -1,0 +1,283 @@
+data.archive_file.ingest_lambda: Reading...
+data.archive_file.ingest_lambda: Read complete after 0s [id=756f878a4ea8ff611679ef9d1119e38e3d90d3aa]
+data.aws_iam_policy_document.lambda_assume_role: Reading...
+data.aws_iam_policy_document.lambda_s3: Reading...
+data.aws_iam_policy_document.glue_assume_role: Reading...
+data.aws_cloudfront_cache_policy.dashboard_static[0]: Reading...
+data.aws_iam_policy_document.glue_assume_role: Read complete after 0s [id=2681768870]
+data.aws_iam_policy_document.lambda_s3: Read complete after 0s [id=370903980]
+data.aws_iam_policy_document.lambda_assume_role: Read complete after 0s [id=2690255455]
+data.aws_iam_policy_document.step_functions_assume_role: Reading...
+data.aws_partition.current: Reading...
+data.aws_iam_policy_document.step_functions_assume_role: Read complete after 0s [id=4022981484]
+data.aws_iam_policy_document.eventbridge_step_functions_assume_role: Reading...
+data.aws_iam_policy_document.ai_orchestration_lambda_s3[0]: Reading...
+data.aws_partition.current: Read complete after 0s [id=aws]
+data.aws_iam_policy_document.glue_s3: Reading...
+data.aws_iam_policy_document.eventbridge_step_functions_assume_role: Read complete after 0s [id=3959961479]
+data.aws_iam_policy_document.ai_orchestration_lambda_s3[0]: Read complete after 0s [id=3665975595]
+data.aws_iam_policy_document.glue_s3: Read complete after 0s [id=1490090416]
+data.aws_iam_policy_document.ai_orchestration_lambda_bedrock[0]: Reading...
+data.aws_iam_policy_document.ai_orchestration_lambda_bedrock[0]: Read complete after 0s [id=2061647424]
+data.aws_cloudfront_cache_policy.dashboard_static[0]: Read complete after 1s [id=658327ea-f89d-4fab-a63d-7e88639e58f6]
+data.aws_iam_policy_document.dashboard_static_cloudfront[0]: Reading...
+data.aws_iam_policy_document.dashboard_static_cloudfront[0]: Read complete after 0s [id=3959176267]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # data.aws_iam_policy_document.ai_orchestration_eventbridge[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_iam_policy_document" "ai_orchestration_eventbridge" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "states:StartExecution",
+            ]
+          + resources = [
+              + "arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration",
+            ]
+        }
+    }
+
+  # data.aws_iam_policy_document.ai_orchestration_state_machine[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_iam_policy_document" "ai_orchestration_state_machine" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "lambda:InvokeFunction",
+            ]
+          + resources = [
+              + "arn:aws:lambda:eu-west-2:464975959576:function:energy-market-news-ai-orchestration",
+              + "arn:aws:lambda:eu-west-2:464975959576:function:energy-market-news-ai-orchestration:*",
+            ]
+        }
+      + statement {
+          + actions   = [
+              + "sns:Publish",
+            ]
+          + resources = [
+              + "arn:aws:sns:eu-west-2:464975959576:energy-market-ai-orchestration-failures",
+            ]
+        }
+    }
+
+  # aws_iam_role_policy.ai_orchestration_eventbridge[0] will be updated in-place
+  ~ resource "aws_iam_role_policy" "ai_orchestration_eventbridge" {
+        id          = "energy-market-ai-orchestration-events-role:energy-market-ai-orchestration-events-policy"
+        name        = "energy-market-ai-orchestration-events-policy"
+      ~ policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "states:StartExecution"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+        # (2 unchanged attributes hidden)
+    }
+
+  # aws_iam_role_policy.ai_orchestration_lambda_bedrock[0] will be created
+  + resource "aws_iam_role_policy" "ai_orchestration_lambda_bedrock" {
+      + id          = (known after apply)
+      + name        = "energy-market-ai-orchestration-lambda-bedrock-policy"
+      + name_prefix = (known after apply)
+      + policy      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "bedrock:InvokeModel"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:bedrock:eu-west-2::foundation-model/mistral.ministral-3-8b-instruct"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role        = "energy-market-ai-orchestration-lambda-role"
+    }
+
+  # aws_iam_role_policy.ai_orchestration_state_machine[0] will be updated in-place
+  ~ resource "aws_iam_role_policy" "ai_orchestration_state_machine" {
+        id          = "energy-market-ai-orchestration-sfn-role:energy-market-ai-orchestration-sfn-policy"
+        name        = "energy-market-ai-orchestration-sfn-policy"
+      ~ policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "lambda:InvokeFunction"
+                      - Effect   = "Allow"
+                      - Resource = [
+                          - "arn:aws:lambda:eu-west-2:464975959576:function:energy-market-news-ai-orchestration:*",
+                          - "arn:aws:lambda:eu-west-2:464975959576:function:energy-market-news-ai-orchestration",
+                        ]
+                    },
+                  - {
+                      - Action   = "sns:Publish"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:sns:eu-west-2:464975959576:energy-market-ai-orchestration-failures"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+        # (2 unchanged attributes hidden)
+    }
+
+  # aws_lambda_function.ai_orchestration[0] will be updated in-place
+  ~ resource "aws_lambda_function" "ai_orchestration" {
+        id                             = "energy-market-news-ai-orchestration"
+        tags                           = {
+            "Environment" = "dev"
+            "ManagedBy"   = "terraform"
+            "Phase"       = "phase-8-ai-orchestration"
+            "Project"     = "energy-market"
+            "Workload"    = "energy-market-data-lake"
+        }
+        # (29 unchanged attributes hidden)
+
+      ~ environment {
+          ~ variables = {
+              ~ "AI_ORCHESTRATION_MODE"  = "deterministic" -> "managed"
+              + "BEDROCK_MAX_TOKENS"     = "1600"
+              + "BEDROCK_MODEL_ID"       = "mistral.ministral-3-8b-instruct"
+              + "BEDROCK_PROVIDER"       = "mistral"
+              + "BEDROCK_TEMPERATURE"    = "0.2"
+                # (9 unchanged elements hidden)
+            }
+        }
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # aws_sfn_state_machine.ai_orchestration[0] will be updated in-place
+  ~ resource "aws_sfn_state_machine" "ai_orchestration" {
+      ~ definition                = jsonencode(
+          ~ {
+              ~ Comment = "Deterministic Phase 8 AI insight orchestration with validation gates and failure quarantine." -> "Managed Phase 17 AI insight orchestration with validation gates, deterministic rollback, and failure quarantine."
+              ~ States  = {
+                  ~ CreateAiInputBundle         = {
+                      ~ Next       = "MergeAiInsightDeterministic" -> "MergeAiInsightManaged"
+                        # (6 unchanged attributes hidden)
+                    }
+                  - MergeAiInsightDeterministic = {
+                      - Catch      = [
+                          - {
+                              - ErrorEquals = [
+                                  - "States.ALL",
+                                ]
+                              - Next        = "WorkflowFailed"
+                              - ResultPath  = "$.error"
+                            },
+                        ]
+                      - Next       = "PublishDashboardSnapshot"
+                      - OutputPath = "$.Payload"
+                      - Parameters = {
+                          - FunctionName = "arn:aws:lambda:eu-west-2:464975959576:function:energy-market-news-ai-orchestration"
+                          - Payload      = {
+                              - action               = "MergeAiInsightDeterministic"
+                              - "artifacts.$"        = "$.artifacts"
+                              - "dashboard_bucket.$" = "$.dashboard_bucket"
+                              - "lake_bucket.$"      = "$.lake_bucket"
+                              - "run_id.$"           = "$.run_id"
+                              - "summary.$"          = "$.summary"
+                            }
+                        }
+                      - Resource   = "arn:aws:states:::lambda:invoke"
+                      - Retry      = [
+                          - {
+                              - BackoffRate     = 2
+                              - ErrorEquals     = [
+                                  - "Lambda.ServiceException",
+                                  - "Lambda.AWSLambdaException",
+                                  - "Lambda.SdkClientException",
+                                  - "Lambda.TooManyRequestsException",
+                                ]
+                              - IntervalSeconds = 2
+                              - MaxAttempts     = 2
+                            },
+                        ]
+                      - Type       = "Task"
+                    }
+                  + MergeAiInsightManaged       = {
+                      + Catch      = [
+                          + {
+                              + ErrorEquals = [
+                                  + "States.ALL",
+                                ]
+                              + Next        = "WorkflowFailed"
+                              + ResultPath  = "$.error"
+                            },
+                        ]
+                      + Next       = "PublishDashboardSnapshot"
+                      + OutputPath = "$.Payload"
+                      + Parameters = {
+                          + FunctionName = "arn:aws:lambda:eu-west-2:464975959576:function:energy-market-news-ai-orchestration"
+                          + Payload      = {
+                              + action               = "MergeAiInsightManaged"
+                              + "artifacts.$"        = "$.artifacts"
+                              + "dashboard_bucket.$" = "$.dashboard_bucket"
+                              + "lake_bucket.$"      = "$.lake_bucket"
+                              + "run_id.$"           = "$.run_id"
+                              + "summary.$"          = "$.summary"
+                            }
+                        }
+                      + Resource   = "arn:aws:states:::lambda:invoke"
+                      + Retry      = [
+                          + {
+                              + BackoffRate     = 2
+                              + ErrorEquals     = [
+                                  + "Lambda.ServiceException",
+                                  + "Lambda.AWSLambdaException",
+                                  + "Lambda.SdkClientException",
+                                  + "Lambda.TooManyRequestsException",
+                                ]
+                              + IntervalSeconds = 2
+                              + MaxAttempts     = 2
+                            },
+                        ]
+                      + Type       = "Task"
+                    }
+                    # (6 unchanged attributes hidden)
+                }
+                # (1 unchanged attribute hidden)
+            }
+        )
+        id                        = "arn:aws:states:eu-west-2:464975959576:stateMachine:energy-market-ai-insight-orchestration"
+        name                      = "energy-market-ai-insight-orchestration"
+        tags                      = {
+            "Environment" = "dev"
+            "ManagedBy"   = "terraform"
+            "Phase"       = "phase-8-ai-orchestration"
+            "Project"     = "energy-market"
+            "Workload"    = "energy-market-data-lake"
+        }
+        # (11 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+Plan: 1 to add, 4 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: tfplan-phase17w-managed-workflow
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan-phase17w-managed-workflow"

@@ -1,0 +1,14 @@
+{
+    "RoleName": "energy-market-ai-orchestration-lambda-role",
+    "PolicyName": "energy-market-ai-orchestration-lambda-bedrock-policy",
+    "PolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": "bedrock:InvokeModel",
+                "Effect": "Allow",
+                "Resource": "arn:aws:bedrock:eu-west-2::foundation-model/mistral.ministral-3-8b-instruct"
+            }
+        ]
+    }
+}
