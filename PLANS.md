@@ -1640,11 +1640,59 @@ Next implementation slice:
   deploy, Step Functions deploy, managed workflow execution, or schedule
   enablement
 
+### Phase 17W: Managed Workflow Deployment Decision
+
+Goal: decide whether the Phase 17V Terraform/IAM delta is safe to move into a
+separate managed workflow deployment execution boundary.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17w-managed-workflow-deployment-decision-20260529.md`
+
+Decision:
+
+- managed workflow deployment is a **go-candidate**, not an automatic apply
+- execution remains blocked until explicit approval in a separate substate
+- any execution must preserve `dashboard_cloudfront_enabled = true`
+- any execution must keep `ai_orchestration_schedule_enabled = false`
+- the unsafe local Phase 17V plan must not be applied
+- the apply candidate is the isolated managed plan shape only:
+  `Plan: 1 to add, 4 to change, 0 to destroy`
+
+Result:
+
+- no Bedrock invocation was run
+- no Terraform apply, IAM change, Lambda deploy, Step Functions deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, S3 write, CloudFront
+  invalidation, dashboard publish, or live workflow execution was performed
+- Phase 17V isolated plan evidence was reviewed
+- deterministic rollback/default plan evidence was reviewed
+- deployment and workflow execution remain separate from schedule enablement
+
+Red-green evidence:
+
+- Red: Phase 17V modeled an apply candidate, but one local plan showed
+  unrelated CloudFront destroys when the hosting toggle was not preserved.
+- Green: Phase 17W narrows the decision to the isolated no-destroy plan and
+  keeps execution approval separate.
+- Regression: deterministic rollback remains no-op, dashboard publish remains
+  unchanged, and schedules remain disabled.
+
+Next implementation slice:
+
+- Phase 17W execution substate may run one controlled Terraform apply only
+  after explicit approval
+- execution must use the isolated no-destroy apply shape
+- keep managed workflow execution and EventBridge schedule enablement out of
+  the apply boundary unless explicitly approved later
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17V managed workflow Terraform/IAM delta preflight.
-2. Plan Phase 17W as a managed workflow deployment decision before any
-   Terraform apply or Step Functions/IAM mutation.
+1. Review and merge Phase 17W managed workflow deployment decision.
+2. If approved later, run Phase 17W execution as a controlled apply substate
+   that preserves CloudFront and keeps schedules disabled.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
