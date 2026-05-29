@@ -1275,11 +1275,55 @@ Future decisions must stay separate:
 - dashboard snapshot publish
 - Step Functions managed-handler deployment
 
+### Phase 17P: Managed AI Validated Payload Capture
+
+Goal: capture a public-safe validated `ai_insight_v1` payload as evidence before
+any dashboard publish or handler/state-machine switch.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17p-managed-ai-validated-payload-capture-summary-20260528.md`
+- `docs/evidence/phase17p-managed-ai-validated-payload-capture-metadata-20260528.json`
+- `docs/evidence/phase17p-managed-ai-validated-ai-insight-20260528.json`
+
+Result:
+
+- one live Bedrock Runtime call was made to
+  `mistral.ministral-3-8b-instruct`
+- manual retries: `0`
+- estimated invocation cost: `$0.00135608`
+- parsed payload had `schema_version: ai_insight_v1`
+- parsed payload passed `ai_insight_v1` validation
+- public-safe validated payload was committed as evidence
+- one private lake S3 reference from the model output was replaced with a
+  public-safe curated dataset reference before committing
+- raw prompt and raw model response were not committed
+- public dashboard snapshot was not changed
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, or dashboard hosting changes were made
+
+Red-green evidence:
+
+- Red: Phase 17N proved in-memory validation but did not commit the payload.
+- Green: Phase 17P captures a schema-valid, public-safe managed AI payload as
+  evidence.
+- Regression: deterministic fallback remains intact and nothing was published.
+
+Next implementation slice:
+
+- Phase 17Q: managed AI dashboard publish preflight
+- decide whether the validated evidence payload should be converted into a
+  dashboard snapshot
+- review rollback for the current live dashboard snapshot
+- keep handler/state-machine deployment separate from dashboard publish
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17O managed AI publish/deployment preflight.
-2. Plan Phase 17P as managed AI validated payload capture before any dashboard
-   publish or handler/state-machine switch.
+1. Review and merge Phase 17P managed AI validated payload capture.
+2. Plan Phase 17Q as managed AI dashboard publish preflight before any public
+   dashboard update.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from

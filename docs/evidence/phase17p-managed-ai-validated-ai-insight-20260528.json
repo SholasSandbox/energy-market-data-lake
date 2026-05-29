@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-05-07T14:45:46Z",
+  "insights": [
+    {
+      "confidence": 0.85,
+      "energy_references": [
+        {
+          "metric": "demand_mw",
+          "reference": "curated electricity dashboard sample for 2026-05-07",
+          "source": "elexon"
+        }
+      ],
+      "id": "gb-renewable-investment-2026-05-07",
+      "news_references": [
+        {
+          "publisher": "Energy Voice",
+          "title": "Centrica brings electricity generation capacity to 4GW in \u00a3370m deal",
+          "url": "https://www.energyvoice.com/renewables-energy-transition/597090/centrica-brings-electricity-generation-capacity-to-4gw-in-370m-deal/"
+        },
+        {
+          "publisher": "Energy Voice",
+          "title": "Industrial decarbonisation delay putting \u2018billions\u2019 of UK investment at risk, trade bodies warn",
+          "url": "https://www.energyvoice.com/renewables-energy-transition/ccs/uk-ccs/597128/ccsa-hydrogen-uk-urge-industrial-decarbonisation-action-miliband/"
+        }
+      ],
+      "region": "gb",
+      "risk_level": "watch",
+      "summary": "UK\u2019s electricity generation capacity is expanding via Centrica\u2019s \u00a3370m acquisition, while trade bodies warn delayed industrial decarbonisation risks billions in investment. GB demand remains stable at 25,118 MW, but policy gaps may hinder transition progress.",
+      "time_window": {
+        "end": "2026-05-07T23:59:59Z",
+        "start": "2026-05-07T00:00:00Z"
+      },
+      "title": "GB Renewable Capacity Expansion Amid Industrial Decarbonisation Urgency",
+      "validation_notes": [
+        "Centrica\u2019s acquisition aligns with GB\u2019s 2030 net-zero targets but lacks explicit decarbonisation tech (e.g., hydrogen/CCS) integration details.",
+        "Trade body warnings correlate with delayed UK Industrial Strategy updates (e.g., CCS funding delays)."
+      ]
+    }
+  ],
+  "schema_version": "ai_insight_v1"
+}
