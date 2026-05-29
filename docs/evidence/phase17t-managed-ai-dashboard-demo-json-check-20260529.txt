@@ -1,0 +1,35 @@
+# Phase 17T Managed AI Dashboard Demo JSON Check
+
+Expected managed snapshot SHA256: d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741
+
+## https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+Status: 200
+Content-Type: application/json
+Cache-Control: no-cache
+SHA256: d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741
+Schema valid: true
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-05-29T12:29:09Z
+metadata.status: watch
+primary_insight_id: gb-renewable-investment-2026-05-07
+primary_insight_title: GB Renewable Capacity Expansion Amid Industrial Decarbonisation Urgency
+source_count: 3
+first_source_label: elexon - demand_mw | curated electricity dashboard sample for 2026-05-07
+first_source_url: dashboard-data.json
+news_source_urls_preserved: true
+
+## https://d28yo76if4k3l1.cloudfront.net/snapshots/run_id=managed-ai-phase17p-20260528T213401Z/dashboard_snapshot_v1.json
+Status: 200
+Content-Type: application/json
+Cache-Control: public,max-age=31536000,immutable
+SHA256: d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741
+Schema valid: true
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-05-29T12:29:09Z
+metadata.status: watch
+primary_insight_id: gb-renewable-investment-2026-05-07
+primary_insight_title: GB Renewable Capacity Expansion Amid Industrial Decarbonisation Urgency
+source_count: 3
+first_source_label: elexon - demand_mw | curated electricity dashboard sample for 2026-05-07
+first_source_url: dashboard-data.json
+news_source_urls_preserved: true
