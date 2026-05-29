@@ -417,24 +417,70 @@ def public_news_articles(news_summary: dict, max_articles: int = 12) -> list[dic
     return articles
 
 
+PUBLIC_DASHBOARD_SOURCE_URL = "dashboard-data.json"
+
+
+def is_public_source_url(value: object) -> bool:
+    """Return whether a dashboard source URL is safe to render as an anchor."""
+    if not isinstance(value, str):
+        return False
+    candidate = value.strip()
+    if not candidate:
+        return False
+
+    parsed = urlparse(candidate)
+    if parsed.scheme in {"http", "https"} and parsed.netloc:
+        return True
+    if parsed.scheme or candidate.startswith("//"):
+        return False
+    return candidate in {
+        "dashboard-data.json",
+        "dashboard_snapshot_v1.json",
+        "dashboard_snapshot_v1.sample.json",
+    }
+
+
+def dashboard_source_url(
+    value: object,
+    fallback: str = PUBLIC_DASHBOARD_SOURCE_URL,
+) -> str:
+    """Keep public URLs and replace private/plain references with a safe target."""
+    if is_public_source_url(value):
+        return str(value).strip()
+    return fallback
+
+
+def source_label(*parts: object) -> str:
+    """Build a compact public label from source reference parts."""
+    text = " | ".join(
+        str(part).strip() for part in parts if str(part or "").strip()
+    )
+    return clean_text(text or "Curated evidence source", max_length=160)
+
+
 def dashboard_sources(ai_insight: dict) -> list[dict]:
     """Flatten AI source references into dashboard-safe label/url objects."""
     sources: list[dict] = []
 
     for reference in ai_insight.get("energy_references", []):
-        label = f"{reference.get('source', 'Energy')} - {reference.get('metric', 'metric')}"
+        source = reference.get("source", "Energy")
+        metric = reference.get("metric", "metric")
+        original_reference = reference.get("reference", "")
         sources.append(
             {
-                "label": label,
-                "url": reference.get("reference", "local://energy_input_v1.sample.json"),
+                "label": source_label(f"{source} - {metric}", original_reference),
+                "url": dashboard_source_url(original_reference),
             }
         )
 
     for reference in ai_insight.get("news_references", []):
         sources.append(
             {
-                "label": reference.get("publisher", "Curated news source"),
-                "url": reference.get("url", "local://news_summary_v1.sample.json"),
+                "label": source_label(reference.get("publisher", "Curated news source")),
+                "url": dashboard_source_url(
+                    reference.get("url"),
+                    fallback="dashboard_snapshot_v1.json",
+                ),
             }
         )
 

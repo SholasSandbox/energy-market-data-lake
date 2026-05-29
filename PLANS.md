@@ -1363,11 +1363,54 @@ Next implementation slice:
 - preserve external news URLs and reject or neutralize private/non-public
   source references before any publish boundary
 
+### Phase 17R: Local Managed AI Dashboard Source-Link Hardening
+
+Goal: remove the Phase 17Q source-link blocker locally before any managed AI
+dashboard publish decision.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17r-managed-ai-dashboard-source-link-hardening-20260529.md`
+- `docs/evidence/phase17r-managed-ai-dashboard-source-link-candidate-20260529.json`
+- `scripts/check_phase17r_dashboard_source_links.py`
+
+Result:
+
+- no Bedrock invocation was run
+- no Terraform apply, IAM change, state-machine deploy, schedule enablement,
+  DNS, ACM, alarms, budgets, dashboard hosting change, S3 write, CloudFront
+  invalidation, or public dashboard publish was performed
+- dashboard source-link generation now preserves public `http` and `https`
+  news URLs
+- private, custom-scheme, or plain-text managed energy references now use the
+  public dashboard fallback `dashboard-data.json`
+- the original managed energy reference context is retained in the source label
+- the Phase 17R candidate validates against
+  `schemas/dashboard_snapshot_v1.schema.json`
+
+Red-green evidence:
+
+- Red: Phase 17Q produced a valid candidate, but one managed energy source
+  rendered as a non-URL anchor target.
+- Green: Phase 17R neutralizes non-public source links locally and produces a
+  valid candidate with a public dashboard source target.
+- Regression: local managed AI adapter proof passes, deterministic fallback
+  remains intact, and dashboard publish remains blocked.
+
+Next implementation slice:
+
+- Phase 17S: managed AI dashboard publish decision
+- require explicit approval before any S3 write or CloudFront invalidation
+- keep Bedrock invocation, Terraform, IAM, schedules, DNS, ACM, alarms, budgets,
+  and managed workflow deployment out of scope
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17Q managed AI dashboard publish preflight.
-2. Plan Phase 17R as local managed AI dashboard source-link hardening before
-   any public dashboard update.
+1. Review and merge Phase 17R local managed AI dashboard source-link hardening.
+2. Plan Phase 17S as the managed AI dashboard publish decision before any S3
+   write or CloudFront invalidation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
