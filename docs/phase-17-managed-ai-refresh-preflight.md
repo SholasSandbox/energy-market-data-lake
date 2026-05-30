@@ -943,3 +943,30 @@ Decision:
 
 Recommended next slice: **Phase 17Y: controlled managed workflow smoke
 execution**, only after explicit approval.
+
+## Phase 17Y Managed Workflow Smoke Execution Result
+
+Phase 17Y ran one explicitly approved manual managed workflow smoke execution.
+
+Evidence:
+
+- `docs/evidence/phase17y-managed-workflow-smoke-execution-summary-20260530.md`
+- `docs/evidence/phase17y-managed-workflow-smoke-describe-execution-20260530.json`
+- `docs/evidence/phase17y-managed-workflow-smoke-execution-history-20260530.json`
+- `docs/evidence/phase17y-managed-workflow-smoke-s3-artifacts-20260530.json`
+- `docs/evidence/phase17y-managed-workflow-smoke-dashboard-impact-summary-20260530.txt`
+
+Result:
+
+- execution status: `FAILED`
+- manual retries: `0`
+- generated run ID: `ai-insight-20260530T205944Z-df1fdb6a`
+- failure state: `MergeAiInsightManaged`
+- deployed Lambda handler did not recognize `MergeAiInsightManaged`
+- Bedrock was not invoked
+- estimated Bedrock cost: `$0.00`
+- latest dashboard snapshot did not change
+- EventBridge schedule remains disabled
+
+Recommended next slice: **Phase 17Z: Lambda package refresh preflight** before
+any second managed workflow smoke execution.
