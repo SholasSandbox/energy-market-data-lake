@@ -1,0 +1,77 @@
+id=1 type=ExecutionStarted
+id=2 type=TaskStateEntered
+  name='InitializeRun'
+id=3 type=TaskScheduled
+  resource='invoke'
+id=4 type=TaskStarted
+  resource='invoke'
+id=5 type=TaskSucceeded
+  resource='invoke'
+  output=<len 1279 prefix '{"ExecutedVersion":"$LATEST","Payload":{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"initialized","lake_bucket":"energy-market-lake-464975959576-20260405","dashboa'>
+id=6 type=TaskStateExited
+  name='InitializeRun'
+  output=<len 319 prefix '{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"initialized","lake_bucket":"energy-market-lake-464975959576-20260405","dashboard_bucket":"energy-market-dashboard-pub'>
+id=7 type=TaskStateEntered
+  name='ExportEnergyInput'
+id=8 type=TaskScheduled
+  resource='invoke'
+id=9 type=TaskStarted
+  resource='invoke'
+id=10 type=TaskSucceeded
+  resource='invoke'
+  output=<len 1440 prefix '{"ExecutedVersion":"$LATEST","Payload":{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"energy_input_exported","lake_bucket":"energy-market-lake-464975959576-20260405'>
+id=11 type=TaskStateExited
+  name='ExportEnergyInput'
+  output=<len 480 prefix '{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"energy_input_exported","lake_bucket":"energy-market-lake-464975959576-20260405","dashboard_bucket":"energy-market-das'>
+id=12 type=TaskStateEntered
+  name='IngestNewsSummary'
+id=13 type=TaskScheduled
+  resource='invoke'
+id=14 type=TaskStarted
+  resource='invoke'
+id=15 type=TaskSucceeded
+  resource='invoke'
+  output=<len 1586 prefix '{"ExecutedVersion":"$LATEST","Payload":{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"news_summary_ingested","lake_bucket":"energy-market-lake-464975959576-20260405'>
+id=16 type=TaskStateExited
+  name='IngestNewsSummary'
+  output=<len 626 prefix '{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"news_summary_ingested","lake_bucket":"energy-market-lake-464975959576-20260405","dashboard_bucket":"energy-market-das'>
+id=17 type=TaskStateEntered
+  name='CreateAiInputBundle'
+id=18 type=TaskScheduled
+  resource='invoke'
+id=19 type=TaskStarted
+  resource='invoke'
+id=20 type=TaskSucceeded
+  resource='invoke'
+  output=<len 1721 prefix '{"ExecutedVersion":"$LATEST","Payload":{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"ai_input_bundle_created","lake_bucket":"energy-market-lake-464975959576-202604'>
+id=21 type=TaskStateExited
+  name='CreateAiInputBundle'
+  output=<len 761 prefix '{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"ai_input_bundle_created","lake_bucket":"energy-market-lake-464975959576-20260405","dashboard_bucket":"energy-market-d'>
+id=22 type=TaskStateEntered
+  name='MergeAiInsightManaged'
+id=23 type=TaskScheduled
+  resource='invoke'
+id=24 type=TaskStarted
+  resource='invoke'
+id=25 type=TaskFailed
+  resource='invoke'
+  error='ValueError'
+  cause=<len 574 prefix '{"errorMessage":"unknown action \'MergeAiInsightManaged\'; expected one of CreateAiInputBundle, ExportEnergyInput, IngestNewsSummary, InitializeRun, MergeAiInsightDeterministic, PublishDashboardSnapshot'>
+id=26 type=TaskStateExited
+  name='MergeAiInsightManaged'
+  output=<len 1411 prefix '{"workflow":"ai_insight","run_id":"ai-insight-20260530T205944Z-df1fdb6a","status":"ai_input_bundle_created","lake_bucket":"energy-market-lake-464975959576-20260405","dashboard_bucket":"energy-market-d'>
+id=27 type=TaskStateEntered
+  name='WorkflowFailed'
+id=28 type=TaskScheduled
+  resource='publish'
+id=29 type=TaskStarted
+  resource='publish'
+id=30 type=TaskSucceeded
+  resource='publish'
+  output=<len 557 prefix '{"MessageId":"e0af6a3d-1175-544c-9a9f-08a8437621ea","SdkHttpMetadata":{"AllHttpHeaders":{"x-amzn-RequestId":["a88ad6c0-7544-4c7e-b9a2-5d0f069520fe"],"connection":["keep-alive"],"Content-Length":["294"'>
+id=31 type=TaskStateExited
+  name='WorkflowFailed'
+  output=<len 557 prefix '{"MessageId":"e0af6a3d-1175-544c-9a9f-08a8437621ea","SdkHttpMetadata":{"AllHttpHeaders":{"x-amzn-RequestId":["a88ad6c0-7544-4c7e-b9a2-5d0f069520fe"],"connection":["keep-alive"],"Content-Length":["294"'>
+id=33 type=ExecutionFailed
+  error='AIInsightOrchestrationFailed'
+  cause='A Phase 8 orchestration step failed. Inspect failed/ records and Step Functions execution history.'

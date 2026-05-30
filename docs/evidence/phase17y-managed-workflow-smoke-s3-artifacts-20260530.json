@@ -1,0 +1,19 @@
+{
+    "objects": [
+        {
+            "Key": "curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260530T205944Z-df1fdb6a/payload.json",
+            "Size": 16252,
+            "LastModified": "2026-05-30T20:59:47+00:00"
+        },
+        {
+            "Key": "curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260530T205944Z-df1fdb6a/payload.json",
+            "Size": 633,
+            "LastModified": "2026-05-30T20:59:45+00:00"
+        },
+        {
+            "Key": "curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260530T205944Z-df1fdb6a/payload.json",
+            "Size": 14495,
+            "LastModified": "2026-05-30T20:59:47+00:00"
+        }
+    ]
+}

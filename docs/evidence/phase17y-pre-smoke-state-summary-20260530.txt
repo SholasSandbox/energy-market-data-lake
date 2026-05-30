@@ -1,0 +1,9 @@
+lambda_state= Active
+lambda_mode= managed
+bedrock_model= mistral.ministral-3-8b-instruct
+state_machine_status= ACTIVE
+merge_next= MergeAiInsightManaged
+publish_after_managed= PublishDashboardSnapshot
+schedule_state= DISABLED
+latest_snapshot_version= qYxpit3hmGzpSByvhG07nrOG4kBrz1qn
+latest_snapshot_etag= "c341541722f25da0ab5dddf6fe9a2f21"
