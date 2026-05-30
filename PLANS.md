@@ -1740,12 +1740,73 @@ Next implementation slice:
   failure path, dashboard impact, and rollback
 - keep EventBridge schedule enablement blocked
 
+### Phase 17X: Managed Workflow Smoke Decision
+
+Goal: decide whether the managed Step Functions workflow is ready for one
+controlled manual smoke execution after Phase 17W deployed managed routing.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-20260530.md`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-lambda-config-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-state-machine-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-schedule-state-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-recent-executions-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-dashboard-http-check-20260530.txt`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-latest-snapshot-head-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-immutable-snapshot-head-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-terraform-nochange-20260530.txt`
+
+Decision:
+
+- managed workflow smoke execution is a **go-candidate**, not automatic
+- execution remains blocked until explicit approval in a separate substate
+- the smoke execution is publish-capable because the deployed state machine
+  ends at `PublishDashboardSnapshot`
+- a successful smoke may overwrite live `dashboard_snapshot_v1.json`
+- any execution must therefore capture rollback evidence before starting and
+  stop after one manual execution
+- EventBridge schedule enablement remains blocked
+
+Result:
+
+- no Bedrock invocation was run
+- no Step Functions execution was started
+- no Terraform apply, IAM change, Lambda deploy, state-machine deploy,
+  schedule enablement, DNS, ACM, alarms, budgets, S3 write, CloudFront
+  invalidation, or dashboard publish was performed
+- Lambda remains active in managed mode
+- Step Functions remains active and routes from `CreateAiInputBundle` to
+  `MergeAiInsightManaged`, then to `PublishDashboardSnapshot`
+- EventBridge schedule remains `DISABLED`
+- current live dashboard snapshot still returns `200`
+- Terraform remains no-op only when managed mode, CloudFront preservation, and
+  schedule-disabled variables are passed together
+
+Red-green evidence:
+
+- Red: Phase 17W deployed managed workflow routing, but no live workflow smoke
+  had reviewed publish impact or rollback.
+- Green: Phase 17X identifies the smoke execution as a controlled
+  publish-capable boundary and records the rollback prerequisites.
+- Regression: no workflow execution occurred, schedules remain disabled, and
+  the current dashboard snapshot remains reachable.
+
+Next implementation slice:
+
+- Phase 17Y: controlled managed workflow smoke execution
+- run only after explicit approval
+- one manual Step Functions execution maximum, no manual retry
+- capture generated run ID, execution history, S3 artifacts, dashboard impact,
+  rollback path, estimated Bedrock cost, and post-run schedule-disabled proof
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17W controlled managed workflow Terraform apply
-   evidence.
-2. Plan Phase 17X as a managed workflow smoke decision before any live workflow
-   execution.
+1. Review and merge Phase 17X managed workflow smoke decision.
+2. If approved later, run Phase 17Y as one controlled manual managed workflow
+   smoke execution with rollback evidence captured first.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
