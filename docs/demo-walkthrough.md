@@ -396,3 +396,5 @@ Hiring signal:
 - Phase 17W execution applied managed workflow routing, but the demo should
   describe live managed workflow execution and schedule automation as pending
   later approval.
+- Phase 17X keeps the managed workflow smoke as a decision-only go-candidate;
+  do not demo it as executed until the controlled smoke run is evidenced.
