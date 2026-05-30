@@ -655,7 +655,9 @@ These are historical references, not the current delivery path.
     workflow routing to managed mode while keeping schedules disabled.
 32. Treat Phase 17X as the managed workflow smoke decision boundary; the smoke
     is publish-capable and still requires explicit execution approval.
-33. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+33. Treat Phase 17Y as evidence that managed workflow routing reaches the
+    managed merge state but the live Lambda package needs refresh before retry.
+34. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -682,3 +684,6 @@ These are historical references, not the current delivery path.
   schedule enablement has occurred.
 - Phase 17X records managed workflow smoke execution as a go-candidate only;
   it is publish-capable and needs rollback evidence before any run.
+- Phase 17Y ran one manual managed workflow smoke; it failed safely before
+  Bedrock because the deployed Lambda package did not recognize
+  `MergeAiInsightManaged`, and the dashboard snapshot remained unchanged.

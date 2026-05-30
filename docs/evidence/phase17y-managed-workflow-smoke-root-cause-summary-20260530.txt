@@ -1,0 +1,5 @@
+run_id= ai-insight-20260530T205944Z-df1fdb6a
+failed_state= MergeAiInsightManaged
+error= ValueError
+sanitized_reason= deployed Lambda handler did not recognize MergeAiInsightManaged
+bedrock_invoked= false_before_managed_action_handler

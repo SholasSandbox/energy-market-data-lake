@@ -398,3 +398,5 @@ Hiring signal:
   later approval.
 - Phase 17X keeps the managed workflow smoke as a decision-only go-candidate;
   do not demo it as executed until the controlled smoke run is evidenced.
+- Phase 17Y proves managed workflow routing reaches the managed merge state,
+  but live execution is blocked on a Lambda package refresh before retry.
