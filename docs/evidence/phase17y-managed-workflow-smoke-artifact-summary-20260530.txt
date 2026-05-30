@@ -1,0 +1,7 @@
+run_id= ai-insight-20260530T205944Z-df1fdb6a
+curated_object_count= 3
+curated_key= curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260530T205944Z-df1fdb6a/payload.json
+curated_key= curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260530T205944Z-df1fdb6a/payload.json
+curated_key= curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260530T205944Z-df1fdb6a/payload.json
+failed_object_count= 0
+dashboard_run_snapshot_count= 0

@@ -1802,11 +1802,69 @@ Next implementation slice:
 - capture generated run ID, execution history, S3 artifacts, dashboard impact,
   rollback path, estimated Bedrock cost, and post-run schedule-disabled proof
 
+### Phase 17Y: Controlled Managed Workflow Smoke Execution
+
+Goal: run one manual managed workflow smoke execution after Phase 17X approved
+the smoke as a publish-capable go-candidate.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17y-managed-workflow-smoke-execution-summary-20260530.md`
+- `docs/evidence/phase17y-managed-workflow-smoke-start-execution-20260530.json`
+- `docs/evidence/phase17y-managed-workflow-smoke-describe-execution-20260530.json`
+- `docs/evidence/phase17y-managed-workflow-smoke-execution-history-20260530.json`
+- `docs/evidence/phase17y-managed-workflow-smoke-failure-summary-20260530.txt`
+- `docs/evidence/phase17y-managed-workflow-smoke-root-cause-summary-20260530.txt`
+- `docs/evidence/phase17y-managed-workflow-smoke-s3-artifacts-20260530.json`
+- `docs/evidence/phase17y-managed-workflow-smoke-dashboard-impact-summary-20260530.txt`
+- `docs/evidence/phase17y-managed-workflow-smoke-post-schedule-state-20260530.json`
+
+Result:
+
+- one manual Step Functions execution was started
+- manual retries: `0`
+- execution status: `FAILED`
+- generated run ID: `ai-insight-20260530T205944Z-df1fdb6a`
+- failure state: `MergeAiInsightManaged`
+- sanitized failure reason: deployed Lambda handler did not recognize
+  `MergeAiInsightManaged`
+- Bedrock was not invoked because the Lambda failed before the managed action
+  handler could call Bedrock
+- estimated Bedrock cost: `$0.00`
+- `energy_input`, `news_summary`, and `ai_input_bundle` artifacts were written
+- no `ai_insight` artifact, run-scoped dashboard snapshot, or latest dashboard
+  update was written
+- latest dashboard snapshot version, ETag, and SHA256 did not change
+- EventBridge schedule remains `DISABLED`
+- no Terraform apply, schedule enablement, DNS, ACM, alarms, budgets,
+  CloudFront invalidation, or dashboard publish was performed
+
+Red-green evidence:
+
+- Red: Phase 17W deployed managed workflow routing, but no manual managed
+  workflow smoke had run.
+- Green: Phase 17Y proved the deployed state machine reaches the managed merge
+  state and fails safely before Bedrock when the live Lambda package lacks the
+  managed action handler.
+- Regression: no retry was run, no Bedrock cost was incurred, no dashboard
+  publish occurred, and schedule remains disabled.
+
+Next implementation slice:
+
+- Phase 17Z: Lambda package refresh preflight
+- rebuild and deploy the AI orchestration Lambda package containing
+  `MergeAiInsightManaged` before any second managed workflow smoke
+- keep schedules disabled
+- do not retry the managed workflow until package refresh evidence is reviewed
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17X managed workflow smoke decision.
-2. If approved later, run Phase 17Y as one controlled manual managed workflow
-   smoke execution with rollback evidence captured first.
+1. Review and merge Phase 17Y controlled managed workflow smoke execution
+   evidence.
+2. Plan Phase 17Z as a Lambda package refresh preflight before any second
+   managed workflow smoke.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, and Terraform apply
    deferred until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
