@@ -1,0 +1,23 @@
+{
+    "FunctionName": "energy-market-news-ai-orchestration",
+    "LastModified": "2026-05-29T18:54:18.000+0000",
+    "Runtime": "python3.11",
+    "Handler": "news_ai_orchestration.lambda_handler",
+    "State": "Active",
+    "Environment": {
+        "DASHBOARD_BUCKET": "energy-market-dashboard-public-464975959576-20260511",
+        "ATHENA_WORKGROUP": "energy-market-workgroup",
+        "ATHENA_DATABASE": "energy_market_lake",
+        "BEDROCK_PROVIDER": "mistral",
+        "DASHBOARD_DATA_KEY": "dashboard/dashboard-data.json",
+        "NEWS_LIMIT_PER_FEED": "4",
+        "AI_ORCHESTRATION_MODE": "managed",
+        "NEWS_MAX_ARTICLES": "18",
+        "BEDROCK_TEMPERATURE": "0.2",
+        "DATA_BUCKET": "energy-market-lake-464975959576-20260405",
+        "NEWS_FEEDS": "https://www.energyvoice.com/feed/,https://www.energylivenews.com/feed/,https://www.power-technology.com/feed/,https://www.offshore-energy.biz/feed/,https://oilprice.com/rss/main,https://www.renewableenergyworld.com/feed/,https://www.pv-magazine.com/feed/",
+        "BEDROCK_MAX_TOKENS": "1600",
+        "BEDROCK_MODEL_ID": "mistral.ministral-3-8b-instruct",
+        "ATHENA_OUTPUT_LOCATION": "s3://energy-market-lake-464975959576-20260405/athena-results/"
+    }
+}

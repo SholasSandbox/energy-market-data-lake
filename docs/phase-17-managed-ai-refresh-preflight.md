@@ -918,3 +918,28 @@ Result:
 
 Recommended next slice: **Phase 17X: managed workflow smoke decision** before
 any live workflow execution.
+
+## Phase 17X Managed Workflow Smoke Decision Result
+
+Phase 17X reviewed whether the managed Step Functions workflow should be run
+once as a manual smoke execution.
+
+Evidence:
+
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-20260530.md`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-lambda-config-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-state-machine-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-schedule-state-20260530.json`
+- `docs/evidence/phase17x-managed-workflow-smoke-decision-dashboard-http-check-20260530.txt`
+
+Decision:
+
+- managed workflow smoke execution is a go-candidate, not automatic
+- execution requires explicit approval in a separate substate
+- the deployed smoke is publish-capable because the state machine ends at
+  `PublishDashboardSnapshot`
+- rollback evidence must be captured before execution
+- EventBridge schedule enablement remains blocked
+
+Recommended next slice: **Phase 17Y: controlled managed workflow smoke
+execution**, only after explicit approval.
