@@ -653,7 +653,9 @@ These are historical references, not the current delivery path.
     deployment is a go-candidate, not an apply-by-default state.
 31. Treat Phase 17W execution as the controlled Terraform apply that switches
     workflow routing to managed mode while keeping schedules disabled.
-32. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+32. Treat Phase 17X as the managed workflow smoke decision boundary; the smoke
+    is publish-capable and still requires explicit execution approval.
+33. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -678,3 +680,5 @@ These are historical references, not the current delivery path.
 - Phase 17W execution applied the managed workflow Terraform delta; the
   state-machine now routes to managed AI, but no live workflow execution or
   schedule enablement has occurred.
+- Phase 17X records managed workflow smoke execution as a go-candidate only;
+  it is publish-capable and needs rollback evidence before any run.
