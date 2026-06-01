@@ -1,0 +1,15 @@
+Phase 17Z local Lambda package inspection before rebuild
+date=2026-06-01
+zip_path=infra/terraform/lakehouse/.terraform/build/news_ai_orchestration.zip
+zip_exists=True
+zip_size_bytes=742040
+zip_sha256=1258320d67d51b6d87a989fcbf1f6189e2437a7ba0ffe0279b020d4a3cc1fbe8
+zip_base64sha256=ElgyDWfVG22HqYn8vx9hieJDenug/+AnmwINSjzB++g=
+zip_mtime=1778500046504088623
+zip_file_count=209
+has_news_ai_orchestration_py=True
+zip_contains_MergeAiInsightManaged=False
+zip_handler_actions=InitializeRun,ExportEnergyInput,IngestNewsSummary,CreateAiInputBundle,MergeAiInsightDeterministic,PublishDashboardSnapshot
+repo_source_path=lambda/news_ai_orchestration.py
+repo_source_contains_MergeAiInsightManaged=True
+repo_source_sha256=a4fc0c142c14a45cb3aab8e8c38f6b991e47e9875d3df94a382d9d2c3e7fb930
