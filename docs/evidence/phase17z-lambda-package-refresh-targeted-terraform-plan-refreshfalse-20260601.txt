@@ -1,0 +1,48 @@
+data.aws_partition.current: Reading...
+data.aws_iam_policy_document.lambda_assume_role: Reading...
+data.aws_partition.current: Read complete after 0s [id=aws]
+data.aws_iam_policy_document.lambda_assume_role: Read complete after 0s [id=2690255455]
+data.aws_iam_policy_document.ai_orchestration_lambda_bedrock[0]: Reading...
+data.aws_iam_policy_document.ai_orchestration_lambda_bedrock[0]: Read complete after 0s [id=2061647424]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # aws_lambda_function.ai_orchestration[0] will be updated in-place
+  ~ resource "aws_lambda_function" "ai_orchestration" {
+        id                             = "energy-market-news-ai-orchestration"
+      ~ last_modified                  = "2026-05-29T18:54:18.000+0000" -> (known after apply)
+      ~ source_code_hash               = "ElgyDWfVG22HqYn8vx9hieJDenug/+AnmwINSjzB++g=" -> "Eeeg+InzSBuAUcrQPN9glMbw3hSWLBPkspiH0Ly2puE="
+        tags                           = {
+            "Environment" = "dev"
+            "ManagedBy"   = "terraform"
+            "Phase"       = "phase-8-ai-orchestration"
+            "Project"     = "energy-market"
+            "Workload"    = "energy-market-data-lake"
+        }
+        # (27 unchanged attributes hidden)
+
+        # (4 unchanged blocks hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+Warning: Resource targeting is in effect
+
+You are creating a plan with the -target option, which means that the result
+of this plan may not represent all of the changes requested by the current
+configuration.
+
+The -target option is not for routine use, and is provided only for
+exceptional situations such as recovering from errors or mistakes, or when
+Terraform specifically suggests to use it as part of an error message.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: tfplan-phase17z-lambda-package-refresh-targeted
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan-phase17z-lambda-package-refresh-targeted"
