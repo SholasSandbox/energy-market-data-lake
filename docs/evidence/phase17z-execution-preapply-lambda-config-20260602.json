@@ -1,0 +1,16 @@
+{
+    "FunctionName": "energy-market-news-ai-orchestration",
+    "LastModified": "2026-05-29T18:54:18.000+0000",
+    "Runtime": "python3.11",
+    "Handler": "news_ai_orchestration.lambda_handler",
+    "State": "Active",
+    "CodeSha256": "ElgyDWfVG22HqYn8vx9hieJDenug/+AnmwINSjzB++g=",
+    "Version": "$LATEST",
+    "Environment": {
+        "AI_ORCHESTRATION_MODE": "managed",
+        "BEDROCK_MODEL_ID": "mistral.ministral-3-8b-instruct",
+        "BEDROCK_PROVIDER": "mistral",
+        "BEDROCK_MAX_TOKENS": "1600",
+        "BEDROCK_TEMPERATURE": "0.2"
+    }
+}
