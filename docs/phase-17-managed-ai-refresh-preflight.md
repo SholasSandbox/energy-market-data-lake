@@ -970,3 +970,43 @@ Result:
 
 Recommended next slice: **Phase 17Z: Lambda package refresh preflight** before
 any second managed workflow smoke execution.
+
+## Phase 17Z Lambda Package Refresh Preflight Result
+
+Phase 17Z reviewed the Lambda package refresh boundary without running another
+workflow execution or applying Terraform.
+
+Evidence:
+
+- `docs/evidence/phase17z-lambda-package-refresh-preflight-20260601.md`
+- `docs/evidence/phase17z-lambda-package-local-before-build-20260601.txt`
+- `docs/evidence/phase17z-lambda-package-local-after-build-20260601.txt`
+- `docs/evidence/phase17z-current-lambda-config-sanitized-20260601.json`
+- `docs/evidence/phase17z-current-schedule-state-20260601.json`
+- `docs/evidence/phase17z-lambda-package-refresh-terraform-plan-refreshfalse-20260601.txt`
+- `docs/evidence/phase17z-lambda-package-refresh-targeted-terraform-plan-refreshfalse-20260601.txt`
+
+Result:
+
+- the deployed Lambda `CodeSha256` still matches the stale pre-rebuild package
+- the stale package did not contain `MergeAiInsightManaged`
+- the rebuilt package contains `MergeAiInsightManaged` and
+  `energy_market/managed_ai.py`
+- root refresh-false plan shows `Plan: 0 to add, 2 to change, 0 to destroy`
+- targeted comparison plan shows
+  `Plan: 0 to add, 1 to change, 0 to destroy`
+- EventBridge schedule remains disabled
+- no Bedrock invocation, Step Functions execution, Terraform apply, Lambda
+  deploy, IAM mutation, schedule enablement, S3 write, CloudFront invalidation,
+  or dashboard publish was performed
+
+Decision:
+
+- Lambda package refresh is a go-candidate, not automatic execution
+- any apply remains blocked until explicit approval in a separate execution
+  substate
+- do not run a second managed workflow smoke until the deployed Lambda package
+  is refreshed and verified
+
+Recommended next slice: **Phase 17Z execution substate: controlled Lambda
+package refresh apply**, only after explicit approval.

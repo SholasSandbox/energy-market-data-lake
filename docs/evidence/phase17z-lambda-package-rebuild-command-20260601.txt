@@ -1,0 +1,1 @@
+/Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake/infra/terraform/lakehouse/.terraform/build/news_ai_orchestration.zip
