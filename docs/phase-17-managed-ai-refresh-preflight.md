@@ -1010,3 +1010,34 @@ Decision:
 
 Recommended next slice: **Phase 17Z execution substate: controlled Lambda
 package refresh apply**, only after explicit approval.
+
+## Phase 17Z Controlled Lambda Package Refresh Apply Result
+
+Phase 17Z execution refreshed the deployed AI orchestration Lambda package
+after explicit approval to use the normal root Terraform plan.
+
+Evidence:
+
+- `docs/evidence/phase17z-lambda-package-refresh-apply-summary-20260602.md`
+- `docs/evidence/phase17z-execution-lambda-package-after-rebuild-20260602.txt`
+- `docs/evidence/phase17z-execution-terraform-apply-plan-20260602.txt`
+- `docs/evidence/phase17z-execution-terraform-apply-20260602.txt`
+- `docs/evidence/phase17z-execution-postapply-lambda-config-20260602.json`
+- `docs/evidence/phase17z-execution-postapply-schedule-state-20260602.json`
+- `docs/evidence/phase17z-execution-postapply-dashboard-http-check-20260602.txt`
+- `docs/evidence/phase17z-execution-postapply-terraform-nochange-20260602.txt`
+
+Result:
+
+- rebuilt package contains `MergeAiInsightManaged`
+- saved plan showed `Plan: 0 to add, 2 to change, 0 to destroy`
+- apply completed with `Resources: 0 added, 1 changed, 0 destroyed`
+- deployed Lambda `CodeSha256` now matches the rebuilt package hash
+- EventBridge schedule remains disabled
+- live dashboard snapshot still returns `200` and the SHA-256 is unchanged
+- post-apply Terraform plan reports `No changes`
+- no Step Functions execution, Bedrock invocation, schedule enablement,
+  dashboard publish, S3 write, or CloudFront invalidation was performed
+
+Recommended next slice: **Phase 17AA managed workflow second-smoke decision**,
+not automatic execution.

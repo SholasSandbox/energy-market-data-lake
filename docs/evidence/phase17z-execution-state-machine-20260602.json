@@ -1,0 +1,5 @@
+{
+    "name": "energy-market-ai-insight-orchestration",
+    "status": "ACTIVE",
+    "roleArn": "arn:aws:iam::<aws-account-id>:role/energy-market-ai-orchestration-sfn-role"
+}
