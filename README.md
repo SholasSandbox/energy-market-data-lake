@@ -134,6 +134,9 @@ Region: **eu-west-2 (London)**
 - Phase 17Z proves the Lambda package refresh preflight locally: the rebuilt
   package contains `MergeAiInsightManaged`, while apply remains blocked until
   explicit approval.
+- Phase 17Z execution refreshes the deployed Lambda package with the normal
+  root Terraform plan; the live code hash now matches the package containing
+  `MergeAiInsightManaged`, while no workflow retry or dashboard publish occurs.
 
 ### Deferred AWS Extension
 
@@ -671,7 +674,9 @@ These are historical references, not the current delivery path.
 34. Treat Phase 17Z as the Lambda package refresh preflight; the rebuilt
     package contains `MergeAiInsightManaged`, but apply requires explicit
     approval.
-35. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+35. Treat Phase 17Z execution as the Lambda package refresh proof; it does not
+    authorize an automatic second managed workflow smoke.
+36. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -704,3 +709,5 @@ These are historical references, not the current delivery path.
 - Phase 17Z rebuilt the local Terraform Lambda package and proved it contains
   `MergeAiInsightManaged`; the package refresh remains an explicit apply
   boundary before any second managed workflow smoke.
+- Phase 17Z execution refreshed the deployed Lambda package and left schedules
+  disabled, dashboard unchanged, and Terraform at no-change.
