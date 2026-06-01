@@ -1916,11 +1916,64 @@ Next implementation slice:
 - run a second managed workflow smoke only after the deployed Lambda package is
   refreshed and verified
 
+### Phase 17Z: Controlled Lambda Package Refresh Apply
+
+Goal: refresh the deployed AI orchestration Lambda package so it contains the
+managed action handler proven locally in Phase 17Z preflight.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17z-lambda-package-refresh-apply-summary-20260602.md`
+- `docs/evidence/phase17z-execution-lambda-package-after-rebuild-20260602.txt`
+- `docs/evidence/phase17z-execution-terraform-apply-plan-20260602.txt`
+- `docs/evidence/phase17z-execution-terraform-apply-20260602.txt`
+- `docs/evidence/phase17z-execution-postapply-lambda-config-20260602.json`
+- `docs/evidence/phase17z-execution-postapply-schedule-state-20260602.json`
+- `docs/evidence/phase17z-execution-postapply-dashboard-http-check-20260602.txt`
+- `docs/evidence/phase17z-execution-postapply-terraform-nochange-20260602.txt`
+- `docs/evidence/phase17z-execution-recent-executions-20260602.json`
+
+Result:
+
+- normal root saved plan was used after explicit approval
+- saved plan showed `Plan: 0 to add, 2 to change, 0 to destroy`
+- apply completed with `Resources: 0 added, 1 changed, 0 destroyed`
+- changed resource was `aws_lambda_function.ai_orchestration[0]`
+- deployed Lambda `CodeSha256` now matches the rebuilt package hash
+  `Eeeg+InzSBuAUcrQPN9glMbw3hSWLBPkspiH0Ly2puE=`
+- the rebuilt package contains `MergeAiInsightManaged`
+- no Step Functions execution or Bedrock invocation was run
+- no dashboard publish, S3 write, CloudFront invalidation, schedule enablement,
+  DNS, ACM, alarms, or budgets change was performed
+- EventBridge schedule remains `DISABLED`
+- live dashboard snapshot SHA-256 remains
+  `d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741`
+- post-apply Terraform plan reports `No changes`
+
+Red-green evidence:
+
+- Red: Phase 17Y failed at `MergeAiInsightManaged` because the deployed Lambda
+  package was stale.
+- Green: Phase 17Z execution refreshed the deployed Lambda package and the live
+  code hash now matches the package that contains `MergeAiInsightManaged`.
+- Regression: no managed workflow retry, Bedrock invocation, dashboard publish,
+  or schedule enablement occurred.
+
+Next implementation slice:
+
+- Phase 17AA: managed workflow second-smoke decision
+- decide whether one controlled second managed workflow smoke is justified now
+  that the Lambda package is refreshed
+- treat the smoke as publish-capable and explicit-approval only
+- capture rollback evidence before any execution
+- keep schedules disabled
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17Z Lambda package refresh preflight evidence.
-2. Treat Phase 17Z execution as a separate explicit approval boundary before
-   any Terraform apply or Lambda package deploy.
+1. Review and merge Phase 17Z controlled Lambda package refresh apply evidence.
+2. Plan Phase 17AA as a second-smoke decision before any managed workflow retry.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Step Functions
    execution, and dashboard publish deferred until a phase explicitly targets
    those operating boundaries.
