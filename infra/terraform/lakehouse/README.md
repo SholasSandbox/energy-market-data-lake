@@ -141,7 +141,8 @@ Control, so the S3 bucket remains private and grants read access only to the
 distribution.
 
 Build the Phase 8 Lambda package before planning or applying orchestration
-resources:
+resources, and rebuild it whenever `lambda/news_ai_orchestration.py`,
+`energy_market/`, or `schemas/` changes:
 
 ```bash
 ../../../scripts/build_phase8_lambda_package.sh
@@ -156,6 +157,10 @@ The build writes:
 The package includes `lambda/news_ai_orchestration.py`, the shared
 `energy_market/` runtime code, `schemas/`, and Lambda-only Python dependencies
 from `requirements-lambda.txt`.
+
+Do not rely on an older zip under `.terraform/build/` after handler changes.
+Phase 17Y proved that Terraform can deploy managed workflow routing while the
+Lambda package still contains stale code if the package is not rebuilt first.
 
 ## Commands
 
@@ -247,7 +252,7 @@ Import addresses may change if you rename resources in the Terraform files. The 
 - **Changing `S3_BUCKET` requires IAM policy alignment.** Lambda and Glue may read the new bucket name from configuration but still fail S3 writes if their role policies point at an older bucket.
 - **Do not enable the EventBridge schedule until manual validation passes.** Keep `schedule_enabled = false` while importing and reconciling resources.
 - **Do not enable the Phase 8 schedule until one manual Step Functions execution passes.** Keep `ai_orchestration_schedule_enabled = false` while validating failure handling.
-- **Build the Phase 8 Lambda package before planning enabled orchestration resources.** Terraform reads `.terraform/build/news_ai_orchestration.zip` when `ai_orchestration_enabled = true`.
+- **Build the Phase 8 Lambda package before planning enabled orchestration resources.** Terraform reads `.terraform/build/news_ai_orchestration.zip` when `ai_orchestration_enabled = true`; rebuild it after handler or shared-runtime changes before every orchestration plan/apply.
 - **The public dashboard snapshot is updated last.** The state machine publishes `dashboard_snapshot_v1.json` only after all validation gates pass; failed runs route to SNS/`failed/` and leave the previous public snapshot in place.
 - **CloudFront dashboard delivery is opt-in.** Keep `dashboard_cloudfront_enabled = false` until the dashboard bucket is Terraform-managed and you are ready to publish static assets through CloudFront.
 - **CloudFront Origin Access Control keeps the dashboard bucket private.** Do not loosen S3 public access settings to make the dashboard work; fix the CloudFront distribution or bucket policy instead.

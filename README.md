@@ -123,6 +123,17 @@ Region: **eu-west-2 (London)**
 - Phase 17T verifies the hosted dashboard demo after managed AI publication:
   CloudFront routes, latest snapshot, immutable snapshot, schema validation,
   and source-link hardening all pass read-only checks.
+- Phase 17U keeps managed workflow deployment blocked after preflight review.
+- Phase 17V models the managed workflow Terraform/IAM delta plan-only.
+- Phase 17W execution applies managed workflow routing while schedules remain
+  disabled.
+- Phase 17X records managed workflow smoke execution as a publish-capable
+  go-candidate only.
+- Phase 17Y runs one manual managed workflow smoke; it fails safely before
+  Bedrock because the deployed Lambda package is stale.
+- Phase 17Z proves the Lambda package refresh preflight locally: the rebuilt
+  package contains `MergeAiInsightManaged`, while apply remains blocked until
+  explicit approval.
 
 ### Deferred AWS Extension
 
@@ -657,7 +668,10 @@ These are historical references, not the current delivery path.
     is publish-capable and still requires explicit execution approval.
 33. Treat Phase 17Y as evidence that managed workflow routing reaches the
     managed merge state but the live Lambda package needs refresh before retry.
-34. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+34. Treat Phase 17Z as the Lambda package refresh preflight; the rebuilt
+    package contains `MergeAiInsightManaged`, but apply requires explicit
+    approval.
+35. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -687,3 +701,6 @@ These are historical references, not the current delivery path.
 - Phase 17Y ran one manual managed workflow smoke; it failed safely before
   Bedrock because the deployed Lambda package did not recognize
   `MergeAiInsightManaged`, and the dashboard snapshot remained unchanged.
+- Phase 17Z rebuilt the local Terraform Lambda package and proved it contains
+  `MergeAiInsightManaged`; the package refresh remains an explicit apply
+  boundary before any second managed workflow smoke.
