@@ -2096,8 +2096,8 @@ Next implementation slice:
 
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AA controlled managed workflow second-smoke
-   execution evidence.
+1. Phase 17AA controlled managed workflow second-smoke execution evidence is
+   merged.
 2. Plan Phase 17AB as read-only hosted dashboard demo verification after the
    workflow-published snapshot.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
