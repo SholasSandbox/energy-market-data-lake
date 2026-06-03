@@ -1970,12 +1970,76 @@ Next implementation slice:
 - capture rollback evidence before any execution
 - keep schedules disabled
 
+### Phase 17AA: Managed Workflow Second-Smoke Decision
+
+Goal: decide whether one controlled second managed workflow smoke is justified
+after Phase 17Z execution refreshed the deployed Lambda package.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17aa-managed-workflow-second-smoke-decision-20260602.md`
+- `docs/evidence/phase17aa-second-smoke-decision-lambda-config-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-state-machine-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-recent-executions-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-schedule-state-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-dashboard-http-check-20260602.txt`
+- `docs/evidence/phase17aa-second-smoke-decision-latest-snapshot-head-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-immutable-snapshot-head-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-terraform-nochange-20260602.txt`
+
+Decision:
+
+- one controlled second managed workflow smoke is a go-candidate, not automatic
+  execution
+- execution remains blocked until explicit approval in a separate substate
+- if approved, use one manual Step Functions execution maximum and no manual
+  retry
+- capture rollback snapshot metadata before execution
+- capture execution ARN, history, output, generated run ID, S3 artifacts,
+  dashboard impact, estimated Bedrock cost, and post-run schedule-disabled
+  proof
+
+Read-only facts:
+
+- deployed Lambda `CodeSha256` is
+  `Eeeg+InzSBuAUcrQPN9glMbw3hSWLBPkspiH0Ly2puE=`
+- deployed Lambda remains in managed mode
+- Step Functions routes `CreateAiInputBundle` to `MergeAiInsightManaged`, then
+  to `PublishDashboardSnapshot`
+- recent execution evidence shows no new managed workflow run after Phase 17Y
+- EventBridge schedule remains `DISABLED`
+- latest dashboard snapshot still returns `200`
+- latest dashboard snapshot version remains `qYxpit3hmGzpSByvhG07nrOG4kBrz1qn`
+- dashboard snapshot SHA-256 remains
+  `d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741`
+- Terraform reports `No changes`
+
+Red-green evidence:
+
+- Red: Phase 17Y reached `MergeAiInsightManaged` but failed because the
+  deployed Lambda package was stale.
+- Green: Phase 17Z execution refreshed the package, and Phase 17AA confirms
+  the live Lambda code hash matches the refreshed package.
+- Regression: no workflow retry, Bedrock invocation, dashboard publish,
+  Terraform apply, or schedule enablement occurred.
+
+Next implementation slice:
+
+- Phase 17AA execution substate: one controlled second managed workflow smoke
+- run only after explicit approval
+- keep the smoke publish-capable, rollback-first, one-run only, and no manual
+  retry
+- keep schedules disabled
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17Z controlled Lambda package refresh apply evidence.
-2. Plan Phase 17AA as a second-smoke decision before any managed workflow retry.
-3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Step Functions
-   execution, and dashboard publish deferred until a phase explicitly targets
+1. Review and merge Phase 17AA managed workflow second-smoke decision evidence.
+2. Treat Phase 17AA execution as a separate explicit approval boundary before
+   any Step Functions execution or Bedrock invocation.
+3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
+   and dashboard publish decisions deferred until a phase explicitly targets
    those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
