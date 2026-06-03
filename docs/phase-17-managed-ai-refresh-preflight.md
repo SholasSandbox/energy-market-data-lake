@@ -1041,3 +1041,41 @@ Result:
 
 Recommended next slice: **Phase 17AA managed workflow second-smoke decision**,
 not automatic execution.
+
+## Phase 17AA Managed Workflow Second-Smoke Decision Result
+
+Phase 17AA reviewed whether a second managed workflow smoke is justified after
+the deployed Lambda package refresh.
+
+Evidence:
+
+- `docs/evidence/phase17aa-managed-workflow-second-smoke-decision-20260602.md`
+- `docs/evidence/phase17aa-second-smoke-decision-lambda-config-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-state-machine-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-recent-executions-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-schedule-state-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-dashboard-http-check-20260602.txt`
+- `docs/evidence/phase17aa-second-smoke-decision-latest-snapshot-head-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-immutable-snapshot-head-20260602.json`
+- `docs/evidence/phase17aa-second-smoke-decision-terraform-nochange-20260602.txt`
+
+Decision:
+
+- one controlled second managed workflow smoke is a go-candidate, not automatic
+  execution
+- execution remains blocked until explicit approval in a separate substate
+- a successful smoke is publish-capable because the workflow ends at
+  `PublishDashboardSnapshot`
+
+Result:
+
+- Lambda code hash remains on the Phase 17Z refreshed package
+- Step Functions still routes through `MergeAiInsightManaged`
+- EventBridge schedule remains disabled
+- latest dashboard snapshot and immutable rollback evidence remain available
+- Terraform reports `No changes`
+- no Step Functions execution, Bedrock invocation, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, or dashboard publish occurred
+
+Recommended next slice: **Phase 17AA execution substate: one controlled second
+managed workflow smoke**, only after explicit approval.
