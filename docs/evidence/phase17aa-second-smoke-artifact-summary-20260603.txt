@@ -1,0 +1,8 @@
+Phase 17AA artifact summary
+run_id=ai-insight-20260603T010744Z-4d89a62a
+energy_input=curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260603T010744Z-4d89a62a/payload.json size=633 etag="4dbde250f6b444a70fb5eda69db16496"
+news_summary=curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260603T010744Z-4d89a62a/payload.json size=14419 etag="cbe72dc39ec0748d74beb818a15e7de1"
+ai_input_bundle=curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260603T010744Z-4d89a62a/payload.json size=16206 etag="c203abe2ee797213e2c1039a2b3be880"
+ai_insight=curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260603T010744Z-4d89a62a/payload.json size=2347 etag="d289f5e3b4548beb91b2477e22ac9596"
+dashboard_snapshot_latest=dashboard_snapshot_v1.json size=10154 etag="78dc3e2733a818b8c876fc156ad905eb"
+dashboard_snapshot_immutable=snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json size=10154 etag="78dc3e2733a818b8c876fc156ad905eb"

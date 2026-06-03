@@ -1,0 +1,5 @@
+{
+    "Arn": "arn:aws:iam::<aws-account-id>:user/IAMUser1",
+    "Account": "<aws-account-id>",
+    "UserId": "AIDAWYQV2CYMFKHW4IY24"
+}
