@@ -1079,3 +1079,38 @@ Result:
 
 Recommended next slice: **Phase 17AA execution substate: one controlled second
 managed workflow smoke**, only after explicit approval.
+
+## Phase 17AA Controlled Managed Workflow Second-Smoke Execution Result
+
+Phase 17AA execution ran one explicitly approved managed workflow smoke after
+the Lambda package refresh.
+
+Evidence:
+
+- `docs/evidence/phase17aa-managed-workflow-second-smoke-execution-summary-20260603.md`
+- `docs/evidence/phase17aa-second-smoke-describe-execution-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-execution-history-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-output-summary-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-s3-artifacts-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-dashboard-impact-summary-20260603.txt`
+- `docs/evidence/phase17aa-second-smoke-schema-validation-summary-20260603.txt`
+- `docs/evidence/phase17aa-second-smoke-post-schedule-state-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-post-terraform-nochange-20260603.txt`
+
+Result:
+
+- execution status: `SUCCEEDED`
+- generated run ID: `ai-insight-20260603T010744Z-4d89a62a`
+- workflow status: `dashboard_snapshot_published`
+- Bedrock was invoked through Mistral
+- generated `ai_insight_v1` validates
+- generated `dashboard_snapshot_v1` validates
+- latest dashboard snapshot and immutable run snapshot were written
+- latest and immutable CloudFront snapshot paths return `200`
+- EventBridge schedule remains disabled
+- post-run Terraform reports `No changes`
+- no manual retry was run
+- no CloudFront invalidation was requested
+
+Recommended next slice: **Phase 17AB managed workflow post-smoke demo
+verification**, read-only.

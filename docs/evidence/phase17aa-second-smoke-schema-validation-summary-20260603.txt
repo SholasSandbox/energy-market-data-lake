@@ -1,0 +1,9 @@
+ai_insight_v1=valid
+ai_insight_v1_schema_version=ai_insight_v1
+ai_insight_v1_insight_count=1
+ai_insight_v1_risk_levels=watch
+dashboard_snapshot_v1=valid
+dashboard_snapshot_v1_schema_version=dashboard_snapshot_v1
+dashboard_snapshot_v1_insight_count=1
+dashboard_snapshot_v1_news_article_count=12
+raw_payloads_committed=false

@@ -1,0 +1,12 @@
+{
+  "createAiInputBundleNext": "MergeAiInsightManaged",
+  "hasMergeAiInsightDeterministic": false,
+  "hasMergeAiInsightManaged": true,
+  "hasWorkflowFailed": true,
+  "mergeAiInsightManagedNext": "PublishDashboardSnapshot",
+  "name": "energy-market-ai-insight-orchestration",
+  "publishDashboardSnapshotEnd": true,
+  "roleArn": "arn:aws:iam::<aws-account-id>:role/energy-market-ai-orchestration-sfn-role",
+  "startAt": "InitializeRun",
+  "status": "ACTIVE"
+}
