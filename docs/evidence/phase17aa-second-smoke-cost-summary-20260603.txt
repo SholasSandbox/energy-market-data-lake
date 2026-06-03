@@ -1,0 +1,12 @@
+Phase 17AA cost summary
+bedrock_invoked=true
+bedrock_provider=mistral
+bedrock_model_id=mistral.ministral-3-8b-instruct
+manual_retries=0
+workflow_redrive_count=0
+token_usage_captured=false
+estimated_direct_model_cost_usd=0.00132618
+estimate_basis=average of prior controlled live Mistral invocation estimates recorded in Phase 17 docs
+practical_budget_cap_usd=0.10
+estimated_under_cap=true
+notes=Workflow output confirms Bedrock/Mistral managed merge succeeded, but token usage is not emitted in the workflow summary. Estimate excludes nominal Step Functions, Lambda, S3, and CloudFront request costs.

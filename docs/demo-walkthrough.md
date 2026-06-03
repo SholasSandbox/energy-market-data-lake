@@ -370,19 +370,18 @@ Hiring signal:
 
 ## Known Limitations
 
-- The current AI merge is deterministic logic, not a live OpenClaw or Bedrock
-  model call.
+- The local fallback AI merge is deterministic; the managed workflow path has
+  now proven one controlled Bedrock/Mistral smoke.
 - The energy evidence may be stale because it comes from the current local dashboard data.
 - Gas metrics are rendered in the React dashboard context, but not in the public AI snapshot contract.
 - RSS feed results change over time.
 - Phase 8 schedule automation is intentionally disabled until a later operating
   decision.
-- DNS, ACM certificate, CloudWatch alarms, managed AI dashboard publication,
-  managed workflow deployment, and automated schedules are intentionally
-  separated into explicit operating boundaries.
-- The live AI `dashboard_snapshot_v1.json` path now serves the approved managed
-  AI dashboard snapshot from Phase 17S execution; managed workflow deployment
-  remains deferred.
+- DNS, ACM certificate, CloudWatch alarms, managed workflow schedule
+  automation, and repeated managed AI execution are intentionally separated
+  into explicit operating boundaries.
+- The live AI `dashboard_snapshot_v1.json` path now serves a managed workflow
+  snapshot from Phase 17AA execution.
 - Phase 17T read-only checks verify the hosted dashboard, latest managed AI
   snapshot, immutable managed AI snapshot, schema validity, and source-link
   hardening.
@@ -400,3 +399,8 @@ Hiring signal:
   do not demo it as executed until the controlled smoke run is evidenced.
 - Phase 17Y proves managed workflow routing reaches the managed merge state,
   but live execution is blocked on a Lambda package refresh before retry.
+- Phase 17Z execution refreshed the Lambda package that contains
+  `MergeAiInsightManaged`.
+- Phase 17AA execution proves one controlled managed workflow smoke can run
+  through Bedrock/Mistral and publish latest plus immutable dashboard snapshots;
+  schedules remain disabled.

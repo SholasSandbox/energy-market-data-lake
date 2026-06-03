@@ -2033,13 +2033,75 @@ Next implementation slice:
   retry
 - keep schedules disabled
 
+### Phase 17AA: Controlled Managed Workflow Second-Smoke Execution
+
+Goal: run one controlled managed workflow smoke after the Phase 17Z Lambda
+package refresh and confirm the managed Step Functions path can complete.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17aa-managed-workflow-second-smoke-execution-summary-20260603.md`
+- `docs/evidence/phase17aa-second-smoke-start-execution-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-describe-execution-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-execution-history-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-output-summary-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-s3-artifacts-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-schema-validation-summary-20260603.txt`
+- `docs/evidence/phase17aa-second-smoke-dashboard-impact-summary-20260603.txt`
+- `docs/evidence/phase17aa-second-smoke-post-schedule-state-20260603.json`
+- `docs/evidence/phase17aa-second-smoke-post-terraform-nochange-20260603.txt`
+
+Result:
+
+- one manual Step Functions execution was started
+- execution status: `SUCCEEDED`
+- generated run ID: `ai-insight-20260603T010744Z-4d89a62a`
+- workflow status: `dashboard_snapshot_published`
+- manual retries: `0`
+- redrive count: `0`
+- Bedrock was invoked through the managed Mistral path
+- estimated direct model cost is `$0.00132618`
+- generated `ai_insight_v1` validates
+- generated `dashboard_snapshot_v1` validates
+- latest dashboard snapshot version changed from
+  `qYxpit3hmGzpSByvhG07nrOG4kBrz1qn` to
+  `b9PUPbupwFRcRCIHTcMwFhylWsuDCkSv`
+- latest CloudFront snapshot SHA-256 changed from
+  `d180b4a2bda131fae6088a650301f40b696ba67929ffcea78be42731adb3a741` to
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- latest and immutable CloudFront snapshot paths returned `200`
+- EventBridge schedule remains `DISABLED`
+- post-run Terraform reports `No changes`
+- no CloudFront invalidation was requested
+- raw AI payloads and raw model output were not committed
+
+Red-green evidence:
+
+- Red: Phase 17Y reached `MergeAiInsightManaged` but failed because the
+  deployed Lambda package was stale.
+- Green: Phase 17AA execution proved the refreshed deployed Lambda package can
+  run the managed Bedrock/Mistral merge and publish a valid dashboard snapshot
+  through the managed workflow.
+- Regression: one execution only, no manual retry, schedules remain disabled,
+  Terraform remains no-change, and generated artifacts validate.
+
+Next implementation slice:
+
+- Phase 17AB: managed workflow post-smoke demo verification
+- keep the next slice read-only
+- verify hosted dashboard behavior after the workflow-published snapshot
+- keep schedule enablement as a later explicit decision boundary
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AA managed workflow second-smoke decision evidence.
-2. Treat Phase 17AA execution as a separate explicit approval boundary before
-   any Step Functions execution or Bedrock invocation.
+1. Review and merge Phase 17AA controlled managed workflow second-smoke
+   execution evidence.
+2. Plan Phase 17AB as read-only hosted dashboard demo verification after the
+   workflow-published snapshot.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
-   and dashboard publish decisions deferred until a phase explicitly targets
+   and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.

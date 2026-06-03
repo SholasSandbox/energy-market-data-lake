@@ -140,6 +140,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AA records the managed workflow second smoke as a go-candidate, not
   automatic execution, after confirming Lambda refresh, rollback metadata,
   schedule-disabled state, and Terraform no-change.
+- Phase 17AA execution runs one controlled managed workflow smoke successfully:
+  the managed Bedrock/Mistral merge validates, publishes latest plus immutable
+  dashboard snapshots, and leaves schedules disabled.
 
 ### Deferred AWS Extension
 
@@ -682,7 +685,9 @@ These are historical references, not the current delivery path.
 36. Treat Phase 17AA as the managed workflow second-smoke decision boundary;
     execution remains explicit-approval only because success can publish the
     dashboard snapshot.
-37. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+37. Treat Phase 17AA execution as the first successful managed workflow smoke;
+    schedule enablement remains a separate operating decision.
+38. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -720,3 +725,6 @@ These are historical references, not the current delivery path.
 - Phase 17AA confirms a second managed workflow smoke is a go-candidate, but
   does not run it; rollback-first evidence and explicit approval remain
   required.
+- Phase 17AA execution ran one successful managed workflow smoke, published the
+  managed workflow dashboard snapshot, and kept the EventBridge schedule
+  disabled.

@@ -1,0 +1,26 @@
+{
+  "artifacts": {
+    "ai_input_bundle": "curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260603T010744Z-4d89a62a/payload.json",
+    "ai_insight": "curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260603T010744Z-4d89a62a/payload.json",
+    "dashboard_data": "dashboard/dashboard-data.json",
+    "dashboard_snapshot": "dashboard_snapshot_v1.json",
+    "energy_input": "curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260603T010744Z-4d89a62a/payload.json",
+    "news_summary": "curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260603T010744Z-4d89a62a/payload.json"
+  },
+  "execution_name": "phase17aa-managed-workflow-second-smoke-20260603T010742Z",
+  "redrive_count": 0,
+  "run_id": "ai-insight-20260603T010744Z-4d89a62a",
+  "status": "SUCCEEDED",
+  "summary": {
+    "ai_provider": "bedrock",
+    "article_count": 18,
+    "bedrock_model_id": "mistral.ministral-3-8b-instruct",
+    "bedrock_provider": "mistral",
+    "energy_record_count": 1,
+    "immutable_dashboard_snapshot": "snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json",
+    "insight_count": 1,
+    "mode": "managed",
+    "risk_level": "watch"
+  },
+  "workflow_status": "dashboard_snapshot_published"
+}
