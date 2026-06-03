@@ -137,6 +137,9 @@ Region: **eu-west-2 (London)**
 - Phase 17Z execution refreshes the deployed Lambda package with the normal
   root Terraform plan; the live code hash now matches the package containing
   `MergeAiInsightManaged`, while no workflow retry or dashboard publish occurs.
+- Phase 17AA records the managed workflow second smoke as a go-candidate, not
+  automatic execution, after confirming Lambda refresh, rollback metadata,
+  schedule-disabled state, and Terraform no-change.
 
 ### Deferred AWS Extension
 
@@ -676,7 +679,10 @@ These are historical references, not the current delivery path.
     approval.
 35. Treat Phase 17Z execution as the Lambda package refresh proof; it does not
     authorize an automatic second managed workflow smoke.
-36. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+36. Treat Phase 17AA as the managed workflow second-smoke decision boundary;
+    execution remains explicit-approval only because success can publish the
+    dashboard snapshot.
+37. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -711,3 +717,6 @@ These are historical references, not the current delivery path.
   boundary before any second managed workflow smoke.
 - Phase 17Z execution refreshed the deployed Lambda package and left schedules
   disabled, dashboard unchanged, and Terraform at no-change.
+- Phase 17AA confirms a second managed workflow smoke is a go-candidate, but
+  does not run it; rollback-first evidence and explicit approval remain
+  required.
