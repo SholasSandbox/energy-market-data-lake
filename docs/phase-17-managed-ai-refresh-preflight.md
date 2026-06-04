@@ -1181,3 +1181,43 @@ Result:
 
 Recommended next slice: **Phase 17AD managed workflow source-label
 publish/deployment decision**, not apply-by-default.
+
+## Phase 17AD Managed Workflow Source-Label Publish/Deployment Decision Result
+
+Phase 17AD decided whether the Phase 17AC source-label sanitizer should be
+published to the live dashboard or deployed into the managed workflow Lambda
+package.
+
+Evidence:
+
+- `docs/evidence/phase17ad-managed-workflow-source-label-publish-deployment-decision-20260604.md`
+- `docs/evidence/phase17ad-current-lambda-config-sanitized-20260604.json`
+- `docs/evidence/phase17ad-current-lambda-package-status-20260604.txt`
+- `docs/evidence/phase17ad-current-schedule-state-20260604.json`
+- `docs/evidence/phase17ad-current-recent-executions-20260604.json`
+- `docs/evidence/phase17ad-local-source-label-sanitization-check-20260604.txt`
+- `docs/evidence/phase17ad-current-terraform-plan-refreshfalse-20260604.txt`
+
+Decision:
+
+- no-go for immediate dashboard publish
+- no-go for immediate managed workflow smoke or schedule enablement
+- no-go for immediate Terraform apply from the current root plan
+
+Result:
+
+- Phase 17AC local proof passes
+- deployed Lambda is active and still in managed mode
+- deployed Lambda package hash still matches the current local Terraform zip
+- current local Terraform zip contains `MergeAiInsightManaged`
+- current local Terraform zip does not contain `source_label_context`
+- current repo source contains the sanitizer
+- EventBridge schedule remains `DISABLED`
+- recent executions still show the Phase 17AA smoke as the latest Step
+  Functions run
+- current root `-refresh=false` plan is unsafe:
+  `Plan: 0 to add, 4 to change, 5 to destroy`, including unrelated CloudFront
+  destroys and Bedrock IAM policy removal
+
+Recommended next slice: **Phase 17AE Lambda package refresh preflight for
+source-label sanitizer**, no-apply.
