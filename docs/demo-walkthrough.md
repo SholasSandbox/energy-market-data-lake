@@ -414,3 +414,5 @@ Hiring signal:
 - Phase 17AD decides not to publish or deploy the source-label fix yet because
   the deployed Lambda package is still stale relative to the sanitizer and the
   current root Terraform plan is unsafe.
+- Phase 17AE rebuilds the local Lambda package with the sanitizer and captures
+  a safe no-destroy plan, but does not apply it or rerun the managed workflow.
