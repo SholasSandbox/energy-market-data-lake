@@ -2094,16 +2094,70 @@ Next implementation slice:
 - verify hosted dashboard behavior after the workflow-published snapshot
 - keep schedule enablement as a later explicit decision boundary
 
+### Phase 17AB: Managed Workflow Post-Smoke Demo Verification
+
+Goal: verify the hosted dashboard and workflow-published snapshot after the
+successful Phase 17AA managed workflow smoke, without mutating AWS or starting
+another workflow execution.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-demo-verification-20260604.md`
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-demo-http-check-20260604.txt`
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-demo-json-check-20260604.txt`
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-schedule-state-20260604.json`
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-recent-executions-20260604.json`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, IAM
+  mutation, Lambda deploy, Step Functions deploy, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  was performed
+- CloudFront returns `200` for `/`, `/index.html`, `/dashboard-data.json`,
+  latest `dashboard_snapshot_v1.json`, and the Phase 17AA immutable snapshot
+- latest and immutable snapshot paths match SHA-256
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- both snapshot paths validate against `dashboard_snapshot_v1`
+- latest and immutable snapshot payloads match each other
+- EventBridge schedule remains `DISABLED`
+- recent execution evidence still shows the Phase 17AA execution as the latest
+  Step Functions run
+- Phase 17AB found one demo/public-surface hardening gap: the source URL is
+  dashboard-safe as `dashboard-data.json`, but the source label still carries
+  private lake S3 context from the managed workflow snapshot
+
+Red-green evidence:
+
+- Red: Phase 17AA proved the managed workflow can publish the dashboard
+  snapshot, but the hosted demo still needed read-only proof after cache
+  propagation.
+- Green: Phase 17AB confirms hosted routes, latest workflow snapshot,
+  immutable workflow snapshot, schedule-disabled posture, and schema
+  validation are healthy.
+- Regression: no workflow execution or dashboard mutation occurred, and the
+  public source URL fallback remains safe.
+
+Next implementation slice:
+
+- Phase 17AC: managed workflow source-label sanitization
+- keep the next slice local/preflight first
+- sanitize managed workflow source labels before any schedule enablement,
+  repeated managed workflow run, or dashboard publish
+
 ## Suggested Immediate Next Steps
 
 1. Phase 17AA controlled managed workflow second-smoke execution evidence is
    merged.
-2. Plan Phase 17AB as read-only hosted dashboard demo verification after the
-   workflow-published snapshot.
-3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
+2. Review and merge Phase 17AB read-only post-smoke demo verification.
+3. Plan Phase 17AC as managed workflow source-label sanitization before any
+   schedule enablement, repeated workflow run, or dashboard publish.
+4. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
-4. Keep the hosted dashboard demo path reproducible from
+5. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist

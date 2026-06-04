@@ -1,0 +1,52 @@
+# Phase 17AB Managed Workflow Post-Smoke Demo JSON Check
+
+Expected Phase 17AA workflow snapshot SHA256: d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
+
+## https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+Status: 200
+Content-Type: application/json
+Cache-Control: 
+ETag: "78dc3e2733a818b8c876fc156ad905eb"
+SHA256: d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
+Schema valid: true
+Matches latest snapshot: true
+Matches Phase 17AA expected SHA: true
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-06-03T01:07:51Z
+metadata.status: watch
+metadata.run_id: None
+primary_insight_id: gb-grid-transitions-2026-06-03
+primary_insight_title: UK Grid Expansion and Renewable Integration Risks Amid Policy Shifts
+source_count: 4
+first_source_label: elexon - demand_mw | <private-lake-s3-reference-redacted>
+first_source_label_public_safe: false
+first_source_url: dashboard-data.json
+first_source_url_public_safe: true
+news_source_urls_preserved: true
+
+## https://d28yo76if4k3l1.cloudfront.net/snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json
+Status: 200
+Content-Type: application/json
+Cache-Control: 
+ETag: "78dc3e2733a818b8c876fc156ad905eb"
+SHA256: d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
+Schema valid: true
+Matches latest snapshot: true
+Matches Phase 17AA expected SHA: true
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-06-03T01:07:51Z
+metadata.status: watch
+metadata.run_id: None
+primary_insight_id: gb-grid-transitions-2026-06-03
+primary_insight_title: UK Grid Expansion and Renewable Integration Risks Amid Policy Shifts
+source_count: 4
+first_source_label: elexon - demand_mw | <private-lake-s3-reference-redacted>
+first_source_label_public_safe: false
+first_source_url: dashboard-data.json
+first_source_url_public_safe: true
+news_source_urls_preserved: true
+
+## Latest Versus Immutable
+Latest equals immutable: true
+Latest SHA256: d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
+Immutable SHA256: d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
