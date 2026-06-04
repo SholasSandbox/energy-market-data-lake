@@ -418,6 +418,8 @@ def public_news_articles(news_summary: dict, max_articles: int = 12) -> list[dic
 
 
 PUBLIC_DASHBOARD_SOURCE_URL = "dashboard-data.json"
+PRIVATE_REFERENCE_DATE_RE = re.compile(r"(?:^|[/_-])date=([0-9]{4}-[0-9]{2}-[0-9]{2})(?:/|$)")
+AWS_ACCOUNT_ID_RE = re.compile(r"\b[0-9]{12}\b")
 
 
 def is_public_source_url(value: object) -> bool:
@@ -450,6 +452,36 @@ def dashboard_source_url(
     return fallback
 
 
+def source_label_context(value: object) -> str:
+    """Return a public-safe source label detail without private lake paths."""
+    if not isinstance(value, str):
+        return ""
+
+    text = clean_text(value.strip(), max_length=160)
+    if not text:
+        return ""
+
+    lower_text = text.lower()
+    parsed = urlparse(text)
+    has_private_reference = (
+        parsed.scheme in {"s3", "arn", "file", "local"}
+        or lower_text.startswith("arn:aws:")
+        or lower_text.startswith(("s3://", "local://", "file://"))
+        or "amazonaws.com" in lower_text
+        or "x-amz-" in lower_text
+        or AWS_ACCOUNT_ID_RE.search(text) is not None
+        or "/curated/" in lower_text
+        or "curated/source=" in lower_text
+    )
+    if not has_private_reference:
+        return text
+
+    date_match = PRIVATE_REFERENCE_DATE_RE.search(text)
+    if date_match:
+        return f"curated dashboard evidence for {date_match.group(1)}"
+    return "curated dashboard evidence"
+
+
 def source_label(*parts: object) -> str:
     """Build a compact public label from source reference parts."""
     text = " | ".join(
@@ -468,7 +500,10 @@ def dashboard_sources(ai_insight: dict) -> list[dict]:
         original_reference = reference.get("reference", "")
         sources.append(
             {
-                "label": source_label(f"{source} - {metric}", original_reference),
+                "label": source_label(
+                    f"{source} - {metric}",
+                    source_label_context(original_reference),
+                ),
                 "url": dashboard_source_url(original_reference),
             }
         )

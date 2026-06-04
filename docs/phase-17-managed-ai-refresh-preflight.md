@@ -1150,3 +1150,34 @@ Result:
 
 Recommended next slice: **Phase 17AC managed workflow source-label
 sanitization**, local/preflight first.
+
+## Phase 17AC Managed Workflow Source-Label Sanitization Result
+
+Phase 17AC locally hardened dashboard source-label generation for managed
+workflow snapshots after Phase 17AB found private lake S3 context in a public
+source label.
+
+Evidence:
+
+- `docs/evidence/phase17ac-managed-workflow-source-label-sanitization-20260604.md`
+- `docs/evidence/phase17ac-managed-workflow-source-label-sanitization-candidate-20260604.json`
+- `scripts/check_phase17ac_source_label_sanitization.py`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, IAM
+  mutation, Lambda deploy, Step Functions deploy, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  occurred
+- private S3, ARN, local file, AWS account, Amazon-hosted, and curated lake
+  references are treated as non-public label context
+- private managed workflow source labels collapse to
+  `curated dashboard evidence`
+- date partition context is preserved, for example
+  `curated dashboard evidence for 2026-05-07`
+- source URLs still use the Phase 17R `dashboard-data.json` fallback
+- public news URLs remain preserved
+- the Phase 17AC candidate validates against `dashboard_snapshot_v1`
+
+Recommended next slice: **Phase 17AD managed workflow source-label
+publish/deployment decision**, not apply-by-default.
