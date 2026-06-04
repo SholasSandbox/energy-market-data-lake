@@ -159,6 +159,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AE execution refreshes the deployed Lambda package with the
   source-label sanitizer; schedules remain disabled, no workflow smoke runs,
   and the dashboard snapshot stays unchanged.
+- Phase 17AF records the post-refresh smoke as a go-candidate only: the live
+  Lambda hash matches the sanitizer package, Terraform is no-change, schedules
+  remain disabled, and any workflow run still requires explicit approval.
 
 ### Deferred AWS Extension
 
@@ -773,3 +776,6 @@ These are historical references, not the current delivery path.
 - Phase 17AE execution applies the refreshed package through the normal root
   plan; the live Lambda hash now matches the sanitizer package while schedules,
   Step Functions executions, and dashboard content remain unchanged.
+- Phase 17AF confirms the refreshed package is live and the workflow remains
+  publish-capable; a post-refresh smoke is a separate explicit-approval
+  execution boundary with rollback and source-label checks.
