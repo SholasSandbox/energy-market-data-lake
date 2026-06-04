@@ -2313,9 +2313,76 @@ Decision:
 Next implementation slice:
 
 - Phase 17AE execution substate: controlled Lambda package refresh apply
-- require explicit approval before apply
+- apply only after explicit approval
 - do not run Step Functions, invoke Bedrock, enable schedules, write dashboard
   S3 objects, invalidate CloudFront, or publish a new dashboard snapshot
+
+### Phase 17AE: Controlled Lambda Package Refresh Apply
+
+Goal: refresh the deployed AI orchestration Lambda package so it contains the
+Phase 17AC source-label sanitizer without running the managed workflow or
+mutating the public dashboard.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ae-lambda-package-refresh-apply-summary-20260604.md`
+- `docs/evidence/phase17ae-execution-lambda-package-rebuild-command-20260604.txt`
+- `docs/evidence/phase17ae-execution-lambda-package-rebuild-output-20260604.txt`
+- `docs/evidence/phase17ae-execution-lambda-package-after-rebuild-20260604.txt`
+- `docs/evidence/phase17ae-execution-aws-identity-sanitized-20260604.txt`
+- `docs/evidence/phase17ae-execution-preapply-lambda-config-20260604.json`
+- `docs/evidence/phase17ae-execution-preapply-schedule-state-20260604.json`
+- `docs/evidence/phase17ae-execution-preapply-state-machine-20260604.json`
+- `docs/evidence/phase17ae-execution-preapply-recent-executions-20260604.json`
+- `docs/evidence/phase17ae-execution-preapply-dashboard-http-check-20260604.txt`
+- `docs/evidence/phase17ae-execution-terraform-apply-plan-20260604.txt`
+- `docs/evidence/phase17ae-execution-terraform-apply-20260604.txt`
+- `docs/evidence/phase17ae-execution-postapply-lambda-config-20260604.json`
+- `docs/evidence/phase17ae-execution-postapply-schedule-state-20260604.json`
+- `docs/evidence/phase17ae-execution-postapply-state-machine-20260604.json`
+- `docs/evidence/phase17ae-execution-postapply-recent-executions-20260604.json`
+- `docs/evidence/phase17ae-execution-postapply-dashboard-http-check-20260604.txt`
+- `docs/evidence/phase17ae-execution-postapply-terraform-nochange-20260604.txt`
+
+Result:
+
+- explicit approval was granted for one controlled Lambda package refresh apply
+- no Step Functions execution, Bedrock invocation, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  occurred
+- rebuilt package contains `source_label_context`,
+  `PRIVATE_REFERENCE_DATE_RE`, and `MergeAiInsightManaged`
+- normal root saved plan showed
+  `Plan: 0 to add, 2 to change, 0 to destroy`
+- Terraform apply completed with
+  `Apply complete! Resources: 0 added, 1 changed, 0 destroyed.`
+- Lambda `CodeSha256` changed from
+  `Eeeg+InzSBuAUcrQPN9glMbw3hSWLBPkspiH0Ly2puE=` to
+  `V/PZH22YFXzyYarXT+dglN/JJ0CasL0G1zFqbVFk1Zc=`
+- post-apply Lambda hash matches the rebuilt package hash
+- EventBridge schedule remains `DISABLED`
+- recent executions show no new Step Functions run after the Phase 17AA smoke
+- live dashboard snapshot still returns `200`
+- dashboard snapshot SHA-256 stayed
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- post-apply Terraform plan reports `No changes`
+
+Red-green evidence:
+
+- Red: deployed Lambda was stale relative to the Phase 17AC source-label
+  sanitizer.
+- Green: deployed Lambda now matches the rebuilt sanitizer package.
+- Regression: no workflow smoke, Bedrock invocation, dashboard mutation, or
+  schedule enablement occurred.
+
+Next implementation slice:
+
+- Phase 17AF: managed workflow post-refresh smoke decision
+- decide whether to run one controlled managed workflow smoke with the
+  refreshed package
+- keep any smoke explicit-approval only and keep schedules disabled
 
 ## Suggested Immediate Next Steps
 
@@ -2325,13 +2392,13 @@ Next implementation slice:
 3. Review and merge Phase 17AC managed workflow source-label sanitization.
 4. Review and merge Phase 17AD source-label publish/deployment decision.
 5. Review and merge Phase 17AE Lambda package refresh preflight.
-6. If approved later, run Phase 17AE execution as a controlled Lambda package
-   refresh apply only; keep workflow smoke, schedule enablement, and dashboard
-   publish separate.
-7. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
+6. Review and merge Phase 17AE controlled Lambda package refresh apply.
+7. Plan Phase 17AF as the managed workflow post-refresh smoke decision before
+   any Step Functions execution.
+8. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
-8. Keep the hosted dashboard demo path reproducible from
+9. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
