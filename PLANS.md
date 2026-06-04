@@ -2253,6 +2253,70 @@ Next implementation slice:
 - keep apply, workflow smoke, schedule enablement, S3 writes, CloudFront
   invalidation, and dashboard publish out of scope
 
+### Phase 17AE: Lambda Package Refresh Preflight For Source-Label Sanitizer
+
+Goal: prove the Lambda package refresh boundary for the Phase 17AC
+source-label sanitizer before any deployment, workflow execution, or dashboard
+publish.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ae-lambda-package-refresh-preflight-20260604.md`
+- `docs/evidence/phase17ae-current-lambda-config-sanitized-20260604.json`
+- `docs/evidence/phase17ae-current-schedule-state-20260604.json`
+- `docs/evidence/phase17ae-current-recent-executions-20260604.json`
+- `docs/evidence/phase17ae-lambda-package-before-rebuild-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-rebuild-command-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-rebuild-output-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-after-rebuild-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-refresh-root-plan-preserve-refreshfalse-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-refresh-targeted-plan-refreshfalse-20260604.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, IAM
+  mutation, Lambda deploy, Step Functions deploy, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  was performed
+- deployed Lambda remains active, managed, and on package hash
+  `Eeeg+InzSBuAUcrQPN9glMbw3hSWLBPkspiH0Ly2puE=`
+- pre-rebuild local package matched the deployed Lambda hash and did not
+  contain `source_label_context`
+- rebuilt local package contains `source_label_context`,
+  `PRIVATE_REFERENCE_DATE_RE`, `MergeAiInsightManaged`, and
+  `energy_market/managed_ai.py`
+- rebuilt local package hash is
+  `V/PZH22YFXzyYarXT+dglN/JJ0CasL0G1zFqbVFk1Zc=`
+- EventBridge schedule remains `DISABLED`
+- recent executions still show the Phase 17AA smoke as the latest Step
+  Functions run
+- preserved-variable root no-apply plan shows
+  `Plan: 0 to add, 2 to change, 0 to destroy`
+- root plan updates the AI orchestration Lambda package in place and re-renders
+  the Step Functions IAM policy in place
+- no CloudFront destroy, dashboard bucket-policy destroy, Bedrock IAM policy
+  destroy, or schedule enablement appears in the preserved root plan
+- targeted comparison plan shows
+  `Plan: 0 to add, 1 to change, 0 to destroy` with Terraform's expected
+  `-target` warning
+
+Decision:
+
+- Lambda package refresh is a go-candidate, not automatic execution
+- execution remains blocked until explicit approval in a separate substate
+- preferred execution shape is the normal root saved plan with CloudFront and
+  managed Bedrock IAM preservation variables, not the targeted plan unless a
+  future blocker justifies targeted recovery
+
+Next implementation slice:
+
+- Phase 17AE execution substate: controlled Lambda package refresh apply
+- require explicit approval before apply
+- do not run Step Functions, invoke Bedrock, enable schedules, write dashboard
+  S3 objects, invalidate CloudFront, or publish a new dashboard snapshot
+
 ## Suggested Immediate Next Steps
 
 1. Phase 17AA controlled managed workflow second-smoke execution evidence is
@@ -2260,12 +2324,14 @@ Next implementation slice:
 2. Review and merge Phase 17AB read-only post-smoke demo verification.
 3. Review and merge Phase 17AC managed workflow source-label sanitization.
 4. Review and merge Phase 17AD source-label publish/deployment decision.
-5. Plan Phase 17AE as a Lambda package refresh preflight before any controlled
-   workflow smoke, schedule enablement, or dashboard publish.
-6. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
+5. Review and merge Phase 17AE Lambda package refresh preflight.
+6. If approved later, run Phase 17AE execution as a controlled Lambda package
+   refresh apply only; keep workflow smoke, schedule enablement, and dashboard
+   publish separate.
+7. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
-7. Keep the hosted dashboard demo path reproducible from
+8. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
