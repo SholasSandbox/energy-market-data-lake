@@ -416,3 +416,6 @@ Hiring signal:
   current root Terraform plan is unsafe.
 - Phase 17AE rebuilds the local Lambda package with the sanitizer and captures
   a safe no-destroy plan, but does not apply it or rerun the managed workflow.
+- Phase 17AE execution refreshes the deployed Lambda package with the
+  sanitizer while leaving schedules disabled and the dashboard snapshot
+  unchanged; any workflow smoke remains a separate explicit decision.

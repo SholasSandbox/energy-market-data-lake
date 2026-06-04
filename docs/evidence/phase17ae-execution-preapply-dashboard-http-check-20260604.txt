@@ -1,0 +1,23 @@
+HTTP/2 200 
+content-type: application/json
+content-length: 10154
+date: Thu, 04 Jun 2026 15:04:27 GMT
+last-modified: Wed, 03 Jun 2026 01:07:52 GMT
+etag: "78dc3e2733a818b8c876fc156ad905eb"
+x-amz-server-side-encryption: AES256
+x-amz-version-id: b9PUPbupwFRcRCIHTcMwFhylWsuDCkSv
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Miss from cloudfront
+via: 1.1 835f3c9e7c3bc0e7766edf13dac581de.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: -ycHM7t2CpLb6LO09sJsfKAzFIQ-U_58j5YJZWgR15X-zluTqmXtsg==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+
+sha256:
+d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515  /tmp/phase17ae-pre-dashboard_snapshot_v1.json
