@@ -411,3 +411,6 @@ Hiring signal:
 - Phase 17AC locally fixes managed workflow source-label sanitization; the live
   hosted snapshot remains unchanged until a later explicit deploy/publish
   boundary.
+- Phase 17AD decides not to publish or deploy the source-label fix yet because
+  the deployed Lambda package is still stale relative to the sanitizer and the
+  current root Terraform plan is unsafe.
