@@ -1,0 +1,34 @@
+{
+  "executions": [
+    {
+      "name": "phase17aa-managed-workflow-second-smoke-20260603T010742Z",
+      "status": "SUCCEEDED",
+      "startDate": "2026-06-03T02:07:43.134000+01:00",
+      "stopDate": "2026-06-03T02:07:52.067000+01:00"
+    },
+    {
+      "name": "phase17y-managed-workflow-smoke-20260530T205941Z",
+      "status": "FAILED",
+      "startDate": "2026-05-30T21:59:42.334000+01:00",
+      "stopDate": "2026-05-30T21:59:47.343000+01:00"
+    },
+    {
+      "name": "phase8-proof-final-20260511T114812Z",
+      "status": "SUCCEEDED",
+      "startDate": "2026-05-11T12:48:13.382000+01:00",
+      "stopDate": "2026-05-11T12:48:20.254000+01:00"
+    },
+    {
+      "name": "phase8-forced-failure-20260511T114347Z",
+      "status": "FAILED",
+      "startDate": "2026-05-11T12:43:47.432000+01:00",
+      "stopDate": "2026-05-11T12:43:47.980000+01:00"
+    },
+    {
+      "name": "phase8-proof-20260511T114233Z",
+      "status": "SUCCEEDED",
+      "startDate": "2026-05-11T12:42:34.500000+01:00",
+      "stopDate": "2026-05-11T12:42:40.150000+01:00"
+    }
+  ]
+}

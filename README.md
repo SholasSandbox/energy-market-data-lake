@@ -150,6 +150,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AC locally hardens managed workflow source-label generation so
   private lake references collapse to public-safe dashboard evidence labels;
   deployment/publish remains a separate decision boundary.
+- Phase 17AD keeps source-label publish/deployment decision-only: the deployed
+  Lambda package does not yet contain the sanitizer, and the current root plan
+  is unsafe because it includes unrelated CloudFront and Bedrock IAM removal.
 
 ### Deferred AWS Extension
 
@@ -701,7 +704,10 @@ These are historical references, not the current delivery path.
 39. Treat Phase 17AC as local source-label sanitization proof; deploying that
     fix into Lambda, running another workflow smoke, or publishing a new
     snapshot remains a later explicit decision.
-40. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+40. Treat Phase 17AD as a no-go decision for immediate publish/deploy; the
+    next safe boundary is Lambda package refresh preflight with CloudFront and
+    managed Bedrock IAM preserved.
+41. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -749,3 +755,6 @@ These are historical references, not the current delivery path.
 - Phase 17AC locally proves managed workflow source-label sanitization:
   private lake references no longer appear in dashboard source labels, while
   date context and the safe `dashboard-data.json` URL are retained.
+- Phase 17AD confirms the local sanitizer is not yet in the deployed Lambda
+  package and blocks immediate publish/deploy until a package-refresh preflight
+  proves a safe Terraform plan.

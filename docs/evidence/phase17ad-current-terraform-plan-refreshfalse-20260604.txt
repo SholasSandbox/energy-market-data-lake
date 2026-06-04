@@ -1,0 +1,457 @@
+data.archive_file.ingest_lambda: Reading...
+data.archive_file.ingest_lambda: Read complete after 0s [id=756f878a4ea8ff611679ef9d1119e38e3d90d3aa]
+data.aws_iam_policy_document.step_functions_assume_role: Reading...
+data.aws_partition.current: Reading...
+data.aws_iam_policy_document.glue_s3: Reading...
+data.aws_iam_policy_document.eventbridge_step_functions_assume_role: Reading...
+data.aws_iam_policy_document.lambda_assume_role: Reading...
+data.aws_partition.current: Read complete after 0s [id=aws]
+data.aws_iam_policy_document.glue_s3: Read complete after 0s [id=1490090416]
+data.aws_iam_policy_document.lambda_assume_role: Read complete after 0s [id=2690255455]
+data.aws_iam_policy_document.eventbridge_step_functions_assume_role: Read complete after 0s [id=3959961479]
+data.aws_iam_policy_document.step_functions_assume_role: Read complete after 0s [id=4022981484]
+data.aws_iam_policy_document.glue_assume_role: Reading...
+data.aws_iam_policy_document.ai_orchestration_lambda_s3[0]: Reading...
+data.aws_iam_policy_document.lambda_s3: Reading...
+data.aws_iam_policy_document.glue_assume_role: Read complete after 0s [id=2681768870]
+data.aws_iam_policy_document.lambda_s3: Read complete after 0s [id=370903980]
+data.aws_iam_policy_document.ai_orchestration_lambda_s3[0]: Read complete after 0s [id=3665975595]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+  - destroy
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # data.aws_iam_policy_document.ai_orchestration_eventbridge[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_iam_policy_document" "ai_orchestration_eventbridge" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "states:StartExecution",
+            ]
+          + resources = [
+              + "arn:aws:states:eu-west-2:<aws-account-id>:stateMachine:energy-market-ai-insight-orchestration",
+            ]
+        }
+    }
+
+  # data.aws_iam_policy_document.ai_orchestration_state_machine[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_iam_policy_document" "ai_orchestration_state_machine" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "lambda:InvokeFunction",
+            ]
+          + resources = [
+              + "arn:aws:lambda:eu-west-2:<aws-account-id>:function:energy-market-news-ai-orchestration",
+              + "arn:aws:lambda:eu-west-2:<aws-account-id>:function:energy-market-news-ai-orchestration:*",
+            ]
+        }
+      + statement {
+          + actions   = [
+              + "sns:Publish",
+            ]
+          + resources = [
+              + "arn:aws:sns:eu-west-2:<aws-account-id>:energy-market-ai-orchestration-failures",
+            ]
+        }
+    }
+
+  # aws_cloudfront_distribution.dashboard_static[0] will be destroyed
+  # (because index [0] is out of range for count)
+  - resource "aws_cloudfront_distribution" "dashboard_static" {
+      - arn                             = "arn:aws:cloudfront::<aws-account-id>:distribution/E2H9BGRGYAHKPN" -> null
+      - caller_reference                = "terraform-20260521144139005000000001" -> null
+      - comment                         = "energy-market public-safe dashboard delivery" -> null
+      - default_root_object             = "index.html" -> null
+      - domain_name                     = "d28yo76if4k3l1.cloudfront.net" -> null
+      - enabled                         = true -> null
+      - etag                            = "E23ZP02F085DFQ" -> null
+      - hosted_zone_id                  = "Z2FDTNDATAQYW2" -> null
+      - http_version                    = "http2" -> null
+      - id                              = "E2H9BGRGYAHKPN" -> null
+      - in_progress_validation_batches  = 0 -> null
+      - is_ipv6_enabled                 = true -> null
+      - last_modified_time              = "2026-05-21 14:41:39.192 +0000 UTC" -> null
+      - price_class                     = "PriceClass_100" -> null
+      - retain_on_delete                = false -> null
+      - staging                         = false -> null
+      - status                          = "Deployed" -> null
+      - tags                            = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Phase"       = "phase-12-dashboard-delivery"
+          - "Project"     = "energy-market"
+          - "Workload"    = "energy-market-data-lake"
+        } -> null
+      - tags_all                        = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Phase"       = "phase-12-dashboard-delivery"
+          - "Project"     = "energy-market"
+          - "Workload"    = "energy-market-data-lake"
+        } -> null
+      - trusted_key_groups              = [
+          - {
+              - enabled = false
+              - items   = []
+            },
+        ] -> null
+      - trusted_signers                 = [
+          - {
+              - enabled = false
+              - items   = []
+            },
+        ] -> null
+      - wait_for_deployment             = true -> null
+        # (2 unchanged attributes hidden)
+
+      - default_cache_behavior {
+          - allowed_methods            = [
+              - "GET",
+              - "HEAD",
+              - "OPTIONS",
+            ] -> null
+          - cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6" -> null
+          - cached_methods             = [
+              - "GET",
+              - "HEAD",
+            ] -> null
+          - compress                   = true -> null
+          - default_ttl                = 0 -> null
+          - max_ttl                    = 0 -> null
+          - min_ttl                    = 0 -> null
+          - response_headers_policy_id = "7c4e1883-9862-4feb-9504-a01908d6d6f6" -> null
+          - smooth_streaming           = false -> null
+          - target_origin_id           = "energy-market-dashboard-static-origin" -> null
+          - trusted_key_groups         = [] -> null
+          - trusted_signers            = [] -> null
+          - viewer_protocol_policy     = "redirect-to-https" -> null
+            # (3 unchanged attributes hidden)
+
+          - grpc_config {
+              - enabled = false -> null
+            }
+        }
+
+      - origin {
+          - connection_attempts      = 3 -> null
+          - connection_timeout       = 10 -> null
+          - domain_name              = "energy-market-dashboard-public-<aws-account-id>-20260511.s3.eu-west-2.amazonaws.com" -> null
+          - origin_access_control_id = "E3TCE5PD0QBXWX" -> null
+          - origin_id                = "energy-market-dashboard-static-origin" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - restrictions {
+          - geo_restriction {
+              - locations        = [] -> null
+              - restriction_type = "none" -> null
+            }
+        }
+
+      - viewer_certificate {
+          - cloudfront_default_certificate = true -> null
+          - minimum_protocol_version       = "TLSv1" -> null
+            # (3 unchanged attributes hidden)
+        }
+    }
+
+  # aws_cloudfront_origin_access_control.dashboard_static[0] will be destroyed
+  # (because index [0] is out of range for count)
+  - resource "aws_cloudfront_origin_access_control" "dashboard_static" {
+      - arn                               = "arn:aws:cloudfront::<aws-account-id>:origin-access-control/E3TCE5PD0QBXWX" -> null
+      - description                       = "OAC for private S3 dashboard delivery" -> null
+      - etag                              = "ETVPDKIKX0DER" -> null
+      - id                                = "E3TCE5PD0QBXWX" -> null
+      - name                              = "energy-market-dashboard-static-oac" -> null
+      - origin_access_control_origin_type = "s3" -> null
+      - signing_behavior                  = "always" -> null
+      - signing_protocol                  = "sigv4" -> null
+    }
+
+  # aws_cloudfront_response_headers_policy.dashboard_static[0] will be destroyed
+  # (because index [0] is out of range for count)
+  - resource "aws_cloudfront_response_headers_policy" "dashboard_static" {
+      - arn     = "arn:aws:cloudfront::<aws-account-id>:response-headers-policy/7c4e1883-9862-4feb-9504-a01908d6d6f6" -> null
+      - comment = "Security headers for public-safe dashboard delivery" -> null
+      - etag    = "E23ZP02F085DFQ" -> null
+      - id      = "7c4e1883-9862-4feb-9504-a01908d6d6f6" -> null
+      - name    = "energy-market-dashboard-static-security-headers" -> null
+
+      - security_headers_config {
+          - content_type_options {
+              - override = true -> null
+            }
+          - frame_options {
+              - frame_option = "DENY" -> null
+              - override     = true -> null
+            }
+          - referrer_policy {
+              - override        = true -> null
+              - referrer_policy = "strict-origin-when-cross-origin" -> null
+            }
+          - strict_transport_security {
+              - access_control_max_age_sec = 31536000 -> null
+              - include_subdomains         = true -> null
+              - override                   = true -> null
+              - preload                    = false -> null
+            }
+          - xss_protection {
+              - mode_block = true -> null
+              - override   = true -> null
+              - protection = true -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+    }
+
+  # aws_iam_role_policy.ai_orchestration_eventbridge[0] will be updated in-place
+  ~ resource "aws_iam_role_policy" "ai_orchestration_eventbridge" {
+        id          = "energy-market-ai-orchestration-events-role:energy-market-ai-orchestration-events-policy"
+        name        = "energy-market-ai-orchestration-events-policy"
+      ~ policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "states:StartExecution"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:states:eu-west-2:<aws-account-id>:stateMachine:energy-market-ai-insight-orchestration"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+        # (2 unchanged attributes hidden)
+    }
+
+  # aws_iam_role_policy.ai_orchestration_lambda_bedrock[0] will be destroyed
+  # (because index [0] is out of range for count)
+  - resource "aws_iam_role_policy" "ai_orchestration_lambda_bedrock" {
+      - id          = "energy-market-ai-orchestration-lambda-role:energy-market-ai-orchestration-lambda-bedrock-policy" -> null
+      - name        = "energy-market-ai-orchestration-lambda-bedrock-policy" -> null
+      - policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "bedrock:InvokeModel"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:bedrock:eu-west-2::foundation-model/mistral.ministral-3-8b-instruct"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - role        = "energy-market-ai-orchestration-lambda-role" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_iam_role_policy.ai_orchestration_state_machine[0] will be updated in-place
+  ~ resource "aws_iam_role_policy" "ai_orchestration_state_machine" {
+        id          = "energy-market-ai-orchestration-sfn-role:energy-market-ai-orchestration-sfn-policy"
+        name        = "energy-market-ai-orchestration-sfn-policy"
+      ~ policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "lambda:InvokeFunction"
+                      - Effect   = "Allow"
+                      - Resource = [
+                          - "arn:aws:lambda:eu-west-2:<aws-account-id>:function:energy-market-news-ai-orchestration:*",
+                          - "arn:aws:lambda:eu-west-2:<aws-account-id>:function:energy-market-news-ai-orchestration",
+                        ]
+                    },
+                  - {
+                      - Action   = "sns:Publish"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:sns:eu-west-2:<aws-account-id>:energy-market-ai-orchestration-failures"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+        # (2 unchanged attributes hidden)
+    }
+
+  # aws_lambda_function.ai_orchestration[0] will be updated in-place
+  ~ resource "aws_lambda_function" "ai_orchestration" {
+        id                             = "energy-market-news-ai-orchestration"
+        tags                           = {
+            "Environment" = "dev"
+            "ManagedBy"   = "terraform"
+            "Phase"       = "phase-8-ai-orchestration"
+            "Project"     = "energy-market"
+            "Workload"    = "energy-market-data-lake"
+        }
+        # (29 unchanged attributes hidden)
+
+      ~ environment {
+          ~ variables = {
+              ~ "AI_ORCHESTRATION_MODE"  = "managed" -> "deterministic"
+              - "BEDROCK_MAX_TOKENS"     = "1600" -> null
+              - "BEDROCK_MODEL_ID"       = "mistral.ministral-3-8b-instruct" -> null
+              - "BEDROCK_PROVIDER"       = "mistral" -> null
+              - "BEDROCK_TEMPERATURE"    = "0.2" -> null
+                # (9 unchanged elements hidden)
+            }
+        }
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # aws_s3_bucket_policy.dashboard_static_cloudfront[0] will be destroyed
+  # (because index [0] is out of range for count)
+  - resource "aws_s3_bucket_policy" "dashboard_static_cloudfront" {
+      - bucket = "energy-market-dashboard-public-<aws-account-id>-20260511" -> null
+      - id     = "energy-market-dashboard-public-<aws-account-id>-20260511" -> null
+      - policy = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "s3:GetObject"
+                      - Condition = {
+                          - StringEquals = {
+                              - "AWS:SourceArn" = "arn:aws:cloudfront::<aws-account-id>:distribution/E2H9BGRGYAHKPN"
+                            }
+                        }
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "cloudfront.amazonaws.com"
+                        }
+                      - Resource  = "arn:aws:s3:::energy-market-dashboard-public-<aws-account-id>-20260511/*"
+                      - Sid       = "AllowCloudFrontRead"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+    }
+
+  # aws_sfn_state_machine.ai_orchestration[0] will be updated in-place
+  ~ resource "aws_sfn_state_machine" "ai_orchestration" {
+      ~ definition                = jsonencode(
+          ~ {
+              ~ Comment = "Managed Phase 17 AI insight orchestration with validation gates, deterministic rollback, and failure quarantine." -> "Deterministic Phase 8 AI insight orchestration with validation gates and failure quarantine."
+              ~ States  = {
+                  ~ CreateAiInputBundle         = {
+                      ~ Next       = "MergeAiInsightManaged" -> "MergeAiInsightDeterministic"
+                        # (6 unchanged attributes hidden)
+                    }
+                  + MergeAiInsightDeterministic = {
+                      + Catch      = [
+                          + {
+                              + ErrorEquals = [
+                                  + "States.ALL",
+                                ]
+                              + Next        = "WorkflowFailed"
+                              + ResultPath  = "$.error"
+                            },
+                        ]
+                      + Next       = "PublishDashboardSnapshot"
+                      + OutputPath = "$.Payload"
+                      + Parameters = {
+                          + FunctionName = "arn:aws:lambda:eu-west-2:<aws-account-id>:function:energy-market-news-ai-orchestration"
+                          + Payload      = {
+                              + action               = "MergeAiInsightDeterministic"
+                              + "artifacts.$"        = "$.artifacts"
+                              + "dashboard_bucket.$" = "$.dashboard_bucket"
+                              + "lake_bucket.$"      = "$.lake_bucket"
+                              + "run_id.$"           = "$.run_id"
+                              + "summary.$"          = "$.summary"
+                            }
+                        }
+                      + Resource   = "arn:aws:states:::lambda:invoke"
+                      + Retry      = [
+                          + {
+                              + BackoffRate     = 2
+                              + ErrorEquals     = [
+                                  + "Lambda.ServiceException",
+                                  + "Lambda.AWSLambdaException",
+                                  + "Lambda.SdkClientException",
+                                  + "Lambda.TooManyRequestsException",
+                                ]
+                              + IntervalSeconds = 2
+                              + MaxAttempts     = 2
+                            },
+                        ]
+                      + Type       = "Task"
+                    }
+                  - MergeAiInsightManaged       = {
+                      - Catch      = [
+                          - {
+                              - ErrorEquals = [
+                                  - "States.ALL",
+                                ]
+                              - Next        = "WorkflowFailed"
+                              - ResultPath  = "$.error"
+                            },
+                        ]
+                      - Next       = "PublishDashboardSnapshot"
+                      - OutputPath = "$.Payload"
+                      - Parameters = {
+                          - FunctionName = "arn:aws:lambda:eu-west-2:<aws-account-id>:function:energy-market-news-ai-orchestration"
+                          - Payload      = {
+                              - action               = "MergeAiInsightManaged"
+                              - "artifacts.$"        = "$.artifacts"
+                              - "dashboard_bucket.$" = "$.dashboard_bucket"
+                              - "lake_bucket.$"      = "$.lake_bucket"
+                              - "run_id.$"           = "$.run_id"
+                              - "summary.$"          = "$.summary"
+                            }
+                        }
+                      - Resource   = "arn:aws:states:::lambda:invoke"
+                      - Retry      = [
+                          - {
+                              - BackoffRate     = 2
+                              - ErrorEquals     = [
+                                  - "Lambda.ServiceException",
+                                  - "Lambda.AWSLambdaException",
+                                  - "Lambda.SdkClientException",
+                                  - "Lambda.TooManyRequestsException",
+                                ]
+                              - IntervalSeconds = 2
+                              - MaxAttempts     = 2
+                            },
+                        ]
+                      - Type       = "Task"
+                    }
+                    # (6 unchanged attributes hidden)
+                }
+                # (1 unchanged attribute hidden)
+            }
+        )
+        id                        = "arn:aws:states:eu-west-2:<aws-account-id>:stateMachine:energy-market-ai-insight-orchestration"
+        name                      = "energy-market-ai-insight-orchestration"
+        tags                      = {
+            "Environment" = "dev"
+            "ManagedBy"   = "terraform"
+            "Phase"       = "phase-8-ai-orchestration"
+            "Project"     = "energy-market"
+            "Workload"    = "energy-market-data-lake"
+        }
+        # (11 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+Plan: 0 to add, 4 to change, 5 to destroy.
+
+Changes to Outputs:
+  - dashboard_cloudfront_distribution_id  = "E2H9BGRGYAHKPN" -> null
+  - dashboard_cloudfront_domain_name      = "d28yo76if4k3l1.cloudfront.net" -> null
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
