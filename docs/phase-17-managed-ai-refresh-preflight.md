@@ -1272,3 +1272,48 @@ Decision:
 
 Recommended next slice: **Phase 17AE execution substate: controlled Lambda
 package refresh apply**, only after explicit approval.
+
+## Phase 17AE Controlled Lambda Package Refresh Apply Result
+
+Phase 17AE execution refreshed the deployed AI orchestration Lambda package
+after explicit approval to use the normal root Terraform plan.
+
+Evidence:
+
+- `docs/evidence/phase17ae-lambda-package-refresh-apply-summary-20260604.md`
+- `docs/evidence/phase17ae-execution-lambda-package-after-rebuild-20260604.txt`
+- `docs/evidence/phase17ae-execution-preapply-lambda-config-20260604.json`
+- `docs/evidence/phase17ae-execution-preapply-schedule-state-20260604.json`
+- `docs/evidence/phase17ae-execution-preapply-recent-executions-20260604.json`
+- `docs/evidence/phase17ae-execution-preapply-dashboard-http-check-20260604.txt`
+- `docs/evidence/phase17ae-execution-terraform-apply-plan-20260604.txt`
+- `docs/evidence/phase17ae-execution-terraform-apply-20260604.txt`
+- `docs/evidence/phase17ae-execution-postapply-lambda-config-20260604.json`
+- `docs/evidence/phase17ae-execution-postapply-schedule-state-20260604.json`
+- `docs/evidence/phase17ae-execution-postapply-recent-executions-20260604.json`
+- `docs/evidence/phase17ae-execution-postapply-dashboard-http-check-20260604.txt`
+- `docs/evidence/phase17ae-execution-postapply-terraform-nochange-20260604.txt`
+
+Result:
+
+- no Step Functions execution, Bedrock invocation, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  occurred
+- rebuilt package contains `source_label_context`,
+  `PRIVATE_REFERENCE_DATE_RE`, and `MergeAiInsightManaged`
+- normal root saved plan showed
+  `Plan: 0 to add, 2 to change, 0 to destroy`
+- Terraform apply completed with
+  `Apply complete! Resources: 0 added, 1 changed, 0 destroyed.`
+- Lambda `CodeSha256` changed from
+  `Eeeg+InzSBuAUcrQPN9glMbw3hSWLBPkspiH0Ly2puE=` to
+  `V/PZH22YFXzyYarXT+dglN/JJ0CasL0G1zFqbVFk1Zc=`
+- EventBridge schedule remains `DISABLED`
+- recent executions show no new Step Functions run after the Phase 17AA smoke
+- live dashboard snapshot still returns `200`
+- dashboard snapshot SHA-256 remained
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- post-apply Terraform plan reports `No changes`
+
+Recommended next slice: **Phase 17AF managed workflow post-refresh smoke
+decision**, not automatic execution.

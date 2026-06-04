@@ -1,0 +1,5 @@
+{
+  "Name": "energy-market-ai-orchestration-schedule",
+  "State": "DISABLED",
+  "ScheduleExpression": "cron(30 7 * * ? *)"
+}

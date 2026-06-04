@@ -1,0 +1,26 @@
+aws_lambda_function.ai_orchestration[0]: Modifying... [id=energy-market-news-ai-orchestration]
+aws_lambda_function.ai_orchestration[0]: Modifications complete after 6s [id=energy-market-news-ai-orchestration]
+data.aws_iam_policy_document.ai_orchestration_state_machine[0]: Reading...
+data.aws_iam_policy_document.ai_orchestration_state_machine[0]: Read complete after 0s [id=4066223000]
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+ai_orchestration_failure_topic_arn = "arn:aws:sns:eu-west-2:<aws-account-id>:energy-market-ai-orchestration-failures"
+ai_orchestration_lambda_function_name = "energy-market-news-ai-orchestration"
+ai_orchestration_state_machine_arn = "arn:aws:states:eu-west-2:<aws-account-id>:stateMachine:energy-market-ai-insight-orchestration"
+athena_output_location = "s3://energy-market-lake-<aws-account-id>-20260405/athena-results/"
+athena_workgroup_name = "energy-market-workgroup"
+aws_region = "eu-west-2"
+curated_crawler_name = "energy-market-curated-crawler"
+dashboard_bucket_name = "energy-market-dashboard-public-<aws-account-id>-20260511"
+dashboard_cloudfront_distribution_id = "E2H9BGRGYAHKPN"
+dashboard_cloudfront_domain_name = "d28yo76if4k3l1.cloudfront.net"
+data_bucket_name = "energy-market-lake-<aws-account-id>-20260405"
+glue_database_name = "energy_market_lake"
+glue_job_name = "energy-market-etl-raw-to-parquet"
+glue_role_name = "energy-market-glue-role"
+lambda_function_name = "energy-market-elexon-ingest"
+lambda_role_name = "energy-market-lambda-role"
+raw_crawler_name = "energy-market-raw-crawler"

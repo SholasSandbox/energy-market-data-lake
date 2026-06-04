@@ -156,6 +156,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AE rebuilds the local Lambda package with the source-label sanitizer
   and captures a safe no-destroy root plan; package refresh remains explicit
   approval only.
+- Phase 17AE execution refreshes the deployed Lambda package with the
+  source-label sanitizer; schedules remain disabled, no workflow smoke runs,
+  and the dashboard snapshot stays unchanged.
 
 ### Deferred AWS Extension
 
@@ -767,3 +770,6 @@ These are historical references, not the current delivery path.
 - Phase 17AE rebuilds the local package with `source_label_context` and
   captures a preserved root plan with no destroys; applying that package remains
   a separate controlled execution boundary.
+- Phase 17AE execution applies the refreshed package through the normal root
+  plan; the live Lambda hash now matches the sanitizer package while schedules,
+  Step Functions executions, and dashboard content remain unchanged.
