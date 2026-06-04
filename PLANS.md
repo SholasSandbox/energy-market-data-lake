@@ -2147,17 +2147,68 @@ Next implementation slice:
 - sanitize managed workflow source labels before any schedule enablement,
   repeated managed workflow run, or dashboard publish
 
+### Phase 17AC: Managed Workflow Source-Label Sanitization
+
+Goal: harden managed workflow dashboard source-label generation locally after
+Phase 17AB found private lake S3 context in a public source label.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ac-managed-workflow-source-label-sanitization-20260604.md`
+- `docs/evidence/phase17ac-managed-workflow-source-label-sanitization-candidate-20260604.json`
+- `scripts/check_phase17ac_source_label_sanitization.py`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, IAM
+  mutation, Lambda deploy, Step Functions deploy, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  was performed
+- private S3, ARN, local file, AWS account, Amazon-hosted, and curated lake
+  references are treated as non-public label context
+- private managed workflow source labels now collapse to
+  `curated dashboard evidence`
+- partition date context such as `date=2026-05-07` is preserved as
+  `curated dashboard evidence for 2026-05-07`
+- existing public curated labels remain unchanged
+- private/non-public source URLs still use the Phase 17R
+  `dashboard-data.json` fallback
+- public news URLs remain preserved
+- the Phase 17AC candidate validates against `dashboard_snapshot_v1`
+
+Red-green evidence:
+
+- Red: Phase 17AB proved the hosted workflow-published snapshot was healthy but
+  found source-label public-surface drift.
+- Green: Phase 17AC proves locally that private lake references no longer
+  appear in dashboard source labels, while useful date context and the safe
+  dashboard source URL remain.
+- Regression: Phase 17R source-link hardening, managed AI adapter proof, and
+  contract validation remain green.
+
+Next implementation slice:
+
+- Phase 17AD: managed workflow source-label publish/deployment decision
+- keep the next slice decision/preflight-only unless explicitly approved
+- decide whether to deploy the sanitizer into the managed workflow Lambda
+  package and whether any controlled workflow smoke or dashboard publish is
+  justified
+
 ## Suggested Immediate Next Steps
 
 1. Phase 17AA controlled managed workflow second-smoke execution evidence is
    merged.
 2. Review and merge Phase 17AB read-only post-smoke demo verification.
-3. Plan Phase 17AC as managed workflow source-label sanitization before any
-   schedule enablement, repeated workflow run, or dashboard publish.
-4. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
+3. Review and merge Phase 17AC managed workflow source-label sanitization.
+4. Plan Phase 17AD as a source-label publish/deployment decision before any
+   Lambda package refresh, controlled workflow smoke, schedule enablement, or
+   dashboard publish.
+5. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
-5. Keep the hosted dashboard demo path reproducible from
+6. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist

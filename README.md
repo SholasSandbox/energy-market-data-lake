@@ -147,6 +147,9 @@ Region: **eu-west-2 (London)**
   workflow smoke; latest and immutable snapshot paths are healthy, but managed
   workflow source labels need sanitization before the demo surface is fully
   hardened.
+- Phase 17AC locally hardens managed workflow source-label generation so
+  private lake references collapse to public-safe dashboard evidence labels;
+  deployment/publish remains a separate decision boundary.
 
 ### Deferred AWS Extension
 
@@ -695,7 +698,10 @@ These are historical references, not the current delivery path.
     workflow snapshot publish; it found source-label sanitization drift that
     must be fixed before any repeated managed workflow run or schedule
     enablement.
-39. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+39. Treat Phase 17AC as local source-label sanitization proof; deploying that
+    fix into Lambda, running another workflow smoke, or publishing a new
+    snapshot remains a later explicit decision.
+40. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -740,3 +746,6 @@ These are historical references, not the current delivery path.
   snapshot, immutable workflow snapshot, schema validity, recent execution
   state, and schedule-disabled posture; they also find that managed workflow
   source labels still need public-surface sanitization.
+- Phase 17AC locally proves managed workflow source-label sanitization:
+  private lake references no longer appear in dashboard source labels, while
+  date context and the safe `dashboard-data.json` URL are retained.

@@ -408,3 +408,6 @@ Hiring signal:
   17AA snapshot paths remain healthy after publication, but the managed
   workflow snapshot still needs source-label sanitization before it should be
   treated as fully demo-polished.
+- Phase 17AC locally fixes managed workflow source-label sanitization; the live
+  hosted snapshot remains unchanged until a later explicit deploy/publish
+  boundary.
