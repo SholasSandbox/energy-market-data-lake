@@ -1,0 +1,20 @@
+{
+  "Comment": "Managed Phase 17 AI insight orchestration with validation gates, deterministic rollback, and failure quarantine.",
+  "StartAt": "InitializeRun",
+  "StateNames": [
+    "CreateAiInputBundle",
+    "ExportEnergyInput",
+    "FailExecution",
+    "IngestNewsSummary",
+    "InitializeRun",
+    "MergeAiInsightManaged",
+    "PublishDashboardSnapshot",
+    "WorkflowFailed"
+  ],
+  "CreateAiInputBundleNext": "MergeAiInsightManaged",
+  "MergeManagedStatePresent": true,
+  "MergeAiInsightManagedNext": "PublishDashboardSnapshot",
+  "PublishDashboardSnapshotEnd": true,
+  "WorkflowFailedStatePresent": true,
+  "FailExecutionStatePresent": true
+}

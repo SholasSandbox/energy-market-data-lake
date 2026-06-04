@@ -419,3 +419,6 @@ Hiring signal:
 - Phase 17AE execution refreshes the deployed Lambda package with the
   sanitizer while leaving schedules disabled and the dashboard snapshot
   unchanged; any workflow smoke remains a separate explicit decision.
+- Phase 17AF records that a post-refresh managed workflow smoke is a
+  go-candidate only; no smoke has run after the package refresh, and any run
+  must preserve rollback and source-label evidence.
