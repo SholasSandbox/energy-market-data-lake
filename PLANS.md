@@ -2384,6 +2384,66 @@ Next implementation slice:
   refreshed package
 - keep any smoke explicit-approval only and keep schedules disabled
 
+### Phase 17AF: Managed Workflow Post-Refresh Smoke Decision
+
+Goal: decide whether one controlled managed workflow smoke is justified after
+Phase 17AE refreshed the deployed Lambda package with the Phase 17AC
+source-label sanitizer.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17af-managed-workflow-post-refresh-smoke-decision-20260604.md`
+- `docs/evidence/phase17af-smoke-decision-aws-identity-sanitized-20260604.txt`
+- `docs/evidence/phase17af-smoke-decision-lambda-config-20260604.json`
+- `docs/evidence/phase17af-smoke-decision-state-machine-20260604.json`
+- `docs/evidence/phase17af-smoke-decision-state-machine-routing-20260604.json`
+- `docs/evidence/phase17af-smoke-decision-recent-executions-20260604.json`
+- `docs/evidence/phase17af-smoke-decision-schedule-state-20260604.json`
+- `docs/evidence/phase17af-smoke-decision-dashboard-http-check-20260604.txt`
+- `docs/evidence/phase17af-smoke-decision-current-run-id-20260604.txt`
+- `docs/evidence/phase17af-smoke-decision-latest-snapshot-head-20260604.json`
+- `docs/evidence/phase17af-smoke-decision-immutable-snapshot-head-20260604.json`
+- `docs/evidence/phase17af-smoke-decision-terraform-nochange-20260604.txt`
+
+Result:
+
+- no Step Functions execution, Bedrock invocation, Terraform apply, IAM
+  mutation, Lambda deploy, Step Functions deploy, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  occurred
+- Lambda remains active, managed, and on source-label sanitizer package hash
+  `V/PZH22YFXzyYarXT+dglN/JJ0CasL0G1zFqbVFk1Zc=`
+- state-machine routing still sends `CreateAiInputBundle` to
+  `MergeAiInsightManaged`, then to `PublishDashboardSnapshot`
+- the workflow remains publish-capable if manually run
+- EventBridge schedule remains `DISABLED`
+- recent executions show no new Step Functions run after the Phase 17AA smoke
+- live dashboard snapshot returns `200`
+- dashboard snapshot SHA-256 remains
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- immutable Phase 17AA managed workflow snapshot remains available at
+  `snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json`
+- Terraform reports `No changes`
+
+Decision:
+
+- Phase 17AF is a go-candidate for one controlled managed workflow
+  post-refresh smoke, not automatic execution
+- execution remains blocked until explicit approval in a separate execution
+  substate
+- if approved, run one manual Step Functions execution only, no retry, no
+  Terraform apply, schedules disabled, rollback metadata captured first, and
+  source-label/dashboard impact verified after the run
+
+Next implementation slice:
+
+- Phase 17AG: controlled managed workflow post-refresh smoke execution
+- require explicit approval before execution
+- preserve one-run discipline, rollback-first evidence, source-label
+  verification, and schedule-disabled proof
+
 ## Suggested Immediate Next Steps
 
 1. Phase 17AA controlled managed workflow second-smoke execution evidence is
@@ -2393,12 +2453,14 @@ Next implementation slice:
 4. Review and merge Phase 17AD source-label publish/deployment decision.
 5. Review and merge Phase 17AE Lambda package refresh preflight.
 6. Review and merge Phase 17AE controlled Lambda package refresh apply.
-7. Plan Phase 17AF as the managed workflow post-refresh smoke decision before
-   any Step Functions execution.
-8. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
+7. Review and merge Phase 17AF managed workflow post-refresh smoke decision.
+8. If explicitly approved later, run Phase 17AG as one controlled managed
+   workflow post-refresh smoke; keep schedules disabled and capture rollback
+   plus source-label evidence.
+9. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
-9. Keep the hosted dashboard demo path reproducible from
+10. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
