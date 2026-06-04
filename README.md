@@ -153,6 +153,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AD keeps source-label publish/deployment decision-only: the deployed
   Lambda package does not yet contain the sanitizer, and the current root plan
   is unsafe because it includes unrelated CloudFront and Bedrock IAM removal.
+- Phase 17AE rebuilds the local Lambda package with the source-label sanitizer
+  and captures a safe no-destroy root plan; package refresh remains explicit
+  approval only.
 
 ### Deferred AWS Extension
 
@@ -707,7 +710,10 @@ These are historical references, not the current delivery path.
 40. Treat Phase 17AD as a no-go decision for immediate publish/deploy; the
     next safe boundary is Lambda package refresh preflight with CloudFront and
     managed Bedrock IAM preserved.
-41. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+41. Treat Phase 17AE as Lambda package refresh preflight only; it proves the
+    rebuilt package and safe plan but does not authorize automatic apply,
+    workflow smoke, schedule enablement, or dashboard publish.
+42. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -758,3 +764,6 @@ These are historical references, not the current delivery path.
 - Phase 17AD confirms the local sanitizer is not yet in the deployed Lambda
   package and blocks immediate publish/deploy until a package-refresh preflight
   proves a safe Terraform plan.
+- Phase 17AE rebuilds the local package with `source_label_context` and
+  captures a preserved root plan with no destroys; applying that package remains
+  a separate controlled execution boundary.
