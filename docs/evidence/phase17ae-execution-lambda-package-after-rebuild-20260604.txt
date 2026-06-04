@@ -1,0 +1,9 @@
+zip_path=infra/terraform/lakehouse/.terraform/build/news_ai_orchestration.zip
+zip_size_bytes=730597
+zip_sha256=57f3d91f6d98157cf261aad74fe76094dfc927409ab0bd06d7316a6d5164d597
+zip_base64sha256=V/PZH22YFXzyYarXT+dglN/JJ0CasL0G1zFqbVFk1Zc=
+contains_source_label_context=true
+contains_private_reference_date_re=true
+contains_merge_ai_insight_managed=true
+has_energy_market_news_ai_py=true
+has_news_ai_orchestration_py=true
