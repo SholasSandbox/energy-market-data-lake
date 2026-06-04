@@ -143,6 +143,10 @@ Region: **eu-west-2 (London)**
 - Phase 17AA execution runs one controlled managed workflow smoke successfully:
   the managed Bedrock/Mistral merge validates, publishes latest plus immutable
   dashboard snapshots, and leaves schedules disabled.
+- Phase 17AB verifies the hosted dashboard after the successful managed
+  workflow smoke; latest and immutable snapshot paths are healthy, but managed
+  workflow source labels need sanitization before the demo surface is fully
+  hardened.
 
 ### Deferred AWS Extension
 
@@ -687,7 +691,11 @@ These are historical references, not the current delivery path.
     dashboard snapshot.
 37. Treat Phase 17AA execution as the first successful managed workflow smoke;
     schedule enablement remains a separate operating decision.
-38. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
+38. Treat Phase 17AB as read-only hosted-demo verification after the managed
+    workflow snapshot publish; it found source-label sanitization drift that
+    must be fixed before any repeated managed workflow run or schedule
+    enablement.
+39. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
     OpenClaw runtime until a phase explicitly targets those operating
     boundaries.
 
@@ -728,3 +736,7 @@ These are historical references, not the current delivery path.
 - Phase 17AA execution ran one successful managed workflow smoke, published the
   managed workflow dashboard snapshot, and kept the EventBridge schedule
   disabled.
+- Phase 17AB read-only checks verify the hosted dashboard, latest workflow
+  snapshot, immutable workflow snapshot, schema validity, recent execution
+  state, and schedule-disabled posture; they also find that managed workflow
+  source labels still need public-surface sanitization.
