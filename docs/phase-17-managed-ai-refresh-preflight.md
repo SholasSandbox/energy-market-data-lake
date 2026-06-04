@@ -1221,3 +1221,54 @@ Result:
 
 Recommended next slice: **Phase 17AE Lambda package refresh preflight for
 source-label sanitizer**, no-apply.
+
+## Phase 17AE Lambda Package Refresh Preflight Result
+
+Phase 17AE reviewed the Lambda package refresh boundary for the Phase 17AC
+source-label sanitizer without applying Terraform or running the managed
+workflow.
+
+Evidence:
+
+- `docs/evidence/phase17ae-lambda-package-refresh-preflight-20260604.md`
+- `docs/evidence/phase17ae-current-lambda-config-sanitized-20260604.json`
+- `docs/evidence/phase17ae-current-schedule-state-20260604.json`
+- `docs/evidence/phase17ae-current-recent-executions-20260604.json`
+- `docs/evidence/phase17ae-lambda-package-before-rebuild-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-rebuild-command-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-rebuild-output-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-after-rebuild-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-refresh-root-plan-preserve-refreshfalse-20260604.txt`
+- `docs/evidence/phase17ae-lambda-package-refresh-targeted-plan-refreshfalse-20260604.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, IAM
+  mutation, Lambda deploy, Step Functions deploy, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  occurred
+- pre-rebuild local package matched the deployed Lambda hash and did not
+  contain `source_label_context`
+- rebuilt local package contains `source_label_context`,
+  `PRIVATE_REFERENCE_DATE_RE`, `MergeAiInsightManaged`, and
+  `energy_market/managed_ai.py`
+- rebuilt package hash is
+  `V/PZH22YFXzyYarXT+dglN/JJ0CasL0G1zFqbVFk1Zc=`
+- EventBridge schedule remains `DISABLED`
+- recent executions still show the Phase 17AA smoke as the latest Step
+  Functions run
+- preserved-variable root no-apply plan shows
+  `Plan: 0 to add, 2 to change, 0 to destroy`
+- targeted comparison plan shows
+  `Plan: 0 to add, 1 to change, 0 to destroy` with Terraform's expected
+  `-target` warning
+
+Decision:
+
+- Lambda package refresh is a go-candidate, not automatic execution
+- execution remains blocked until explicit approval in a separate substate
+- use the normal root saved plan shape unless a later blocker justifies
+  targeted recovery
+
+Recommended next slice: **Phase 17AE execution substate: controlled Lambda
+package refresh apply**, only after explicit approval.

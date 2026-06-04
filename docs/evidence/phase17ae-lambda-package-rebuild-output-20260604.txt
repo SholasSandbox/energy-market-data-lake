@@ -1,0 +1,7 @@
+
+[notice] A new release of pip is available: 26.1 -> 26.1.2
+[notice] To update, run: /Users/shola/Workspace/cloud-projects/energy-market-data-lake/.venv/bin/python -m pip install --upgrade pip
+
+[notice] A new release of pip is available: 26.1 -> 26.1.2
+[notice] To update, run: /Users/shola/Workspace/cloud-projects/energy-market-data-lake/.venv/bin/python -m pip install --upgrade pip
+/Users/shola/Workspace/cloud-projects/energy-market-data-lake/infra/terraform/lakehouse/.terraform/build/news_ai_orchestration.zip
