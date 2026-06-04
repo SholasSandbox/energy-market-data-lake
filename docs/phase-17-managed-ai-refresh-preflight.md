@@ -1114,3 +1114,39 @@ Result:
 
 Recommended next slice: **Phase 17AB managed workflow post-smoke demo
 verification**, read-only.
+
+## Phase 17AB Managed Workflow Post-Smoke Demo Verification Result
+
+Phase 17AB performed read-only hosted dashboard verification after the Phase
+17AA managed workflow smoke published the latest and immutable dashboard
+snapshots.
+
+Evidence:
+
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-demo-verification-20260604.md`
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-demo-http-check-20260604.txt`
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-demo-json-check-20260604.txt`
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-schedule-state-20260604.json`
+- `docs/evidence/phase17ab-managed-workflow-post-smoke-recent-executions-20260604.json`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, IAM
+  mutation, Lambda deploy, Step Functions deploy, schedule enablement, S3
+  write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  occurred
+- CloudFront returned `200` for `/`, `/index.html`,
+  `/dashboard-data.json`, latest `dashboard_snapshot_v1.json`, and the Phase
+  17AA immutable snapshot path
+- latest and immutable snapshots match the Phase 17AA SHA-256
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- both snapshot paths validate against `dashboard_snapshot_v1`
+- recent executions still show the Phase 17AA smoke as the latest Step
+  Functions run
+- EventBridge schedule remains `DISABLED`
+- the read-only check found a public-surface hardening gap: managed workflow
+  source URLs fall back to `dashboard-data.json`, but source labels can still
+  carry private lake S3 context
+
+Recommended next slice: **Phase 17AC managed workflow source-label
+sanitization**, local/preflight first.
