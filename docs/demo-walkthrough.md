@@ -185,7 +185,7 @@ from http.client import HTTPSConnection
 host = "d28yo76if4k3l1.cloudfront.net"
 paths = [
     "/dashboard_snapshot_v1.json",
-    "/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json",
+    "/snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json",
 ]
 for path in paths:
     conn = HTTPSConnection(host, timeout=20)
@@ -201,7 +201,7 @@ Expected result:
 
 ```text
 /dashboard_snapshot_v1.json 200 OK dashboard_snapshot_v1
-/snapshots/run_id=ai-insight-20260511T114815Z-927685a3/dashboard_snapshot_v1.json 200 OK dashboard_snapshot_v1
+/snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json 200 OK dashboard_snapshot_v1
 ```
 
 Say:
@@ -404,3 +404,7 @@ Hiring signal:
 - Phase 17AA execution proves one controlled managed workflow smoke can run
   through Bedrock/Mistral and publish latest plus immutable dashboard snapshots;
   schedules remain disabled.
+- Phase 17AB read-only verification confirms the hosted dashboard and Phase
+  17AA snapshot paths remain healthy after publication, but the managed
+  workflow snapshot still needs source-label sanitization before it should be
+  treated as fully demo-polished.

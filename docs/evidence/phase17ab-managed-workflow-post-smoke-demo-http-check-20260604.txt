@@ -1,0 +1,65 @@
+# Phase 17AB Managed Workflow Post-Smoke Demo HTTP Check
+
+Generated at: 2026-06-04T12:47:47Z
+Expected Phase 17AA workflow snapshot SHA256: d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
+
+## https://d28yo76if4k3l1.cloudfront.net/
+Status: 200
+Bytes: 434
+SHA256: 85c7d24ae99b149344ab62c664f81ac08ea61cf60b49fcf283242d6729df773c
+Content-Type: text/html
+Cache-Control: no-cache
+ETag: "5377c7a867664db1515bfcb1c60b0f3f"
+X-Cache: Miss from cloudfront
+
+## https://d28yo76if4k3l1.cloudfront.net/index.html
+Status: 200
+Bytes: 434
+SHA256: 85c7d24ae99b149344ab62c664f81ac08ea61cf60b49fcf283242d6729df773c
+Content-Type: text/html
+Cache-Control: no-cache
+ETag: "5377c7a867664db1515bfcb1c60b0f3f"
+X-Cache: Miss from cloudfront
+
+## https://d28yo76if4k3l1.cloudfront.net/dashboard-data.json
+Status: 200
+Bytes: 22100
+SHA256: 8d2a9099c847aec47c2072050df2a83137e15084da28a6db1175307b37da1e71
+Content-Type: application/json
+Cache-Control: no-cache
+ETag: "b20672c5c4c11bbfdc7d5c467316da67"
+X-Cache: Miss from cloudfront
+
+## https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+Status: 200
+Bytes: 10154
+SHA256: d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
+Content-Type: application/json
+Cache-Control: 
+ETag: "78dc3e2733a818b8c876fc156ad905eb"
+X-Cache: RefreshHit from cloudfront
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-06-03T01:07:51Z
+metadata.status: watch
+run_id: None
+insight_count: 1
+primary_insight_id: gb-grid-transitions-2026-06-03
+matches Phase 17AA workflow snapshot: true
+schema_valid: true
+
+## https://d28yo76if4k3l1.cloudfront.net/snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json
+Status: 200
+Bytes: 10154
+SHA256: d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
+Content-Type: application/json
+Cache-Control: 
+ETag: "78dc3e2733a818b8c876fc156ad905eb"
+X-Cache: Miss from cloudfront
+schema_version: dashboard_snapshot_v1
+generated_at: 2026-06-03T01:07:51Z
+metadata.status: watch
+run_id: None
+insight_count: 1
+primary_insight_id: gb-grid-transitions-2026-06-03
+matches Phase 17AA workflow snapshot: true
+schema_valid: true
