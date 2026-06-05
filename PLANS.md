@@ -2579,11 +2579,81 @@ Next implementation slice:
 - keep Step Functions execution, Bedrock invocation, Terraform apply, schedule
   enablement, S3 writes, and static-site publish out of scope
 
+### Phase 17AI: Managed Workflow Dashboard Cache Resolution Decision
+
+Goal: decide how to resolve the stale normal CloudFront latest snapshot path
+after Phase 17AH confirmed the Phase 17AG object is healthy at S3 and the
+immutable CloudFront path.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ai-managed-workflow-dashboard-cache-resolution-decision-20260605.md`
+- `docs/evidence/phase17ai-cache-resolution-aws-identity-sanitized-20260605.txt`
+- `docs/evidence/phase17ai-cache-resolution-cloudfront-distribution-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-cloudfront-cache-policy-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-latest-snapshot-head-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-immutable-snapshot-head-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-latest-http-recheck-20260605.txt`
+- `docs/evidence/phase17ai-cache-resolution-immutable-http-recheck-20260605.txt`
+- `docs/evidence/phase17ai-cache-resolution-decision-summary-20260605.txt`
+- `docs/evidence/phase17ai-cache-resolution-schedule-state-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-recent-executions-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-terraform-nochange-20260605.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- S3 latest snapshot remains the Phase 17AG object with version
+  `KByeeyWC.YWMJOzJ6OGYvlIn8xN7Et2f`
+- immutable Phase 17AG CloudFront path returns `200` and serves SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- normal CloudFront latest path returns `200`, but still serves cached SHA-256
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- normal CloudFront latest response still carries older S3 version
+  `b9PUPbupwFRcRCIHTcMwFhylWsuDCkSv`
+- CloudFront default behavior uses `Managed-CachingOptimized`, with default
+  TTL `86400`
+- EventBridge schedule remains `DISABLED`
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Decision:
+
+- recommendation is **go-candidate for one controlled CloudFront invalidation**
+- invalidation remains blocked until explicit approval in a separate execution
+  substate
+- if approved, invalidate only `/dashboard_snapshot_v1.json`
+- do not invalidate `/*`, static assets, immutable snapshot paths, or S3
+  prefixes
+
+Red-green evidence:
+
+- Red: normal CloudFront latest still serves the cached Phase 17AA object.
+- Green: Phase 17AI narrows the next possible mutation to one CloudFront cache
+  path while keeping all data, workflow, and infrastructure state unchanged.
+- Regression: no workflow execution, no dashboard mutation, no invalidation,
+  schedules disabled, and Terraform no-change with live preservation flags.
+
+Next implementation slice:
+
+- Phase 17AJ: controlled dashboard latest cache invalidation execution
+- require explicit approval before creating an invalidation
+- invalidate only `/dashboard_snapshot_v1.json`
+- verify the normal latest path SHA-256 matches
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- keep Step Functions execution, Bedrock invocation, Terraform apply, schedule
+  enablement, S3 writes, static-site publish, and broad invalidations out of
+  scope
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AH read-only dashboard cache verification.
-2. Plan Phase 17AI as a dashboard cache resolution decision before any
-   CloudFront invalidation.
+1. Review and merge Phase 17AI dashboard cache resolution decision.
+2. Plan Phase 17AJ as controlled single-path CloudFront invalidation execution,
+   only after explicit approval.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.

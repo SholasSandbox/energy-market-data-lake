@@ -429,3 +429,6 @@ Hiring signal:
 - Phase 17AH verifies the cache read-only: the immutable Phase 17AG snapshot is
   healthy, while the normal CloudFront latest path still serves the cached
   Phase 17AA snapshot.
+- Phase 17AI makes the cache-resolution decision only: a single-path
+  CloudFront invalidation for `/dashboard_snapshot_v1.json` is the candidate,
+  but it still requires explicit execution approval.

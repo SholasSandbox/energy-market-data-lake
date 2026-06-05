@@ -1447,3 +1447,47 @@ Result:
 
 Recommended next slice: **Phase 17AI managed workflow dashboard cache
 resolution decision**, not automatic invalidation.
+
+## Phase 17AI Managed Workflow Dashboard Cache Resolution Decision Result
+
+Phase 17AI decided how to resolve the stale normal CloudFront latest snapshot
+path observed in Phase 17AH.
+
+Evidence:
+
+- `docs/evidence/phase17ai-managed-workflow-dashboard-cache-resolution-decision-20260605.md`
+- `docs/evidence/phase17ai-cache-resolution-cloudfront-distribution-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-cloudfront-cache-policy-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-latest-snapshot-head-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-immutable-snapshot-head-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-latest-http-recheck-20260605.txt`
+- `docs/evidence/phase17ai-cache-resolution-immutable-http-recheck-20260605.txt`
+- `docs/evidence/phase17ai-cache-resolution-schedule-state-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-recent-executions-20260605.json`
+- `docs/evidence/phase17ai-cache-resolution-terraform-nochange-20260605.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- normal CloudFront latest path still serves cached SHA-256
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- immutable Phase 17AG CloudFront path still serves SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- CloudFront default behavior uses `Managed-CachingOptimized`, with default
+  TTL `86400`
+- EventBridge schedule remains `DISABLED`
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Decision:
+
+- recommendation is **go-candidate for one controlled CloudFront invalidation**
+- the invalidation remains blocked until explicit approval
+- if approved, invalidate only `/dashboard_snapshot_v1.json`
+- do not invalidate `/*`, static assets, immutable snapshot paths, or S3
+  prefixes
+
+Recommended next slice: **Phase 17AJ controlled dashboard latest cache
+invalidation execution**, only after explicit approval.
