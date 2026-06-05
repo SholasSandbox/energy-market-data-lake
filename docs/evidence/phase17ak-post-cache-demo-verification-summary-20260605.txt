@@ -1,0 +1,31 @@
+Phase 17AK managed workflow post-cache demo verification summary
+run_id=ai-insight-20260605T213354Z-88068c72
+expected_phase17ag_sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+root_status=200
+index_status=200
+dashboard_data_status=200
+latest_snapshot_status=200
+immutable_snapshot_status=200
+latest_sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+immutable_sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+latest_matches_phase17ag=true
+immutable_matches_phase17ag=true
+latest_equals_immutable=true
+schema_version=dashboard_snapshot_v1
+metadata_status=watch
+primary_title=UK Demand Surge Risks Grid Stability Amid Smart Meter Rollout
+source_count=2
+source_labels_public_safe=true
+private_reference_count=0
+latest_invalidation=I3IV0NIU4E4H7RQCPW0WGCKFTG
+latest_invalidation_status=Completed
+schedule_state=DISABLED
+recent_executions_unchanged_latest=phase17ag-managed-workflow-post-refresh-smoke-20260605T213352Z
+terraform_safe_root_plan=No changes with create_dashboard_bucket=true, dashboard_cloudfront_enabled=true, ai_orchestration_managed_ai_enabled=true
+bedrock_invocation_started=false
+workflow_execution_started=false
+s3_write_performed=false
+terraform_apply_performed=false
+cloudfront_invalidation_requested=false
+static_site_publish_performed=false
+result=hosted demo routes and latest plus immutable Phase 17AG snapshot paths are healthy after cache resolution

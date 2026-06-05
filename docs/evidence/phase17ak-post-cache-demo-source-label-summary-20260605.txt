@@ -1,0 +1,6 @@
+Phase 17AK post-cache demo source label summary
+source_count=2
+private_reference_count=0
+source_urls=dashboard-data.json, https://www.energyvoice.com/renewables-energy-transition/grid-retail/598797/centrica-smart-meter/
+source_labels=Energy Voice | elexon - demand_mw | curated dashboard evidence for 2026-05-07
+source_labels_public_safe=true

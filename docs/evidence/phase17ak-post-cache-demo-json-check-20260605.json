@@ -1,0 +1,25 @@
+{
+  "phase": "17AK",
+  "latest_status": "200",
+  "immutable_status": "200",
+  "latest_sha256": "4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0",
+  "immutable_sha256": "4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0",
+  "expected_phase17ag_sha256": "4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0",
+  "latest_matches_phase17ag": true,
+  "immutable_matches_phase17ag": true,
+  "latest_equals_immutable": true,
+  "schema_version": "dashboard_snapshot_v1",
+  "metadata_status": "watch",
+  "generated_at": "<missing>",
+  "primary_title": "UK Demand Surge Risks Grid Stability Amid Smart Meter Rollout",
+  "first_sources": [
+    {
+      "label": "elexon - demand_mw | curated dashboard evidence for 2026-05-07",
+      "url": "dashboard-data.json"
+    },
+    {
+      "label": "Energy Voice",
+      "url": "https://www.energyvoice.com/renewables-energy-transition/grid-retail/598797/centrica-smart-meter/"
+    }
+  ]
+}
