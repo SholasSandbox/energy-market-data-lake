@@ -1,0 +1,29 @@
+Phase 17AJ pre-invalidation latest CloudFront snapshot HTTP check
+url=https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+status=200
+sha256=d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515
+schema_version=dashboard_snapshot_v1
+metadata_status=watch
+content_length=10154
+
+headers:
+HTTP/2 200
+content-type: application/json
+content-length: 10154
+last-modified: Wed, 03 Jun 2026 01:07:52 GMT
+x-amz-server-side-encryption: AES256
+x-amz-version-id: b9PUPbupwFRcRCIHTcMwFhylWsuDCkSv
+accept-ranges: bytes
+server: AmazonS3
+date: Fri, 05 Jun 2026 21:33:12 GMT
+etag: "78dc3e2733a818b8c876fc156ad905eb"
+x-cache: Hit from cloudfront
+via: 1.1 680c9e756bdd27fcfeee763a87afaa06.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: yVz_pIwROpHIfm1Loa2_N45wqbyVX1ZJKUIyGxzIvyV6Ch2fOF0_YQ==
+age: 2876
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains

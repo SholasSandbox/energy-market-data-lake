@@ -1,0 +1,81 @@
+url=https://d28yo76if4k3l1.cloudfront.net/
+status=200
+sha256=85c7d24ae99b149344ab62c664f81ac08ea61cf60b49fcf283242d6729df773c
+content_length=434
+headers:
+HTTP/2 200
+content-type: text/html
+content-length: 434
+last-modified: Thu, 21 May 2026 14:45:40 GMT
+x-amz-server-side-encryption: AES256
+x-amz-version-id: CXmVysLaU8t18A4utzK_zE9P.bKGPm._
+accept-ranges: bytes
+server: AmazonS3
+date: Fri, 05 Jun 2026 22:21:08 GMT
+cache-control: no-cache
+etag: "5377c7a867664db1515bfcb1c60b0f3f"
+x-cache: RefreshHit from cloudfront
+via: 1.1 1a6cd18714da9809fa8cb07ad66fd4f6.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: yVBRnzvrifIuvzh9a4RdGS5zSsnVt1FgjiDBZNQmay4hEhuHiPeuZA==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
+url=https://d28yo76if4k3l1.cloudfront.net/index.html
+status=200
+sha256=85c7d24ae99b149344ab62c664f81ac08ea61cf60b49fcf283242d6729df773c
+content_length=434
+headers:
+HTTP/2 200
+content-type: text/html
+content-length: 434
+last-modified: Thu, 21 May 2026 14:45:40 GMT
+x-amz-server-side-encryption: AES256
+x-amz-version-id: CXmVysLaU8t18A4utzK_zE9P.bKGPm._
+accept-ranges: bytes
+server: AmazonS3
+date: Fri, 05 Jun 2026 22:21:08 GMT
+cache-control: no-cache
+etag: "5377c7a867664db1515bfcb1c60b0f3f"
+x-cache: Hit from cloudfront
+via: 1.1 ed5bf73eea0876436de4cbcd6f6945e4.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: ieefsTNILTNglbo5mFyMUtTwgOjcxvdPEeS-DJagnh95WG_5q5hdpg==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
+url=https://d28yo76if4k3l1.cloudfront.net/dashboard-data.json
+status=200
+sha256=8d2a9099c847aec47c2072050df2a83137e15084da28a6db1175307b37da1e71
+content_length=22100
+headers:
+HTTP/2 200
+content-type: application/json
+content-length: 22100
+date: Fri, 05 Jun 2026 22:21:08 GMT
+last-modified: Thu, 21 May 2026 14:45:40 GMT
+etag: "b20672c5c4c11bbfdc7d5c467316da67"
+x-amz-server-side-encryption: AES256
+cache-control: no-cache
+x-amz-version-id: GsdkJPJA0VMuDiFlag2K4hOB1FNca7Mp
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Miss from cloudfront
+via: 1.1 aa2f611dc578ba7eecb9a39cb23b1b70.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: HHjIx4kkfHakFo5EpzbWyT8tC3OGinYN1ZVM_Pn8T7hXQ8SmJyiLyw==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
