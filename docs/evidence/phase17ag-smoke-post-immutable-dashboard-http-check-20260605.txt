@@ -1,0 +1,26 @@
+HTTP/2 200 
+content-type: application/json
+content-length: 9246
+date: Fri, 05 Jun 2026 21:36:13 GMT
+last-modified: Fri, 05 Jun 2026 21:34:01 GMT
+etag: "2c239d74ed726990ec7322b7fe6228c9"
+x-amz-server-side-encryption: AES256
+x-amz-version-id: dnb524jqrNZW8OpNdG2fBBd5DWyfZ3Ty
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Miss from cloudfront
+via: 1.1 1872df29670137f21773bdb80da38e36.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: aqTQnMNRqk8e9igOcVKlzwg-J1AyzdIzXUIjCuUplY2UNDOxMDE-5g==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+
+sha256:
+4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0  /tmp/phase17ag-post-immutable-dashboard_snapshot_v1.json
+
+phase17ag_run_id:
+ai-insight-20260605T213354Z-88068c72

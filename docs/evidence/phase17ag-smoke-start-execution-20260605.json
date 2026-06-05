@@ -1,0 +1,4 @@
+{
+    "executionArn": "arn:aws:states:eu-west-2:<aws-account-id>:execution:energy-market-ai-insight-orchestration:phase17ag-managed-workflow-post-refresh-smoke-20260605T213352Z",
+    "startDate": "2026-06-05T22:33:52.788000+01:00"
+}

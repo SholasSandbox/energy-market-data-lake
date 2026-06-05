@@ -1,0 +1,19 @@
+{
+    "executionArn": "arn:aws:states:eu-west-2:<aws-account-id>:execution:energy-market-ai-insight-orchestration:phase17ag-managed-workflow-post-refresh-smoke-20260605T213352Z",
+    "stateMachineArn": "arn:aws:states:eu-west-2:<aws-account-id>:stateMachine:energy-market-ai-insight-orchestration",
+    "name": "phase17ag-managed-workflow-post-refresh-smoke-20260605T213352Z",
+    "status": "SUCCEEDED",
+    "startDate": "2026-06-05T22:33:52.788000+01:00",
+    "stopDate": "2026-06-05T22:34:00.767000+01:00",
+    "input": "{}",
+    "inputDetails": {
+        "included": true
+    },
+    "output": "{\"workflow\":\"ai_insight\",\"run_id\":\"ai-insight-20260605T213354Z-88068c72\",\"status\":\"dashboard_snapshot_published\",\"lake_bucket\":\"energy-market-lake-<aws-account-id>-20260405\",\"dashboard_bucket\":\"energy-market-dashboard-public-<aws-account-id>-20260511\",\"artifacts\":{\"dashboard_data\":\"dashboard/dashboard-data.json\",\"energy_input\":\"curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260605T213354Z-88068c72/payload.json\",\"news_summary\":\"curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260605T213354Z-88068c72/payload.json\",\"ai_input_bundle\":\"curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260605T213354Z-88068c72/payload.json\",\"ai_insight\":\"curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260605T213354Z-88068c72/payload.json\",\"dashboard_snapshot\":\"dashboard_snapshot_v1.json\"},\"summary\":{\"mode\":\"managed\",\"energy_record_count\":1,\"article_count\":18,\"insight_count\":1,\"risk_level\":\"watch\",\"ai_provider\":\"bedrock\",\"bedrock_provider\":\"mistral\",\"bedrock_model_id\":\"mistral.ministral-3-8b-instruct\",\"immutable_dashboard_snapshot\":\"snapshots/run_id=ai-insight-20260605T213354Z-88068c72/dashboard_snapshot_v1.json\"}}",
+    "outputDetails": {
+        "included": true
+    },
+    "redriveCount": 0,
+    "redriveStatus": "NOT_REDRIVABLE",
+    "redriveStatusReason": "Execution is SUCCEEDED and cannot be redriven"
+}

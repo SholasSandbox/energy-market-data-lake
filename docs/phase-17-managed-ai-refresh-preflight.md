@@ -1364,3 +1364,49 @@ Decision:
 
 Recommended next slice: **Phase 17AG controlled managed workflow post-refresh
 smoke execution**, only after explicit approval.
+
+## Phase 17AG Controlled Managed Workflow Post-Refresh Smoke Execution Result
+
+Phase 17AG ran one explicitly approved managed workflow smoke after Phase 17AE
+refreshed the deployed Lambda package with the Phase 17AC source-label
+sanitizer.
+
+Evidence:
+
+- `docs/evidence/phase17ag-managed-workflow-post-refresh-smoke-execution-summary-20260605.md`
+- `docs/evidence/phase17ag-smoke-start-execution-20260605.json`
+- `docs/evidence/phase17ag-smoke-describe-execution-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-history-20260605.json`
+- `docs/evidence/phase17ag-smoke-generated-run-id-20260605.txt`
+- `docs/evidence/phase17ag-smoke-output-summary-20260605.json`
+- `docs/evidence/phase17ag-smoke-s3-artifacts-20260605.json`
+- `docs/evidence/phase17ag-smoke-schema-validation-summary-20260605.txt`
+- `docs/evidence/phase17ag-smoke-source-label-summary-20260605.txt`
+- `docs/evidence/phase17ag-smoke-dashboard-impact-summary-20260605.txt`
+- `docs/evidence/phase17ag-smoke-cost-summary-20260605.txt`
+- `docs/evidence/phase17ag-smoke-post-schedule-state-20260605.json`
+- `docs/evidence/phase17ag-smoke-post-terraform-nochange-20260605.txt`
+
+Result:
+
+- one manual Step Functions execution was run
+- execution status: `SUCCEEDED`
+- generated run ID: `ai-insight-20260605T213354Z-88068c72`
+- workflow status: `dashboard_snapshot_published`
+- manual retries: `0`
+- redrive count: `0`
+- Bedrock/Mistral managed merge succeeded
+- generated artifacts validate against their schemas
+- source-label validation found `0` violations
+- immutable Phase 17AG CloudFront snapshot path returned `200` and served the
+  new snapshot SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- normal CloudFront latest path still served the cached Phase 17AA snapshot at
+  the initial post-run check and recheck
+- no CloudFront invalidation was requested
+- EventBridge schedule remains `DISABLED`
+- post-run Terraform reports `No changes`
+- no failed artifact was written for the run
+
+Recommended next slice: **Phase 17AH managed workflow post-smoke dashboard
+cache verification**, read-only.

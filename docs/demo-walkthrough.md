@@ -422,3 +422,7 @@ Hiring signal:
 - Phase 17AF records that a post-refresh managed workflow smoke is a
   go-candidate only; no smoke has run after the package refresh, and any run
   must preserve rollback and source-label evidence.
+- Phase 17AG runs that controlled post-refresh smoke successfully; the
+  immutable workflow snapshot is healthy and source labels are public-safe, but
+  the normal CloudFront latest path still needs cache verification before it is
+  treated as refreshed.
