@@ -1,0 +1,26 @@
+{
+    "InvalidationList": {
+        "Items": [
+            {
+                "Id": "I3IV0NIU4E4H7RQCPW0WGCKFTG",
+                "CreateTime": "2026-06-05T22:21:17.584000+00:00",
+                "Status": "Completed"
+            },
+            {
+                "Id": "I9MCXBX6M0BCO1HN0BWCKZO5H9",
+                "CreateTime": "2026-05-29T12:59:53.167000+00:00",
+                "Status": "Completed"
+            },
+            {
+                "Id": "IDR5CTSS7OUOG7MA72SDXNSR6J",
+                "CreateTime": "2026-05-22T09:11:34.709000+00:00",
+                "Status": "Completed"
+            },
+            {
+                "Id": "I5Y1IB9UV28LPLKATYRN0ELGM1",
+                "CreateTime": "2026-05-21T14:45:40.745000+00:00",
+                "Status": "Completed"
+            }
+        ]
+    }
+}

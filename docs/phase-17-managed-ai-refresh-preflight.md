@@ -1569,3 +1569,47 @@ Result:
 
 Recommended next slice: **Phase 17AL managed workflow operating decision**,
 decision-only.
+
+## Phase 17AL Managed Workflow Operating Decision Result
+
+Phase 17AL decided the operating posture after Phase 17AK verified the hosted
+dashboard demo following cache resolution.
+
+Evidence:
+
+- `docs/evidence/phase17al-managed-workflow-operating-decision-20260606.md`
+- `docs/evidence/phase17al-operating-decision-lambda-config-sanitized-20260606.json`
+- `docs/evidence/phase17al-operating-decision-state-machine-sanitized-20260606.json`
+- `docs/evidence/phase17al-operating-decision-cloudfront-distribution-20260606.json`
+- `docs/evidence/phase17al-operating-decision-snapshot-http-check-20260606.txt`
+- `docs/evidence/phase17al-operating-decision-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17al-operating-decision-schedule-state-20260606.json`
+- `docs/evidence/phase17al-operating-decision-recent-executions-20260606.json`
+- `docs/evidence/phase17al-operating-decision-recent-invalidations-20260606.json`
+- `docs/evidence/phase17al-operating-decision-terraform-nochange-20260606.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- Lambda is active in managed mode
+- Step Functions routes through `MergeAiInsightManaged`, then
+  `PublishDashboardSnapshot`
+- latest execution remains the successful Phase 17AG smoke
+- latest and immutable Phase 17AG snapshot paths return `200` and match SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- EventBridge schedule remains `DISABLED`
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Decision:
+
+- keep the managed workflow as a manual-only proven path for now
+- immediate schedule enablement is **no-go** in this phase
+- schedule enablement should move only through a separate preflight covering
+  cost posture, alerting, rollback, freshness expectations, plan shape, and
+  explicit stop criteria
+
+Recommended next slice: **Phase 17AM managed workflow schedule enablement
+preflight**, decision-only/no-apply.

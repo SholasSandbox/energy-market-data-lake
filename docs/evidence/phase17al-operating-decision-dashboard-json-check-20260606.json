@@ -1,0 +1,17 @@
+{
+  "phase": "17AL",
+  "latest_status": "200",
+  "immutable_status": "200",
+  "latest_sha256": "4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0",
+  "immutable_sha256": "4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0",
+  "expected_phase17ag_sha256": "4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0",
+  "latest_matches_phase17ag": true,
+  "immutable_matches_phase17ag": true,
+  "latest_equals_immutable": true,
+  "schema_version": "dashboard_snapshot_v1",
+  "metadata_status": "watch",
+  "primary_title": "UK Demand Surge Risks Grid Stability Amid Smart Meter Rollout",
+  "source_count": 2,
+  "private_reference_count": 0,
+  "source_labels_public_safe": true
+}

@@ -2782,10 +2782,81 @@ Next implementation slice:
   apply, S3 writes, static-site publish, and CloudFront invalidation out of
   scope until explicitly approved
 
+### Phase 17AL: Managed Workflow Operating Decision
+
+Goal: decide the operating posture after Phase 17AK verified the hosted
+dashboard demo following cache resolution.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17al-managed-workflow-operating-decision-20260606.md`
+- `docs/evidence/phase17al-operating-decision-aws-identity-sanitized-20260606.txt`
+- `docs/evidence/phase17al-operating-decision-lambda-config-sanitized-20260606.json`
+- `docs/evidence/phase17al-operating-decision-state-machine-sanitized-20260606.json`
+- `docs/evidence/phase17al-operating-decision-cloudfront-distribution-20260606.json`
+- `docs/evidence/phase17al-operating-decision-latest-snapshot-head-20260606.json`
+- `docs/evidence/phase17al-operating-decision-immutable-snapshot-head-20260606.json`
+- `docs/evidence/phase17al-operating-decision-snapshot-http-check-20260606.txt`
+- `docs/evidence/phase17al-operating-decision-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17al-operating-decision-schedule-state-20260606.json`
+- `docs/evidence/phase17al-operating-decision-recent-executions-20260606.json`
+- `docs/evidence/phase17al-operating-decision-recent-invalidations-20260606.json`
+- `docs/evidence/phase17al-operating-decision-terraform-nochange-20260606.txt`
+- `docs/evidence/phase17al-operating-decision-summary-20260606.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- Lambda is active in managed mode with Mistral configuration
+- Step Functions routes through `MergeAiInsightManaged`, then
+  `PublishDashboardSnapshot`
+- latest execution remains the successful Phase 17AG smoke
+- latest and immutable Phase 17AG snapshot paths return `200`
+- latest and immutable snapshot paths match SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- public snapshot source labels remain public-safe with `0` private references
+- EventBridge schedule remains `DISABLED`
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Decision:
+
+- keep the managed workflow as a manual-only proven path for now
+- immediate schedule enablement is **no-go** in this phase
+- schedule enablement needs a separate operating preflight for cost posture,
+  alerting/rollback checks, frequency, freshness expectations, plan shape, and
+  explicit stop criteria
+
+Red-green evidence:
+
+- Red: previous Phase 17 slices showed deployment, source-label hardening,
+  cache behavior, and demo proof all needed separate evidence before operating
+  automation.
+- Green: Phase 17AL confirms the managed workflow is deployed, manually proven,
+  dashboard-visible, public-safe, and stable with schedules disabled.
+- Regression: no workflow execution, no Bedrock invocation, no S3 write, no
+  Terraform apply, no schedule enablement, no CloudFront invalidation,
+  schedules disabled, and Terraform no-change.
+
+Next implementation slice:
+
+- Phase 17AM: managed workflow schedule enablement preflight
+- keep the next slice decision-only/no-apply
+- review frequency, estimated model cost, failure notification path, rollback
+  posture, freshness expectations, no-destroy Terraform plan shape, and stop
+  criteria before any schedule enablement
+- keep schedule enablement, workflow execution, Bedrock invocation, Terraform
+  apply, S3 writes, static-site publish, and CloudFront invalidation out of
+  scope until explicitly approved
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AK read-only post-cache demo verification.
-2. Plan Phase 17AL as the managed workflow operating decision.
+1. Review and merge Phase 17AL managed workflow operating decision.
+2. Plan Phase 17AM as schedule enablement preflight, decision-only/no-apply.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
