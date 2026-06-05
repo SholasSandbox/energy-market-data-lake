@@ -1410,3 +1410,40 @@ Result:
 
 Recommended next slice: **Phase 17AH managed workflow post-smoke dashboard
 cache verification**, read-only.
+
+## Phase 17AH Managed Workflow Dashboard Cache Verification Result
+
+Phase 17AH performed read-only dashboard cache verification after the Phase
+17AG managed workflow smoke published a new dashboard snapshot.
+
+Evidence:
+
+- `docs/evidence/phase17ah-managed-workflow-dashboard-cache-verification-20260605.md`
+- `docs/evidence/phase17ah-cache-verification-latest-snapshot-head-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-immutable-snapshot-head-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-latest-http-check-20260605.txt`
+- `docs/evidence/phase17ah-cache-verification-immutable-http-check-20260605.txt`
+- `docs/evidence/phase17ah-cache-verification-dashboard-routes-http-check-20260605.txt`
+- `docs/evidence/phase17ah-cache-verification-schedule-state-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-recent-executions-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-terraform-nochange-20260605.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- S3 latest snapshot remains the Phase 17AG object with version
+  `KByeeyWC.YWMJOzJ6OGYvlIn8xN7Et2f`
+- immutable Phase 17AG CloudFront snapshot path returns `200` and serves SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- normal CloudFront latest path returns `200`, but still serves cached SHA-256
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- normal CloudFront latest response still carries older version
+  `b9PUPbupwFRcRCIHTcMwFhylWsuDCkSv`
+- EventBridge schedule remains `DISABLED`
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Recommended next slice: **Phase 17AI managed workflow dashboard cache
+resolution decision**, not automatic invalidation.

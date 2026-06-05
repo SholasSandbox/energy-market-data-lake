@@ -2520,24 +2520,74 @@ Next implementation slice:
   snapshot, or make a separate invalidation decision
 - keep schedule enablement as a later explicit decision boundary
 
+### Phase 17AH: Managed Workflow Dashboard Cache Verification
+
+Goal: verify the normal CloudFront latest snapshot cache state after the Phase
+17AG managed workflow smoke, without mutating dashboard hosting or rerunning
+the workflow.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ah-managed-workflow-dashboard-cache-verification-20260605.md`
+- `docs/evidence/phase17ah-cache-verification-aws-identity-sanitized-20260605.txt`
+- `docs/evidence/phase17ah-cache-verification-cloudfront-distribution-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-latest-snapshot-head-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-immutable-snapshot-head-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-latest-http-check-20260605.txt`
+- `docs/evidence/phase17ah-cache-verification-immutable-http-check-20260605.txt`
+- `docs/evidence/phase17ah-cache-verification-dashboard-routes-http-check-20260605.txt`
+- `docs/evidence/phase17ah-cache-verification-summary-20260605.txt`
+- `docs/evidence/phase17ah-cache-verification-schedule-state-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-recent-executions-20260605.json`
+- `docs/evidence/phase17ah-cache-verification-terraform-nochange-20260605.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- S3 latest snapshot remains the Phase 17AG object with version
+  `KByeeyWC.YWMJOzJ6OGYvlIn8xN7Et2f`
+- immutable Phase 17AG CloudFront snapshot path returns `200` and serves SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- normal CloudFront latest path returns `200`, but still serves cached SHA-256
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515`
+- normal CloudFront latest response still carries older S3 version
+  `b9PUPbupwFRcRCIHTcMwFhylWsuDCkSv`
+- hosted routes `/`, `/index.html`, and `/dashboard-data.json` return `200`
+- EventBridge schedule remains `DISABLED`
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Red-green evidence:
+
+- Red: Phase 17AG published the Phase 17AG snapshot to S3, but normal
+  CloudFront latest still served the cached Phase 17AA object.
+- Green: Phase 17AH confirms the immutable Phase 17AG path is healthy and the
+  normal latest path is stale cache state, not a workflow or schema failure.
+- Regression: no workflow execution, no dashboard mutation, no CloudFront
+  invalidation, schedules disabled, and Terraform no-change with the live
+  preservation flags.
+
+Next implementation slice:
+
+- Phase 17AI: managed workflow dashboard cache resolution decision
+- decide whether to wait/recheck the normal latest path or request one
+  controlled CloudFront invalidation
+- keep Step Functions execution, Bedrock invocation, Terraform apply, schedule
+  enablement, S3 writes, and static-site publish out of scope
+
 ## Suggested Immediate Next Steps
 
-1. Phase 17AA controlled managed workflow second-smoke execution evidence is
-   merged.
-2. Review and merge Phase 17AB read-only post-smoke demo verification.
-3. Review and merge Phase 17AC managed workflow source-label sanitization.
-4. Review and merge Phase 17AD source-label publish/deployment decision.
-5. Review and merge Phase 17AE Lambda package refresh preflight.
-6. Review and merge Phase 17AE controlled Lambda package refresh apply.
-7. Review and merge Phase 17AF managed workflow post-refresh smoke decision.
-8. Review and merge Phase 17AG controlled managed workflow post-refresh smoke
-   execution.
-9. Plan Phase 17AH as read-only dashboard cache verification before any
-   CloudFront invalidation decision.
-10. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
+1. Review and merge Phase 17AH read-only dashboard cache verification.
+2. Plan Phase 17AI as a dashboard cache resolution decision before any
+   CloudFront invalidation.
+3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
-11. Keep the hosted dashboard demo path reproducible from
+4. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist

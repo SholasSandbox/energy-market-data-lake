@@ -166,6 +166,9 @@ Region: **eu-west-2 (London)**
   successfully: generated artifacts validate, source labels are public-safe,
   schedules remain disabled, and the immutable Phase 17AG snapshot is healthy;
   the normal CloudFront latest path still needs cache verification.
+- Phase 17AH verifies dashboard cache state read-only: S3 latest and the
+  immutable Phase 17AG CloudFront path are healthy, while the normal
+  CloudFront latest path still serves the cached Phase 17AA snapshot.
 
 ### Deferred AWS Extension
 
@@ -787,3 +790,6 @@ These are historical references, not the current delivery path.
   workflow snapshot with sanitized source labels. The S3 latest object changed,
   but the normal CloudFront latest path initially remained on the cached Phase
   17AA snapshot, so cache verification remains separate.
+- Phase 17AH confirms that cache state: the immutable Phase 17AG path is
+  healthy, but the normal CloudFront latest path remains stale, so any
+  invalidation or wait/recheck choice is a separate decision.
