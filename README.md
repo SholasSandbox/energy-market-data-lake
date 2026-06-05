@@ -175,6 +175,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AJ executes that approved single-path invalidation, waits for
   completion, and verifies normal CloudFront latest now serves the Phase 17AG
   dashboard snapshot while schedules remain disabled.
+- Phase 17AK verifies the hosted demo read-only after cache resolution:
+  dashboard routes return `200`, latest and immutable Phase 17AG snapshots
+  match, source labels are public-safe, and schedules remain disabled.
 
 ### Deferred AWS Extension
 
@@ -805,3 +808,6 @@ These are historical references, not the current delivery path.
 - Phase 17AJ resolves the cache by invalidating only
   `/dashboard_snapshot_v1.json`; latest and immutable CloudFront snapshot paths
   now serve the same Phase 17AG payload.
+- Phase 17AK confirms the post-cache demo state is healthy end to end and
+  leaves schedule enablement or further operating changes as separate
+  decisions.

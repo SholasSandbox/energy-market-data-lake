@@ -1531,3 +1531,41 @@ Result:
 
 Recommended next slice: **Phase 17AK managed workflow post-cache demo
 verification**, read-only.
+
+## Phase 17AK Managed Workflow Post-Cache Demo Verification Result
+
+Phase 17AK performed read-only hosted dashboard verification after Phase 17AJ
+resolved the normal CloudFront latest snapshot cache.
+
+Evidence:
+
+- `docs/evidence/phase17ak-managed-workflow-post-cache-demo-verification-20260605.md`
+- `docs/evidence/phase17ak-post-cache-demo-routes-http-check-20260605.txt`
+- `docs/evidence/phase17ak-post-cache-demo-snapshot-http-check-20260605.txt`
+- `docs/evidence/phase17ak-post-cache-demo-json-check-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-source-label-summary-20260605.txt`
+- `docs/evidence/phase17ak-post-cache-demo-recent-invalidations-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-schedule-state-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-recent-executions-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-terraform-nochange-20260605.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- hosted routes `/`, `/index.html`, `/dashboard-data.json`,
+  `/dashboard_snapshot_v1.json`, and the Phase 17AG immutable snapshot path
+  return `200`
+- latest and immutable Phase 17AG snapshot paths both serve SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- latest and immutable snapshot payloads match
+- source-label summary found `0` private references
+- EventBridge schedule remains `DISABLED`
+- recent Step Functions evidence still shows Phase 17AG as the latest
+  execution
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Recommended next slice: **Phase 17AL managed workflow operating decision**,
+decision-only.

@@ -434,3 +434,6 @@ Hiring signal:
   but it still requires explicit execution approval.
 - Phase 17AJ executes the approved single-path invalidation and verifies the
   normal latest and immutable Phase 17AG snapshot paths now match.
+- Phase 17AK verifies the hosted demo after cache resolution: app routes,
+  latest snapshot, immutable snapshot, source labels, and schedule-disabled
+  proof are all healthy.
