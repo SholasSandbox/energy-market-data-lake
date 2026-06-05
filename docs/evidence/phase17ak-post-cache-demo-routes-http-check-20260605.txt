@@ -1,0 +1,135 @@
+url=https://d28yo76if4k3l1.cloudfront.net/
+status=200
+sha256=85c7d24ae99b149344ab62c664f81ac08ea61cf60b49fcf283242d6729df773c
+content_length=434
+headers:
+HTTP/2 200
+content-type: text/html
+content-length: 434
+last-modified: Thu, 21 May 2026 14:45:40 GMT
+x-amz-server-side-encryption: AES256
+x-amz-version-id: CXmVysLaU8t18A4utzK_zE9P.bKGPm._
+accept-ranges: bytes
+server: AmazonS3
+date: Fri, 05 Jun 2026 22:38:37 GMT
+cache-control: no-cache
+etag: "5377c7a867664db1515bfcb1c60b0f3f"
+x-cache: RefreshHit from cloudfront
+via: 1.1 242a81711c4fc113f186d0cca0b5bb94.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: 438oIa8V6sZ272oiDjIolKZHbB64L3VHBBZMIRPmP6HUqU9fdR3x7g==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
+url=https://d28yo76if4k3l1.cloudfront.net/index.html
+status=200
+sha256=85c7d24ae99b149344ab62c664f81ac08ea61cf60b49fcf283242d6729df773c
+content_length=434
+headers:
+HTTP/2 200
+content-type: text/html
+content-length: 434
+last-modified: Thu, 21 May 2026 14:45:40 GMT
+x-amz-server-side-encryption: AES256
+x-amz-version-id: CXmVysLaU8t18A4utzK_zE9P.bKGPm._
+accept-ranges: bytes
+server: AmazonS3
+date: Fri, 05 Jun 2026 22:38:37 GMT
+cache-control: no-cache
+etag: "5377c7a867664db1515bfcb1c60b0f3f"
+x-cache: Hit from cloudfront
+via: 1.1 f25262ad6146af3450ccd86dcbcc3780.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: AL350lfiE5OcaPqb1dFvztsPwHmsRxt965jFF_XBk8tf6ArqRPS4gQ==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
+url=https://d28yo76if4k3l1.cloudfront.net/dashboard-data.json
+status=200
+sha256=8d2a9099c847aec47c2072050df2a83137e15084da28a6db1175307b37da1e71
+content_length=22100
+headers:
+HTTP/2 200
+content-type: application/json
+content-length: 22100
+last-modified: Thu, 21 May 2026 14:45:40 GMT
+x-amz-server-side-encryption: AES256
+x-amz-version-id: GsdkJPJA0VMuDiFlag2K4hOB1FNca7Mp
+accept-ranges: bytes
+server: AmazonS3
+date: Fri, 05 Jun 2026 22:38:37 GMT
+cache-control: no-cache
+etag: "b20672c5c4c11bbfdc7d5c467316da67"
+x-cache: RefreshHit from cloudfront
+via: 1.1 936c7ee6d0620cb8a766a50c04b3fa30.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: cTSWCvf6z3qy3KhZZypriLmNWaAmHRYSUh-eKoM1G7EJi8KCvSXBHQ==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
+url=https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+status=200
+sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+content_length=9246
+headers:
+HTTP/2 200
+content-type: application/json
+content-length: 9246
+date: Fri, 05 Jun 2026 22:22:11 GMT
+last-modified: Fri, 05 Jun 2026 21:34:01 GMT
+etag: "2c239d74ed726990ec7322b7fe6228c9"
+x-amz-server-side-encryption: AES256
+x-amz-version-id: KByeeyWC.YWMJOzJ6OGYvlIn8xN7Et2f
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Hit from cloudfront
+via: 1.1 675c3f96928d591debc37b54f2b16dc2.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: 7Ez6i3X2E9YNW_Qg9trLB2pmjREo6J-YvmPQDbRP5T_XxSOcTwjHtw==
+age: 986
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
+url=https://d28yo76if4k3l1.cloudfront.net/snapshots/run_id=ai-insight-20260605T213354Z-88068c72/dashboard_snapshot_v1.json
+status=200
+sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+content_length=9246
+headers:
+HTTP/2 200
+content-type: application/json
+content-length: 9246
+date: Fri, 05 Jun 2026 22:00:47 GMT
+last-modified: Fri, 05 Jun 2026 21:34:01 GMT
+etag: "2c239d74ed726990ec7322b7fe6228c9"
+x-amz-server-side-encryption: AES256
+x-amz-version-id: dnb524jqrNZW8OpNdG2fBBd5DWyfZ3Ty
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Hit from cloudfront
+via: 1.1 096e5ecae9d1cd03edf8411ad106b092.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: 6ttLqv7JNUtjz6uyWNDvSsXfZuY7shk0WIRu_6RIbPu8Rh7ailn0Ig==
+age: 2270
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
