@@ -2444,6 +2444,82 @@ Next implementation slice:
 - preserve one-run discipline, rollback-first evidence, source-label
   verification, and schedule-disabled proof
 
+### Phase 17AG: Controlled Managed Workflow Post-Refresh Smoke Execution
+
+Goal: run one controlled managed workflow smoke after Phase 17AE refreshed the
+deployed Lambda package with the Phase 17AC source-label sanitizer.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ag-managed-workflow-post-refresh-smoke-execution-summary-20260605.md`
+- `docs/evidence/phase17ag-smoke-execution-aws-identity-sanitized-20260605.txt`
+- `docs/evidence/phase17ag-smoke-execution-pre-lambda-config-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-pre-state-machine-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-pre-state-machine-routing-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-pre-schedule-state-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-pre-recent-executions-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-pre-latest-snapshot-head-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-pre-immutable-snapshot-head-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-pre-dashboard-http-check-20260605.txt`
+- `docs/evidence/phase17ag-smoke-execution-pre-terraform-nochange-20260605.txt`
+- `docs/evidence/phase17ag-smoke-start-execution-20260605.json`
+- `docs/evidence/phase17ag-smoke-describe-execution-20260605.json`
+- `docs/evidence/phase17ag-smoke-execution-history-20260605.json`
+- `docs/evidence/phase17ag-smoke-generated-run-id-20260605.txt`
+- `docs/evidence/phase17ag-smoke-output-summary-20260605.json`
+- `docs/evidence/phase17ag-smoke-s3-artifacts-20260605.json`
+- `docs/evidence/phase17ag-smoke-schema-validation-summary-20260605.txt`
+- `docs/evidence/phase17ag-smoke-source-label-summary-20260605.txt`
+- `docs/evidence/phase17ag-smoke-dashboard-impact-summary-20260605.txt`
+- `docs/evidence/phase17ag-smoke-cost-summary-20260605.txt`
+- `docs/evidence/phase17ag-smoke-post-schedule-state-20260605.json`
+- `docs/evidence/phase17ag-smoke-post-recent-executions-20260605.json`
+- `docs/evidence/phase17ag-smoke-post-terraform-nochange-20260605.txt`
+
+Result:
+
+- one manual Step Functions execution was run after explicit approval
+- execution status: `SUCCEEDED`
+- generated run ID: `ai-insight-20260605T213354Z-88068c72`
+- workflow status: `dashboard_snapshot_published`
+- manual retries: `0`
+- redrive count: `0`
+- Bedrock/Mistral managed merge succeeded
+- generated `energy_input_v1`, `news_summary_v1`, `ai_input_bundle_v1`,
+  `ai_insight_v1`, and `dashboard_snapshot_v1` artifacts validate
+- source-label validation found `0` violations
+- latest S3 dashboard snapshot version changed from
+  `b9PUPbupwFRcRCIHTcMwFhylWsuDCkSv` to
+  `KByeeyWC.YWMJOzJ6OGYvlIn8xN7Et2f`
+- immutable Phase 17AG CloudFront snapshot path returned `200` and served the
+  new snapshot SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- normal CloudFront latest path still served the cached Phase 17AA snapshot at
+  the initial post-run check and recheck
+- no CloudFront invalidation was requested
+- EventBridge schedule remains `DISABLED`
+- post-run Terraform reports `No changes`
+- no failed artifact was written for the run
+
+Red-green evidence:
+
+- Red: Phase 17AB found source-label public-surface drift in the
+  workflow-published snapshot before the sanitizer package was deployed.
+- Green: Phase 17AG proves the refreshed deployed package can publish a valid
+  managed workflow dashboard snapshot with public-safe source labels.
+- Regression: one execution only, no manual retry, schedules disabled, no
+  Terraform apply, no CloudFront invalidation, and generated artifacts validate.
+
+Next implementation slice:
+
+- Phase 17AH: managed workflow post-smoke dashboard cache verification
+- keep the next slice read-only
+- verify when the normal CloudFront latest path refreshes to the Phase 17AG
+  snapshot, or make a separate invalidation decision
+- keep schedule enablement as a later explicit decision boundary
+
 ## Suggested Immediate Next Steps
 
 1. Phase 17AA controlled managed workflow second-smoke execution evidence is
@@ -2454,13 +2530,14 @@ Next implementation slice:
 5. Review and merge Phase 17AE Lambda package refresh preflight.
 6. Review and merge Phase 17AE controlled Lambda package refresh apply.
 7. Review and merge Phase 17AF managed workflow post-refresh smoke decision.
-8. If explicitly approved later, run Phase 17AG as one controlled managed
-   workflow post-refresh smoke; keep schedules disabled and capture rollback
-   plus source-label evidence.
-9. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
+8. Review and merge Phase 17AG controlled managed workflow post-refresh smoke
+   execution.
+9. Plan Phase 17AH as read-only dashboard cache verification before any
+   CloudFront invalidation decision.
+10. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
-10. Keep the hosted dashboard demo path reproducible from
+11. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist

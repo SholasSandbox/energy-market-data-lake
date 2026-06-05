@@ -1,0 +1,7 @@
+source_count=2
+violation_count=0
+public_safe=true
+source_1_label=elexon - demand_mw | curated dashboard evidence for 2026-05-07
+source_1_url=dashboard-data.json
+source_2_label=Energy Voice
+source_2_url=https://www.energyvoice.com/renewables-energy-transition/grid-retail/598797/centrica-smart-meter/
