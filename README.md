@@ -178,6 +178,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AK verifies the hosted demo read-only after cache resolution:
   dashboard routes return `200`, latest and immutable Phase 17AG snapshots
   match, source labels are public-safe, and schedules remain disabled.
+- Phase 17AL keeps the managed workflow as a manual-only proven path for now:
+  immediate schedule enablement is no-go until a separate operating preflight
+  reviews cost, alerting, rollback, freshness, and stop criteria.
 
 ### Deferred AWS Extension
 
@@ -811,3 +814,5 @@ These are historical references, not the current delivery path.
 - Phase 17AK confirms the post-cache demo state is healthy end to end and
   leaves schedule enablement or further operating changes as separate
   decisions.
+- Phase 17AL decides to preserve the proven manual operating posture and moves
+  any schedule enablement toward a separate decision-only preflight.

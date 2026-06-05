@@ -437,3 +437,5 @@ Hiring signal:
 - Phase 17AK verifies the hosted demo after cache resolution: app routes,
   latest snapshot, immutable snapshot, source labels, and schedule-disabled
   proof are all healthy.
+- Phase 17AL keeps that state manual-only: the managed workflow is proven and
+  demo-ready, but schedules stay disabled until a dedicated operating preflight.
