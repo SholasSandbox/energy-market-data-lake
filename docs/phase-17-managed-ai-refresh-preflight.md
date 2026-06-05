@@ -1491,3 +1491,43 @@ Decision:
 
 Recommended next slice: **Phase 17AJ controlled dashboard latest cache
 invalidation execution**, only after explicit approval.
+
+## Phase 17AJ Controlled Dashboard Latest Cache Invalidation Result
+
+Phase 17AJ executed the explicitly approved cache-resolution action from Phase
+17AI: one CloudFront invalidation for `/dashboard_snapshot_v1.json` only.
+
+Evidence:
+
+- `docs/evidence/phase17aj-controlled-dashboard-latest-cache-invalidation-20260605.md`
+- `docs/evidence/phase17aj-cache-invalidation-create-20260605.json`
+- `docs/evidence/phase17aj-cache-invalidation-status-20260605.json`
+- `docs/evidence/phase17aj-pre-invalidation-latest-http-check-20260605.txt`
+- `docs/evidence/phase17aj-post-invalidation-latest-http-check-20260605.txt`
+- `docs/evidence/phase17aj-post-invalidation-immutable-http-check-20260605.txt`
+- `docs/evidence/phase17aj-post-invalidation-schedule-state-20260605.json`
+- `docs/evidence/phase17aj-post-invalidation-recent-executions-20260605.json`
+- `docs/evidence/phase17aj-post-invalidation-terraform-nochange-20260605.txt`
+
+Result:
+
+- invalidation ID: `I3IV0NIU4E4H7RQCPW0WGCKFTG`
+- invalidation status: `Completed`
+- invalidation path count: `1`
+- invalidation path: `/dashboard_snapshot_v1.json`
+- no `/*`, static assets, immutable snapshot paths, S3 prefixes, or additional
+  paths were invalidated
+- normal CloudFront latest path changed from cached SHA-256
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515` to
+  Phase 17AG SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- immutable Phase 17AG CloudFront path still serves the same Phase 17AG
+  SHA-256
+- EventBridge schedule remains `DISABLED`
+- recent Step Functions evidence still shows Phase 17AG as the latest
+  execution
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Recommended next slice: **Phase 17AK managed workflow post-cache demo
+verification**, read-only.

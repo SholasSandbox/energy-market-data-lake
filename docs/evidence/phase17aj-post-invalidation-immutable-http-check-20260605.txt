@@ -1,0 +1,31 @@
+Phase 17AJ post-invalidation immutable Phase 17AG CloudFront snapshot HTTP check
+url=https://d28yo76if4k3l1.cloudfront.net/snapshots/run_id=ai-insight-20260605T213354Z-88068c72/dashboard_snapshot_v1.json
+status=200
+sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+expected_phase17ag_sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+matches_phase17ag=true
+schema_version=dashboard_snapshot_v1
+metadata_status=watch
+content_length=9246
+
+headers:
+HTTP/2 200
+content-type: application/json
+content-length: 9246
+date: Fri, 05 Jun 2026 22:00:47 GMT
+last-modified: Fri, 05 Jun 2026 21:34:01 GMT
+etag: "2c239d74ed726990ec7322b7fe6228c9"
+x-amz-server-side-encryption: AES256
+x-amz-version-id: dnb524jqrNZW8OpNdG2fBBd5DWyfZ3Ty
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Hit from cloudfront
+via: 1.1 ad6a59dd9fdc1afb57f7131fcd96bf20.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: hXTDNd4Yi7_RxFPuiGo3mCQS_GGpHHYYdMPaozMtRqCaQRxDtkp_ug==
+age: 1284
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
