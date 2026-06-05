@@ -1,0 +1,58 @@
+Phase 17AK post-cache demo snapshot HTTP check
+latest_url=https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+latest_status=200
+latest_sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+latest_content_length=9246
+latest_matches_phase17ag=true
+
+latest_headers:
+HTTP/2 200
+content-type: application/json
+content-length: 9246
+date: Fri, 05 Jun 2026 22:22:11 GMT
+last-modified: Fri, 05 Jun 2026 21:34:01 GMT
+etag: "2c239d74ed726990ec7322b7fe6228c9"
+x-amz-server-side-encryption: AES256
+x-amz-version-id: KByeeyWC.YWMJOzJ6OGYvlIn8xN7Et2f
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Hit from cloudfront
+via: 1.1 936c7ee6d0620cb8a766a50c04b3fa30.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: O9e6tE_QeVZthv8I-Z-ujd11Moyd6TJ2X94AjMvdyyxfnRoQDA7MOA==
+age: 972
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+---
+immutable_url=https://d28yo76if4k3l1.cloudfront.net/snapshots/run_id=ai-insight-20260605T213354Z-88068c72/dashboard_snapshot_v1.json
+immutable_status=200
+immutable_sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+immutable_content_length=9246
+immutable_matches_phase17ag=true
+latest_equals_immutable=true
+
+immutable_headers:
+HTTP/2 200
+content-type: application/json
+content-length: 9246
+date: Fri, 05 Jun 2026 22:00:47 GMT
+last-modified: Fri, 05 Jun 2026 21:34:01 GMT
+etag: "2c239d74ed726990ec7322b7fe6228c9"
+x-amz-server-side-encryption: AES256
+x-amz-version-id: dnb524jqrNZW8OpNdG2fBBd5DWyfZ3Ty
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Hit from cloudfront
+via: 1.1 90927d233f1a615dc244e8b198aa1f04.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: mEdCrFuox0Jpoq3qh14zYhDCNRCfR8hc11UHGk0zwliDr_eOdeX8bQ==
+age: 2256
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains

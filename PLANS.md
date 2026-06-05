@@ -2717,10 +2717,75 @@ Next implementation slice:
   enablement, S3 writes, static-site publish, and CloudFront invalidation out
   of scope
 
+### Phase 17AK: Managed Workflow Post-Cache Demo Verification
+
+Goal: verify the hosted dashboard demo after Phase 17AJ resolved the normal
+CloudFront latest snapshot cache.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ak-managed-workflow-post-cache-demo-verification-20260605.md`
+- `docs/evidence/phase17ak-post-cache-demo-aws-identity-sanitized-20260605.txt`
+- `docs/evidence/phase17ak-post-cache-demo-routes-http-check-20260605.txt`
+- `docs/evidence/phase17ak-post-cache-demo-snapshot-http-check-20260605.txt`
+- `docs/evidence/phase17ak-post-cache-demo-json-check-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-source-label-summary-20260605.txt`
+- `docs/evidence/phase17ak-post-cache-demo-latest-snapshot-head-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-immutable-snapshot-head-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-recent-invalidations-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-schedule-state-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-recent-executions-20260605.json`
+- `docs/evidence/phase17ak-post-cache-demo-terraform-nochange-20260605.txt`
+- `docs/evidence/phase17ak-post-cache-demo-verification-summary-20260605.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- hosted routes `/`, `/index.html`, `/dashboard-data.json`,
+  `/dashboard_snapshot_v1.json`, and the Phase 17AG immutable snapshot path
+  return `200`
+- normal CloudFront latest snapshot path serves SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- immutable Phase 17AG CloudFront snapshot path serves the same SHA-256
+- latest and immutable snapshot payloads match
+- latest snapshot reports `schema_version: dashboard_snapshot_v1`
+- latest snapshot reports `metadata.status: watch`
+- source-label summary found `0` private references
+- recent invalidation evidence shows the latest invalidation remains Phase
+  17AJ invalidation `I3IV0NIU4E4H7RQCPW0WGCKFTG`, status `Completed`
+- EventBridge schedule remains `DISABLED`
+- recent Step Functions evidence still shows Phase 17AG as the latest
+  execution
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Red-green evidence:
+
+- Red: Phase 17AH and Phase 17AI showed normal CloudFront latest was stale
+  before cache resolution.
+- Green: Phase 17AK confirms hosted demo routes and both snapshot paths are
+  healthy after Phase 17AJ.
+- Regression: no workflow execution, no Bedrock invocation, no S3 write, no
+  Terraform apply, no schedule enablement, no CloudFront invalidation, public
+  source labels, schedules disabled, and Terraform no-change.
+
+Next implementation slice:
+
+- Phase 17AL: managed workflow operating decision
+- decide whether to keep the managed workflow as a manual-only proven path,
+  move toward schedule enablement preflight, or pause for portfolio/demo polish
+- keep schedule enablement, workflow execution, Bedrock invocation, Terraform
+  apply, S3 writes, static-site publish, and CloudFront invalidation out of
+  scope until explicitly approved
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AJ controlled dashboard latest cache invalidation.
-2. Plan Phase 17AK as read-only post-cache demo verification.
+1. Review and merge Phase 17AK read-only post-cache demo verification.
+2. Plan Phase 17AL as the managed workflow operating decision.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
