@@ -172,6 +172,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AI decides that the next cache-resolution step should be a
   single-path CloudFront invalidation candidate for `/dashboard_snapshot_v1.json`
   only, but does not execute it automatically.
+- Phase 17AJ executes that approved single-path invalidation, waits for
+  completion, and verifies normal CloudFront latest now serves the Phase 17AG
+  dashboard snapshot while schedules remain disabled.
 
 ### Deferred AWS Extension
 
@@ -799,3 +802,6 @@ These are historical references, not the current delivery path.
 - Phase 17AI chooses the controlled invalidation path as the go-candidate
   because the latest S3 object is already correct and the active CloudFront
   policy can keep the stale latest response cached for the default TTL.
+- Phase 17AJ resolves the cache by invalidating only
+  `/dashboard_snapshot_v1.json`; latest and immutable CloudFront snapshot paths
+  now serve the same Phase 17AG payload.
