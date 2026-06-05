@@ -162,6 +162,10 @@ Region: **eu-west-2 (London)**
 - Phase 17AF records the post-refresh smoke as a go-candidate only: the live
   Lambda hash matches the sanitizer package, Terraform is no-change, schedules
   remain disabled, and any workflow run still requires explicit approval.
+- Phase 17AG runs one controlled post-refresh managed workflow smoke
+  successfully: generated artifacts validate, source labels are public-safe,
+  schedules remain disabled, and the immutable Phase 17AG snapshot is healthy;
+  the normal CloudFront latest path still needs cache verification.
 
 ### Deferred AWS Extension
 
@@ -779,3 +783,7 @@ These are historical references, not the current delivery path.
 - Phase 17AF confirms the refreshed package is live and the workflow remains
   publish-capable; a post-refresh smoke is a separate explicit-approval
   execution boundary with rollback and source-label checks.
+- Phase 17AG proves the refreshed deployed package can publish a valid managed
+  workflow snapshot with sanitized source labels. The S3 latest object changed,
+  but the normal CloudFront latest path initially remained on the cached Phase
+  17AA snapshot, so cache verification remains separate.

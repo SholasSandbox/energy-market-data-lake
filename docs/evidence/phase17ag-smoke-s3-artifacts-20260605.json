@@ -1,0 +1,89 @@
+{
+  "run_id": "ai-insight-20260605T213354Z-88068c72",
+  "artifacts": [
+    {
+      "artifact": "energy_input",
+      "bucket": "energy-market-lake-<aws-account-id>-20260405",
+      "key": "curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260605T213354Z-88068c72/payload.json",
+      "head": {
+        "CacheControl": null,
+        "ContentLength": 633,
+        "ContentType": "application/json",
+        "ETag": "\"4dbde250f6b444a70fb5eda69db16496\"",
+        "LastModified": "2026-06-05T21:33:55+00:00",
+        "ServerSideEncryption": "AES256",
+        "VersionId": null
+      }
+    },
+    {
+      "artifact": "news_summary",
+      "bucket": "energy-market-lake-<aws-account-id>-20260405",
+      "key": "curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260605T213354Z-88068c72/payload.json",
+      "head": {
+        "CacheControl": null,
+        "ContentLength": 14079,
+        "ContentType": "application/json",
+        "ETag": "\"8da113a1af359340dfbce81e806df88e\"",
+        "LastModified": "2026-06-05T21:33:58+00:00",
+        "ServerSideEncryption": "AES256",
+        "VersionId": null
+      }
+    },
+    {
+      "artifact": "ai_input_bundle",
+      "bucket": "energy-market-lake-<aws-account-id>-20260405",
+      "key": "curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260605T213354Z-88068c72/payload.json",
+      "head": {
+        "CacheControl": null,
+        "ContentLength": 15876,
+        "ContentType": "application/json",
+        "ETag": "\"45e4cedab11b47d08bf8aa2ee5afd583\"",
+        "LastModified": "2026-06-05T21:33:58+00:00",
+        "ServerSideEncryption": "AES256",
+        "VersionId": null
+      }
+    },
+    {
+      "artifact": "ai_insight",
+      "bucket": "energy-market-lake-<aws-account-id>-20260405",
+      "key": "curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260605T213354Z-88068c72/payload.json",
+      "head": {
+        "CacheControl": null,
+        "ContentLength": 1399,
+        "ContentType": "application/json",
+        "ETag": "\"38469a868abc93f9ebd641b697f0d284\"",
+        "LastModified": "2026-06-05T21:34:01+00:00",
+        "ServerSideEncryption": "AES256",
+        "VersionId": null
+      }
+    },
+    {
+      "artifact": "dashboard_snapshot_latest",
+      "bucket": "energy-market-dashboard-public-<aws-account-id>-20260511",
+      "key": "dashboard_snapshot_v1.json",
+      "head": {
+        "CacheControl": null,
+        "ContentLength": 9246,
+        "ContentType": "application/json",
+        "ETag": "\"2c239d74ed726990ec7322b7fe6228c9\"",
+        "LastModified": "2026-06-05T21:34:01+00:00",
+        "ServerSideEncryption": "AES256",
+        "VersionId": "KByeeyWC.YWMJOzJ6OGYvlIn8xN7Et2f"
+      }
+    },
+    {
+      "artifact": "dashboard_snapshot_immutable",
+      "bucket": "energy-market-dashboard-public-<aws-account-id>-20260511",
+      "key": "snapshots/run_id=ai-insight-20260605T213354Z-88068c72/dashboard_snapshot_v1.json",
+      "head": {
+        "CacheControl": null,
+        "ContentLength": 9246,
+        "ContentType": "application/json",
+        "ETag": "\"2c239d74ed726990ec7322b7fe6228c9\"",
+        "LastModified": "2026-06-05T21:34:01+00:00",
+        "ServerSideEncryption": "AES256",
+        "VersionId": "dnb524jqrNZW8OpNdG2fBBd5DWyfZ3Ty"
+      }
+    }
+  ]
+}

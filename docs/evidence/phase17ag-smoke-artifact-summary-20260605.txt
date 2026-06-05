@@ -1,0 +1,8 @@
+Phase 17AG artifact summary
+run_id=ai-insight-20260605T213354Z-88068c72
+energy_input=curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260605T213354Z-88068c72/payload.json size=633 etag="4dbde250f6b444a70fb5eda69db16496"
+news_summary=curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260605T213354Z-88068c72/payload.json size=14079 etag="8da113a1af359340dfbce81e806df88e"
+ai_input_bundle=curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260605T213354Z-88068c72/payload.json size=15876 etag="45e4cedab11b47d08bf8aa2ee5afd583"
+ai_insight=curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260605T213354Z-88068c72/payload.json size=1399 etag="38469a868abc93f9ebd641b697f0d284"
+dashboard_snapshot_latest=dashboard_snapshot_v1.json size=9246 etag="2c239d74ed726990ec7322b7fe6228c9"
+dashboard_snapshot_immutable=snapshots/run_id=ai-insight-20260605T213354Z-88068c72/dashboard_snapshot_v1.json size=9246 etag="2c239d74ed726990ec7322b7fe6228c9"
