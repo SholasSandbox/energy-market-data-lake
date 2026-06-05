@@ -1,0 +1,20 @@
+{
+    "Id": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+    "Name": "Managed-CachingOptimized",
+    "DefaultTTL": 86400,
+    "MaxTTL": 31536000,
+    "MinTTL": 1,
+    "ParametersInCacheKeyAndForwardedToOrigin": {
+        "EnableAcceptEncodingGzip": true,
+        "EnableAcceptEncodingBrotli": true,
+        "HeadersConfig": {
+            "HeaderBehavior": "none"
+        },
+        "CookiesConfig": {
+            "CookieBehavior": "none"
+        },
+        "QueryStringsConfig": {
+            "QueryStringBehavior": "none"
+        }
+    }
+}
