@@ -169,6 +169,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AH verifies dashboard cache state read-only: S3 latest and the
   immutable Phase 17AG CloudFront path are healthy, while the normal
   CloudFront latest path still serves the cached Phase 17AA snapshot.
+- Phase 17AI decides that the next cache-resolution step should be a
+  single-path CloudFront invalidation candidate for `/dashboard_snapshot_v1.json`
+  only, but does not execute it automatically.
 
 ### Deferred AWS Extension
 
@@ -793,3 +796,6 @@ These are historical references, not the current delivery path.
 - Phase 17AH confirms that cache state: the immutable Phase 17AG path is
   healthy, but the normal CloudFront latest path remains stale, so any
   invalidation or wait/recheck choice is a separate decision.
+- Phase 17AI chooses the controlled invalidation path as the go-candidate
+  because the latest S3 object is already correct and the active CloudFront
+  policy can keep the stale latest response cached for the default TTL.
