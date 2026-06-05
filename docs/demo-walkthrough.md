@@ -432,3 +432,5 @@ Hiring signal:
 - Phase 17AI makes the cache-resolution decision only: a single-path
   CloudFront invalidation for `/dashboard_snapshot_v1.json` is the candidate,
   but it still requires explicit execution approval.
+- Phase 17AJ executes the approved single-path invalidation and verifies the
+  normal latest and immutable Phase 17AG snapshot paths now match.

@@ -2649,11 +2649,78 @@ Next implementation slice:
   enablement, S3 writes, static-site publish, and broad invalidations out of
   scope
 
+### Phase 17AJ: Controlled Dashboard Latest Cache Invalidation
+
+Goal: resolve the stale normal CloudFront latest snapshot path by executing
+only the explicitly approved Phase 17AI invalidation path.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17aj-controlled-dashboard-latest-cache-invalidation-20260605.md`
+- `docs/evidence/phase17aj-cache-invalidation-aws-identity-sanitized-20260605.txt`
+- `docs/evidence/phase17aj-pre-invalidation-cloudfront-distribution-20260605.json`
+- `docs/evidence/phase17aj-pre-invalidation-latest-snapshot-head-20260605.json`
+- `docs/evidence/phase17aj-pre-invalidation-immutable-snapshot-head-20260605.json`
+- `docs/evidence/phase17aj-pre-invalidation-latest-http-check-20260605.txt`
+- `docs/evidence/phase17aj-pre-invalidation-immutable-http-check-20260605.txt`
+- `docs/evidence/phase17aj-pre-invalidation-dashboard-routes-http-check-20260605.txt`
+- `docs/evidence/phase17aj-cache-invalidation-create-20260605.json`
+- `docs/evidence/phase17aj-cache-invalidation-id-20260605.txt`
+- `docs/evidence/phase17aj-cache-invalidation-status-20260605.json`
+- `docs/evidence/phase17aj-post-invalidation-latest-http-check-20260605.txt`
+- `docs/evidence/phase17aj-post-invalidation-immutable-http-check-20260605.txt`
+- `docs/evidence/phase17aj-post-invalidation-latest-snapshot-head-20260605.json`
+- `docs/evidence/phase17aj-post-invalidation-schedule-state-20260605.json`
+- `docs/evidence/phase17aj-post-invalidation-recent-executions-20260605.json`
+- `docs/evidence/phase17aj-post-invalidation-terraform-nochange-20260605.txt`
+- `docs/evidence/phase17aj-cache-invalidation-summary-20260605.txt`
+
+Result:
+
+- one CloudFront invalidation was created after explicit approval
+- invalidation ID: `I3IV0NIU4E4H7RQCPW0WGCKFTG`
+- invalidation status: `Completed`
+- invalidation path count: `1`
+- invalidation path: `/dashboard_snapshot_v1.json`
+- no `/*`, static assets, immutable snapshot paths, S3 prefixes, or additional
+  paths were invalidated
+- normal CloudFront latest path changed from cached SHA-256
+  `d4806fbbd0a2045ad1bc79c511601ad5f342ebe8a12fe276448cec1b6fb1d515` to
+  Phase 17AG SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- immutable Phase 17AG CloudFront path still serves the Phase 17AG SHA-256
+- EventBridge schedule remains `DISABLED`
+- recent Step Functions evidence still shows Phase 17AG as the latest
+  execution
+- safe root Terraform plan with CloudFront and managed workflow flags preserved
+  reports `No changes`
+
+Red-green evidence:
+
+- Red: normal CloudFront latest served the stale Phase 17AA cached snapshot
+  after the Phase 17AG workflow published S3 latest.
+- Green: Phase 17AJ invalidated only `/dashboard_snapshot_v1.json` and verified
+  normal latest now serves the Phase 17AG snapshot.
+- Regression: no workflow execution, no Bedrock invocation, no S3 write, no
+  Terraform apply, no schedule enablement, no broad invalidation, schedules
+  disabled, and Terraform no-change with live preservation flags.
+
+Next implementation slice:
+
+- Phase 17AK: managed workflow post-cache demo verification
+- keep the next slice read-only
+- verify hosted dashboard routes plus latest and immutable Phase 17AG snapshot
+  paths after cache resolution
+- keep Step Functions execution, Bedrock invocation, Terraform apply, schedule
+  enablement, S3 writes, static-site publish, and CloudFront invalidation out
+  of scope
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AI dashboard cache resolution decision.
-2. Plan Phase 17AJ as controlled single-path CloudFront invalidation execution,
-   only after explicit approval.
+1. Review and merge Phase 17AJ controlled dashboard latest cache invalidation.
+2. Plan Phase 17AK as read-only post-cache demo verification.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
