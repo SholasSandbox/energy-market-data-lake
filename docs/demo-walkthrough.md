@@ -426,3 +426,6 @@ Hiring signal:
   immutable workflow snapshot is healthy and source labels are public-safe, but
   the normal CloudFront latest path still needs cache verification before it is
   treated as refreshed.
+- Phase 17AH verifies the cache read-only: the immutable Phase 17AG snapshot is
+  healthy, while the normal CloudFront latest path still serves the cached
+  Phase 17AA snapshot.
