@@ -1,0 +1,6 @@
+{
+    "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures",
+    "SubscriptionsConfirmed": "0",
+    "SubscriptionsPending": "0",
+    "SubscriptionsDeleted": "0"
+}

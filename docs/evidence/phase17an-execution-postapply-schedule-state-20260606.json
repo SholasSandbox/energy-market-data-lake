@@ -1,0 +1,7 @@
+{
+    "Name": "energy-market-ai-orchestration-schedule",
+    "State": "DISABLED",
+    "ScheduleExpression": "cron(30 7 * * ? *)",
+    "Arn": "arn:aws:events:eu-west-2:<account-id>:rule/energy-market-ai-orchestration-schedule",
+    "Description": "Scheduled deterministic AI insight orchestration trigger."
+}

@@ -1,0 +1,10 @@
+{
+    "subscriptions": [
+        {
+            "Protocol": "email",
+            "SubscriptionArn": "Deleted",
+            "Endpoint": "<alert-email>",
+            "Owner": "<account-id>"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "subscriptions": [
+        {
+            "Protocol": "email",
+            "SubscriptionArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures:85eab26a-11db-476b-acc5-aca171046265",
+            "Endpoint": "<alert-email>",
+            "Owner": "<account-id>"
+        }
+    ]
+}
