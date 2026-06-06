@@ -3105,11 +3105,86 @@ Next implementation slice:
   apply, S3 writes, static-site publish, and CloudFront invalidation out of
   scope until explicitly approved
 
+### Phase 17AO: SNS Subscription Correction Preflight
+
+Goal: decide how to correct the inactive SNS email subscription path before any
+managed workflow schedule enablement discussion resumes.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ao-sns-subscription-correction-preflight-20260606.md`
+- `docs/evidence/phase17ao-sns-correction-aws-identity-sanitized-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-topic-sanitized-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-subscriptions-by-topic-sanitized-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-subscriptions-global-sanitized-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-direct-subscription-attributes-sanitized-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-terraform-state-subscription-20260606.txt`
+- `docs/evidence/phase17ao-sns-correction-schedule-state-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-recent-executions-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-current-root-plan-20260606.txt`
+- `docs/evidence/phase17ao-sns-correction-remove-email-plan-20260606.txt`
+- `docs/evidence/phase17ao-sns-correction-replace-email-plan-20260606.txt`
+
+Result:
+
+- no Terraform apply, SNS subscribe or unsubscribe call, mailbox resubscribe
+  click, SNS test publish, Step Functions execution, Bedrock invocation,
+  schedule enablement, S3 write, CloudFront invalidation, static-site rebuild,
+  or dashboard publish was performed
+- failure topic still exists
+- topic attributes report `SubscriptionsConfirmed: 0` and
+  `SubscriptionsPending: 0`
+- SNS list evidence shows the accepted email endpoint as
+  `SubscriptionArn: Deleted`
+- direct subscription attributes for the Terraform-tracked ARN still report
+  `PendingConfirmation=false`
+- Terraform still tracks
+  `aws_sns_topic_subscription.ai_orchestration_failure_email[0]`
+- normal root plan with the accepted email variable reports `No changes`
+- remove-email candidate plan reports
+  `Plan: 0 to add, 0 to change, 1 to destroy`
+- replace-email candidate plan reports
+  `Plan: 1 to add, 0 to change, 1 to destroy`
+- EventBridge schedule remains `DISABLED`
+
+Decision:
+
+- schedule enablement remains **no-go**
+- do not treat the current SNS subscription as alert-ready
+- do not use the mailbox `Resubscribe` link as the primary correction path
+- preferred correction is a controlled Terraform replacement of
+  `aws_sns_topic_subscription.ai_orchestration_failure_email[0]`, only after
+  explicit approval
+
+Red-green evidence:
+
+- Red: Phase 17AN produced unsubscribe confirmations instead of the expected
+  alert and current SNS topic/list evidence still shows no confirmed
+  subscription.
+- Green: Terraform can express a narrow one-destroy/one-add replacement for
+  the single email subscription while schedules remain disabled.
+- Regression: no apply, no workflow execution, no Bedrock invocation, no test
+  publish, no schedule enablement, no S3 write, and no dashboard publish
+  occurred.
+
+Next implementation slice:
+
+- Phase 17AO execution substate: controlled SNS email subscription replacement
+  apply and confirmation
+- require explicit approval before any Terraform apply
+- keep schedules disabled and do not run the managed workflow
+- after replacement, confirm the subscription from the mailbox, verify SNS
+  topic/list evidence converges to one real subscription ARN, send one approved
+  test publish, and stop if the mailbox receives another unsubscribe
+  confirmation
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AN SNS email subscription apply execution.
-2. Plan Phase 17AO as SNS subscription correction preflight,
-   decision-only/no-apply.
+1. Review and merge Phase 17AO SNS subscription correction preflight.
+2. Decide whether to approve the Phase 17AO execution substate for a controlled
+   Terraform subscription replacement and mailbox confirmation.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
