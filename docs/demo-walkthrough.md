@@ -442,3 +442,6 @@ Hiring signal:
 - Phase 17AM completes the schedule enablement preflight: the candidate plan is
   a single EventBridge rule state change, but schedule enablement remains no-go
   because the failure notification topic has no evidenced subscriber.
+- Phase 17AN keeps the demo path manual-only while preparing alerting: the
+  accepted email subscription is a one-add Terraform candidate, stop controls
+  are documented, and schedules remain disabled.
