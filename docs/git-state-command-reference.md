@@ -41,7 +41,55 @@ git switch -c feature/name-of-work
 git status --short --branch
 ```
 
-## 3. Review And Commit A Completed Slice
+## 3. State, Boundary, And Fence
+
+Use this language when a slice needs a clean handoff.
+
+A **state** is the durable resting condition of the project after a phase. For
+example: managed workflow routing is deployed, the dashboard is healthy, and
+schedules remain disabled.
+
+A **transition** is the move from one state to another. For example:
+manual-only managed workflow operation moves toward schedule enablement
+preflight.
+
+A **boundary** is the scoped slice of work allowed for that transition. For
+example: schedule enablement preflight is decision-only and no-apply.
+
+The **fence** is the practical safety contract around the boundary. It lists
+what must not be crossed by accident. For example:
+
+- no Terraform apply
+- no EventBridge schedule enablement
+- no Step Functions execution
+- no Bedrock invocation
+- no S3 write
+- no CloudFront invalidation
+
+When standing at a boundary, confirm:
+
+- current state
+- next state
+- actions allowed inside the slice
+- actions outside the fence
+- evidence that proves the next state
+- stop condition if the evidence does not support moving forward
+
+Long AWS/evidence slices should also leave a token-risk handoff before a
+context limit becomes likely:
+
+```text
+Current state:
+Branch:
+Committed/pushed:
+PR:
+Evidence:
+Clean/dirty tree:
+Next safe action:
+Do not do:
+```
+
+## 4. Review And Commit A Completed Slice
 
 ```bash
 git status --short --branch
@@ -63,7 +111,7 @@ Common commit prefixes:
 - `docs:` for documentation and diagram-only changes.
 - `chore:` for maintenance.
 
-## 4. Push A Feature Branch
+## 5. Push A Feature Branch
 
 ```bash
 git push -u origin HEAD
@@ -76,7 +124,7 @@ Expected clean pushed branch:
 ## feature/name-of-work...origin/feature/name-of-work
 ```
 
-## 5. Check PR And Merge Status
+## 6. Check PR And Merge Status
 
 List PRs for the current branch:
 
@@ -94,7 +142,7 @@ gh pr view "$(git branch --show-current)" \
 Use Codex to generate PR titles, bodies, and merge-path commentary when the PR
 needs a good narrative.
 
-## 6. Merge A Branch Locally
+## 7. Merge A Branch Locally
 
 Use this only when you are intentionally merging locally instead of using the
 GitHub PR merge button.
@@ -153,7 +201,7 @@ git branch -d feature/name-of-work
 git push origin --delete feature/name-of-work
 ```
 
-## 7. After A PR Is Merged
+## 8. After A PR Is Merged
 
 ```bash
 git switch main
@@ -171,7 +219,7 @@ Expected final state:
 ## main...origin/main
 ```
 
-## 8. Useful Safety Checks
+## 9. Useful Safety Checks
 
 Show branches already merged into local `main`:
 

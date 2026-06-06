@@ -1,0 +1,13 @@
+Phase 17AM schedule preflight cost and frequency summary
+schedule_expression=cron(30 7 * * ? *)
+current_schedule_state=DISABLED
+candidate_frequency=once_daily
+estimated_direct_model_cost_per_run_usd=0.00132618
+estimate_basis=Phase 17AG and Phase 17AA controlled managed workflow smoke cost summaries
+estimated_direct_model_cost_daily_usd=0.00132618
+estimated_direct_model_cost_30_day_usd=0.03978540
+estimated_direct_model_cost_31_day_usd=0.04111158
+previous_practical_one_run_budget_cap_usd=0.10
+manual_retries_allowed_by_phase17am=0
+schedule_enablement_performed=false
+notes=Estimate covers direct Bedrock/Mistral model cost only. It excludes nominal Step Functions, Lambda, S3, CloudFront, and log costs. Scheduled operation would make the cost recurring and should not proceed without explicit stop criteria and failure notification posture.

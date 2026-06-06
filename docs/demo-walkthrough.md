@@ -439,3 +439,6 @@ Hiring signal:
   proof are all healthy.
 - Phase 17AL keeps that state manual-only: the managed workflow is proven and
   demo-ready, but schedules stay disabled until a dedicated operating preflight.
+- Phase 17AM completes the schedule enablement preflight: the candidate plan is
+  a single EventBridge rule state change, but schedule enablement remains no-go
+  because the failure notification topic has no evidenced subscriber.

@@ -2853,10 +2853,92 @@ Next implementation slice:
   apply, S3 writes, static-site publish, and CloudFront invalidation out of
   scope until explicitly approved
 
+### Phase 17AM: Managed Workflow Schedule Enablement Preflight
+
+Goal: decide whether the proven manual managed workflow is ready to move toward
+EventBridge schedule enablement.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17am-managed-workflow-schedule-enablement-preflight-20260606.md`
+- `docs/evidence/phase17am-schedule-preflight-aws-identity-sanitized-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-lambda-config-sanitized-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-state-machine-sanitized-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-schedule-state-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-schedule-targets-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-failure-subscriptions-sanitized-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-recent-executions-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-dashboard-http-check-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-current-terraform-nochange-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-enable-candidate-plan-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-cost-frequency-summary-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-readiness-summary-20260606.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, IAM mutation, Lambda deploy, Step Functions deploy, S3 write,
+  CloudFront invalidation, static-site rebuild, or dashboard publish was
+  performed
+- Lambda remains active in managed mode with Mistral configuration
+- Step Functions remains active and routes through `MergeAiInsightManaged`,
+  then `PublishDashboardSnapshot`
+- latest execution remains the successful Phase 17AG smoke
+- EventBridge schedule remains `DISABLED`
+- hosted `dashboard_snapshot_v1.json` returns `200`
+- current dashboard snapshot remains SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- dashboard source labels remain public-safe with `0` private references
+- current preserved Terraform plan reports `No changes`
+- schedule-enable candidate plan is narrow:
+  `Plan: 0 to add, 1 to change, 0 to destroy`
+- candidate plan changes only
+  `aws_cloudwatch_event_rule.ai_orchestration_schedule[0]`
+  from `DISABLED` to `ENABLED`
+- estimated direct model cost for once-daily operation is approximately
+  `$0.03978540` for 30 days
+- failure SNS topic currently has `0` subscriptions
+
+Decision:
+
+- immediate schedule enablement is **no-go**
+- the candidate Terraform plan is technically clean, but recurring automation
+  should not start without an evidenced failure notification receiver, explicit
+  stop criteria, and a schedule-disable rollback posture
+
+Red-green evidence:
+
+- Red: Phase 17AL required cost, alerting, rollback, freshness, plan shape, and
+  stop-criteria review before schedule enablement.
+- Green: Phase 17AM proves the current manual posture is stable and the
+  schedule-enable candidate plan is narrow and no-destroy.
+- Regression: no workflow execution, no Bedrock invocation, no S3 write, no
+  Terraform apply, no schedule enablement, no CloudFront invalidation,
+  schedules disabled, and dashboard source labels remain public-safe.
+
+Next implementation slice:
+
+- Phase 17AN: managed workflow failure notification and stop-control preflight
+- keep the next slice decision-only/no-apply
+- decide whether to add or verify a failure notification receiver, document
+  the schedule-disable rollback command, define stop criteria, and decide
+  whether a later schedule enablement execution boundary is justified
+- use `docs/phase-17-managed-ai-refresh-preflight.md` for the accepted
+  Phase 17AN recommendation: reuse `energy-market-ai-orchestration-failures`,
+  subscribe the accepted alert mailbox, keep email-only alerting for now, and
+  defer CloudWatch alarms
+- keep schedule enablement, workflow execution, Bedrock invocation, Terraform
+  apply, S3 writes, static-site publish, and CloudFront invalidation out of
+  scope until explicitly approved
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AL managed workflow operating decision.
-2. Plan Phase 17AM as schedule enablement preflight, decision-only/no-apply.
+1. Review and merge Phase 17AM managed workflow schedule enablement preflight.
+2. Plan Phase 17AN as failure notification and stop-control preflight,
+   decision-only/no-apply.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.

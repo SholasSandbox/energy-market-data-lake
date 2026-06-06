@@ -1,0 +1,9 @@
+{
+    "targets": [
+        {
+            "Id": "terraform-20260511113907264200000002",
+            "Arn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+            "RoleArn": "arn:aws:iam::<account-id>:role/energy-market-ai-orchestration-events-role"
+        }
+    ]
+}
