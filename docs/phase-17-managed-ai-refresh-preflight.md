@@ -1753,3 +1753,55 @@ Recommended later boundary:
 - add a later CloudWatch alarm preflight for Step Functions failures, Lambda
   errors/throttles, and EventBridge failed invocations before treating
   scheduled operation as settled
+
+## Phase 17AN SNS Email And Stop-Control Preflight Result
+
+Phase 17AN reviewed the accepted email receiver and stop-control posture before
+any managed workflow schedule enablement.
+
+Evidence:
+
+- `docs/evidence/phase17an-managed-workflow-sns-stop-control-preflight-20260606.md`
+- `docs/evidence/phase17an-sns-stop-preflight-failure-topic-sanitized-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-current-subscriptions-sanitized-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-schedule-state-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-lambda-config-sanitized-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-recent-executions-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-dashboard-http-check-20260606.txt`
+- `docs/evidence/phase17an-sns-stop-preflight-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-current-terraform-nochange-20260606.txt`
+- `docs/evidence/phase17an-sns-stop-preflight-subscription-candidate-plan-20260606.txt`
+- `docs/evidence/phase17an-sns-stop-preflight-stop-control-runbook-20260606.md`
+- `docs/evidence/phase17an-sns-stop-preflight-readiness-summary-20260606.txt`
+
+Result:
+
+- no Terraform apply, SNS subscription creation, SNS confirmation, test
+  publish, Bedrock invocation, Step Functions execution, schedule enablement,
+  S3 write, CloudFront invalidation, static-site rebuild, or dashboard publish
+  was performed
+- existing failure topic is `energy-market-ai-orchestration-failures`
+- failure topic currently has `0` confirmed subscriptions and `0` pending
+  subscriptions
+- EventBridge schedule remains `DISABLED`
+- hosted `dashboard_snapshot_v1.json` returns `200`
+- dashboard source labels remain public-safe with `0` private references
+- current preserved Terraform plan reports `No changes`
+- subscription candidate plan is narrow:
+  `Plan: 1 to add, 0 to change, 0 to destroy`
+- candidate resource is
+  `aws_sns_topic_subscription.ai_orchestration_failure_email[0]`
+- candidate endpoint is sanitized as `<alert-email>`
+- CloudWatch alarms remain deferred
+
+Decision:
+
+- go-candidate for a controlled SNS email subscription apply and mailbox
+  confirmation
+- no-go for schedule enablement
+- next execution must keep schedules disabled and should only apply the SNS
+  email subscription, complete mailbox confirmation, verify the confirmed
+  subscription ARN, and send one test publish
+
+Recommended next slice: **Phase 17AN execution substate: controlled SNS email
+subscription apply and confirmation**, only after explicit approval.
