@@ -189,9 +189,9 @@ Region: **eu-west-2 (London)**
   email subscription plan is one add, stop-control commands are documented,
   and schedule enablement remains blocked.
 - Phase 17AN execution applies the SNS email subscription only: Terraform adds
-  one resource and direct subscription attributes show not-pending, but SNS
-  list/topic counters remain inconsistent, so schedule enablement stays blocked
-  pending alert receipt and subscription consistency verification.
+  one resource, but the operator receives unsubscribe confirmations rather than
+  the test alert and SNS list/topic counters show no active subscription, so
+  schedule enablement stays blocked pending corrective subscription preflight.
 
 ### Deferred AWS Extension
 
@@ -834,5 +834,6 @@ These are historical references, not the current delivery path.
   adding the accepted email receiver is a narrow Terraform candidate, but it
   still requires explicit apply, mailbox confirmation, and a test publish.
 - Phase 17AN execution applies that email subscription and sends one test
-  publish, but keeps the operating posture conservative because SNS list/topic
-  evidence has not yet settled cleanly.
+  publish, but the mailbox receives unsubscribe confirmations instead of the
+  test alert, so the next state must correct the subscription path before any
+  schedule discussion resumes.
