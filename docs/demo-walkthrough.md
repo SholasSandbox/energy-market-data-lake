@@ -445,3 +445,7 @@ Hiring signal:
 - Phase 17AN keeps the demo path manual-only while preparing alerting: the
   accepted email subscription is a one-add Terraform candidate, stop controls
   are documented, and schedules remain disabled.
+- Phase 17AN execution adds the email subscription without touching the
+  workflow schedule; because SNS list/topic counters are inconsistent after the
+  test publish, the demo story remains manual-only until a read-only alert
+  consistency check passes.

@@ -1,0 +1,13 @@
+{
+    "Attributes": {
+        "SubscriptionPrincipal": "arn:aws:iam::<account-id>:user/IAMUser1",
+        "Owner": "<account-id>",
+        "RawMessageDelivery": "false",
+        "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures",
+        "Endpoint": "<alert-email>",
+        "Protocol": "email",
+        "PendingConfirmation": "false",
+        "ConfirmationWasAuthenticated": "false",
+        "SubscriptionArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures:85eab26a-11db-476b-acc5-aca171046265"
+    }
+}

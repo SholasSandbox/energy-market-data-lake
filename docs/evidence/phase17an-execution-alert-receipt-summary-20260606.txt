@@ -1,0 +1,6 @@
+Phase 17AN alert receipt summary
+test_publish_performed=true
+test_publish_message_id=d11838ae-85ca-5fa1-8dff-5a30ea0a7700
+test_publish_subject=Energy market SNS alert test
+operator_mailbox_receipt_confirmed=pending_user_response
+notes=AWS accepted the SNS publish call. Human mailbox receipt confirmation is external to AWS CLI evidence and should be updated after the operator confirms receipt.
