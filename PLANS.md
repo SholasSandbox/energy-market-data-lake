@@ -3056,9 +3056,11 @@ Result:
   `Apply complete! Resources: 1 added, 0 changed, 0 destroyed.`
 - applied resource was
   `aws_sns_topic_subscription.ai_orchestration_failure_email[0]`
-- direct subscription attributes report `PendingConfirmation=false` and a real
-  subscription ARN
+- direct subscription attributes reported `PendingConfirmation=false` and a
+  real subscription ARN
 - one SNS test publish was sent and returned a `MessageId`
+- operator mailbox report shows two AWS unsubscribe confirmation emails were
+  received instead of the expected test alert
 - EventBridge schedule remains `DISABLED`
 - no Step Functions execution, Bedrock invocation, S3 write, CloudFront
   invalidation, static-site rebuild, or dashboard publish occurred
@@ -3072,14 +3074,14 @@ Alert-readiness caveat:
 
 - `list-subscriptions-by-topic` showed `SubscriptionArn: Deleted`
 - topic attributes showed `SubscriptionsConfirmed: 0`
-- mailbox receipt confirmation is pending operator response
+- mailbox receipt confirms unsubscribe notices, not a usable alert
 - CloudTrail lookup did not return recent `ConfirmSubscription` or
   `Unsubscribe` events in the sampled evidence
 
 Decision:
 
 - SNS subscription apply succeeded
-- alert-readiness is not fully settled
+- alert-readiness is inactive for operating purposes
 - schedule enablement remains **no-go**
 
 Red-green evidence:
@@ -3088,18 +3090,17 @@ Red-green evidence:
 - Green: Terraform applied exactly one SNS email subscription and direct
   subscription attributes report `PendingConfirmation=false`.
 - Yellow: SNS list/topic summary APIs show deleted or zero-subscription state,
-  and mailbox receipt remains pending operator confirmation.
+  and the mailbox received unsubscribe confirmations instead of the test alert.
 - Regression: no schedule enablement, no workflow execution, no Bedrock
   invocation, no S3 write, no CloudFront invalidation, schedules disabled, and
   dashboard source labels remain public-safe.
 
 Next implementation slice:
 
-- Phase 17AO: SNS alert receipt and subscription consistency verification
-- keep the next slice read-only
-- verify mailbox receipt, recheck SNS topic/list/subscription attributes, and
-  decide whether the alert path is settled enough for a later schedule
-  enablement decision
+- Phase 17AO: SNS subscription correction preflight
+- keep the next slice decision-only/no-apply
+- decide how to correct the inactive email subscription path, including whether
+  to resubscribe out-of-band or adjust Terraform subscription handling
 - keep schedule enablement, workflow execution, Bedrock invocation, Terraform
   apply, S3 writes, static-site publish, and CloudFront invalidation out of
   scope until explicitly approved
@@ -3107,8 +3108,8 @@ Next implementation slice:
 ## Suggested Immediate Next Steps
 
 1. Review and merge Phase 17AN SNS email subscription apply execution.
-2. Plan Phase 17AO as read-only SNS alert receipt and subscription consistency
-   verification.
+2. Plan Phase 17AO as SNS subscription correction preflight,
+   decision-only/no-apply.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.

@@ -1833,8 +1833,10 @@ Result:
   `Apply complete! Resources: 1 added, 0 changed, 0 destroyed.`
 - applied resource was
   `aws_sns_topic_subscription.ai_orchestration_failure_email[0]`
-- direct subscription attributes report `PendingConfirmation=false`
+- direct subscription attributes reported `PendingConfirmation=false`
 - one SNS test publish was sent and returned a `MessageId`
+- operator mailbox report shows two AWS unsubscribe confirmation emails were
+  received instead of the expected test alert
 - EventBridge schedule remains `DISABLED`
 - no Step Functions execution, Bedrock invocation, S3 write, CloudFront
   invalidation, static-site rebuild, or dashboard publish occurred
@@ -1846,14 +1848,13 @@ Yellow evidence:
 
 - `list-subscriptions-by-topic` showed `SubscriptionArn: Deleted`
 - topic attributes showed `SubscriptionsConfirmed: 0`
-- mailbox receipt confirmation remains outside CLI evidence until the operator
-  confirms receipt
+- mailbox receipt confirms unsubscribe notices, not a usable alert path
 
 Decision:
 
 - SNS subscription apply succeeded
-- alert-readiness is not fully settled
+- alert-readiness is inactive for operating purposes
 - schedule enablement remains **no-go**
 
-Recommended next slice: **Phase 17AO SNS alert receipt and subscription
-consistency verification**, read-only.
+Recommended next slice: **Phase 17AO SNS subscription correction preflight**,
+decision-only/no-apply.

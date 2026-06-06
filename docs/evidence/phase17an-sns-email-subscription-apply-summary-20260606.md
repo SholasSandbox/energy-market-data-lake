@@ -88,13 +88,14 @@ CloudTrail lookup did not return recent `ConfirmSubscription` or `Unsubscribe`
 events in the sampled evidence.
 
 One SNS test publish was sent and AWS returned a `MessageId`. Human mailbox
-receipt confirmation is still external to CLI evidence and should be recorded
-after operator confirmation.
+receipt did not confirm the alert path: the operator reported receiving two
+`AWS Notification - Unsubscribe Confirmation` emails instead of the expected
+test alert.
 
 ## Decision
 
-Decision: **SNS subscription apply succeeded, but alert-readiness remains
-not fully settled**.
+Decision: **SNS subscription apply succeeded, but the alert path is inactive
+for operating purposes**.
 
 Schedule enablement remains **no-go**.
 
@@ -104,7 +105,8 @@ Rationale:
 - direct subscription attributes show the subscription is not pending
 - test publish was accepted by AWS
 - but SNS list/topic counters conflict with direct subscription attributes
-- the operator has not yet confirmed mailbox receipt in committed evidence
+- the operator received unsubscribe confirmations rather than the expected test
+  alert
 
 ## Red-Green Evidence
 
@@ -120,7 +122,7 @@ Green:
 Yellow:
 
 - SNS list/topic summary APIs still show a deleted or zero-subscription posture.
-- mailbox receipt confirmation is pending operator response.
+- mailbox receipt confirms unsubscribe notices, not a usable alert.
 
 Regression:
 
@@ -134,13 +136,12 @@ Regression:
 
 ## Next Boundary
 
-Recommended next slice: **Phase 17AO SNS alert receipt and subscription
-consistency verification**, read-only.
+Recommended next slice: **Phase 17AO SNS subscription correction preflight**,
+decision-only/no-apply.
 
-Phase 17AO should verify mailbox receipt, recheck SNS topic/list/subscription
-attributes, and decide whether the alert path is settled enough to consider a
-later schedule enablement decision. It should not enable schedules or run the
-workflow.
+Phase 17AO should decide how to correct the inactive email subscription path,
+including whether to resubscribe out-of-band or adjust Terraform subscription
+handling. It should not enable schedules or run the workflow.
 
 ## Proof Commands
 
