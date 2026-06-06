@@ -192,6 +192,10 @@ Region: **eu-west-2 (London)**
   one resource, but the operator receives unsubscribe confirmations rather than
   the test alert and SNS list/topic counters show no active subscription, so
   schedule enablement stays blocked pending corrective subscription preflight.
+- Phase 17AO completes that correction preflight: normal Terraform planning
+  does not repair the inactive SNS subscription, while a controlled replacement
+  plan is narrow, so schedule enablement remains blocked until an approved
+  subscription replacement and mailbox test succeed.
 
 ### Deferred AWS Extension
 
@@ -837,3 +841,7 @@ These are historical references, not the current delivery path.
   publish, but the mailbox receives unsubscribe confirmations instead of the
   test alert, so the next state must correct the subscription path before any
   schedule discussion resumes.
+- Phase 17AO decides that the correction should be Terraform-managed rather
+  than a mailbox `Resubscribe` click: replace the single SNS email subscription
+  only after explicit approval, keep schedules disabled, and verify a real
+  alert before schedule enablement is reconsidered.
