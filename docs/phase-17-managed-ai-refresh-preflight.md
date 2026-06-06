@@ -1805,3 +1805,56 @@ Decision:
 
 Recommended next slice: **Phase 17AN execution substate: controlled SNS email
 subscription apply and confirmation**, only after explicit approval.
+
+## Phase 17AN SNS Email Subscription Apply Result
+
+Phase 17AN execution applied the accepted SNS email subscription candidate while
+keeping the managed workflow schedule disabled.
+
+Evidence:
+
+- `docs/evidence/phase17an-sns-email-subscription-apply-summary-20260606.md`
+- `docs/evidence/phase17an-execution-terraform-apply-plan-20260606.txt`
+- `docs/evidence/phase17an-execution-terraform-apply-20260606.txt`
+- `docs/evidence/phase17an-execution-final-subscription-attributes-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-final-failure-topic-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-final-subscriptions-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-test-publish-20260606.json`
+- `docs/evidence/phase17an-execution-postconfirm-schedule-state-20260606.json`
+- `docs/evidence/phase17an-execution-postconfirm-recent-executions-20260606.json`
+- `docs/evidence/phase17an-execution-postconfirm-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17an-execution-postconfirm-terraform-nochange-20260606.txt`
+- `docs/evidence/phase17an-execution-alert-receipt-summary-20260606.txt`
+- `docs/evidence/phase17an-execution-subscription-state-summary-20260606.txt`
+
+Result:
+
+- Terraform apply completed successfully:
+  `Apply complete! Resources: 1 added, 0 changed, 0 destroyed.`
+- applied resource was
+  `aws_sns_topic_subscription.ai_orchestration_failure_email[0]`
+- direct subscription attributes reported `PendingConfirmation=false`
+- one SNS test publish was sent and returned a `MessageId`
+- operator mailbox report shows two AWS unsubscribe confirmation emails were
+  received instead of the expected test alert
+- EventBridge schedule remains `DISABLED`
+- no Step Functions execution, Bedrock invocation, S3 write, CloudFront
+  invalidation, static-site rebuild, or dashboard publish occurred
+- hosted dashboard snapshot remains healthy and public-safe
+- post-confirm Terraform plan with the accepted email variable preserved
+  reports `No changes`
+
+Yellow evidence:
+
+- `list-subscriptions-by-topic` showed `SubscriptionArn: Deleted`
+- topic attributes showed `SubscriptionsConfirmed: 0`
+- mailbox receipt confirms unsubscribe notices, not a usable alert path
+
+Decision:
+
+- SNS subscription apply succeeded
+- alert-readiness is inactive for operating purposes
+- schedule enablement remains **no-go**
+
+Recommended next slice: **Phase 17AO SNS subscription correction preflight**,
+decision-only/no-apply.

@@ -1,0 +1,24 @@
+Phase 17AN subscription state summary
+terraform_apply_performed=true
+terraform_apply_result=Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+applied_resource=aws_sns_topic_subscription.ai_orchestration_failure_email[0]
+subscription_protocol=email
+subscription_endpoint=<alert-email>
+terraform_postconfirm_plan=No changes
+direct_subscription_attributes_pending_confirmation=false
+direct_subscription_attributes_has_real_subscription_arn=true
+list_subscriptions_by_topic_status=Deleted
+topic_attributes_confirmed_count=0
+topic_attributes_pending_count=0
+cloudtrail_confirm_subscription_events_found=0
+cloudtrail_unsubscribe_events_found=0
+test_publish_performed=true
+operator_mailbox_received_unsubscribe_confirmations=2
+operator_mailbox_received_test_alert=false
+schedule_state=DISABLED
+workflow_execution_performed=false
+bedrock_invocation_performed=false
+dashboard_snapshot_sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+dashboard_private_reference_count=0
+decision=Apply succeeded, but the alert path is inactive for operating purposes: SNS list/topic summary evidence shows deleted or zero-subscription state and the operator received unsubscribe confirmations rather than the test alert. Keep schedule enablement blocked.
+next_recommended_boundary=Phase 17AO SNS subscription correction preflight, decision-only/no-apply.

@@ -1,0 +1,9 @@
+Phase 17AN operator mailbox report
+reported_by=operator
+reported_at=2026-06-06
+mailbox=<alert-email>
+received_unsubscribe_confirmation_count=2
+received_test_alert=false
+observed_subject=AWS Notification - Unsubscribe Confirmation
+observed_message_summary=AWS notification stated the subscription to energy-market-ai-orchestration-failures had been deactivated and offered a Resubscribe link.
+decision=Do not treat the Phase 17AN subscription apply as an active alert path. Keep schedule enablement blocked and move to a corrective subscription preflight.

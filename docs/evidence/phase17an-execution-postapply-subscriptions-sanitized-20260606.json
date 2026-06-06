@@ -1,0 +1,10 @@
+{
+    "subscriptions": [
+        {
+            "Protocol": "email",
+            "SubscriptionArn": "PendingConfirmation",
+            "Endpoint": "<alert-email>",
+            "Owner": "<account-id>"
+        }
+    ]
+}
