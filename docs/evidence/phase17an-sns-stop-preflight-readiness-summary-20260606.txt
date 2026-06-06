@@ -1,0 +1,21 @@
+Phase 17AN SNS email subscription and stop-control readiness summary
+failure_topic_name=energy-market-ai-orchestration-failures
+failure_topic_confirmed_subscriptions=0
+failure_topic_pending_subscriptions=0
+current_subscription_count=0
+accepted_alert_receiver_configured_in_candidate=true
+accepted_alert_receiver_evidence_value=<alert-email>
+current_preserved_plan=No changes
+subscription_candidate_plan=Plan: 1 to add, 0 to change, 0 to destroy
+candidate_resource=aws_sns_topic_subscription.ai_orchestration_failure_email[0]
+candidate_protocol=email
+candidate_endpoint=<alert-email>
+schedule_state=DISABLED
+schedule_enablement_in_candidate=false
+terraform_apply_performed=false
+sns_subscription_created=false
+sns_confirmation_completed=false
+test_publish_performed=false
+cloudwatch_alarms_deferred=true
+decision=go-candidate for explicit subscription apply and mailbox confirmation only; no-go for schedule enablement
+next_recommended_boundary=Phase 17AN execution substate: controlled SNS email subscription apply and confirmation, with schedule disabled.
