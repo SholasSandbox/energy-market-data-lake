@@ -2934,11 +2934,88 @@ Next implementation slice:
   apply, S3 writes, static-site publish, and CloudFront invalidation out of
   scope until explicitly approved
 
+### Phase 17AN: Managed Workflow SNS Email And Stop-Control Preflight
+
+Goal: add preflight proof for the accepted SNS email receiver and schedule
+stop-control posture before any managed workflow schedule enablement.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17an-managed-workflow-sns-stop-control-preflight-20260606.md`
+- `docs/evidence/phase17an-sns-stop-preflight-aws-identity-sanitized-20260606.txt`
+- `docs/evidence/phase17an-sns-stop-preflight-failure-topic-sanitized-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-current-subscriptions-sanitized-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-schedule-state-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-lambda-config-sanitized-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-recent-executions-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-dashboard-http-check-20260606.txt`
+- `docs/evidence/phase17an-sns-stop-preflight-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17an-sns-stop-preflight-current-terraform-nochange-20260606.txt`
+- `docs/evidence/phase17an-sns-stop-preflight-subscription-candidate-plan-20260606.txt`
+- `docs/evidence/phase17an-sns-stop-preflight-stop-control-runbook-20260606.md`
+- `docs/evidence/phase17an-sns-stop-preflight-readiness-summary-20260606.txt`
+
+Result:
+
+- no Terraform apply, SNS subscription creation, SNS confirmation, test
+  publish, Bedrock invocation, Step Functions execution, schedule enablement,
+  IAM mutation, Lambda deploy, Step Functions deploy, S3 write, CloudFront
+  invalidation, static-site rebuild, or dashboard publish was performed
+- failure topic `energy-market-ai-orchestration-failures` exists and remains
+  the correct topic to reuse
+- failure topic currently has `0` confirmed subscriptions and `0` pending
+  subscriptions
+- EventBridge schedule remains `DISABLED`
+- hosted `dashboard_snapshot_v1.json` returns `200`
+- current dashboard snapshot remains SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- dashboard source labels remain public-safe with `0` private references
+- current preserved Terraform plan reports `No changes`
+- accepted email receiver candidate plan is narrow:
+  `Plan: 1 to add, 0 to change, 0 to destroy`
+- candidate resource is
+  `aws_sns_topic_subscription.ai_orchestration_failure_email[0]`
+- candidate endpoint is sanitized as `<alert-email>`
+- stop-control runbook documents emergency schedule disablement and stop
+  criteria
+- CloudWatch alarms remain deferred
+
+Decision:
+
+- go-candidate for a controlled SNS email subscription apply and mailbox
+  confirmation
+- schedule enablement remains **no-go**
+- next execution must keep schedules disabled and should only apply the SNS
+  email subscription, complete mailbox confirmation, verify the confirmed
+  subscription ARN, and send one test publish
+
+Red-green evidence:
+
+- Red: Phase 17AM found the failure SNS topic had no subscriptions.
+- Green: Phase 17AN proves the accepted email receiver is a narrow Terraform
+  add and documents the schedule stop-control posture.
+- Regression: no Terraform apply, no SNS subscription creation, no SNS
+  confirmation, no test publish, no workflow execution, no Bedrock invocation,
+  no S3 write, no schedule enablement, no CloudFront invalidation, schedules
+  disabled, and dashboard source labels remain public-safe.
+
+Next implementation slice:
+
+- Phase 17AN execution substate: controlled SNS email subscription apply and
+  confirmation
+- require explicit approval before any Terraform apply
+- keep schedule enablement, workflow execution, Bedrock invocation, S3 writes,
+  static-site publish, and CloudFront invalidation out of scope
+- after apply, complete mailbox confirmation, verify confirmed subscription
+  ARN, send one test publish, and capture sanitized evidence
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AM managed workflow schedule enablement preflight.
-2. Plan Phase 17AN as failure notification and stop-control preflight,
-   decision-only/no-apply.
+1. Review and merge Phase 17AN SNS email and stop-control preflight.
+2. If approved, plan Phase 17AN execution substate as controlled SNS email
+   subscription apply and confirmation only.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.

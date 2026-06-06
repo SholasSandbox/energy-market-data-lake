@@ -219,6 +219,23 @@ Expected final state:
 ## main...origin/main
 ```
 
+Useful cleanup terms:
+
+- **local `main`**: the `main` branch in your working copy.
+- **`origin/main`**: your local remote-tracking reference for GitHub's `main`.
+- **sync local `main`**: switch to `main` and fast-forward it from
+  `origin/main`, usually with `git pull --ff-only origin main`.
+- **local branch**: a branch stored in your local repository, such as
+  `docs/phase17an-sns-email-stop-control-preflight`.
+- **remote branch**: a branch stored on GitHub, such as
+  `origin/docs/phase17an-sns-email-stop-control-preflight`.
+- **delete local branch**: remove the local branch with `git branch -d`.
+- **delete remote branch**: remove the GitHub branch with
+  `git push origin --delete`.
+- **remote-tracking ref**: your local cached reference to a remote branch.
+- **prune remote-tracking refs**: remove stale local references to remote
+  branches that no longer exist, usually with `git fetch --prune origin`.
+
 ## 9. Useful Safety Checks
 
 Show branches already merged into local `main`:

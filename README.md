@@ -184,6 +184,10 @@ Region: **eu-west-2 (London)**
 - Phase 17AM keeps schedule enablement no-go after the dedicated preflight:
   the candidate Terraform plan is narrow, but the failure SNS topic has no
   subscriptions, so recurring automation still lacks an evidenced alert path.
+- Phase 17AN turns the accepted alerting recommendation into a no-apply
+  preflight: the existing failure topic remains unsubscribed, the accepted
+  email subscription plan is one add, stop-control commands are documented,
+  and schedule enablement remains blocked.
 
 ### Deferred AWS Extension
 
@@ -822,3 +826,6 @@ These are historical references, not the current delivery path.
 - Phase 17AM completes that schedule enablement preflight and keeps schedule
   enablement blocked until failure notification and stop controls are
   evidenced.
+- Phase 17AN captures that failure notification and stop-control preflight:
+  adding the accepted email receiver is a narrow Terraform candidate, but it
+  still requires explicit apply, mailbox confirmation, and a test publish.

@@ -1,0 +1,22 @@
+{
+    "FunctionName": "energy-market-news-ai-orchestration",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
+    "Runtime": "python3.11",
+    "Handler": "news_ai_orchestration.lambda_handler",
+    "Timeout": 120,
+    "MemorySize": 512,
+    "LastModified": "2026-06-04T15:05:16.000+0000",
+    "CodeSha256": "V/PZH22YFXzyYarXT+dglN/JJ0CasL0G1zFqbVFk1Zc=",
+    "Environment": {
+        "Variables": {
+            "AI_ORCHESTRATION_MODE": "managed",
+            "BEDROCK_PROVIDER": "mistral",
+            "BEDROCK_MODEL_ID": "mistral.ministral-3-8b-instruct",
+            "BEDROCK_MAX_TOKENS": "1600",
+            "BEDROCK_TEMPERATURE": "0.2",
+            "DASHBOARD_BUCKET": "energy-market-dashboard-public-<account-id>-20260511",
+            "DASHBOARD_DATA_KEY": "dashboard/dashboard-data.json"
+        }
+    }
+}
