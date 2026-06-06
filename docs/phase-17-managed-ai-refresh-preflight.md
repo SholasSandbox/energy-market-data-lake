@@ -1613,3 +1613,56 @@ Decision:
 
 Recommended next slice: **Phase 17AM managed workflow schedule enablement
 preflight**, decision-only/no-apply.
+
+## Phase 17AM Managed Workflow Schedule Enablement Preflight Result
+
+Phase 17AM reviewed whether the proven manual managed workflow is ready to move
+toward EventBridge schedule enablement.
+
+Evidence:
+
+- `docs/evidence/phase17am-managed-workflow-schedule-enablement-preflight-20260606.md`
+- `docs/evidence/phase17am-schedule-preflight-lambda-config-sanitized-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-state-machine-sanitized-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-schedule-state-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-schedule-targets-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-failure-subscriptions-sanitized-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-recent-executions-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-dashboard-http-check-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17am-schedule-preflight-current-terraform-nochange-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-enable-candidate-plan-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-cost-frequency-summary-20260606.txt`
+- `docs/evidence/phase17am-schedule-preflight-readiness-summary-20260606.txt`
+
+Result:
+
+- no Bedrock invocation, Step Functions execution, Terraform apply, schedule
+  enablement, S3 write, CloudFront invalidation, static-site rebuild, or
+  dashboard publish was performed
+- Lambda remains active in managed mode
+- Step Functions remains active and routes through `MergeAiInsightManaged`,
+  then `PublishDashboardSnapshot`
+- latest execution remains the successful Phase 17AG smoke
+- EventBridge schedule remains `DISABLED`
+- hosted `dashboard_snapshot_v1.json` returns `200`
+- dashboard source labels remain public-safe with `0` private references
+- current preserved Terraform plan reports `No changes`
+- schedule-enable candidate plan is narrow:
+  `Plan: 0 to add, 1 to change, 0 to destroy`
+- candidate change is only
+  `aws_cloudwatch_event_rule.ai_orchestration_schedule[0]`
+  `state = "DISABLED" -> "ENABLED"`
+- direct model cost estimate for once-daily operation is approximately
+  `$0.03978540` for 30 days
+- failure SNS topic currently has `0` subscriptions
+
+Decision:
+
+- immediate schedule enablement is **no-go**
+- the clean candidate plan is not sufficient without an evidenced failure
+  notification receiver, explicit stop criteria, and a schedule-disable
+  rollback posture
+
+Recommended next slice: **Phase 17AN managed workflow failure notification and
+stop-control preflight**, decision-only/no-apply.

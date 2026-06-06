@@ -181,6 +181,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AL keeps the managed workflow as a manual-only proven path for now:
   immediate schedule enablement is no-go until a separate operating preflight
   reviews cost, alerting, rollback, freshness, and stop criteria.
+- Phase 17AM keeps schedule enablement no-go after the dedicated preflight:
+  the candidate Terraform plan is narrow, but the failure SNS topic has no
+  subscriptions, so recurring automation still lacks an evidenced alert path.
 
 ### Deferred AWS Extension
 
@@ -816,3 +819,6 @@ These are historical references, not the current delivery path.
   decisions.
 - Phase 17AL decides to preserve the proven manual operating posture and moves
   any schedule enablement toward a separate decision-only preflight.
+- Phase 17AM completes that schedule enablement preflight and keeps schedule
+  enablement blocked until failure notification and stop controls are
+  evidenced.

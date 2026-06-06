@@ -1,0 +1,13 @@
+Phase 17AM schedule enablement readiness summary
+current_schedule_state=DISABLED
+candidate_plan_shape=Plan: 0 to add, 1 to change, 0 to destroy
+candidate_plan_change=aws_cloudwatch_event_rule.ai_orchestration_schedule state DISABLED -> ENABLED
+current_preserved_plan=No changes
+managed_workflow_latest_execution=phase17ag-managed-workflow-post-refresh-smoke-20260605T213352Z
+managed_workflow_latest_execution_status=SUCCEEDED
+dashboard_snapshot_sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0
+dashboard_private_reference_count=0
+failure_sns_subscription_count=0
+schedule_enablement_decision=no-go
+primary_blocker=Failure notification topic has no subscriptions, so recurring automation would not have an evidenced human alert path.
+next_recommended_boundary=Phase 17AN managed workflow failure notification and stop-control preflight, decision-only/no-apply.
