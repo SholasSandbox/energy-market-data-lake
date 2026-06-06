@@ -2926,6 +2926,10 @@ Next implementation slice:
 - decide whether to add or verify a failure notification receiver, document
   the schedule-disable rollback command, define stop criteria, and decide
   whether a later schedule enablement execution boundary is justified
+- use `docs/phase-17-managed-ai-refresh-preflight.md` for the accepted
+  Phase 17AN recommendation: reuse `energy-market-ai-orchestration-failures`,
+  subscribe the accepted alert mailbox, keep email-only alerting for now, and
+  defer CloudWatch alarms
 - keep schedule enablement, workflow execution, Bedrock invocation, Terraform
   apply, S3 writes, static-site publish, and CloudFront invalidation out of
   scope until explicitly approved

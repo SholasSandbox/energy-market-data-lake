@@ -1666,3 +1666,90 @@ Decision:
 
 Recommended next slice: **Phase 17AN managed workflow failure notification and
 stop-control preflight**, decision-only/no-apply.
+
+## Phase 17AN Failure Notification And Stop-Control Recommendation
+
+Phase 17AN should prepare the alerting and stop-control posture required before
+any managed workflow schedule enablement execution boundary.
+
+Recommended failure topic:
+
+- reuse the existing Terraform-managed SNS topic:
+  `energy-market-ai-orchestration-failures`
+- do not create a second failure topic for the same state-machine failure path
+- Terraform resource: `aws_sns_topic.ai_orchestration_failures`
+- Terraform output: `ai_orchestration_failure_topic_arn`
+
+Accepted alert receiver:
+
+- email endpoint: `[redacted-email]`
+- configure through `ai_orchestration_sns_email`
+- prefer local `terraform.tfvars` or an approved secret/config channel for the
+  raw email address
+- committed evidence should normally sanitize the endpoint as `<alert-email>`
+  unless the endpoint itself is intentionally being reviewed
+
+Email-only alerting is acceptable for the next proof. CloudWatch alarms remain
+deferred until after the email receiver and stop-control posture are proven.
+
+Recommended Phase 17AN sequence:
+
+1. Confirm the existing failure topic ARN from Terraform output or AWS.
+2. Capture current SNS subscriptions for
+   `energy-market-ai-orchestration-failures`.
+3. Run a no-apply Terraform plan with:
+   - live dashboard/CloudFront preservation flags
+   - managed workflow flag preserved
+   - `ai_orchestration_sns_email` set to the accepted alert mailbox
+   - `ai_orchestration_schedule_enabled=false`
+4. Require the plan to show only the expected SNS email subscription add.
+5. If explicitly approved, apply only the notification change.
+6. Complete the Amazon SNS email confirmation from the alert mailbox.
+7. Verify `list-subscriptions-by-topic` shows a confirmed subscription ARN,
+   not `PendingConfirmation`.
+8. Send one test publish to the failure topic and confirm the mailbox receives
+   it.
+9. Capture sanitized subscription and test-publish evidence.
+10. Keep EventBridge schedule enablement blocked until a later phase.
+
+Rollback command for emergency schedule disablement:
+
+```bash
+aws events disable-rule \
+  --name energy-market-ai-orchestration-schedule \
+  --region eu-west-2
+```
+
+Terraform reconciliation after an emergency disable:
+
+```bash
+terraform -chdir=infra/terraform/lakehouse apply \
+  -var 'create_dashboard_bucket=true' \
+  -var 'dashboard_cloudfront_enabled=true' \
+  -var 'ai_orchestration_managed_ai_enabled=true' \
+  -var 'ai_orchestration_schedule_enabled=false'
+```
+
+Stop criteria for disabling the schedule after any future enablement:
+
+- one scheduled Step Functions execution fails
+- SNS subscription is missing, pending, or test alert is not received
+- dashboard snapshot fails schema validation
+- public snapshot contains private references
+- latest CloudFront dashboard path is unhealthy after the expected publish/cache
+  window
+- duplicate or unexpected Step Functions executions occur
+- Bedrock/model cost exceeds the agreed cap
+- post-enablement Terraform plan is not no-change
+- Lambda or Step Functions throttling, repeated retries, or persistent errors
+  appear
+
+For this project, the operating posture should remain conservative: one
+scheduled failure means disable first, then investigate.
+
+Recommended later boundary:
+
+- CloudWatch alarms remain deferred for now
+- add a later CloudWatch alarm preflight for Step Functions failures, Lambda
+  errors/throttles, and EventBridge failed invocations before treating
+  scheduled operation as settled
