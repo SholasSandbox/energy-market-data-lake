@@ -3011,11 +3011,104 @@ Next implementation slice:
 - after apply, complete mailbox confirmation, verify confirmed subscription
   ARN, send one test publish, and capture sanitized evidence
 
+### Phase 17AN: SNS Email Subscription Apply Execution
+
+Goal: apply only the accepted SNS email subscription candidate and keep the
+managed workflow schedule disabled.
+
+Status: complete with alert-readiness caveat and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17an-sns-email-subscription-apply-summary-20260606.md`
+- `docs/evidence/phase17an-execution-aws-identity-sanitized-20260606.txt`
+- `docs/evidence/phase17an-execution-preapply-failure-topic-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-preapply-subscriptions-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-preapply-schedule-state-20260606.json`
+- `docs/evidence/phase17an-execution-preapply-lambda-config-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-preapply-recent-executions-20260606.json`
+- `docs/evidence/phase17an-execution-preapply-dashboard-http-check-20260606.txt`
+- `docs/evidence/phase17an-execution-preapply-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17an-execution-terraform-apply-plan-20260606.txt`
+- `docs/evidence/phase17an-execution-terraform-apply-20260606.txt`
+- `docs/evidence/phase17an-execution-postapply-failure-topic-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-postapply-subscriptions-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-postapply-schedule-state-20260606.json`
+- `docs/evidence/phase17an-execution-confirmation-poll-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-test-publish-20260606.json`
+- `docs/evidence/phase17an-execution-final-subscription-attributes-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-final-failure-topic-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-final-subscriptions-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-list-subscriptions-global-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-cloudtrail-confirm-subscription-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-cloudtrail-unsubscribe-sanitized-20260606.json`
+- `docs/evidence/phase17an-execution-postconfirm-schedule-state-20260606.json`
+- `docs/evidence/phase17an-execution-postconfirm-recent-executions-20260606.json`
+- `docs/evidence/phase17an-execution-postconfirm-dashboard-http-check-20260606.txt`
+- `docs/evidence/phase17an-execution-postconfirm-dashboard-json-check-20260606.json`
+- `docs/evidence/phase17an-execution-postconfirm-terraform-nochange-20260606.txt`
+- `docs/evidence/phase17an-execution-alert-receipt-summary-20260606.txt`
+- `docs/evidence/phase17an-execution-subscription-state-summary-20260606.txt`
+
+Result:
+
+- Terraform apply completed successfully:
+  `Apply complete! Resources: 1 added, 0 changed, 0 destroyed.`
+- applied resource was
+  `aws_sns_topic_subscription.ai_orchestration_failure_email[0]`
+- direct subscription attributes report `PendingConfirmation=false` and a real
+  subscription ARN
+- one SNS test publish was sent and returned a `MessageId`
+- EventBridge schedule remains `DISABLED`
+- no Step Functions execution, Bedrock invocation, S3 write, CloudFront
+  invalidation, static-site rebuild, or dashboard publish occurred
+- hosted dashboard snapshot remains SHA-256
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- dashboard source labels remain public-safe with `0` private references
+- post-confirm Terraform plan with the accepted email variable preserved
+  reports `No changes`
+
+Alert-readiness caveat:
+
+- `list-subscriptions-by-topic` showed `SubscriptionArn: Deleted`
+- topic attributes showed `SubscriptionsConfirmed: 0`
+- mailbox receipt confirmation is pending operator response
+- CloudTrail lookup did not return recent `ConfirmSubscription` or
+  `Unsubscribe` events in the sampled evidence
+
+Decision:
+
+- SNS subscription apply succeeded
+- alert-readiness is not fully settled
+- schedule enablement remains **no-go**
+
+Red-green evidence:
+
+- Red: Phase 17AN preflight found no active failure-topic subscription.
+- Green: Terraform applied exactly one SNS email subscription and direct
+  subscription attributes report `PendingConfirmation=false`.
+- Yellow: SNS list/topic summary APIs show deleted or zero-subscription state,
+  and mailbox receipt remains pending operator confirmation.
+- Regression: no schedule enablement, no workflow execution, no Bedrock
+  invocation, no S3 write, no CloudFront invalidation, schedules disabled, and
+  dashboard source labels remain public-safe.
+
+Next implementation slice:
+
+- Phase 17AO: SNS alert receipt and subscription consistency verification
+- keep the next slice read-only
+- verify mailbox receipt, recheck SNS topic/list/subscription attributes, and
+  decide whether the alert path is settled enough for a later schedule
+  enablement decision
+- keep schedule enablement, workflow execution, Bedrock invocation, Terraform
+  apply, S3 writes, static-site publish, and CloudFront invalidation out of
+  scope until explicitly approved
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AN SNS email and stop-control preflight.
-2. If approved, plan Phase 17AN execution substate as controlled SNS email
-   subscription apply and confirmation only.
+1. Review and merge Phase 17AN SNS email subscription apply execution.
+2. Plan Phase 17AO as read-only SNS alert receipt and subscription consistency
+   verification.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.
