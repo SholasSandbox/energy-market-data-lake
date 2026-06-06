@@ -1858,3 +1858,46 @@ Decision:
 
 Recommended next slice: **Phase 17AO SNS subscription correction preflight**,
 decision-only/no-apply.
+
+## Phase 17AO SNS Subscription Correction Preflight Result
+
+Phase 17AO reviewed the inactive SNS email subscription path after Phase 17AN
+produced unsubscribe confirmations instead of the expected test alert.
+
+Evidence:
+
+- `docs/evidence/phase17ao-sns-subscription-correction-preflight-20260606.md`
+- `docs/evidence/phase17ao-sns-correction-topic-sanitized-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-subscriptions-by-topic-sanitized-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-direct-subscription-attributes-sanitized-20260606.json`
+- `docs/evidence/phase17ao-sns-correction-current-root-plan-20260606.txt`
+- `docs/evidence/phase17ao-sns-correction-remove-email-plan-20260606.txt`
+- `docs/evidence/phase17ao-sns-correction-replace-email-plan-20260606.txt`
+- `docs/evidence/phase17ao-sns-correction-schedule-state-20260606.json`
+
+Result:
+
+- no Terraform apply, SNS subscribe or unsubscribe call, mailbox resubscribe
+  click, SNS test publish, Step Functions execution, Bedrock invocation,
+  schedule enablement, S3 write, CloudFront invalidation, static-site rebuild,
+  or dashboard publish was performed
+- SNS topic/list evidence still shows no confirmed deliverable subscription
+- direct subscription attributes still resolve for the Terraform-tracked ARN,
+  so AWS API views remain contradictory
+- normal root plan with the accepted email variable reports `No changes`
+- remove-email candidate plan reports
+  `Plan: 0 to add, 0 to change, 1 to destroy`
+- replace-email candidate plan reports
+  `Plan: 1 to add, 0 to change, 1 to destroy`
+- EventBridge schedule remains `DISABLED`
+
+Decision:
+
+- schedule enablement remains **no-go**
+- do not use the mailbox `Resubscribe` link as an unmanaged correction
+- preferred correction is a controlled Terraform replacement of the single SNS
+  email subscription resource, only after explicit approval
+
+Recommended next slice: **Phase 17AO execution substate: controlled SNS email
+subscription replacement apply and confirmation**, only after explicit
+approval.

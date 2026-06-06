@@ -449,3 +449,6 @@ Hiring signal:
   workflow schedule; because the mailbox receives unsubscribe confirmations
   instead of the test alert, the demo story remains manual-only until the
   subscription path is corrected.
+- Phase 17AO keeps the demo story manual-only while choosing the correction:
+  replace the SNS email subscription through Terraform under explicit approval
+  instead of using an unmanaged mailbox resubscribe path.
