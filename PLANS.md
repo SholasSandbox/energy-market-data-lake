@@ -3272,11 +3272,83 @@ Next implementation slice:
 - produce a go/no-go recommendation before any future schedule enablement
   execution
 
+### Phase 17AP: Managed Workflow Schedule Enablement Readiness Recheck
+
+Goal: recheck whether managed workflow schedule enablement is now safe to move
+toward an explicit execution boundary after Phase 17AO proved the SNS email
+alert path.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ap-managed-workflow-schedule-readiness-recheck-20260607.md`
+- `docs/evidence/phase17ap-readiness-aws-identity-sanitized-20260607.json`
+- `docs/evidence/phase17ap-readiness-sns-topic-sanitized-20260607.json`
+- `docs/evidence/phase17ap-readiness-sns-subscriptions-sanitized-20260607.json`
+- `docs/evidence/phase17ap-readiness-schedule-state-20260607.json`
+- `docs/evidence/phase17ap-readiness-state-machine-routing-sanitized-20260607.json`
+- `docs/evidence/phase17ap-readiness-lambda-config-sanitized-20260607.json`
+- `docs/evidence/phase17ap-readiness-recent-executions-20260607.json`
+- `docs/evidence/phase17ap-readiness-dashboard-http-json-check-20260607.txt`
+- `docs/evidence/phase17ap-readiness-current-terraform-nochange-20260607.txt`
+- `docs/evidence/phase17ap-readiness-schedule-enable-candidate-plan-20260607.txt`
+
+Result:
+
+- no Terraform apply, EventBridge schedule enablement, Step Functions
+  execution, Bedrock invocation, SNS publish, S3 write, CloudFront
+  invalidation, static-site rebuild, or dashboard publish was performed
+- SNS failure topic has `SubscriptionsConfirmed: 1` and
+  `SubscriptionsPending: 0`
+- SNS subscription list shows one real email subscription ARN
+- EventBridge schedule remains `DISABLED`
+- state machine is `ACTIVE` and retains managed workflow routing plus SNS
+  failure publish routing
+- recent executions still show the latest Phase 17AG managed workflow smoke as
+  `SUCCEEDED`
+- hosted `dashboard_snapshot_v1.json` returned `200`
+- hosted dashboard snapshot SHA-256 remains
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- current Terraform plan with schedules disabled reports `No changes`
+- schedule-enable candidate plan is narrow:
+  `Plan: 0 to add, 1 to change, 0 to destroy`
+- candidate change is only
+  `aws_cloudwatch_event_rule.ai_orchestration_schedule[0]`:
+  `state = "DISABLED" -> "ENABLED"`
+
+Decision:
+
+- recommendation is **go-candidate**, not automatic execution
+- schedule enablement remains blocked until explicit approval in a separate
+  execution substate
+- if approved, the next apply must only enable the EventBridge schedule and
+  must keep SNS, workflow, Bedrock, dashboard publish, DNS, ACM, alarms, and
+  budgets unchanged
+
+Red-green evidence:
+
+- Red: earlier schedule enablement was blocked because the failure SNS topic
+  had no evidenced subscriber.
+- Green: Phase 17AO proved the SNS email alert path end to end, and Phase 17AP
+  confirms a single-change schedule-enable candidate.
+- Regression: no apply, no schedule enablement, no workflow execution, no
+  Bedrock invocation, no SNS publish, and no dashboard mutation occurred.
+
+Next implementation slice:
+
+- Phase 17AQ: controlled managed workflow schedule enablement apply
+- require explicit approval before any Terraform apply
+- record the next expected scheduled run window after apply
+- keep manual workflow execution, repeated SNS test publish, dashboard publish,
+  DNS, ACM, alarms, and budgets out of scope
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AO SNS subscription replacement apply evidence.
-2. Plan Phase 17AP as managed workflow schedule enablement readiness recheck,
-   decision-only/no-apply.
+1. Review and merge Phase 17AP managed workflow schedule enablement readiness
+   recheck.
+2. Decide whether to approve Phase 17AQ controlled managed workflow schedule
+   enablement apply.
 3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
    and schedule enablement decisions deferred until a phase explicitly targets
    those operating boundaries.

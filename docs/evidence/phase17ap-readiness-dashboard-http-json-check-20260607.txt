@@ -1,0 +1,36 @@
+# Phase 17AP dashboard HTTP/JSON check
+
+url=https://d28yo76if4k3l1.cloudfront.net/dashboard_snapshot_v1.json
+checked_at=2026-06-07T11:48:55Z
+
+HTTP/2 200 
+content-type: application/json
+content-length: 9246
+last-modified: Fri, 05 Jun 2026 21:34:01 GMT
+x-amz-server-side-encryption: AES256
+x-amz-version-id: KByeeyWC.YWMJOzJ6OGYvlIn8xN7Et2f
+accept-ranges: bytes
+server: AmazonS3
+date: Sun, 07 Jun 2026 11:48:57 GMT
+etag: "2c239d74ed726990ec7322b7fe6228c9"
+x-cache: RefreshHit from cloudfront
+via: 1.1 507372273c5029d1ae2439349f7f1458.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: XAlpaYpVm_ZzHWfcT2FVRFG1MGGSu8N-sjWIZft-HPyGVHS5rEPcGw==
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
+
+json_summary:
+{
+  "schema_version": "dashboard_snapshot_v1",
+  "run_id": null,
+  "generated_at": "2026-06-05T21:34:00Z",
+  "status": null,
+  "insight_count": 1,
+  "source_count": 0
+}
+sha256=4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0

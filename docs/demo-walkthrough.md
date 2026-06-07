@@ -455,3 +455,5 @@ Hiring signal:
 - Phase 17AO execution performs that replacement and sends one test alert after
   SNS confirmation; the alert path is now evidenced, but the demo remains
   manual-only until a separate schedule enablement decision.
+- Phase 17AP confirms schedule enablement is now a narrow go-candidate, but the
+  demo remains manual-only until an explicit schedule apply boundary.
