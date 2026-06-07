@@ -1,0 +1,8 @@
+# Phase 17AQ schedule enable apply status
+
+apply_result=success
+schedule_state=ENABLED
+terraform_postapply_plan=no_changes_expected
+manual_workflow_execution_started=false
+sns_test_publish_started=false
+dashboard_publish_started=false

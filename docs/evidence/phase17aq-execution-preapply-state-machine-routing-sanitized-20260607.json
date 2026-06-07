@@ -1,0 +1,18 @@
+{
+  "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+  "name": "energy-market-ai-insight-orchestration",
+  "status": "ACTIVE",
+  "definition": {
+    "Comment": "Managed Phase 17 AI insight orchestration with validation gates, deterministic rollback, and failure quarantine.",
+    "StartAt": "InitializeRun",
+    "managed_merge_resource": "arn:aws:states:::lambda:invoke",
+    "workflow_failed_resource": "arn:aws:states:::sns:publish"
+  },
+  "roleArn": "arn:aws:iam::<account-id>:role/energy-market-ai-orchestration-sfn-role",
+  "type": "STANDARD",
+  "creationDate": "2026-05-11T12:39:07.180000+01:00",
+  "loggingConfiguration": {
+    "level": "OFF",
+    "includeExecutionData": false
+  }
+}
