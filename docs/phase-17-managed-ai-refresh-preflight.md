@@ -1998,3 +1998,44 @@ Decision:
 
 Recommended next slice: **Phase 17AQ controlled managed workflow schedule
 enablement apply**, only after explicit approval.
+
+## Phase 17AQ Controlled Managed Workflow Schedule Enablement Apply
+
+Phase 17AQ applied the approved EventBridge schedule enablement after Phase
+17AP confirmed alerting, routing, rollback, and Terraform readiness.
+
+Evidence:
+
+- `docs/evidence/phase17aq-managed-workflow-schedule-enable-apply-summary-20260607.md`
+- `docs/evidence/phase17aq-execution-terraform-apply-plan-20260607.txt`
+- `docs/evidence/phase17aq-execution-terraform-apply-20260607.txt`
+- `docs/evidence/phase17aq-execution-postapply-schedule-state-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-sns-topic-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-sns-subscriptions-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-state-machine-routing-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-recent-executions-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-dashboard-http-json-check-20260607.txt`
+- `docs/evidence/phase17aq-execution-postapply-terraform-nochange-20260607.txt`
+- `docs/evidence/phase17aq-execution-next-scheduled-run-window-20260607.txt`
+
+Result:
+
+- normal root Terraform apply was used after explicit approval
+- Terraform applied only
+  `aws_cloudwatch_event_rule.ai_orchestration_schedule[0]`:
+  `state = "DISABLED" -> "ENABLED"`
+- Terraform reported
+  `Apply complete! Resources: 0 added, 1 changed, 0 destroyed.`
+- postapply schedule state is `ENABLED`
+- SNS failure topic still has one confirmed subscription and zero pending
+  subscriptions
+- deployed state machine remains active and still routes failures to SNS
+- no manual Step Functions execution, Bedrock invocation, SNS test publish,
+  S3 write, CloudFront invalidation, static-site rebuild, dashboard publish,
+  DNS, ACM, alarm, or budget change was performed
+- hosted dashboard snapshot returned `200` and kept the same SHA-256 hash
+- postapply Terraform plan reports `No changes`
+- next expected scheduled run is `2026-06-08T07:30:00Z`
+
+Recommended next slice: **Phase 17AR managed workflow scheduled-run
+observation**, read-only after the first scheduled trigger window.
