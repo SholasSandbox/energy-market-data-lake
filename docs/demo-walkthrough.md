@@ -452,3 +452,6 @@ Hiring signal:
 - Phase 17AO keeps the demo story manual-only while choosing the correction:
   replace the SNS email subscription through Terraform under explicit approval
   instead of using an unmanaged mailbox resubscribe path.
+- Phase 17AO execution performs that replacement and sends one test alert after
+  SNS confirmation; the alert path is now evidenced, but the demo remains
+  manual-only until a separate schedule enablement decision.
