@@ -1,0 +1,11 @@
+{
+  "Subscriptions": [
+    {
+      "SubscriptionArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures:852212a0-c3ac-48a8-bf24-b87c56982134",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}

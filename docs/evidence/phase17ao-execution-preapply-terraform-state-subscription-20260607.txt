@@ -1,0 +1,20 @@
+# aws_sns_topic_subscription.ai_orchestration_failure_email[0]:
+resource "aws_sns_topic_subscription" "ai_orchestration_failure_email" {
+    arn                             = "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures:85eab26a-11db-476b-acc5-aca171046265"
+    confirmation_timeout_in_minutes = 1
+    confirmation_was_authenticated  = false
+    delivery_policy                 = null
+    endpoint                        = "<alert-email>"
+    endpoint_auto_confirms          = false
+    filter_policy                   = null
+    filter_policy_scope             = null
+    id                              = "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures:85eab26a-11db-476b-acc5-aca171046265"
+    owner_id                        = "<account-id>"
+    pending_confirmation            = true
+    protocol                        = "email"
+    raw_message_delivery            = false
+    redrive_policy                  = null
+    replay_policy                   = null
+    subscription_role_arn           = null
+    topic_arn                       = "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+}

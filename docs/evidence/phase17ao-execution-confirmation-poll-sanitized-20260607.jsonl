@@ -1,0 +1,234 @@
+{
+  "attempt": 1,
+  "checked_at": "2026-06-07T11:13:36Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 2,
+  "checked_at": "2026-06-07T11:13:47Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 3,
+  "checked_at": "2026-06-07T11:13:57Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 4,
+  "checked_at": "2026-06-07T11:14:08Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 5,
+  "checked_at": "2026-06-07T11:14:18Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 6,
+  "checked_at": "2026-06-07T11:14:29Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 7,
+  "checked_at": "2026-06-07T11:14:39Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 8,
+  "checked_at": "2026-06-07T11:14:50Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 9,
+  "checked_at": "2026-06-07T11:15:01Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 10,
+  "checked_at": "2026-06-07T11:15:11Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 11,
+  "checked_at": "2026-06-07T11:15:22Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 12,
+  "checked_at": "2026-06-07T11:15:32Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 13,
+  "checked_at": "2026-06-07T11:15:43Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 14,
+  "checked_at": "2026-06-07T11:15:53Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 15,
+  "checked_at": "2026-06-07T11:16:04Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 16,
+  "checked_at": "2026-06-07T11:16:14Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 17,
+  "checked_at": "2026-06-07T11:16:25Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
+{
+  "attempt": 18,
+  "checked_at": "2026-06-07T11:16:35Z",
+  "subscriptions": [
+    {
+      "SubscriptionArn": "PendingConfirmation",
+      "Owner": "<account-id>",
+      "Protocol": "email",
+      "Endpoint": "<alert-email>",
+      "TopicArn": "arn:aws:sns:eu-west-2:<account-id>:energy-market-ai-orchestration-failures"
+    }
+  ]
+}
