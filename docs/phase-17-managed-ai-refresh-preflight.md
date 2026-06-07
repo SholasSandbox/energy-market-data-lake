@@ -1956,3 +1956,45 @@ Decision:
 
 Recommended next slice: **Phase 17AP managed workflow schedule enablement
 readiness recheck**, decision-only/no-apply.
+
+## Phase 17AP Managed Workflow Schedule Enablement Readiness Recheck
+
+Phase 17AP rechecked schedule enablement readiness after Phase 17AO proved the
+SNS email alert path end to end.
+
+Evidence:
+
+- `docs/evidence/phase17ap-managed-workflow-schedule-readiness-recheck-20260607.md`
+- `docs/evidence/phase17ap-readiness-sns-topic-sanitized-20260607.json`
+- `docs/evidence/phase17ap-readiness-sns-subscriptions-sanitized-20260607.json`
+- `docs/evidence/phase17ap-readiness-schedule-state-20260607.json`
+- `docs/evidence/phase17ap-readiness-state-machine-routing-sanitized-20260607.json`
+- `docs/evidence/phase17ap-readiness-recent-executions-20260607.json`
+- `docs/evidence/phase17ap-readiness-dashboard-http-json-check-20260607.txt`
+- `docs/evidence/phase17ap-readiness-current-terraform-nochange-20260607.txt`
+- `docs/evidence/phase17ap-readiness-schedule-enable-candidate-plan-20260607.txt`
+
+Result:
+
+- no Terraform apply, schedule enablement, Step Functions execution, Bedrock
+  invocation, SNS publish, S3 write, CloudFront invalidation, static-site
+  rebuild, or dashboard publish was performed
+- SNS topic shows one confirmed subscription and zero pending subscriptions
+- EventBridge schedule remains `DISABLED`
+- deployed state machine is active and still routes failures to SNS
+- latest managed workflow smoke remains `SUCCEEDED`
+- hosted dashboard snapshot returns `200`
+- current Terraform plan with schedules disabled reports `No changes`
+- schedule-enable candidate plan reports
+  `Plan: 0 to add, 1 to change, 0 to destroy`
+- candidate change is only the EventBridge schedule rule state:
+  `DISABLED` to `ENABLED`
+
+Decision:
+
+- recommendation is **go-candidate**, not automatic execution
+- schedule enablement remains blocked until explicit approval in a separate
+  execution substate
+
+Recommended next slice: **Phase 17AQ controlled managed workflow schedule
+enablement apply**, only after explicit approval.
