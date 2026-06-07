@@ -196,6 +196,10 @@ Region: **eu-west-2 (London)**
   does not repair the inactive SNS subscription, while a controlled replacement
   plan is narrow, so schedule enablement remains blocked until an approved
   subscription replacement and mailbox test succeed.
+- Phase 17AO execution applies that replacement successfully, confirms the SNS
+  endpoint, sends one test publish, and verifies mailbox receipt; schedule
+  enablement remains blocked until a separate schedule decision explicitly
+  approves automation.
 
 ### Deferred AWS Extension
 
@@ -845,3 +849,6 @@ These are historical references, not the current delivery path.
   than a mailbox `Resubscribe` click: replace the single SNS email subscription
   only after explicit approval, keep schedules disabled, and verify a real
   alert before schedule enablement is reconsidered.
+- Phase 17AO execution replaces the subscription under Terraform, observes
+  one confirmed SNS subscription, sends one test alert, and confirms operator
+  mailbox receipt; the next state rechecks schedule enablement readiness.

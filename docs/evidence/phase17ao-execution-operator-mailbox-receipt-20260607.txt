@@ -1,0 +1,9 @@
+phase=17AO execution
+operator_mailbox_receipt=confirmed
+received_subject=Phase 17AO SNS alert path test
+received_sender=AWS Notifications
+received_endpoint=<alert-email>
+received_message=Phase 17AO controlled SNS alert path test. If received, the managed workflow failure topic email subscription is deliverable. No workflow execution or schedule enablement was performed.
+unsubscribe_or_deactivation_notice_received=false
+raw_email_address_committed=false
+raw_account_id_committed=false
