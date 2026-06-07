@@ -1901,3 +1901,58 @@ Decision:
 Recommended next slice: **Phase 17AO execution substate: controlled SNS email
 subscription replacement apply and confirmation**, only after explicit
 approval.
+
+## Phase 17AO SNS Subscription Replacement Apply Result
+
+Phase 17AO execution applied the approved Terraform replacement for the single
+SNS email subscription resource while keeping the managed workflow schedule
+disabled.
+
+Evidence:
+
+- `docs/evidence/phase17ao-sns-subscription-replacement-apply-summary-20260607.md`
+- `docs/evidence/phase17ao-execution-terraform-replace-plan-20260607.txt`
+- `docs/evidence/phase17ao-execution-terraform-replace-apply-20260607.txt`
+- `docs/evidence/phase17ao-execution-confirmation-poll-sanitized-20260607.jsonl`
+- `docs/evidence/phase17ao-execution-confirmation-second-poll-sanitized-20260607.jsonl`
+- `docs/evidence/phase17ao-execution-confirmed-topic-sanitized-20260607.json`
+- `docs/evidence/phase17ao-execution-confirmed-subscriptions-by-topic-sanitized-20260607.json`
+- `docs/evidence/phase17ao-execution-test-publish-20260607.json`
+- `docs/evidence/phase17ao-execution-posttest-topic-sanitized-20260607.json`
+- `docs/evidence/phase17ao-execution-posttest-subscriptions-by-topic-sanitized-20260607.json`
+- `docs/evidence/phase17ao-execution-operator-mailbox-receipt-20260607.txt`
+- `docs/evidence/phase17ao-execution-postapply-topic-sanitized-20260607.json`
+- `docs/evidence/phase17ao-execution-postapply-subscriptions-by-topic-sanitized-20260607.json`
+- `docs/evidence/phase17ao-execution-postapply-terraform-state-subscription-20260607.txt`
+- `docs/evidence/phase17ao-execution-postapply-schedule-state-20260607.json`
+- `docs/evidence/phase17ao-execution-postapply-terraform-nochange-20260607.txt`
+
+Result:
+
+- Terraform replacement apply completed successfully:
+  `Apply complete! Resources: 1 added, 0 changed, 1 destroyed.`
+- the endpoint moved from `SubscriptionArn: Deleted` to
+  `SubscriptionArn: PendingConfirmation`
+- later confirmation evidence shows `SubscriptionsConfirmed: 1` and
+  `SubscriptionsPending: 0`
+- confirmed subscription list evidence shows a real subscription ARN
+- Terraform state tracks the new replacement ARN with
+  `pending_confirmation = true`
+- one SNS test publish was sent after AWS-side confirmation
+- operator mailbox receipt is confirmed with subject
+  `Phase 17AO SNS alert path test`
+- no unsubscribe or deactivation notice was reported for the test alert
+- EventBridge schedule remains `DISABLED`
+- no Step Functions execution, Bedrock invocation, S3 write, CloudFront
+  invalidation, static-site rebuild, or dashboard publish occurred
+
+Decision:
+
+- replacement apply succeeded
+- AWS-side subscription confirmation succeeded
+- SNS email alert path is evidenced end to end
+- schedule enablement remains **no-go** until a separate schedule enablement
+  decision explicitly approves automation
+
+Recommended next slice: **Phase 17AP managed workflow schedule enablement
+readiness recheck**, decision-only/no-apply.

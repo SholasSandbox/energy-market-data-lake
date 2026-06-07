@@ -1,0 +1,7 @@
+phase=17AO execution
+result=replacement_applied_subscription_confirmed_test_publish_sent
+test_publish_sent=true
+operator_mailbox_receipt=confirmed
+schedule_enabled=false
+workflow_execution_started=false
+bedrock_invocation_started=false
