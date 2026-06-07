@@ -457,3 +457,6 @@ Hiring signal:
   manual-only until a separate schedule enablement decision.
 - Phase 17AP confirms schedule enablement is now a narrow go-candidate, but the
   demo remains manual-only until an explicit schedule apply boundary.
+- Phase 17AQ enables that schedule under explicit approval: the demo story now
+  shifts from manual-only proof to observing the first scheduled managed
+  workflow run, with rollback still controlled by Terraform.
