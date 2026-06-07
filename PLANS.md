@@ -3343,15 +3343,87 @@ Next implementation slice:
 - keep manual workflow execution, repeated SNS test publish, dashboard publish,
   DNS, ACM, alarms, and budgets out of scope
 
+### Phase 17AQ: Controlled Managed Workflow Schedule Enablement Apply
+
+Goal: enable the managed AI workflow EventBridge schedule after Phase 17AP
+confirmed the alerting, routing, rollback, and Terraform candidate posture.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17aq-managed-workflow-schedule-enable-apply-summary-20260607.md`
+- `docs/evidence/phase17aq-execution-preapply-sns-topic-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-preapply-sns-subscriptions-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-preapply-schedule-state-20260607.json`
+- `docs/evidence/phase17aq-execution-preapply-state-machine-routing-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-preapply-recent-executions-20260607.json`
+- `docs/evidence/phase17aq-execution-preapply-dashboard-http-json-check-20260607.txt`
+- `docs/evidence/phase17aq-execution-terraform-apply-plan-20260607.txt`
+- `docs/evidence/phase17aq-execution-terraform-apply-20260607.txt`
+- `docs/evidence/phase17aq-execution-postapply-schedule-state-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-sns-topic-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-sns-subscriptions-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-state-machine-routing-sanitized-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-recent-executions-20260607.json`
+- `docs/evidence/phase17aq-execution-postapply-dashboard-http-json-check-20260607.txt`
+- `docs/evidence/phase17aq-execution-postapply-terraform-nochange-20260607.txt`
+- `docs/evidence/phase17aq-execution-next-scheduled-run-window-20260607.txt`
+- `docs/evidence/phase17aq-execution-schedule-enable-status-20260607.txt`
+
+Result:
+
+- explicit approval was granted for one controlled schedule enablement apply
+- normal root Terraform apply was used
+- the apply candidate was narrow:
+  `Plan: 0 to add, 1 to change, 0 to destroy`
+- the only applied infrastructure change was
+  `aws_cloudwatch_event_rule.ai_orchestration_schedule[0]`:
+  `state = "DISABLED" -> "ENABLED"`
+- Terraform reported
+  `Apply complete! Resources: 0 added, 1 changed, 0 destroyed.`
+- postapply EventBridge schedule state is `ENABLED`
+- SNS failure topic remains healthy with `SubscriptionsConfirmed: 1` and
+  `SubscriptionsPending: 0`
+- state machine remains `ACTIVE` and retains managed Lambda routing plus SNS
+  failure publish routing
+- no manual Step Functions execution, manual Bedrock invocation, SNS test
+  publish, S3 write, CloudFront invalidation, static-site rebuild, dashboard
+  publish, DNS, ACM, alarm, or budget change was performed
+- hosted `dashboard_snapshot_v1.json` returned `200`
+- dashboard snapshot SHA-256 remained
+  `4c4871a2ff09f11ed097e4c03f637b34812d3893a1d2dbb97b0584cc7001d4c0`
+- postapply Terraform plan with schedules enabled reports `No changes`
+- next expected scheduled run is `2026-06-08T07:30:00Z`
+  (`2026-06-08T08:30:00+0100` in Europe/London)
+
+Decision:
+
+- schedule enablement is now applied
+- the managed workflow is no longer manual-only
+- rollback remains the normal root Terraform apply path with
+  `ai_orchestration_schedule_enabled=false`
+
+Next implementation slice:
+
+- Phase 17AR: managed workflow scheduled-run observation, read-only
+- observe the first scheduled run after the `2026-06-08T07:30:00Z` trigger
+- do not start a manual Step Functions execution unless a separate recovery
+  decision approves it
+- capture EventBridge schedule state, execution history, S3 artifacts,
+  dashboard impact, SNS failure status, and cost posture after the scheduled
+  window
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AP managed workflow schedule enablement readiness
-   recheck.
-2. Decide whether to approve Phase 17AQ controlled managed workflow schedule
-   enablement apply.
-3. Keep DNS, ACM, alarms, schedules, repeated live invocation, Terraform apply,
-   and schedule enablement decisions deferred until a phase explicitly targets
-   those operating boundaries.
+1. Review and merge Phase 17AQ controlled managed workflow schedule enablement
+   apply.
+2. Observe the first scheduled run in Phase 17AR after
+   `2026-06-08T07:30:00Z`; keep the observation read-only unless stop criteria
+   require rollback.
+3. Keep DNS, ACM, alarms, budgets, repeated live invocation, manual workflow
+   execution, dashboard publish, and additional Terraform changes deferred
+   until a phase explicitly targets those operating boundaries.
 4. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 

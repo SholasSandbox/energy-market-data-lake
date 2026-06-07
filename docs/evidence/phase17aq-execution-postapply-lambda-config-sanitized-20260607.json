@@ -1,0 +1,14 @@
+{
+  "FunctionName": "energy-market-news-ai-orchestration",
+  "Runtime": "python3.11",
+  "Handler": "news_ai_orchestration.lambda_handler",
+  "LastModified": "2026-06-04T15:05:16.000+0000",
+  "State": "Active",
+  "LastUpdateStatus": "Successful",
+  "Environment": {
+    "Variables": {
+      "AI_PROVIDER": null,
+      "BEDROCK_MODEL_ID": "mistral.ministral-3-8b-instruct"
+    }
+  }
+}

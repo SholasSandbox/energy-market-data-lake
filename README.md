@@ -204,6 +204,10 @@ Region: **eu-west-2 (London)**
   confirmed, the current Terraform plan is clean, and the enablement candidate
   is one EventBridge rule state change, so schedule enablement is a
   go-candidate only after explicit approval.
+- Phase 17AQ applies that explicit approval: normal root Terraform enables
+  only the managed workflow EventBridge schedule, SNS remains confirmed, the
+  dashboard snapshot remains unchanged, and the next expected daily run is
+  `2026-06-08T07:30:00Z`.
 
 ### Deferred AWS Extension
 
@@ -858,3 +862,6 @@ These are historical references, not the current delivery path.
   mailbox receipt; the next state rechecks schedule enablement readiness.
 - Phase 17AP completes that readiness recheck without applying anything:
   schedule enablement remains a separate explicit execution decision.
+- Phase 17AQ completes that explicit execution decision: the EventBridge
+  schedule is now enabled, Terraform is clean afterward, and the next boundary
+  observes the first scheduled run read-only.

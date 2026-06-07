@@ -1,0 +1,10 @@
+# Phase 17AQ next scheduled run window
+
+schedule_expression=cron(30 7 * * ? *)
+observed_at_utc=2026-06-07T12:17:52Z
+next_scheduled_run_utc=2026-06-08T07:30:00Z
+next_scheduled_run_europe_london=2026-06-08T08:30:00+0100
+manual_workflow_execution_started=false
+sns_test_publish_started=false
+dashboard_publish_started=false
+rollback_command=terraform -chdir=infra/terraform/lakehouse apply -auto-approve -no-color -var create_dashboard_bucket=true -var dashboard_cloudfront_enabled=true -var ai_orchestration_enabled=true -var ai_orchestration_managed_ai_enabled=true -var ai_orchestration_schedule_enabled=false -var ai_orchestration_sns_email=<alert-email>
