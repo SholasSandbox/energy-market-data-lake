@@ -227,6 +227,49 @@ variable "ai_orchestration_bedrock_temperature" {
   }
 }
 
+variable "managed_workflow_cost_budget_enabled" {
+  description = "When true, create a monthly cost budget for the managed workflow's project-service cost guardrail."
+  type        = bool
+  default     = false
+}
+
+variable "managed_workflow_cost_budget_name" {
+  description = "Name for the managed workflow monthly cost budget."
+  type        = string
+  default     = "energy-market-managed-workflow-monthly-cost"
+}
+
+variable "managed_workflow_cost_budget_limit_usd" {
+  description = "Monthly USD limit for the managed workflow project-service cost budget."
+  type        = number
+  default     = 1
+
+  validation {
+    condition     = var.managed_workflow_cost_budget_limit_usd > 0
+    error_message = "managed_workflow_cost_budget_limit_usd must be greater than zero."
+  }
+}
+
+variable "managed_workflow_cost_budget_notification_email" {
+  description = "Optional email address subscribed to managed workflow cost budget notifications."
+  type        = string
+  default     = ""
+}
+
+variable "managed_workflow_cost_budget_services" {
+  description = "AWS service names included in the managed workflow cost budget filter."
+  type        = list(string)
+  default = [
+    "Amazon Bedrock",
+    "AWS Lambda",
+    "AWS Step Functions",
+    "Amazon Simple Storage Service",
+    "Amazon CloudFront",
+    "Amazon Simple Notification Service",
+    "AmazonCloudWatch",
+  ]
+}
+
 variable "backfill_days" {
   description = "Default ingestion backfill window."
   type        = number

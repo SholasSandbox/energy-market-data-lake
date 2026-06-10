@@ -3485,16 +3485,78 @@ Decision:
 - rollback, cadence changes, alerting changes, budget changes, manual reruns,
   and additional dashboard operations remain separate explicit decisions
 
+### Phase 17AS: Managed Workflow Budget Alarm Preflight
+
+Goal: decide whether a managed workflow budget guardrail is ready to move
+toward a separate apply boundary before continued scheduled observation.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17as-managed-workflow-budget-alarm-preflight-20260610.md`
+- `docs/evidence/phase17as-budget-alarm-preflight-aws-identity-sanitized-20260610.json`
+- `docs/evidence/phase17as-budget-alarm-preflight-existing-budgets-sanitized-20260610.json`
+- `docs/evidence/phase17as-budget-alarm-preflight-monthly-budget-notifications-sanitized-20260610.json`
+- `docs/evidence/phase17as-budget-alarm-preflight-zero-spend-budget-notifications-sanitized-20260610.json`
+- `docs/evidence/phase17as-budget-alarm-preflight-month-to-date-cost-by-service-sanitized-20260610.json`
+- `docs/evidence/phase17as-budget-alarm-preflight-managed-services-cost-sanitized-20260610.json`
+- `docs/evidence/phase17as-budget-alarm-preflight-cost-forecast-20260610.txt`
+- `docs/evidence/phase17as-budget-alarm-preflight-cloudwatch-alarms-euw2-sanitized-20260610.json`
+- `docs/evidence/phase17as-budget-alarm-preflight-billing-metrics-sanitized-20260610.json`
+- `docs/evidence/phase17as-budget-alarm-preflight-default-terraform-nochange-sanitized-20260610.txt`
+- `docs/evidence/phase17as-budget-alarm-preflight-budget-candidate-plan-sanitized-20260610.txt`
+
+Result:
+
+- no Terraform apply, manual Step Functions execution, manual Bedrock
+  invocation, SNS publish, CloudFront invalidation, static-site rebuild,
+  dashboard publish, DNS, ACM, CloudWatch alarm, or AWS Budget creation was
+  performed
+- account-level AWS Budgets already exist:
+  - `My Monthly Cost Budget`: `$10.00` monthly, actual spend `$3.113`, and
+    notification states `OK` at actual 85%, actual 100%, and forecasted 100%
+  - `My Zero-Spend Budget`: `$1.00` monthly, actual spend `$3.113`, and
+    notification state `ALARM` at actual `$0.01`
+- no `energy-market` CloudWatch alarms were found in `eu-west-2`
+- no `AWS/Billing` CloudWatch metrics were listed in `eu-west-2`; the
+  actionable guardrail path for this slice is AWS Budgets, not a CloudWatch
+  billing metric alarm
+- Cost Explorer month-to-date spend for the managed workflow service basket is
+  `$0.0121570959`
+- Cost Explorer forecast in `eu-west-2` is unavailable because the account has
+  insufficient historical data
+- Terraform now has a default-disabled
+  `aws_budgets_budget.managed_workflow_cost[0]` candidate for a `$1.00`
+  monthly service-filtered budget with actual 80%, actual 100%, and forecasted
+  100% email notifications
+- default preserved Terraform plan reports `No changes`
+- explicit candidate plan with the budget flag and accepted email set reports
+  `Plan: 1 to add, 0 to change, 0 to destroy`
+- the budget is service-filtered for the managed workflow support services and
+  is not exact per-project cost attribution
+
+Decision:
+
+- Phase 17AS is a go-candidate for a controlled budget guardrail apply, not an
+  automatic apply
+- a Phase 17AT execution may apply only the Terraform-managed budget candidate
+  after explicit approval, then verify budget and notification configuration
+  read-only
+- continued scheduled observation should follow after the budget guardrail is
+  in place
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AR managed workflow scheduled-run observation.
-2. Decide whether the next boundary is continued scheduled observation,
-   rollback/cadence control, budget alarm work, or operating dashboard
-   follow-up.
-3. Keep DNS, ACM, alarms, budgets, repeated live invocation, manual workflow
+1. Review and merge Phase 17AS managed workflow budget alarm preflight.
+2. If approved, run Phase 17AT as a controlled budget guardrail apply that only
+   creates the Terraform-managed AWS Budget candidate.
+3. After budget verification, run continued scheduled observation with the
+   budget guardrail in place.
+4. Keep DNS, ACM, unrelated alarms, repeated live invocation, manual workflow
    execution, dashboard publish, and additional Terraform changes deferred
    until a phase explicitly targets those operating boundaries.
-4. Keep the hosted dashboard demo path reproducible from
+5. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
