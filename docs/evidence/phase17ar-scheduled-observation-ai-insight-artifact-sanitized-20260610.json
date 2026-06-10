@@ -1,0 +1,17 @@
+{
+    "Contents": [
+        {
+            "Key": "curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260610T073010Z-4d8bb555/payload.json",
+            "LastModified": "2026-06-10T07:30:16+00:00",
+            "ETag": "\"cdfa48df460fcb351fb5912c15715656\"",
+            "ChecksumAlgorithm": [
+                "CRC32"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1464,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "RequestCharged": null,
+    "Prefix": "curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260610T073010Z-4d8bb555/"
+}

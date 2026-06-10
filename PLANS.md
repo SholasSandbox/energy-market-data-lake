@@ -3414,13 +3414,83 @@ Next implementation slice:
   dashboard impact, SNS failure status, and cost posture after the scheduled
   window
 
+### Phase 17AR: Managed Workflow Scheduled-Run Observation
+
+Goal: observe the managed workflow after the first scheduled EventBridge
+trigger, without starting a manual workflow execution or applying Terraform.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17ar-managed-workflow-scheduled-observation-20260610.md`
+- `docs/evidence/phase17ar-scheduled-observation-aws-identity-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-schedule-state-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-schedule-targets-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-recent-executions-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-first-execution-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-latest-execution-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-cloudwatch-succeeded-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-cloudwatch-failed-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-ai-input-bundle-artifact-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-ai-input-bundle-summary-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-news-summary-artifact-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-ai-insight-artifact-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-ai-insight-summary-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-immutable-dashboard-artifact-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-dashboard-http-headers-20260610.txt`
+- `docs/evidence/phase17ar-scheduled-observation-dashboard-json-check-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-dashboard-sha256-20260610.txt`
+- `docs/evidence/phase17ar-scheduled-observation-failed-artifacts-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-sns-topic-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-sns-subscriptions-sanitized-20260610.json`
+- `docs/evidence/phase17ar-scheduled-observation-terraform-nochange-20260610.txt`
+- `docs/evidence/phase17ar-scheduled-observation-cost-summary-20260610.txt`
+
+Result:
+
+- no manual Step Functions execution, manual Bedrock invocation, Terraform
+  apply, SNS test publish, CloudFront invalidation, static-site rebuild,
+  dashboard publish, DNS, ACM, alarm, or budget change was performed
+- EventBridge rule `energy-market-ai-orchestration-schedule` remains
+  `ENABLED` with `cron(30 7 * * ? *)`
+- the first expected scheduled EventBridge run fired at
+  `2026-06-08T07:30:00Z` and succeeded
+- subsequent scheduled runs at `2026-06-09T07:30:00Z` and
+  `2026-06-10T07:30:00Z` also succeeded
+- CloudWatch Step Functions metrics show one succeeded execution per observed
+  day and zero failed executions for the June 8 through June 10 window
+- latest run `ai-insight-20260610T073010Z-4d8bb555` published the dashboard
+  snapshot and produced the expected curated artifacts
+- no `failed/` S3 artifacts were found for objects modified since
+  `2026-06-08T00:00:00Z`
+- hosted `dashboard_snapshot_v1.json` returned `200`, was generated at
+  `2026-06-10T07:30:16Z`, and now has SHA-256
+  `2891aaea0e44c3bc6d4e042d6037faf04d1a9fef942b4c0d6eebda89c96876da`
+- the dashboard hash differs from the Phase 17AQ baseline, confirming
+  scheduled workflow dashboard publication
+- SNS failure topic remains healthy with `SubscriptionsConfirmed: 1`,
+  `SubscriptionsPending: 0`, and `SubscriptionsDeleted: 0`
+- Terraform plan with the managed workflow, CloudFront, schedule-enabled, and
+  SNS variables preserved reports `No changes`
+- token usage remains uncaptured; using the established `$0.00132618` estimate
+  per managed run, the three observed scheduled runs are estimated at
+  `$0.00397854` direct model cost
+
+Decision:
+
+- Phase 17AR is complete as a read-only scheduled-run observation
+- the managed workflow has successfully transitioned from manual proof to
+  scheduled operation for the observed June 8 through June 10 window
+- rollback, cadence changes, alerting changes, budget changes, manual reruns,
+  and additional dashboard operations remain separate explicit decisions
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AQ controlled managed workflow schedule enablement
-   apply.
-2. Observe the first scheduled run in Phase 17AR after
-   `2026-06-08T07:30:00Z`; keep the observation read-only unless stop criteria
-   require rollback.
+1. Review and merge Phase 17AR managed workflow scheduled-run observation.
+2. Decide whether the next boundary is continued scheduled observation,
+   rollback/cadence control, budget alarm work, or operating dashboard
+   follow-up.
 3. Keep DNS, ACM, alarms, budgets, repeated live invocation, manual workflow
    execution, dashboard publish, and additional Terraform changes deferred
    until a phase explicitly targets those operating boundaries.
