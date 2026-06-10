@@ -208,6 +208,9 @@ Region: **eu-west-2 (London)**
   only the managed workflow EventBridge schedule, SNS remains confirmed, the
   dashboard snapshot remains unchanged, and the next expected daily run is
   `2026-06-08T07:30:00Z`.
+- Phase 17AR observes the enabled schedule read-only: the June 8, 9, and 10
+  scheduled EventBridge runs all succeed, the dashboard snapshot updates from
+  scheduled publication, SNS remains confirmed, and Terraform remains clean.
 
 ### Deferred AWS Extension
 
@@ -865,3 +868,7 @@ These are historical references, not the current delivery path.
 - Phase 17AQ completes that explicit execution decision: the EventBridge
   schedule is now enabled, Terraform is clean afterward, and the next boundary
   observes the first scheduled run read-only.
+- Phase 17AR completes that read-only observation: three scheduled runs have
+  succeeded since `2026-06-08T07:30:00Z`, failed-artifact evidence is empty,
+  SNS remains confirmed, the dashboard reflects scheduled publication, and
+  Terraform is still no-change.

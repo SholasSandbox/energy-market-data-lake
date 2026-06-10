@@ -1,0 +1,17 @@
+{
+    "Contents": [
+        {
+            "Key": "curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260610T073010Z-4d8bb555/payload.json",
+            "LastModified": "2026-06-10T07:30:13+00:00",
+            "ETag": "\"4f4ab823c888b04871001d12eb33262d\"",
+            "ChecksumAlgorithm": [
+                "CRC32"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 14406,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "RequestCharged": null,
+    "Prefix": "curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260610T073010Z-4d8bb555/"
+}

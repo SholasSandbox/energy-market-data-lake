@@ -1,0 +1,8 @@
+{
+  "generated_at": "2026-06-10T07:30:13Z",
+  "bundle_version": "ai_input_bundle_v1",
+  "purpose": "Merge validated energy facts with curated news summaries.",
+  "news_articles": 18,
+  "energy_records": 1,
+  "expected_output_schema": "schemas/ai_insight_v1.schema.json"
+}

@@ -1,0 +1,13 @@
+Phase 17AR cost summary
+date=2026-06-10
+boundary=read-only scheduled-run observation
+token_usage_captured=false
+observed_scheduled_runs=3
+observed_scheduled_run_dates_utc=2026-06-08,2026-06-09,2026-06-10
+estimated_direct_model_cost_usd_per_run=0.00132618
+estimated_direct_model_cost_usd_observed_total=0.00397854
+estimated_direct_model_cost_usd_30_day_daily=0.03978540
+estimated_direct_model_cost_usd_31_day_daily=0.04111158
+estimated_under_0_10_usd_cap_for_observed_runs=true
+estimate_basis=Phase 17AA and Phase 17AG managed workflow smoke cost summaries; workflow output still does not emit token usage.
+notes=Estimate excludes nominal Step Functions, Lambda, S3, CloudFront, and CloudWatch costs. Scheduled operation makes the model cost recurring.

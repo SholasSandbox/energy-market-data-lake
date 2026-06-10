@@ -1,0 +1,17 @@
+{
+    "Contents": [
+        {
+            "Key": "snapshots/run_id=ai-insight-20260610T073010Z-4d8bb555/dashboard_snapshot_v1.json",
+            "LastModified": "2026-06-10T07:30:17+00:00",
+            "ETag": "\"a6b655e17b6632338b2a7c4745719dec\"",
+            "ChecksumAlgorithm": [
+                "CRC32"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 9636,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "RequestCharged": null,
+    "Prefix": "snapshots/run_id=ai-insight-20260610T073010Z-4d8bb555/"
+}
