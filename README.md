@@ -879,3 +879,7 @@ These are historical references, not the current delivery path.
   exist, no project CloudWatch billing alarm path is evidenced, and a
   Terraform-managed `$1` monthly service-filtered AWS Budget is the narrow
   go-candidate for a separate apply.
+- Phase 17AT applies that budget guardrail only: Terraform creates the
+  service-filtered `$1` monthly AWS Budget, notifications verify as `OK`, the
+  accepted email is subscribed, and postapply Terraform is no-change with the
+  budget flag preserved.
