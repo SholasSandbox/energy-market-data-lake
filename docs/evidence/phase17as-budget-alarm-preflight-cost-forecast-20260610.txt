@@ -1,0 +1,5 @@
+Phase 17AS forecast check
+command=aws ce get-cost-forecast --time-period Start=2026-06-11,End=2026-07-01 --metric UNBLENDED_COST --granularity MONTHLY --region eu-west-2
+
+aws: [ERROR]: An error occurred (DataUnavailableException) when calling the GetCostForecast operation: Insufficient amount of historical data.
+status=unavailable

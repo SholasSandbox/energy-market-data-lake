@@ -82,3 +82,8 @@ output "ai_orchestration_failure_topic_arn" {
   description = "SNS topic ARN for Phase 8 orchestration failures."
   value       = try(aws_sns_topic.ai_orchestration_failures[0].arn, null)
 }
+
+output "managed_workflow_cost_budget_name" {
+  description = "Managed workflow monthly cost budget name when enabled."
+  value       = try(aws_budgets_budget.managed_workflow_cost[0].name, null)
+}
