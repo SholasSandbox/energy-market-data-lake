@@ -1,0 +1,81 @@
+{
+    "Budgets": [
+        {
+            "BudgetName": "My Monthly Cost Budget",
+            "BudgetLimit": {
+                "Amount": "10.0",
+                "Unit": "USD"
+            },
+            "TimeUnit": "MONTHLY",
+            "TimePeriod": {
+                "Start": "2025-11-01T00:00:00+00:00",
+                "End": "2087-06-15T01:00:00+01:00"
+            },
+            "CalculatedSpend": {
+                "ActualSpend": {
+                    "Amount": "3.183",
+                    "Unit": "USD"
+                }
+            },
+            "BudgetType": "COST",
+            "LastUpdatedTime": "2026-06-10T15:08:05.840000+01:00",
+            "FilterExpression": {
+                "Not": {
+                    "Dimensions": {
+                        "Key": "RECORD_TYPE",
+                        "Values": [
+                            "Credit",
+                            "Refund"
+                        ]
+                    }
+                }
+            },
+            "Metrics": [
+                "UnblendedCost"
+            ],
+            "BillingViewArn": "arn:aws:billing::<account-id>:billingview/primary",
+            "HealthStatus": {
+                "Status": "HEALTHY",
+                "LastUpdatedTime": "2026-06-10T15:08:05.105000+01:00"
+            }
+        },
+        {
+            "BudgetName": "My Zero-Spend Budget",
+            "BudgetLimit": {
+                "Amount": "1.0",
+                "Unit": "USD"
+            },
+            "CostTypes": {
+                "IncludeTax": true,
+                "IncludeSubscription": true,
+                "UseBlended": false,
+                "IncludeRefund": true,
+                "IncludeCredit": true,
+                "IncludeUpfront": true,
+                "IncludeRecurring": true,
+                "IncludeOtherSubscription": true,
+                "IncludeSupport": true,
+                "IncludeDiscount": true,
+                "UseAmortized": false
+            },
+            "TimeUnit": "MONTHLY",
+            "TimePeriod": {
+                "Start": "2025-09-01T01:00:00+01:00",
+                "End": "2087-06-15T01:00:00+01:00"
+            },
+            "CalculatedSpend": {
+                "ActualSpend": {
+                    "Amount": "3.183",
+                    "Unit": "USD"
+                }
+            },
+            "BudgetType": "COST",
+            "LastUpdatedTime": "2026-06-10T15:08:32.264000+01:00",
+            "BillingViewArn": "arn:aws:billing::<account-id>:billingview/primary",
+            "HealthStatus": {
+                "Status": "HEALTHY",
+                "LastUpdatedTime": "2026-06-10T15:08:31.585000+01:00"
+            }
+        }
+    ]
+}
