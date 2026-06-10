@@ -1,0 +1,5 @@
+Phase 17AT preapply target budget lookup
+command=aws budgets describe-budget --account-id <account-id> --budget-name energy-market-managed-workflow-monthly-cost --region eu-west-2
+
+aws: [ERROR]: An error occurred (NotFoundException) when calling the DescribeBudget operation: Unable to get budget: energy-market-managed-workflow-monthly-cost - the budget doesn't exist.
+status=not-found

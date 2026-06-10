@@ -3546,17 +3546,72 @@ Decision:
 - continued scheduled observation should follow after the budget guardrail is
   in place
 
+### Phase 17AT: Controlled Budget Guardrail Apply
+
+Goal: apply only the Terraform-managed AWS Budget guardrail approved after
+Phase 17AS, then verify budget and notification configuration read-only.
+
+Status: complete and ready for review.
+
+Evidence:
+
+- `docs/evidence/phase17at-budget-guardrail-apply-summary-20260610.md`
+- `docs/evidence/phase17at-budget-guardrail-apply-preapply-aws-identity-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-preapply-existing-budgets-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-preapply-target-budget-lookup-sanitized-20260610.txt`
+- `docs/evidence/phase17at-budget-guardrail-apply-terraform-plan-sanitized-20260610.txt`
+- `docs/evidence/phase17at-budget-guardrail-apply-terraform-apply-sanitized-20260610.txt`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-budget-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-budgets-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-budget-notifications-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-subscribers-actual80-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-subscribers-actual100-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-subscribers-forecast100-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-terraform-nochange-sanitized-20260610.txt`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-schedule-state-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-recent-executions-sanitized-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-dashboard-http-headers-20260610.txt`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-dashboard-json-check-20260610.json`
+- `docs/evidence/phase17at-budget-guardrail-apply-postapply-dashboard-sha256-20260610.txt`
+
+Result:
+
+- explicit approval was granted for the controlled budget guardrail apply
+- no manual Step Functions execution, manual Bedrock invocation, SNS publish,
+  CloudFront invalidation, static-site rebuild, dashboard publish, DNS, ACM,
+  or unrelated alarm work was performed
+- preapply target-budget lookup found that
+  `energy-market-managed-workflow-monthly-cost` did not exist
+- saved Terraform plan reported `Plan: 1 to add, 0 to change, 0 to destroy`
+- Terraform apply completed successfully:
+  `Apply complete! Resources: 1 added, 0 changed, 0 destroyed.`
+- created budget `energy-market-managed-workflow-monthly-cost` is healthy,
+  monthly, service-filtered, and limited to `$1.00`
+- budget notifications are present and `OK` for actual 80%, actual 100%, and
+  forecasted 100%
+- each notification has the accepted email subscriber
+- postapply Terraform plan with the managed workflow, CloudFront,
+  schedule-enabled, SNS, and budget variables preserved reports `No changes`
+- EventBridge schedule remains `ENABLED`
+- recent Step Functions executions remain the scheduled June 8, 9, and 10
+  successful runs; this phase did not start a new execution
+- hosted dashboard snapshot remains the scheduled Phase 17AR snapshot with
+  SHA-256 `2891aaea0e44c3bc6d4e042d6037faf04d1a9fef942b4c0d6eebda89c96876da`
+
+Decision:
+
+- Phase 17AT is complete as the controlled budget guardrail apply
+- continued scheduled observation can proceed with the AWS Budget guardrail in
+  place
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AS managed workflow budget alarm preflight.
-2. If approved, run Phase 17AT as a controlled budget guardrail apply that only
-   creates the Terraform-managed AWS Budget candidate.
-3. After budget verification, run continued scheduled observation with the
-   budget guardrail in place.
-4. Keep DNS, ACM, unrelated alarms, repeated live invocation, manual workflow
+1. Review and merge Phase 17AT controlled budget guardrail apply.
+2. Run continued scheduled observation with the budget guardrail in place.
+3. Keep DNS, ACM, unrelated alarms, repeated live invocation, manual workflow
    execution, dashboard publish, and additional Terraform changes deferred
    until a phase explicitly targets those operating boundaries.
-5. Keep the hosted dashboard demo path reproducible from
+4. Keep the hosted dashboard demo path reproducible from
    `docs/demo-walkthrough.md`.
 
 ## Next Branch Preflight Checklist
