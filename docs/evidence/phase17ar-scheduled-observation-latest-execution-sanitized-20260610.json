@@ -1,0 +1,19 @@
+{
+    "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:219aabc0-0a12-e88c-4455-9022670d1db3_48e30b27-2ae8-fcb4-c9c1-80a56490c505",
+    "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+    "name": "219aabc0-0a12-e88c-4455-9022670d1db3_48e30b27-2ae8-fcb4-c9c1-80a56490c505",
+    "status": "SUCCEEDED",
+    "startDate": "2026-06-10T08:30:08.341000+01:00",
+    "stopDate": "2026-06-10T08:30:16.525000+01:00",
+    "input": "{\"version\":\"0\",\"id\":\"219aabc0-0a12-e88c-4455-9022670d1db3\",\"detail-type\":\"Scheduled Event\",\"source\":\"aws.events\",\"account\":\"<account-id>\",\"time\":\"2026-06-10T07:30:00Z\",\"region\":\"eu-west-2\",\"resources\":[\"arn:aws:events:eu-west-2:<account-id>:rule/energy-market-ai-orchestration-schedule\"],\"detail\":{}}",
+    "inputDetails": {
+        "included": true
+    },
+    "output": "{\"workflow\":\"ai_insight\",\"run_id\":\"ai-insight-20260610T073010Z-4d8bb555\",\"status\":\"dashboard_snapshot_published\",\"lake_bucket\":\"energy-market-lake-<account-id>-20260405\",\"dashboard_bucket\":\"energy-market-dashboard-public-<account-id>-20260511\",\"artifacts\":{\"dashboard_data\":\"dashboard/dashboard-data.json\",\"energy_input\":\"curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260610T073010Z-4d8bb555/payload.json\",\"news_summary\":\"curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260610T073010Z-4d8bb555/payload.json\",\"ai_input_bundle\":\"curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260610T073010Z-4d8bb555/payload.json\",\"ai_insight\":\"curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260610T073010Z-4d8bb555/payload.json\",\"dashboard_snapshot\":\"dashboard_snapshot_v1.json\"},\"summary\":{\"mode\":\"managed\",\"energy_record_count\":1,\"article_count\":18,\"insight_count\":1,\"risk_level\":\"high\",\"ai_provider\":\"bedrock\",\"bedrock_provider\":\"mistral\",\"bedrock_model_id\":\"mistral.ministral-3-8b-instruct\",\"immutable_dashboard_snapshot\":\"snapshots/run_id=ai-insight-20260610T073010Z-4d8bb555/dashboard_snapshot_v1.json\"}}",
+    "outputDetails": {
+        "included": true
+    },
+    "redriveCount": 0,
+    "redriveStatus": "NOT_REDRIVABLE",
+    "redriveStatusReason": "Execution is SUCCEEDED and cannot be redriven"
+}
