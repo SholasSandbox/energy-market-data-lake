@@ -36,6 +36,22 @@ ai_orchestration_bedrock_provider      = "mistral"
 ai_orchestration_bedrock_max_tokens    = 1600
 ai_orchestration_bedrock_temperature   = 0.2
 
+# Optional managed workflow monthly cost budget. Keep disabled until a budget
+# alarm execution boundary explicitly approves the guardrail.
+managed_workflow_cost_budget_enabled            = false
+managed_workflow_cost_budget_name               = "energy-market-managed-workflow-monthly-cost"
+managed_workflow_cost_budget_limit_usd          = 1
+managed_workflow_cost_budget_notification_email = ""
+managed_workflow_cost_budget_services = [
+  "Amazon Bedrock",
+  "AWS Lambda",
+  "AWS Step Functions",
+  "Amazon Simple Storage Service",
+  "Amazon CloudFront",
+  "Amazon Simple Notification Service",
+  "AmazonCloudWatch",
+]
+
 entsog_point_directions = "BE-TSO-0001ITP-00061entry,BE-TSO-0001ITP-00115exit,CZ-TSO-0001ITP-00537entry,BE-TSO-0001ITP-00555exit"
 entsog_flow_indicator   = "Physical Flow"
 entsog_demand_indicator = "Allocation"

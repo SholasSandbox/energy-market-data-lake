@@ -1,0 +1,11 @@
+{
+    "Notifications": [
+        {
+            "NotificationType": "ACTUAL",
+            "ComparisonOperator": "GREATER_THAN",
+            "Threshold": 0.01,
+            "ThresholdType": "ABSOLUTE_VALUE",
+            "NotificationState": "ALARM"
+        }
+    ]
+}

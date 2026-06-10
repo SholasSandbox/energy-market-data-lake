@@ -211,6 +211,9 @@ Region: **eu-west-2 (London)**
 - Phase 17AR observes the enabled schedule read-only: the June 8, 9, and 10
   scheduled EventBridge runs all succeed, the dashboard snapshot updates from
   scheduled publication, SNS remains confirmed, and Terraform remains clean.
+- Phase 17AS adds an opt-in Terraform-managed AWS Budgets candidate for the
+  managed workflow service basket; default Terraform remains no-change, and
+  the budget apply remains a separate explicit execution decision.
 
 ### Deferred AWS Extension
 
@@ -872,3 +875,7 @@ These are historical references, not the current delivery path.
   succeeded since `2026-06-08T07:30:00Z`, failed-artifact evidence is empty,
   SNS remains confirmed, the dashboard reflects scheduled publication, and
   Terraform is still no-change.
+- Phase 17AS completes a budget alarm preflight: account-level budgets already
+  exist, no project CloudWatch billing alarm path is evidenced, and a
+  Terraform-managed `$1` monthly service-filtered AWS Budget is the narrow
+  go-candidate for a separate apply.
