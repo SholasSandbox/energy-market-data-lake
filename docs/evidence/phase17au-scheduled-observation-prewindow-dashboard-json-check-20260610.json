@@ -1,0 +1,18 @@
+{
+  "schema_version": "dashboard_snapshot_v1",
+  "generated_at": "2026-06-10T07:30:16Z",
+  "metadata": {
+    "region": "gb",
+    "latest_date": "2026-05-07",
+    "data_freshness": "Local demo evidence snapshot; not live market freshness",
+    "status": "watch"
+  },
+  "insights": [
+    {
+      "id": "uk-nuclear-labour-dispute-2026-06-10",
+      "risk_level": "high",
+      "confidence": 0.85,
+      "title": "Sellafield Strike Risk Escalates Amid UK Nuclear Pay Disparity"
+    }
+  ]
+}

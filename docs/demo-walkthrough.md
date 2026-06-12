@@ -8,12 +8,13 @@ demo under 10 minutes.
 
 Current demo state: the ENTSOG gas lakehouse path is proven through raw S3,
 curated Parquet, Glue Catalog, Athena query, and validation evidence. The
-news + AI extension is now live-proven in AWS as a manual Step Functions
+news + AI extension is now live-proven in AWS as a scheduled Step Functions
 workflow with Lambda handlers, validation gates, S3 artifacts, failed-run
-quarantine, and a schedule that remains disabled by design. Phase 10 adds an
-operator-focused React `Overview` page with alerts, executive KPIs, P&L
-drivers, risk coverage, market/news context, AI insight, and data-quality
-state. Phase 14F adds live CloudFront/S3 hosting for the React dashboard.
+quarantine, SNS failure alerting, and a service-filtered AWS Budget guardrail.
+Phase 10 adds an operator-focused React `Overview` page with alerts, executive
+KPIs, P&L drivers, risk coverage, market/news context, AI insight, and
+data-quality state. Phase 14F adds live CloudFront/S3 hosting for the React
+dashboard.
 
 ## 1. Business Problem
 
@@ -106,23 +107,27 @@ Show:
 
 - `docs/evidence/phase8-aws-live-execution-20260511.md`
 - `docs/phase-8-operational-runbook.md`
+- `docs/evidence/phase17au-managed-workflow-scheduled-observation-20260612.md`
 
 AWS proof state:
 
-- Step Functions execution succeeded manually.
+- Step Functions execution succeeded manually before schedule enablement.
+- EventBridge now runs the managed workflow daily at `07:30 UTC`.
 - Lambda wrote run-scoped curated artifacts to S3.
 - The dashboard snapshot was published only after validation passed.
 - A controlled failed run wrote to `failed/`.
 - The previous dashboard snapshot was preserved after failure.
-- EventBridge schedule remains disabled.
+- Phase 17AU verifies the first post-budget-guardrail scheduled run and the
+  following scheduled run both succeeded.
 
 Evidence values:
 
 ```text
 State machine: energy-market-ai-insight-orchestration
-Successful run: ai-insight-20260511T114815Z-927685a3
+Manual proof run: ai-insight-20260511T114815Z-927685a3
+Latest scheduled run: ai-insight-20260612T073010Z-1bb3fff9
 Execution status: SUCCEEDED
-Schedule state: DISABLED
+Schedule state: ENABLED
 ```
 
 Say:
@@ -150,6 +155,7 @@ Live verification evidence:
 
 - `docs/evidence/phase14f-dashboard-hosting-live-apply-summary-20260521.md`
 - `docs/evidence/phase15-cloudfront-demo-http-check-20260521.txt`
+- `docs/evidence/phase17au-managed-workflow-scheduled-observation-20260612.md`
 
 Quick hosted checks:
 
@@ -185,7 +191,7 @@ from http.client import HTTPSConnection
 host = "d28yo76if4k3l1.cloudfront.net"
 paths = [
     "/dashboard_snapshot_v1.json",
-    "/snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json",
+    "/snapshots/run_id=ai-insight-20260612T073010Z-1bb3fff9/dashboard_snapshot_v1.json",
 ]
 for path in paths:
     conn = HTTPSConnection(host, timeout=20)
@@ -201,7 +207,7 @@ Expected result:
 
 ```text
 /dashboard_snapshot_v1.json 200 OK dashboard_snapshot_v1
-/snapshots/run_id=ai-insight-20260603T010744Z-4d89a62a/dashboard_snapshot_v1.json 200 OK dashboard_snapshot_v1
+/snapshots/run_id=ai-insight-20260612T073010Z-1bb3fff9/dashboard_snapshot_v1.json 200 OK dashboard_snapshot_v1
 ```
 
 Say:

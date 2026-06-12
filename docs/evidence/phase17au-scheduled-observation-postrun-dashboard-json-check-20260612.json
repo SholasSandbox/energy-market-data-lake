@@ -1,0 +1,14 @@
+{
+  "schema_version": "dashboard_snapshot_v1",
+  "generated_at": "2026-06-11T07:30:17Z",
+  "summary_card_count": 3,
+  "insight_count": 1,
+  "news_article_count": 12,
+  "primary_risk_level": "watch",
+  "primary_source_count": 3,
+  "primary_source_urls": [
+    "dashboard-data.json",
+    "https://www.energylivenews.com/2026/06/09/windfarms-could-cover-11-of-the-north-sea-by-2050-predicts-study/",
+    "https://www.energyvoice.com/oilandgas/north-sea/599097/serica-energy-completes-purchase-of-one-dyas-north-sea-assets/"
+  ]
+}

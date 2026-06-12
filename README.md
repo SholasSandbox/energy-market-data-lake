@@ -214,6 +214,13 @@ Region: **eu-west-2 (London)**
 - Phase 17AS adds an opt-in Terraform-managed AWS Budgets candidate for the
   managed workflow service basket; default Terraform remains no-change, and
   the budget apply remains a separate explicit execution decision.
+- Phase 17AT applies that budget guardrail only: Terraform creates the
+  service-filtered `$1` monthly AWS Budget, notifications verify as `OK`, the
+  accepted email is subscribed, and postapply Terraform is no-change.
+- Phase 17AU observes scheduled operation with the budget guardrail in place:
+  the June 11 and June 12 scheduled runs succeed, S3 latest plus immutable
+  dashboard snapshots publish, failed-artifact evidence stays empty, budget
+  notifications remain `OK`, and Terraform remains no-change.
 
 ### Deferred AWS Extension
 
@@ -883,3 +890,9 @@ These are historical references, not the current delivery path.
   service-filtered `$1` monthly AWS Budget, notifications verify as `OK`, the
   accepted email is subscribed, and postapply Terraform is no-change with the
   budget flag preserved.
+- Phase 17AU completes continued scheduled observation with the budget
+  guardrail in place: the first post-guardrail scheduled run on
+  `2026-06-11T07:30:00Z` succeeds, the June 12 scheduled run also succeeds,
+  S3 latest plus immutable dashboard snapshots publish, failed-artifact
+  evidence remains empty, SNS and budget notifications stay healthy, and
+  Terraform is still no-change.
