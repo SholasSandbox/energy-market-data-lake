@@ -3604,10 +3604,88 @@ Decision:
 - continued scheduled observation can proceed with the AWS Budget guardrail in
   place
 
+### Phase 17AU: Continued Scheduled Observation With Budget Guardrail
+
+Goal: observe the first scheduled managed workflow run after the Phase 17AT
+budget guardrail apply.
+
+Status: complete.
+
+Evidence:
+
+- `docs/evidence/phase17au-managed-workflow-scheduled-observation-20260612.md`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-20260610.md`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-aws-identity-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-budget-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-budget-notifications-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-schedule-state-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-recent-executions-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-failed-artifacts-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-dashboard-http-headers-20260610.txt`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-dashboard-json-check-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-dashboard-sha256-20260610.txt`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-managed-services-cost-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-terraform-nochange-sanitized-20260610.txt`
+- `docs/evidence/phase17au-scheduled-observation-postrun-aws-identity-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-schedule-state-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-recent-executions-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-first-execution-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-latest-execution-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-artifacts-ai-insight-20260611T073010Z-c0977e3d-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-artifacts-ai-insight-20260612T073010Z-1bb3fff9-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-failed-artifacts-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-http-headers-20260612.txt`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-json-check-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-sha256-20260612.txt`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-s3-head-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-s3-json-check-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-immutable-http-headers-20260612.txt`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-immutable-json-check-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-budget-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-budget-notifications-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-sns-subscriptions-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-managed-services-cost-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-terraform-nochange-sanitized-20260612.txt`
+
+Result:
+
+- no manual Step Functions execution, manual Bedrock invocation, Terraform
+  apply, SNS publish, CloudFront invalidation, static-site rebuild, dashboard
+  publish, DNS, ACM, alarm, or budget change was performed
+- EventBridge schedule remained `ENABLED`
+- the first post-guardrail scheduled run on `2026-06-11T07:30:00Z`
+  succeeded and published run `ai-insight-20260611T073010Z-c0977e3d`
+- the next scheduled run on `2026-06-12T07:30:00Z` also succeeded and
+  published run `ai-insight-20260612T073010Z-1bb3fff9`
+- each post-guardrail run wrote four lake artifacts and one immutable
+  dashboard snapshot artifact
+- no `failed/` artifacts modified since `2026-06-11T07:30:00Z` were found
+- S3 latest `dashboard_snapshot_v1.json` updated from the June 12 scheduled
+  run, while CloudFront latest still served the cached June 11 object without
+  invalidation
+- the immutable CloudFront dashboard path for run
+  `ai-insight-20260612T073010Z-1bb3fff9` returned `200`, remained schema
+  `dashboard_snapshot_v1`, and retained public-safe source URLs
+- AWS Budget `energy-market-managed-workflow-monthly-cost` remained healthy,
+  actual spend was `$0.019` against the `$1.00` monthly budget, and
+  notifications remained `OK`
+- SNS failure-topic subscription remained accepted
+- Terraform plan with the managed workflow, CloudFront, schedule-enabled, SNS,
+  and budget variables preserved reports `No changes`
+
+Decision:
+
+- Phase 17AU is complete
+- the managed workflow can remain scheduled under the active budget guardrail
+- any cadence rollback, dashboard demo refresh, DNS/ACM work, or additional
+  alerting should be handled as a separate explicit boundary
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AT controlled budget guardrail apply.
-2. Run continued scheduled observation with the budget guardrail in place.
+1. Review and merge Phase 17AU continued scheduled observation.
+2. Decide whether the next boundary is continued scheduled observation,
+   cadence rollback/control, operating dashboard demo refresh, DNS/ACM, or
+   additional alerting.
 3. Keep DNS, ACM, unrelated alarms, repeated live invocation, manual workflow
    execution, dashboard publish, and additional Terraform changes deferred
    until a phase explicitly targets those operating boundaries.

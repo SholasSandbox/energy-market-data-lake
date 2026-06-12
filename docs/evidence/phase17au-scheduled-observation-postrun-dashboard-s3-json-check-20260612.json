@@ -1,0 +1,13 @@
+{
+  "schema_version": "dashboard_snapshot_v1",
+  "generated_at": "2026-06-12T07:30:16Z",
+  "summary_card_count": 3,
+  "insight_count": 1,
+  "news_article_count": 12,
+  "primary_risk_level": "watch",
+  "primary_source_count": 2,
+  "primary_source_urls": [
+    "dashboard-data.json",
+    "https://www.energyvoice.com/oilandgas/599181/ukog-sells-off-horse-hill-development-in-million-pound-deal/"
+  ]
+}
