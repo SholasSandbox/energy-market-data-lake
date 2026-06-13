@@ -2,7 +2,15 @@
 
 <!-- markdownlint-disable MD013 -->
 
-Source of truth for this plan:
+## Planning Authority
+
+`docs/planning/sap-c02-readiness-tracker.md` is the controlling source for
+scope, sequencing, milestone status, and completion criteria. This file
+preserves delivery history and translates the tracker into an active execution
+sequence. Where an older phase, backlog item, or suggested next step conflicts
+with the tracker, the tracker wins.
+
+Supporting sources for implementation truth:
 
 - `README.md` for current platform scope and target model
 - `dashboard-ui/src/App.tsx` for current React implementation reality
@@ -30,6 +38,30 @@ Historical planning references:
   plan. It is archived and no longer a source of truth for current phase
   status.
 
+## Active SAP-C02 Delivery Sequence
+
+Status as of 2026-06-12: programme reset and lakehouse closure.
+
+1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
+   resolved tracker-governance version of `AGENTS.md`.
+2. Reconcile the lakehouse baseline rather than rebuilding it. Raw and curated
+   S3 zones, Glue Catalog/ETL, Parquet, Athena, logging, diagrams, tags, and a
+   managed-workflow budget already have implementation or live evidence.
+3. Close the remaining June-July gaps: zone/naming ADR, live bucket posture
+   check, SSE-S3 versus SSE-KMS decision, KMS design, tighter Glue permissions,
+   dedicated Athena query access, and one current end-to-end evidence chain.
+4. Freeze new AI orchestration and dashboard feature work. Preserve the proven
+   scheduled workflow and hosted demo through maintenance, observation, cost
+   control, and explicit rollback decisions only.
+5. Begin the tracker operating cadence: weekly hours, small practice blocks,
+   wrong-answer logging, and evidence-backed tracker updates.
+6. Move to IAM, Organizations, SCPs, and central governance only after the
+   June-July lakehouse closure gate is met.
+
+The detailed Phase 1-17 material below is a historical delivery record and
+implementation reference. It no longer authorizes continuation of deferred AI
+or dashboard work.
+
 ## Current Baseline
 
 The repo now shows a strong end-to-end mixed-energy demo:
@@ -49,8 +81,8 @@ The repo now shows a strong end-to-end mixed-energy demo:
 The current implementation boundary is:
 
 - electricity and gas are proven through the lakehouse/dashboard path
-- news and AI insight are implemented as a local MVP and AWS-managed manual
-  orchestration path
+- news and AI insight are implemented as a local MVP and a live-proven,
+  scheduled AWS-managed orchestration path with SNS and budget guardrails
 - Terraform now tracks the core lakehouse and Phase 8 resources, with ingestion
   Lambda drift reconciled
 - Phase 10 is complete: the React dashboard now has a stronger
@@ -69,7 +101,7 @@ The current implementation boundary is:
   CloudFront/S3 hosting was applied, dashboard assets were published, and
   CloudFront HTTP checks passed
 
-## Delivery Order
+## Historical Delivery Record
 
 ### Phase 1: Stabilize Ingestion And Lakehouse
 
@@ -3604,15 +3636,96 @@ Decision:
 - continued scheduled observation can proceed with the AWS Budget guardrail in
   place
 
+### Phase 17AU: Continued Scheduled Observation With Budget Guardrail
+
+Goal: observe the first scheduled managed workflow run after the Phase 17AT
+budget guardrail apply.
+
+Status: complete.
+
+Evidence:
+
+- `docs/evidence/phase17au-managed-workflow-scheduled-observation-20260612.md`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-20260610.md`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-aws-identity-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-budget-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-budget-notifications-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-schedule-state-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-recent-executions-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-failed-artifacts-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-dashboard-http-headers-20260610.txt`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-dashboard-json-check-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-dashboard-sha256-20260610.txt`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-managed-services-cost-sanitized-20260610.json`
+- `docs/evidence/phase17au-scheduled-observation-prewindow-terraform-nochange-sanitized-20260610.txt`
+- `docs/evidence/phase17au-scheduled-observation-postrun-aws-identity-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-schedule-state-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-recent-executions-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-first-execution-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-latest-execution-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-artifacts-ai-insight-20260611T073010Z-c0977e3d-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-artifacts-ai-insight-20260612T073010Z-1bb3fff9-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-failed-artifacts-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-http-headers-20260612.txt`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-json-check-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-sha256-20260612.txt`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-s3-head-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-s3-json-check-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-immutable-http-headers-20260612.txt`
+- `docs/evidence/phase17au-scheduled-observation-postrun-dashboard-immutable-json-check-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-budget-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-budget-notifications-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-sns-subscriptions-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-managed-services-cost-sanitized-20260612.json`
+- `docs/evidence/phase17au-scheduled-observation-postrun-terraform-nochange-sanitized-20260612.txt`
+
+Result:
+
+- no manual Step Functions execution, manual Bedrock invocation, Terraform
+  apply, SNS publish, CloudFront invalidation, static-site rebuild, dashboard
+  publish, DNS, ACM, alarm, or budget change was performed
+- EventBridge schedule remained `ENABLED`
+- the first post-guardrail scheduled run on `2026-06-11T07:30:00Z`
+  succeeded and published run `ai-insight-20260611T073010Z-c0977e3d`
+- the next scheduled run on `2026-06-12T07:30:00Z` also succeeded and
+  published run `ai-insight-20260612T073010Z-1bb3fff9`
+- each post-guardrail run wrote four lake artifacts and one immutable
+  dashboard snapshot artifact
+- no `failed/` artifacts modified since `2026-06-11T07:30:00Z` were found
+- S3 latest `dashboard_snapshot_v1.json` updated from the June 12 scheduled
+  run, while CloudFront latest still served the cached June 11 object without
+  invalidation
+- the immutable CloudFront dashboard path for run
+  `ai-insight-20260612T073010Z-1bb3fff9` returned `200`, remained schema
+  `dashboard_snapshot_v1`, and retained public-safe source URLs
+- AWS Budget `energy-market-managed-workflow-monthly-cost` remained healthy,
+  actual spend was `$0.019` against the `$1.00` monthly budget, and
+  notifications remained `OK`
+- SNS failure-topic subscription remained accepted
+- Terraform plan with the managed workflow, CloudFront, schedule-enabled, SNS,
+  and budget variables preserved reports `No changes`
+
+Decision:
+
+- Phase 17AU is complete
+- the managed workflow can remain scheduled under the active budget guardrail
+- any cadence rollback, dashboard demo refresh, DNS/ACM work, or additional
+  alerting should be handled as a separate explicit boundary
+
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AT controlled budget guardrail apply.
-2. Run continued scheduled observation with the budget guardrail in place.
-3. Keep DNS, ACM, unrelated alarms, repeated live invocation, manual workflow
-   execution, dashboard publish, and additional Terraform changes deferred
-   until a phase explicitly targets those operating boundaries.
-4. Keep the hosted dashboard demo path reproducible from
-   `docs/demo-walkthrough.md`.
+1. Review and merge Phase 17AU continued scheduled observation, then
+   synchronize `main` with the merged governance instructions.
+2. Execute the tracker Lakehouse closure gaps checklist, starting with the
+   shared-zone/naming ADR and read-only live bucket posture verification.
+3. Design the SSE-S3 versus SSE-KMS target and the required KMS/IAM boundaries
+   before proposing infrastructure changes.
+4. Tighten the Glue S3 permissions and define dedicated Athena query access
+   locally, with tests and Terraform plans before any apply decision.
+5. Capture one current end-to-end lakehouse evidence chain and update the
+   tracker with direct evidence links.
+6. Keep DNS, ACM, dashboard expansion, repeated live model invocation, and new
+   AI orchestration features deferred under the SAP-C02 scope rules.
 
 ## Next Branch Preflight Checklist
 

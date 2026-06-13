@@ -12,6 +12,14 @@ snapshot, and a live-proven AWS Step Functions orchestration path.
 
 Region: **eu-west-2 (London)**
 
+## Programme Governance
+
+`docs/planning/sap-c02-readiness-tracker.md` controls near-term scope,
+sequencing, and completion criteria. The implemented platform described here
+is the Energy Data Lakehouse case study for SAP-C02 preparation. `PLANS.md`
+preserves delivery history and the current execution sequence, but it does not
+override tracker deferrals.
+
 ## Project Scope
 
 ### Implemented Today
@@ -214,6 +222,13 @@ Region: **eu-west-2 (London)**
 - Phase 17AS adds an opt-in Terraform-managed AWS Budgets candidate for the
   managed workflow service basket; default Terraform remains no-change, and
   the budget apply remains a separate explicit execution decision.
+- Phase 17AT applies that budget guardrail only: Terraform creates the
+  service-filtered `$1` monthly AWS Budget, notifications verify as `OK`, the
+  accepted email is subscribed, and postapply Terraform is no-change.
+- Phase 17AU observes scheduled operation with the budget guardrail in place:
+  the June 11 and June 12 scheduled runs succeed, S3 latest plus immutable
+  dashboard snapshots publish, failed-artifact evidence stays empty, budget
+  notifications remain `OK`, and Terraform remains no-change.
 
 ### Deferred AWS Extension
 
@@ -579,7 +594,9 @@ python3 scripts/validate_athena_schema.py \
 
 ## Active Documentation
 
-- `PLANS.md`: current delivery sequence and implementation guardrails.
+- `docs/planning/sap-c02-readiness-tracker.md`: controlling scope, sequence,
+  progress, and completion tracker.
+- `PLANS.md`: active SAP-C02 execution sequence plus historical delivery record.
 - `docs/setup.md`: setup guide for the serverless energy lakehouse path.
 - `docs/phase-1-stabilize-ingestion-lakehouse.md`: active stabilization checklist.
 - `docs/entsoe-operationalization-checklist.md`: ENTSO-E reliability checklist.
@@ -684,7 +701,26 @@ These are historical references, not the current delivery path.
 
 ## Current Delivery Priorities
 
-1. Use `PLANS.md` as the current delivery control document.
+1. Use the SAP-C02 readiness tracker as the delivery control document.
+2. Close the June-July lakehouse gaps: architecture/naming ADRs, live bucket
+   posture evidence, KMS design, Glue least privilege, Athena query access, and
+   one current end-to-end validation chain.
+3. Preserve the existing scheduled managed workflow, hosted dashboard, SNS
+   alerting, and AWS Budget as a maintained baseline rather than a feature
+   roadmap.
+4. Freeze new AI orchestration, dashboard expansion, DNS/ACM, and unrelated
+   portfolio polish unless the tracker explicitly approves the work.
+5. Produce weekly study/build artifacts, practice-question results, and
+   wrong-answer entries alongside repository changes.
+6. Begin the IAM, Organizations, SCP, and central-governance phase only after
+   the lakehouse closure checklist is complete.
+
+## Historical Phase 17 Operating Constraints
+
+The numbered constraints below preserve the decisions that governed the Phase
+17 rollout. They are historical evidence, not the current delivery sequence.
+
+1. Use `PLANS.md` as the Phase 17 delivery record.
 2. Keep the React dashboard focused on approved snapshot JSON, URL-backed
    filters, and explicit publish evidence.
 3. Keep local and AWS orchestration proof paths reproducible with schema
@@ -883,3 +919,9 @@ These are historical references, not the current delivery path.
   service-filtered `$1` monthly AWS Budget, notifications verify as `OK`, the
   accepted email is subscribed, and postapply Terraform is no-change with the
   budget flag preserved.
+- Phase 17AU completes continued scheduled observation with the budget
+  guardrail in place: the first post-guardrail scheduled run on
+  `2026-06-11T07:30:00Z` succeeds, the June 12 scheduled run also succeeds,
+  S3 latest plus immutable dashboard snapshots publish, failed-artifact
+  evidence remains empty, SNS and budget notifications stay healthy, and
+  Terraform is still no-change.

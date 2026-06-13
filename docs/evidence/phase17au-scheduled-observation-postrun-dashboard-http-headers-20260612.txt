@@ -1,0 +1,21 @@
+HTTP/2 200 
+content-type: application/json
+content-length: 9721
+date: Thu, 11 Jun 2026 19:48:20 GMT
+last-modified: Thu, 11 Jun 2026 07:30:18 GMT
+etag: "722b51a9ad2b234a5b003b0db3f118a3"
+x-amz-server-side-encryption: AES256
+x-amz-version-id: R6twz3yVd2N5OjRM0V_3FAOvWllgaGzB
+accept-ranges: bytes
+server: AmazonS3
+x-cache: Hit from cloudfront
+via: 1.1 f5db034a9eef3b097715a6b5d2c824a8.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR50-P3
+x-amz-cf-id: d_MOzOVfeKzf3sm-uavBHxiroPfZjF8vVrSYPbe__RdnFNFIQr-IaQ==
+age: 82662
+x-xss-protection: 1; mode=block
+x-frame-options: DENY
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+
