@@ -500,8 +500,8 @@ phase plans from drifting apart again.
 
 ### Immediate repository reset
 
-- [ ] Merge the completed Phase 17AU evidence branch.
-- [ ] Synchronize local `main` with `origin/main`, including the resolved
+- [x] Merge the completed Phase 17AU evidence branch.
+- [x] Synchronize local `main` with `origin/main`, including the resolved
   repository governance instructions.
 - [x] Confirm the worktree contains no conflict markers or accidental
   untracked governance file.
