@@ -2,7 +2,15 @@
 
 <!-- markdownlint-disable MD013 -->
 
-Source of truth for this plan:
+## Planning Authority
+
+`docs/planning/sap-c02-readiness-tracker.md` is the controlling source for
+scope, sequencing, milestone status, and completion criteria. This file
+preserves delivery history and translates the tracker into an active execution
+sequence. Where an older phase, backlog item, or suggested next step conflicts
+with the tracker, the tracker wins.
+
+Supporting sources for implementation truth:
 
 - `README.md` for current platform scope and target model
 - `dashboard-ui/src/App.tsx` for current React implementation reality
@@ -30,6 +38,30 @@ Historical planning references:
   plan. It is archived and no longer a source of truth for current phase
   status.
 
+## Active SAP-C02 Delivery Sequence
+
+Status as of 2026-06-12: programme reset and lakehouse closure.
+
+1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
+   resolved tracker-governance version of `AGENTS.md`.
+2. Reconcile the lakehouse baseline rather than rebuilding it. Raw and curated
+   S3 zones, Glue Catalog/ETL, Parquet, Athena, logging, diagrams, tags, and a
+   managed-workflow budget already have implementation or live evidence.
+3. Close the remaining June-July gaps: zone/naming ADR, live bucket posture
+   check, SSE-S3 versus SSE-KMS decision, KMS design, tighter Glue permissions,
+   dedicated Athena query access, and one current end-to-end evidence chain.
+4. Freeze new AI orchestration and dashboard feature work. Preserve the proven
+   scheduled workflow and hosted demo through maintenance, observation, cost
+   control, and explicit rollback decisions only.
+5. Begin the tracker operating cadence: weekly hours, small practice blocks,
+   wrong-answer logging, and evidence-backed tracker updates.
+6. Move to IAM, Organizations, SCPs, and central governance only after the
+   June-July lakehouse closure gate is met.
+
+The detailed Phase 1-17 material below is a historical delivery record and
+implementation reference. It no longer authorizes continuation of deferred AI
+or dashboard work.
+
 ## Current Baseline
 
 The repo now shows a strong end-to-end mixed-energy demo:
@@ -49,8 +81,8 @@ The repo now shows a strong end-to-end mixed-energy demo:
 The current implementation boundary is:
 
 - electricity and gas are proven through the lakehouse/dashboard path
-- news and AI insight are implemented as a local MVP and AWS-managed manual
-  orchestration path
+- news and AI insight are implemented as a local MVP and a live-proven,
+  scheduled AWS-managed orchestration path with SNS and budget guardrails
 - Terraform now tracks the core lakehouse and Phase 8 resources, with ingestion
   Lambda drift reconciled
 - Phase 10 is complete: the React dashboard now has a stronger
@@ -69,7 +101,7 @@ The current implementation boundary is:
   CloudFront/S3 hosting was applied, dashboard assets were published, and
   CloudFront HTTP checks passed
 
-## Delivery Order
+## Historical Delivery Record
 
 ### Phase 1: Stabilize Ingestion And Lakehouse
 
@@ -3682,15 +3714,18 @@ Decision:
 
 ## Suggested Immediate Next Steps
 
-1. Review and merge Phase 17AU continued scheduled observation.
-2. Decide whether the next boundary is continued scheduled observation,
-   cadence rollback/control, operating dashboard demo refresh, DNS/ACM, or
-   additional alerting.
-3. Keep DNS, ACM, unrelated alarms, repeated live invocation, manual workflow
-   execution, dashboard publish, and additional Terraform changes deferred
-   until a phase explicitly targets those operating boundaries.
-4. Keep the hosted dashboard demo path reproducible from
-   `docs/demo-walkthrough.md`.
+1. Review and merge Phase 17AU continued scheduled observation, then
+   synchronize `main` with the merged governance instructions.
+2. Execute the tracker Lakehouse closure gaps checklist, starting with the
+   shared-zone/naming ADR and read-only live bucket posture verification.
+3. Design the SSE-S3 versus SSE-KMS target and the required KMS/IAM boundaries
+   before proposing infrastructure changes.
+4. Tighten the Glue S3 permissions and define dedicated Athena query access
+   locally, with tests and Terraform plans before any apply decision.
+5. Capture one current end-to-end lakehouse evidence chain and update the
+   tracker with direct evidence links.
+6. Keep DNS, ACM, dashboard expansion, repeated live model invocation, and new
+   AI orchestration features deferred under the SAP-C02 scope rules.
 
 ## Next Branch Preflight Checklist
 
