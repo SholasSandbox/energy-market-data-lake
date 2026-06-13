@@ -1,0 +1,32 @@
+{
+  "run_id": "ai-insight-20260611T073010Z-c0977e3d",
+  "lake_artifacts": [
+    {
+      "LastModified": "2026-06-11T07:30:14+00:00",
+      "Key": "curated/source=ai_orchestration/dataset=ai_input_bundle/run_id=ai-insight-20260611T073010Z-c0977e3d/payload.json",
+      "Size": 16030
+    },
+    {
+      "LastModified": "2026-06-11T07:30:17+00:00",
+      "Key": "curated/source=ai_orchestration/dataset=ai_insight/run_id=ai-insight-20260611T073010Z-c0977e3d/payload.json",
+      "Size": 1729
+    },
+    {
+      "LastModified": "2026-06-11T07:30:11+00:00",
+      "Key": "curated/source=ai_orchestration/dataset=energy_input/run_id=ai-insight-20260611T073010Z-c0977e3d/payload.json",
+      "Size": 633
+    },
+    {
+      "LastModified": "2026-06-11T07:30:14+00:00",
+      "Key": "curated/source=ai_orchestration/dataset=news_summary/run_id=ai-insight-20260611T073010Z-c0977e3d/payload.json",
+      "Size": 14269
+    }
+  ],
+  "dashboard_artifacts": [
+    {
+      "LastModified": "2026-06-11T07:30:18+00:00",
+      "Key": "snapshots/run_id=ai-insight-20260611T073010Z-c0977e3d/dashboard_snapshot_v1.json",
+      "Size": 9721
+    }
+  ]
+}

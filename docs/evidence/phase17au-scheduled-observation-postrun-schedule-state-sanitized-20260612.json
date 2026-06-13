@@ -1,0 +1,9 @@
+{
+  "Name": "energy-market-ai-orchestration-schedule",
+  "Arn": "arn:aws:events:eu-west-2:<account-id>:rule/energy-market-ai-orchestration-schedule",
+  "ScheduleExpression": "cron(30 7 * * ? *)",
+  "State": "ENABLED",
+  "Description": "Scheduled deterministic AI insight orchestration trigger.",
+  "EventBusName": "default",
+  "CreatedBy": "<account-id>"
+}

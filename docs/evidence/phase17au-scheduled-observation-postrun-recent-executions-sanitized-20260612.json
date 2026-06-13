@@ -1,0 +1,77 @@
+{
+  "executions": [
+    {
+      "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:d58cbed3-1751-ce53-260e-11dfe4e97b5b_c2720ff6-8232-68e5-0d28-a10b1aaa340f",
+      "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+      "name": "d58cbed3-1751-ce53-260e-11dfe4e97b5b_c2720ff6-8232-68e5-0d28-a10b1aaa340f",
+      "status": "SUCCEEDED",
+      "startDate": "2026-06-12T08:30:08.329000+01:00",
+      "stopDate": "2026-06-12T08:30:16.670000+01:00",
+      "redriveCount": 0
+    },
+    {
+      "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:832f864c-8cd5-2d71-6d69-bfd86a96fa0b_c18f6203-cac2-4ca3-9dc8-3d0f5b9d6772",
+      "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+      "name": "832f864c-8cd5-2d71-6d69-bfd86a96fa0b_c18f6203-cac2-4ca3-9dc8-3d0f5b9d6772",
+      "status": "SUCCEEDED",
+      "startDate": "2026-06-11T08:30:08.362000+01:00",
+      "stopDate": "2026-06-11T08:30:17.381000+01:00",
+      "redriveCount": 0
+    },
+    {
+      "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:219aabc0-0a12-e88c-4455-9022670d1db3_48e30b27-2ae8-fcb4-c9c1-80a56490c505",
+      "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+      "name": "219aabc0-0a12-e88c-4455-9022670d1db3_48e30b27-2ae8-fcb4-c9c1-80a56490c505",
+      "status": "SUCCEEDED",
+      "startDate": "2026-06-10T08:30:08.341000+01:00",
+      "stopDate": "2026-06-10T08:30:16.525000+01:00",
+      "redriveCount": 0
+    },
+    {
+      "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:013a108f-6849-a9d6-955c-01235cdf77d9_5ec484a4-36fa-7881-7510-daabac0c576f",
+      "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+      "name": "013a108f-6849-a9d6-955c-01235cdf77d9_5ec484a4-36fa-7881-7510-daabac0c576f",
+      "status": "SUCCEEDED",
+      "startDate": "2026-06-09T08:30:08.428000+01:00",
+      "stopDate": "2026-06-09T08:30:17.523000+01:00",
+      "redriveCount": 0
+    },
+    {
+      "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:09a7ef12-881c-de11-53cd-1fe66b46d233_a0d12fd4-4dd0-c714-24ac-c036516ece51",
+      "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+      "name": "09a7ef12-881c-de11-53cd-1fe66b46d233_a0d12fd4-4dd0-c714-24ac-c036516ece51",
+      "status": "SUCCEEDED",
+      "startDate": "2026-06-08T08:30:08.365000+01:00",
+      "stopDate": "2026-06-08T08:30:16.990000+01:00",
+      "redriveCount": 0
+    },
+    {
+      "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:phase17ag-managed-workflow-post-refresh-smoke-20260605T213352Z",
+      "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+      "name": "phase17ag-managed-workflow-post-refresh-smoke-20260605T213352Z",
+      "status": "SUCCEEDED",
+      "startDate": "2026-06-05T22:33:52.788000+01:00",
+      "stopDate": "2026-06-05T22:34:00.767000+01:00",
+      "redriveCount": 0
+    },
+    {
+      "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:phase17aa-managed-workflow-second-smoke-20260603T010742Z",
+      "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+      "name": "phase17aa-managed-workflow-second-smoke-20260603T010742Z",
+      "status": "SUCCEEDED",
+      "startDate": "2026-06-03T02:07:43.134000+01:00",
+      "stopDate": "2026-06-03T02:07:52.067000+01:00",
+      "redriveCount": 0
+    },
+    {
+      "executionArn": "arn:aws:states:eu-west-2:<account-id>:execution:energy-market-ai-insight-orchestration:phase17y-managed-workflow-smoke-20260530T205941Z",
+      "stateMachineArn": "arn:aws:states:eu-west-2:<account-id>:stateMachine:energy-market-ai-insight-orchestration",
+      "name": "phase17y-managed-workflow-smoke-20260530T205941Z",
+      "status": "FAILED",
+      "startDate": "2026-05-30T21:59:42.334000+01:00",
+      "stopDate": "2026-05-30T21:59:47.343000+01:00",
+      "redriveCount": 0
+    }
+  ],
+  "nextToken": "AAAAKgAAAAIAAAAAAAAAAUx4xrCsIVkF6FGdsdzD21yw8ACoek0HaDvhM5iXLckW38sNYWU/xmYIJ1yTtMYkgx0c2yA9+c/SGau/+r35gDkwjf0e8fGj1sHCjWF18YT/QIAk/cpJ35lFxfEnGcJlEx4vqRVoPlXZyUGIlmArtBpZbsZis41ToVhNgoFb83F1e0F3XAt6C11xgjLaARQsaens0jh2Mh55mLk9yA1isRJwPmbjg8AvN/MurtglS7jimDlwSIC+RjOE3abXIrYVhe25+mV1cToLs9YbcHR7pF7tqpCqrcR7/Z/22QIZj2b9rHkJTOpaThHCNXZC2oDqiVpRZ2VRI3cTW4TXshiitT9Pgq+k6buWAYeJrw87IykFjMdaoS6DPpYZIss0jftzEyi86+cDGEQxfVGCXNpGGPE="
+}
