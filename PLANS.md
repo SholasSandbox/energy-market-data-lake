@@ -40,14 +40,15 @@ Historical planning references:
 
 ## Active SAP-C02 Delivery Sequence
 
-Status as of 2026-06-12: programme reset and lakehouse closure.
+Status as of 2026-06-13: programme reset complete and lakehouse closure active.
 
 1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
    resolved tracker-governance version of `AGENTS.md`.
 2. Reconcile the lakehouse baseline rather than rebuilding it. Raw and curated
    S3 zones, Glue Catalog/ETL, Parquet, Athena, logging, diagrams, tags, and a
    managed-workflow budget already have implementation or live evidence.
-3. Close the remaining June-July gaps: zone/naming ADR, live bucket posture
+3. The shared S3-zone and bucket naming/ownership ADR was completed on
+   2026-06-13. Next, close the remaining June-July gaps: live bucket posture
    check, SSE-S3 versus SSE-KMS decision, KMS design, tighter Glue permissions,
    dedicated Athena query access, and one current end-to-end evidence chain.
 4. Freeze new AI orchestration and dashboard feature work. Preserve the proven
