@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD060 -->
+
 # SAP-C02 Readiness Tracker
 
 **Owner:** [redacted-owner]  
@@ -73,21 +75,79 @@ new expansion remains deferred unless the tracker is explicitly changed.
 4. Phase documents and evidence files prove individual outcomes; they do not
    override tracker deferrals or sequencing.
 
+### Programme workspace and sequence control
+
+#### Python/serverless tutorial workspace
+
+Purpose: advance practical AWS serverless implementation skill and SAP-C02
+readiness through Lambda, Step Functions, S3, DynamoDB, EventBridge, SQS, IAM,
+observability, testing, and production-oriented handler patterns.
+
+Source of truth: `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md`.
+This is a separate tutorial workspace, not part of the Energy Data Lakehouse
+implementation. Its sessions count as study/lab work only when mapped to an
+exam domain or documented weak area.
+
+#### Energy Data Lakehouse repository
+
+Purpose: provide the portfolio and SAP-C02 case study for governed AWS data
+architecture, including S3, Glue, Athena, Parquet, IAM, KMS, CloudTrail, AWS
+Config, cost controls, and Organizations/SCP guardrails.
+
+Source of truth: this repository, its README, its evidence files, and the
+lakehouse sections of this tracker. Its readiness closure remains the active
+June-July repository sequence.
+
+#### Scheduled AWS governance and multi-account work
+
+Purpose: add professional-level governance competence through AWS
+Organizations, OUs, SCPs, IAM Identity Center, centralized logging, audit
+controls, and cost governance.
+
+This work supports both workspaces where relevant, but it is sequenced rather
+than maintained as a third simultaneous backlog. IAM, KMS, logging, and cost
+decisions needed for lakehouse closure may proceed now. The dedicated
+Organizations/SCP phase begins on 2026-07-13 unless the tracker is explicitly
+changed.
+
+#### Parked work
+
+- Docker and containers
+- new AI orchestration expansion
+
+Do not start parked work unless the task directly supports a current
+SAP-C02 milestone and is explicitly approved as a short exception. Maintenance,
+observation, cost control, and rollback work for the already-proven lakehouse AI
+workflow are allowed when required by this tracker.
+
+#### Cross-workspace evidence rule
+
+Tutorial code must not be described as lakehouse implementation evidence,
+copied into this repository by default, or used to bypass the lakehouse closure
+sequence. Before promoting a tutorial pattern into the lakehouse:
+
+1. Identify the tracker closure gap or SAP-C02 weak area it addresses.
+2. Record why it belongs in the lakehouse rather than remaining a standalone
+   exercise.
+3. Adapt and test it against lakehouse contracts and IAM boundaries; do not
+   copy tutorial code unchanged.
+4. Update a lakehouse status only after repository evidence exists.
+
 ### 2026-06-12 repository reconciliation findings
 
 | Tracker area that was behind | Repository reality | Reconciliation |
 |---|---|---|
 | Domain 1 marked `Not started` | Workload IAM, logging, tagging, alerting, and cost evidence exist | Changed to `Partial`; enterprise governance remains open |
 | Domain 3 marked `Not started` | Parquet, lifecycle, validation, observability, public-access controls, and cost guardrails exist | Changed to `Partial`; formal improvement evidence remains open |
-| Raw and curated described as separate buckets | The implemented lake uses one data bucket with `raw/` and `curated/` zones | Corrected architecture and checklist wording; ADR remains open |
-| Entire lakehouse MVP marked `Not started` | S3 zones, Glue Catalog/ETL, Parquet, Athena, logging, tags, and diagrams are implemented or verified | Replaced blanket statuses with evidence-backed row statuses |
+| Raw and curated described as separate buckets | The implemented lake uses one data bucket with `raw/` and `curated/` zones | Corrected architecture and checklist wording; ADR accepted on 2026-06-13 |
+| Entire lakehouse baseline marked `Not started` | S3 zones, Glue Catalog/ETL, Parquet, Athena, logging, tags, and diagrams are implemented or verified | Replaced blanket statuses with evidence-backed row statuses |
 | Glue IAM described only as missing | A dedicated role exists, but its data-bucket access is too broad | Changed to `Partial`; least-privilege hardening added to closure checklist |
 | Athena query access described only as missing infrastructure | The Athena workgroup exists, but no dedicated analyst/query role is defined | Split query-layer proof from the remaining access-policy gap |
 | Governance cost controls marked `Not started` | Terraform tags and a live managed-workflow AWS Budget exist | Changed tags and budget rows to `Partial`; broader account coverage remains open |
 | Lakehouse booking gate marked simply `Not met` | The core path is already proven, but security and consolidation gaps remain | Changed to `Partially met` with named blockers |
 | AI and dashboard listed only as future deferred ideas | Both are already implemented; the managed workflow is scheduled and budget-guarded | Reframed as frozen existing baselines with maintenance only |
 | `PLANS.md` and `README.md` still directed work toward Phase 17 continuation | The new programme makes this tracker controlling | Added an active SAP-C02 sequence and preserved old phases as history |
-| Phase 1 checklist still reads like a greenfield validation pass | Mixed-energy ingestion, ETL, Athena, dashboard, and evidence already exist | Added reconciliation of that checklist as a June-July closure task |
+| Phase 1 checklist assumes the platform is still unimplemented | Mixed-energy ingestion, ETL, Athena, dashboard, and evidence already exist | Added reconciliation of that checklist as a June-July closure task |
 
 ---
 
@@ -116,12 +176,23 @@ new expansion remains deferred unless the tracker is explicitly changed.
 
 Target: **10–12 focused hours/week**.
 
+During June-July, record Python/serverless tutorial sessions as study/lab hours
+and Energy Data Lakehouse implementation as build hours. Use the Notes column
+to identify the workspace and artifact. Do not count one artifact as evidence
+for both workspaces.
+
+### Programme kickoff
+
+| Date | Session | Planned artifact | Status |
+|---|---|---|---|
+| Sunday, 2026-06-14 target | Lakehouse architecture decision | Shared S3-zone and bucket naming/ownership ADR | Completed 2026-06-13 |
+
 | Week starting | Target hours | Actual hours | Build hours | Study hours | Practice hours | Notes |
 |---|---:|---:|---:|---:|---:|---|
-| 2026-06-15 | 10–12 |  |  |  |  | Programme reset + lakehouse phase 1 |
-| 2026-06-22 | 10–12 |  |  |  |  | Lakehouse MVP |
-| 2026-06-29 | 10–12 |  |  |  |  | Lakehouse MVP |
-| 2026-07-06 | 10–12 |  |  |  |  | Lakehouse MVP completion |
+| 2026-06-15 | 10–12 |  |  |  |  | Tutorial consolidation + lakehouse live posture verification |
+| 2026-06-22 | 10–12 |  |  |  |  | Tutorial dependency and handler-boundary hardening + lakehouse KMS decision |
+| 2026-06-29 | 10–12 |  |  |  |  | Serverless resilience + Glue/Athena IAM hardening |
+| 2026-07-06 | 10–12 |  |  |  |  | Tutorial evidence + lakehouse Domain 2 closure review |
 | 2026-07-13 | 10–12 |  |  |  |  | IAM foundation |
 | 2026-07-20 | 10–12 |  |  |  |  | Organizations/SCP design |
 | 2026-07-27 | 10–12 |  |  |  |  | Logging/governance |
@@ -135,7 +206,7 @@ Target: **10–12 focused hours/week**.
 | 2026-09-21 | 10–12 |  |  |  |  | Migration services |
 | 2026-09-28 | 10–12 |  |  |  |  | Migration decision matrix |
 | 2026-10-05 | 10–12 |  |  |  |  | Cost optimization |
-| 2026-10-12 | 10–12 |  |  |  |  | Containers compressed |
+| 2026-10-12 | 10–12 |  |  |  |  | Migration/cost consolidation; containers parked |
 | 2026-10-19 | 10–12 |  |  |  |  | First full timed exam |
 | 2026-10-26 | 10–12 |  |  |  |  | Remediation |
 | 2026-11-02 | 10–12 |  |  |  |  | Full timed exam |
@@ -172,7 +243,7 @@ Official SAP-C02 domains:
 
 ---
 
-## 4. Energy Lakehouse Build Status
+## 4. Energy Data Lakehouse Readiness Status
 
 ### Target architecture
 
@@ -193,13 +264,13 @@ Energy Data Lakehouse
 └── Governance guardrails using Organizations/SCPs
 ```
 
-### MVP checklist
+### Implemented baseline and closure status
 
 | Item | Status | Evidence |
 |---|---|---|
 | S3 raw zone available | Verified | Shared data bucket with `raw/` prefix; `README.md`; `docs/entsog-gas-build-plan.md`; `docs/evidence/phase14d-lambda-reconciliation-apply-summary-20260521.md` |
 | S3 curated zone available | Verified | Shared data bucket with `curated/` prefix; curated Parquet and `docs/evidence/athena-gas-query-summary-20260506.md` |
-| Bucket naming standard defined | Partial | `energy-market-<purpose>-<unique-suffix>` is used in Terraform examples, but a short naming ADR is still required |
+| Bucket naming and ownership standard defined | Verified | `docs/adr/0001-shared-s3-data-bucket.md` accepts the current name, defines the naming pattern, and distinguishes workload ownership from Terraform management |
 | Versioning decision documented | Partial | Terraform enables versioning for Terraform-created data and dashboard buckets; the referenced live data bucket needs a current read-only check |
 | Encryption model defined | Partial | SSE-S3 exists for Terraform-created buckets and Athena results; the required KMS target and key/policy design remain open |
 | Glue Data Catalog created | Verified | `aws_glue_catalog_database.lakehouse`, raw/curated crawlers, and Phase 9 import evidence |
@@ -213,12 +284,14 @@ Energy Data Lakehouse
 
 ### Lakehouse closure gaps
 
-The lakehouse is not a greenfield build. The remaining June-July work is to
-close and evidence the production-shaped gaps:
+The core lakehouse path is already implemented. The remaining June-July work
+is to close and evidence the readiness gaps:
 
-- [ ] Record an ADR confirming one shared data bucket with `raw/` and
-  `curated/` prefixes, including when separate buckets would be preferable.
-- [ ] Record the bucket naming and ownership standard.
+- [x] On 2026-06-13, record an ADR confirming one shared data bucket
+  with `raw/` and `curated/` prefixes, including when separate buckets would be
+  preferable: `docs/adr/0001-shared-s3-data-bucket.md`.
+- [x] In the same ADR, record the bucket naming and ownership standard,
+  including the current referenced-but-not-Terraform-managed posture.
 - [ ] Verify the live data bucket's versioning, encryption, public-access
   block, lifecycle, and tags using read-only commands.
 - [ ] Decide and document SSE-S3 versus SSE-KMS for raw, curated, Athena
@@ -251,7 +324,7 @@ close and evidence the production-shaped gaps:
 
 ---
 
-## 5. Governance Build Status
+## 5. Governance Readiness Status
 
 ### Multi-account target
 
@@ -433,7 +506,7 @@ Action:
 | Domain 1 governance notes complete | Not met |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
-| Lakehouse MVP complete and documented | Partially met: core path is verified; IAM, KMS, live bucket posture, and consolidated evidence remain open |
+| Lakehouse readiness closure complete and documented | Partially met: core path is verified; IAM, KMS, live bucket posture, and consolidated evidence remain open |
 | IAM/Organizations/SCP design complete | Not met |
 | Wrong-answer log reviewed twice | Not met |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
@@ -471,10 +544,10 @@ Action:
 
 | Month | Main objective | Exit criteria |
 |---|---|---|
-| June–July | Lakehouse MVP + serverless core | S3, Glue, Parquet, Athena, IAM basics working/documented |
+| June–July | Python/serverless tutorial hardening + lakehouse readiness closure | Tutorial milestones evidenced separately; S3, Glue, Parquet, Athena, IAM, KMS decisions, and lakehouse closure evidence complete |
 | August | IAM, Organizations, SCPs, logging, governance | OU/SCP/logging/IAM design complete |
 | September | Networking, hybrid connectivity, resilience | TGW/PrivateLink/DX/VPN/DR comparison artifacts complete |
-| October | Migration, modernization, containers, cost | Migration/cost/container artifacts complete; first full practice exam |
+| October | Migration, modernization, and cost optimization | Migration and cost artifacts complete; first full practice exam; containers remain parked unless readiness is already on track and a short exception is approved |
 | November | Practice exams and remediation | Booking decision based on timed scores |
 | December | Exam attempt | Attempt only if readiness criteria are met |
 
@@ -488,6 +561,7 @@ Use this to capture attractive distractions without acting on them.
 |---|---|---|---|
 | Further AI orchestration expansion | Existing managed path is already proven and scheduled | Freeze at current baseline; maintenance and cost control only | After SAP-C02 |
 | Deep EKS | Interesting but not critical | Defer | After SAP-C02 |
+| Docker/container implementation | Useful skill, but not required for the current readiness path | Defer unless a short milestone-linked exception is approved | After SAP-C02 |
 | Further UI/dashboard expansion | Existing hosted dashboard is already proven | Freeze at current baseline; maintenance only | After SAP-C02 |
 | Complex REMIT workflow | Domain-relevant but large | Defer | After SAP-C02 |
 
