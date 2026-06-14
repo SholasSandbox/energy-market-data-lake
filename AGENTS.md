@@ -4,6 +4,14 @@
 
 `docs/planning/sap-c02-readiness-tracker.md` is the controlling document for this repository's near-term scope, sequencing, and completion criteria. Codex must read it before starting any work in this repository and must use it to decide whether a requested task should proceed, be narrowed, or be deferred.
 
+## External learning workspace
+
+`/Users/shola/Kiro-Workspace/handlers` is a separate Python/serverless tutorial
+workspace. Do not treat its code as Energy Data Lakehouse implementation
+evidence or copy it into this repository by default. A tutorial pattern may be
+adapted here only when it addresses a named tracker gap or SAP-C02 weak area
+and is tested against this repository's contracts and IAM boundaries.
+
 ## Required pre-work check
 
 Before making changes, Codex must verify the requested work against the SAP-C02 readiness tracker by checking whether it supports at least one of the following outcomes:
@@ -23,7 +31,7 @@ When resolving a Git or patch conflict in `AGENTS.md`, preserve the tracker-read
 
 ## Scope and sequencing rules
 
-- Follow the tracker's current weekly focus, monthly milestones, MVP checklist, governance checklist, and evidence requirements when choosing implementation order.
+- Follow the tracker's current weekly focus, monthly milestones, lakehouse readiness checklist, governance checklist, and evidence requirements when choosing implementation order.
 - Prefer artifacts required by the tracker, including code commits, architecture diagrams, ADRs, service comparison tables, IAM/SCP policy examples, wrong-answer log entries, exam-domain notes, and operational runbooks or checklists.
 - Treat tracker hard deferrals as out of scope until after the SAP-C02 attempt unless the user explicitly updates the tracker.
 - Do not expand polished UI/dashboard work, deep Kubernetes/EKS work, complex microservices, deep REMIT workflow build-out, or AI orchestration beyond light conceptual notes unless the tracker is updated first.
