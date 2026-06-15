@@ -1,0 +1,91 @@
+{
+    "RoleName": "energy-market-athena-query-role",
+    "PolicyName": "energy-market-athena-query-policy",
+    "PolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                    "athena:StopQueryExecution",
+                    "athena:StartQueryExecution",
+                    "athena:ListQueryExecutions",
+                    "athena:GetWorkGroup",
+                    "athena:GetQueryRuntimeStatistics",
+                    "athena:GetQueryResultsStream",
+                    "athena:GetQueryResults",
+                    "athena:GetQueryExecution",
+                    "athena:BatchGetQueryExecution"
+                ],
+                "Effect": "Allow",
+                "Resource": "arn:aws:athena:eu-west-2:464975959576:workgroup/energy-market-workgroup",
+                "Sid": "UseLakehouseWorkgroup"
+            },
+            {
+                "Action": [
+                    "glue:GetTables",
+                    "glue:GetTableVersions",
+                    "glue:GetTableVersion",
+                    "glue:GetTable",
+                    "glue:GetPartitions",
+                    "glue:GetPartition",
+                    "glue:GetDatabases",
+                    "glue:GetDatabase",
+                    "glue:BatchGetPartition"
+                ],
+                "Effect": "Allow",
+                "Resource": [
+                    "arn:aws:glue:eu-west-2:464975959576:table/energy_market_lake/*",
+                    "arn:aws:glue:eu-west-2:464975959576:database/energy_market_lake",
+                    "arn:aws:glue:eu-west-2:464975959576:catalog"
+                ],
+                "Sid": "ReadLakehouseCatalog"
+            },
+            {
+                "Action": "s3:GetBucketLocation",
+                "Effect": "Allow",
+                "Resource": "arn:aws:s3:::energy-market-lake-464975959576-20260405",
+                "Sid": "ReadBucketLocation"
+            },
+            {
+                "Action": [
+                    "s3:ListBucketVersions",
+                    "s3:ListBucket"
+                ],
+                "Condition": {
+                    "StringLike": {
+                        "s3:prefix": [
+                            "curated",
+                            "curated/*",
+                            "athena-results/",
+                            "athena-results/*"
+                        ]
+                    }
+                },
+                "Effect": "Allow",
+                "Resource": "arn:aws:s3:::energy-market-lake-464975959576-20260405",
+                "Sid": "ListCuratedAndQueryResultPrefixes"
+            },
+            {
+                "Action": [
+                    "s3:GetObjectVersion",
+                    "s3:GetObject"
+                ],
+                "Effect": "Allow",
+                "Resource": "arn:aws:s3:::energy-market-lake-464975959576-20260405/curated/*",
+                "Sid": "ReadCuratedObjects"
+            },
+            {
+                "Action": [
+                    "s3:PutObject",
+                    "s3:ListMultipartUploadParts",
+                    "s3:GetObjectVersion",
+                    "s3:GetObject",
+                    "s3:AbortMultipartUpload"
+                ],
+                "Effect": "Allow",
+                "Resource": "arn:aws:s3:::energy-market-lake-464975959576-20260405/athena-results/*",
+                "Sid": "ManageBoundedQueryResults"
+            }
+        ]
+    }
+}

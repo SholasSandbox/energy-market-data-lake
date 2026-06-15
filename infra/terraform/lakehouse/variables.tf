@@ -415,6 +415,12 @@ variable "athena_workgroup_name" {
   default     = "energy-market-workgroup"
 }
 
+variable "athena_query_role_name" {
+  description = "IAM role name for bounded read-only lakehouse queries through the dedicated Athena workgroup."
+  type        = string
+  default     = "energy-market-athena-query-role"
+}
+
 variable "tags" {
   description = "Tags applied to supported resources."
   type        = map(string)

@@ -7,6 +7,8 @@ environment    = "dev"
 create_data_bucket = false
 data_bucket_name   = "energy-market-lake-464975959576-20260405"
 
+athena_query_role_name = "energy-market-athena-query-role"
+
 backfill_days        = 1
 schedule_enabled     = false
 schedule_expression  = "cron(0 2 * * ? *)"

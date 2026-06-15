@@ -1,0 +1,28 @@
+data.aws_iam_policy_document.glue_s3: Reading...
+data.aws_iam_policy_document.glue_assume_role: Reading...
+data.aws_caller_identity.current: Reading...
+data.aws_partition.current: Reading...
+aws_glue_catalog_database.lakehouse: Refreshing state... [id=464975959576:energy_market_lake]
+aws_athena_workgroup.lakehouse: Refreshing state... [id=energy-market-workgroup]
+data.aws_partition.current: Read complete after 0s [id=aws]
+data.aws_iam_policy_document.glue_assume_role: Read complete after 0s [id=2681768870]
+data.aws_iam_policy_document.glue_s3: Read complete after 0s [id=3144891862]
+aws_iam_role.glue: Refreshing state... [id=energy-market-glue-role]
+data.aws_caller_identity.current: Read complete after 0s [id=464975959576]
+data.aws_iam_policy_document.athena_query_assume_role: Reading...
+data.aws_iam_policy_document.athena_query_assume_role: Read complete after 0s [id=3466497667]
+aws_iam_role.athena_query: Refreshing state... [id=energy-market-athena-query-role]
+aws_iam_role_policy.glue_s3: Refreshing state... [id=energy-market-glue-role:energy-market-glue-s3-policy]
+
+Planning failed. Terraform encountered an error while generating this plan.
+
+
+Warning: Resource targeting is in effect
+
+You are creating a plan with the -target option, which means that the result
+of this plan may not represent all of the changes requested by the current
+configuration.
+
+The -target option is not for routine use, and is provided only for
+exceptional situations such as recovering from errors or mistakes, or when
+Terraform specifically suggests to use it as part of an error message.

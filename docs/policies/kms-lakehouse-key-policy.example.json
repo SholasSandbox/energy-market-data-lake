@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnableAccountIAMDelegation",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::464975959576:root"
+      },
+      "Action": "kms:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowNamedKeyAdministrators",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::464975959576:role/energy-market-kms-admin-role"
+      },
+      "Action": [
+        "kms:CancelKeyDeletion",
+        "kms:CreateAlias",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:DisableKey",
+        "kms:DisableKeyRotation",
+        "kms:EnableKey",
+        "kms:EnableKeyRotation",
+        "kms:GetKeyPolicy",
+        "kms:GetKeyRotationStatus",
+        "kms:ListGrants",
+        "kms:ListKeyPolicies",
+        "kms:ListResourceTags",
+        "kms:PutKeyPolicy",
+        "kms:RevokeGrant",
+        "kms:RotateKeyOnDemand",
+        "kms:ScheduleKeyDeletion",
+        "kms:TagResource",
+        "kms:UntagResource",
+        "kms:UpdateAlias",
+        "kms:UpdateKeyDescription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowLakehouseRolesThroughS3",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::464975959576:role/energy-market-lambda-role",
+          "arn:aws:iam::464975959576:role/energy-market-glue-role",
+          "arn:aws:iam::464975959576:role/energy-market-ai-orchestration-lambda-role",
+          "arn:aws:iam::464975959576:role/energy-market-athena-query-role"
+        ]
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "kms:EncryptionContext:aws:s3:arn": "arn:aws:s3:::energy-market-lake-464975959576-20260405",
+          "kms:ViaService": "s3.eu-west-2.amazonaws.com"
+        }
+      }
+    }
+  ]
+}
