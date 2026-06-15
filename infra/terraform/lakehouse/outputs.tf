@@ -53,6 +53,11 @@ output "athena_output_location" {
   value       = local.athena_output_location
 }
 
+output "athena_query_role_arn" {
+  description = "ARN of the dedicated bounded Athena query role."
+  value       = aws_iam_role.athena_query.arn
+}
+
 output "dashboard_bucket_name" {
   description = "Separate public/static dashboard bucket used by Phase 8 publishing."
   value       = local.dashboard_bucket_name

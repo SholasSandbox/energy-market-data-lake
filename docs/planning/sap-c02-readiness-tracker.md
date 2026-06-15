@@ -9,7 +9,7 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-06-13
+**Last repository reconciliation:** 2026-06-15
 
 ---
 
@@ -189,8 +189,8 @@ for both workspaces.
 
 | Week starting | Target hours | Actual hours | Build hours | Study hours | Practice hours | Notes |
 |---|---:|---:|---:|---:|---:|---|
-| 2026-06-15 | 10–12 |  |  |  |  | Tutorial consolidation + lakehouse live posture verification |
-| 2026-06-22 | 10–12 |  |  |  |  | Tutorial dependency and handler-boundary hardening + lakehouse KMS decision |
+| 2026-06-15 | 10–12 |  |  |  |  | Tutorial consolidation + Glue/Athena IAM design |
+| 2026-06-22 | 10–12 |  |  |  |  | Tutorial dependency and handler-boundary hardening + lakehouse IAM hardening |
 | 2026-06-29 | 10–12 |  |  |  |  | Serverless resilience + Glue/Athena IAM hardening |
 | 2026-07-06 | 10–12 |  |  |  |  | Tutorial evidence + lakehouse Domain 2 closure review |
 | 2026-07-13 | 10–12 |  |  |  |  | IAM foundation |
@@ -226,7 +226,7 @@ Official SAP-C02 domains:
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
 | Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, and budget evidence exist; Organizations, SCPs, Identity Center, central logging, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse and serverless workflow are substantially implemented; KMS, query-access IAM, resilience decisions, and consolidated evidence remain open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse and serverless workflow are substantially implemented; IAM deployment/service verification, resilience decisions, and consolidated evidence remain open |
 | Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, and cost guardrails exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Not started | 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, migration playbook |
 
@@ -271,15 +271,17 @@ Energy Data Lakehouse
 | S3 raw zone available | Verified | Shared data bucket with `raw/` prefix; `README.md`; `docs/entsog-gas-build-plan.md`; `docs/evidence/phase14d-lambda-reconciliation-apply-summary-20260521.md` |
 | S3 curated zone available | Verified | Shared data bucket with `curated/` prefix; curated Parquet and `docs/evidence/athena-gas-query-summary-20260506.md` |
 | Bucket naming and ownership standard defined | Verified | `docs/adr/0001-shared-s3-data-bucket.md` accepts the current name, defines the naming pattern, and distinguishes workload ownership from Terraform management |
-| Versioning decision documented | Partial | Terraform enables versioning for Terraform-created data and dashboard buckets; the referenced live data bucket needs a current read-only check |
-| Encryption model defined | Partial | SSE-S3 exists for Terraform-created buckets and Athena results; the required KMS target and key/policy design remain open |
+| Data bucket versioning posture | Verified | Versioning was enabled on 2026-06-15 after lifecycle protection was applied; see `docs/evidence/s3-versioning-tagging-apply-20260615.md` |
+| Encryption model and KMS target defined | Verified | `docs/adr/0002-encryption-and-kms-design.md` retains SSE-S3 for the current public-data lab and defines promotion triggers, ownership, rotation, migration, rollback, and cost controls; `docs/policies/kms-lakehouse-key-policy.example.json` provides the policy design |
+| Data bucket Public Access Block | Verified | All four bucket-level public-access controls were enabled on 2026-06-14 |
+| Data bucket lifecycle protection | Verified | Raw transitions remain 30/90/180 days; noncurrent versions expire after 30 days, expired delete markers are removed, and incomplete multipart uploads abort after 7 days |
 | Glue Data Catalog created | Verified | `aws_glue_catalog_database.lakehouse`, raw/curated crawlers, and Phase 9 import evidence |
 | Glue ETL job converts raw to Parquet | Verified | `glue/etl_raw_to_parquet.py`, `aws_glue_job.raw_to_parquet`, and ENTSOG curated Parquet evidence |
 | Athena can query curated data | Verified | Athena workgroup plus schema/query evidence under `docs/evidence/athena-*` |
-| IAM role for Glue least privilege | Partial | Dedicated Glue role exists, but its S3 policy permits read/write/delete across the whole data bucket |
-| IAM role or policy for Athena query access | Not started | Workgroup exists; a dedicated analyst/query-access permission boundary is not defined |
+| IAM role for Glue least privilege | Verified | Terraform restricts listing and reads to `raw/`, `curated/`, and `scripts/`, with writes/deletes limited to `curated/`; live Glue crawler/job verification passed on 2026-06-15 |
+| IAM role or policy for Athena query access | Verified | Dedicated role is workgroup-scoped, catalog-read-only, limited to `curated/` reads and `athena-results/` writes; assumed-role Athena query passed and raw-prefix list was denied on 2026-06-15 |
 | CloudWatch logging enabled | Implemented | Lambda log groups, Glue continuous logging, Glue metrics, and Athena workgroup metrics are configured |
-| Cost tags applied | Partial | Common Terraform tags exist; cost-allocation activation and live-resource coverage need verification |
+| Cost and ownership tags applied | Partial | Eight live data-bucket tags were verified on 2026-06-15; Billing cost-allocation activation and broader resource coverage remain open |
 | Architecture diagram created | Verified | Current and target diagrams exist under `diagrams/`; `docs/target-operating-model.md` documents the target posture |
 
 ### Lakehouse closure gaps
@@ -292,17 +294,37 @@ is to close and evidence the readiness gaps:
   preferable: `docs/adr/0001-shared-s3-data-bucket.md`.
 - [x] In the same ADR, record the bucket naming and ownership standard,
   including the current referenced-but-not-Terraform-managed posture.
-- [ ] Verify the live data bucket's versioning, encryption, public-access
-  block, lifecycle, and tags using read-only commands.
-- [ ] Decide and document SSE-S3 versus SSE-KMS for raw, curated, Athena
-  results, logs, and dashboard artifacts.
-- [ ] Design the KMS key ownership, key policy, rotation, and service-role
-  access model; implement only after explicit approval.
-- [ ] Restrict the Glue role to the required prefixes and actions.
-- [ ] Add a dedicated Athena analyst/query-access policy with bounded query
-  result and catalog permissions.
-- [ ] Capture one current raw -> Glue -> curated Parquet -> Athena validation
-  evidence chain.
+- [x] On 2026-06-14, verify the live data bucket's versioning, encryption,
+  public-access block, lifecycle, and tags using read-only commands:
+  `docs/evidence/s3-data-bucket-posture-20260614.md`.
+- [x] On 2026-06-15, enable versioning after applying 30-day noncurrent-version
+  expiry, expired delete-marker cleanup, and 7-day multipart-upload cleanup.
+- [x] On 2026-06-15, apply and verify the approved ownership, classification,
+  environment, workload, and cost-attribution tags:
+  `docs/evidence/s3-versioning-tagging-apply-20260615.md`.
+- [ ] Activate selected user-defined cost-allocation tags in AWS Billing only
+  after separate account-governance approval.
+- [x] On 2026-06-14, decide and document SSE-S3 versus SSE-KMS for raw,
+  curated, Athena results, logs, and dashboard artifacts:
+  `docs/adr/0002-encryption-and-kms-design.md`.
+- [x] In the same ADR, design KMS key ownership, key policy, rotation,
+  service-role access, migration, rollback, cost, and monitoring controls.
+- [x] Record SSE-KMS implementation as conditional on a documented promotion
+  trigger and explicit approval; it is not a current closure requirement.
+- [x] On 2026-06-15, restrict the Glue role in local Terraform to required
+  prefixes and actions; validate the boundary with
+  `scripts/check_lakehouse_iam_policies.py`, ADR 0004, and
+  `docs/evidence/glue-athena-iam-preflight-20260615.md`.
+- [x] On 2026-06-15, add a dedicated Athena query role in local Terraform with
+  bounded workgroup, catalog, curated-data, and query-result permissions;
+  record the access model in ADR 0004 and the preflight evidence file.
+- [x] On 2026-06-15, review and explicitly approve the IAM Terraform plan, apply the Glue and
+  Athena policy changes using `docs/glue-athena-iam-deployment-runbook.md`,
+  and capture live role/service verification evidence:
+  `docs/evidence/glue-athena-iam-live-verification-20260615.md`.
+- [x] On 2026-06-15, capture one current raw -> Glue -> curated Parquet ->
+  Athena validation evidence chain:
+  `docs/evidence/glue-athena-iam-live-verification-20260615.md`.
 - [ ] Reconcile `docs/phase-1-stabilize-ingestion-lakehouse.md` against the
   current mixed-energy implementation and close or replace its stale checks.
 - [ ] Mark the June-July milestone complete only after all required gaps above
@@ -506,7 +528,7 @@ Action:
 | Domain 1 governance notes complete | Not met |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
-| Lakehouse readiness closure complete and documented | Partially met: core path is verified; IAM, KMS, live bucket posture, and consolidated evidence remain open |
+| Lakehouse readiness closure complete and documented | Partially met: core path, encryption, versioning, lifecycle, bucket tags, IAM, and current end-to-end evidence are verified; cost-allocation tag activation and stale Phase 1 reconciliation remain open |
 | IAM/Organizations/SCP design complete | Not met |
 | Wrong-answer log reviewed twice | Not met |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |

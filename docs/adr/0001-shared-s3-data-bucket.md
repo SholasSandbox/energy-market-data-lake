@@ -160,13 +160,14 @@ from raw/curated terminology alone.
 
 ## Follow-Up Actions
 
-- Verify the live bucket's versioning, encryption, public-access block,
-  lifecycle configuration, and tags using read-only commands.
+- Live posture was verified on 2026-06-14 using read-only commands; see
+  `docs/evidence/s3-data-bucket-posture-20260614.md`. Versioning, lifecycle
+  protection, and bucket tags were then implemented on 2026-06-15 under ADR
+  0003.
 - Decide whether to import the existing bucket and its controls into the
   lakehouse Terraform root or document the external management owner.
-- Decide and document SSE-S3 versus SSE-KMS for each data class and service.
-- Design KMS key ownership, policies, rotation, and service-role access before
-  any implementation.
+- The SSE-S3 versus SSE-KMS decision and KMS target design were accepted on
+  2026-06-14; see `docs/adr/0002-encryption-and-kms-design.md`.
 - Restrict the Glue role to required prefixes and actions.
 - Add a dedicated Athena analyst/query policy with bounded results and catalog
   permissions.

@@ -1,0 +1,41 @@
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "energy-market-athena-query-role",
+        "RoleId": "AROAWYQV2CYMBOFGGRGJM",
+        "Arn": "arn:aws:iam::464975959576:role/energy-market-athena-query-role",
+        "CreateDate": "2026-06-15T22:58:38+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "AWS": "arn:aws:iam::464975959576:root"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        },
+        "MaxSessionDuration": 3600,
+        "Tags": [
+            {
+                "Key": "Environment",
+                "Value": "dev"
+            },
+            {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+            },
+            {
+                "Key": "Workload",
+                "Value": "energy-market-data-lake"
+            },
+            {
+                "Key": "Project",
+                "Value": "energy-market"
+            }
+        ],
+        "RoleLastUsed": {}
+    }
+}

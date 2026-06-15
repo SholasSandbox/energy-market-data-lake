@@ -1,0 +1,44 @@
+{
+    "QueryExecution": {
+        "QueryExecutionId": "8869d2e5-9642-446c-804f-906fee97dbbb",
+        "Query": "SELECT count(*) AS row_count FROM curated_dataset_gas",
+        "StatementType": "DML",
+        "ResultConfiguration": {
+            "OutputLocation": "s3://energy-market-lake-464975959576-20260405/athena-results/8869d2e5-9642-446c-804f-906fee97dbbb.csv",
+            "EncryptionConfiguration": {
+                "EncryptionOption": "SSE_S3"
+            }
+        },
+        "ResultReuseConfiguration": {
+            "ResultReuseByAgeConfiguration": {
+                "Enabled": false
+            }
+        },
+        "QueryExecutionContext": {
+            "Database": "energy_market_lake"
+        },
+        "Status": {
+            "State": "SUCCEEDED",
+            "SubmissionDateTime": "2026-06-16T00:08:30.615000+01:00",
+            "CompletionDateTime": "2026-06-16T00:08:31.337000+01:00"
+        },
+        "Statistics": {
+            "EngineExecutionTimeInMillis": 593,
+            "DataScannedInBytes": 0,
+            "TotalExecutionTimeInMillis": 722,
+            "QueryQueueTimeInMillis": 55,
+            "ServicePreProcessingTimeInMillis": 50,
+            "QueryPlanningTimeInMillis": 209,
+            "ServiceProcessingTimeInMillis": 24,
+            "ResultReuseInformation": {
+                "ReusedPreviousResult": false
+            }
+        },
+        "WorkGroup": "energy-market-workgroup",
+        "EngineVersion": {
+            "SelectedEngineVersion": "AUTO",
+            "EffectiveEngineVersion": "Athena engine version 3"
+        },
+        "SubstatementType": "SELECT"
+    }
+}

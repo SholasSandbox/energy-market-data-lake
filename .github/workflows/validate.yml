@@ -24,6 +24,9 @@ jobs:
       - name: Compile Python sources
         run: python -m compileall lambda glue scripts
 
+      - name: Check lakehouse IAM policy boundaries
+        run: python scripts/check_lakehouse_iam_policies.py
+
       - name: Validate bash script syntax
         run: bash -n scripts/closeout_demo.sh
 

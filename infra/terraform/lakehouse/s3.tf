@@ -65,6 +65,39 @@ resource "aws_s3_bucket_lifecycle_configuration" "data_lake" {
       days = 180
     }
   }
+
+  rule {
+    id     = "noncurrent-version-retention"
+    status = "Enabled"
+
+    filter {}
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+  }
+
+  rule {
+    id     = "expired-delete-marker-cleanup"
+    status = "Enabled"
+
+    filter {}
+
+    expiration {
+      expired_object_delete_marker = true
+    }
+  }
+
+  rule {
+    id     = "incomplete-multipart-upload-cleanup"
+    status = "Enabled"
+
+    filter {}
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
 }
 
 resource "aws_s3_bucket" "dashboard_static" {
