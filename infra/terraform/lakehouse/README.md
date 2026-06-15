@@ -7,8 +7,8 @@ This Terraform root recreates the serverless energy lakehouse resources used by 
 - Lambda ingestion function and execution role
 - EventBridge ingestion schedule
 - Optional data lake S3 bucket
-- Glue role, database, raw crawler, curated crawler, and ETL job
-- Athena workgroup and query result location
+- Prefix-scoped Glue role, database, raw crawler, curated crawler, and ETL job
+- Athena workgroup, query result location, and dedicated query role
 - Phase 8 deterministic AI insight Lambda, Step Functions state machine,
   failure SNS topic, and optional dashboard snapshot bucket
 - Optional Phase 12 CloudFront distribution for private S3 dashboard delivery
@@ -102,6 +102,19 @@ data_bucket_name   = "energy-market-lake-<account-or-unique-suffix>"
 ```
 
 Avoid angle-bracket placeholders in your shell commands; replace them in the file first.
+
+The dedicated Athena role defaults to:
+
+```hcl
+athena_query_role_name = "energy-market-athena-query-role"
+```
+
+It can run queries only through the configured workgroup, read the lakehouse
+Glue catalog and `curated/` objects, and write only to `athena-results/`. An
+approved same-account user, Identity Center permission set, or automation role
+must separately receive `sts:AssumeRole` permission for the output
+`athena_query_role_arn`. Creating the role does not grant it to every principal
+in the account.
 
 Phase 8 orchestration is optional and disabled by default:
 
@@ -250,6 +263,8 @@ Import addresses may change if you rename resources in the Terraform files. The 
 - **Import does not generate Terraform code.** It only links an existing AWS resource to a Terraform address. Run `terraform plan` after each import batch and reconcile drift.
 - **Existing data bucket is not managed when `create_data_bucket = false`.** Do not import `aws_s3_bucket.data_lake[0]` unless you intentionally switch to Terraform-managed bucket creation.
 - **Changing `S3_BUCKET` requires IAM policy alignment.** Lambda and Glue may read the new bucket name from configuration but still fail S3 writes if their role policies point at an older bucket.
+- **Glue and Athena data access is prefix-scoped.** Glue reads `raw/`, `curated/`, and `scripts/` but writes only `curated/`; the dedicated Athena role reads `curated/` and writes only `athena-results/` through the named workgroup.
+- **The Athena query role is new unless it already exists.** Do not import it by default. Review the plan, approve the assuming principal separately, and apply IAM changes only through an explicit deployment boundary.
 - **Do not enable the EventBridge schedule until manual validation passes.** Keep `schedule_enabled = false` while importing and reconciling resources.
 - **Do not enable the Phase 8 schedule until one manual Step Functions execution passes.** Keep `ai_orchestration_schedule_enabled = false` while validating failure handling.
 - **Build the Phase 8 Lambda package before planning enabled orchestration resources.** Terraform reads `.terraform/build/news_ai_orchestration.zip` when `ai_orchestration_enabled = true`; rebuild it after handler or shared-runtime changes before every orchestration plan/apply.

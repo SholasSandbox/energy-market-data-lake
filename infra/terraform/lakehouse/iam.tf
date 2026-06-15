@@ -11,6 +11,8 @@ data "aws_iam_policy_document" "lambda_assume_role" {
 
 data "aws_partition" "current" {}
 
+data "aws_caller_identity" "current" {}
+
 resource "aws_iam_role" "lambda" {
   name               = "${var.project_prefix}-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
@@ -231,18 +233,61 @@ resource "aws_iam_role_policy_attachment" "glue_service_role" {
 
 data "aws_iam_policy_document" "glue_s3" {
   statement {
-    actions   = ["s3:ListBucket"]
+    sid       = "ReadBucketLocation"
+    actions   = ["s3:GetBucketLocation"]
     resources = ["arn:aws:s3:::${local.data_bucket_name}"]
   }
 
   statement {
+    sid = "ListRequiredPrefixes"
+
     actions = [
-      "s3:DeleteObject",
+      "s3:ListBucket",
+      "s3:ListBucketVersions",
+    ]
+
+    resources = ["arn:aws:s3:::${local.data_bucket_name}"]
+
+    condition {
+      test     = "StringLike"
+      variable = "s3:prefix"
+      values = [
+        "raw",
+        "raw/*",
+        "curated",
+        "curated/*",
+        "scripts",
+        "scripts/*",
+      ]
+    }
+  }
+
+  statement {
+    sid = "ReadSourceCatalogAndScriptObjects"
+
+    actions = [
       "s3:GetObject",
+      "s3:GetObjectVersion",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.data_bucket_name}/raw/*",
+      "arn:aws:s3:::${local.data_bucket_name}/curated/*",
+      "arn:aws:s3:::${local.data_bucket_name}/scripts/*",
+    ]
+  }
+
+  statement {
+    sid = "WriteCuratedObjectsOnly"
+
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:DeleteObject",
+      "s3:ListMultipartUploadParts",
       "s3:PutObject",
     ]
 
-    resources = ["arn:aws:s3:::${local.data_bucket_name}/*"]
+    resources = ["arn:aws:s3:::${local.data_bucket_name}/curated/*"]
   }
 }
 
@@ -250,4 +295,123 @@ resource "aws_iam_role_policy" "glue_s3" {
   name   = "${var.project_prefix}-glue-s3-policy"
   role   = aws_iam_role.glue.id
   policy = data.aws_iam_policy_document.glue_s3.json
+}
+
+data "aws_iam_policy_document" "athena_query_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+}
+
+resource "aws_iam_role" "athena_query" {
+  name                 = var.athena_query_role_name
+  assume_role_policy   = data.aws_iam_policy_document.athena_query_assume_role.json
+  max_session_duration = 3600
+  tags                 = local.common_tags
+}
+
+data "aws_iam_policy_document" "athena_query" {
+  statement {
+    sid = "UseLakehouseWorkgroup"
+
+    actions = [
+      "athena:BatchGetQueryExecution",
+      "athena:GetQueryExecution",
+      "athena:GetQueryResults",
+      "athena:GetQueryResultsStream",
+      "athena:GetQueryRuntimeStatistics",
+      "athena:GetWorkGroup",
+      "athena:ListQueryExecutions",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
+    ]
+
+    resources = [aws_athena_workgroup.lakehouse.arn]
+  }
+
+  statement {
+    sid = "ReadLakehouseCatalog"
+
+    actions = [
+      "glue:BatchGetPartition",
+      "glue:GetDatabase",
+      "glue:GetDatabases",
+      "glue:GetPartition",
+      "glue:GetPartitions",
+      "glue:GetTable",
+      "glue:GetTables",
+      "glue:GetTableVersion",
+      "glue:GetTableVersions",
+    ]
+
+    resources = [
+      "arn:${data.aws_partition.current.partition}:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:catalog",
+      aws_glue_catalog_database.lakehouse.arn,
+      "arn:${data.aws_partition.current.partition}:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${aws_glue_catalog_database.lakehouse.name}/*",
+    ]
+  }
+
+  statement {
+    sid       = "ReadBucketLocation"
+    actions   = ["s3:GetBucketLocation"]
+    resources = ["arn:aws:s3:::${local.data_bucket_name}"]
+  }
+
+  statement {
+    sid = "ListCuratedAndQueryResultPrefixes"
+
+    actions = [
+      "s3:ListBucket",
+      "s3:ListBucketVersions",
+    ]
+
+    resources = ["arn:aws:s3:::${local.data_bucket_name}"]
+
+    condition {
+      test     = "StringLike"
+      variable = "s3:prefix"
+      values = [
+        "curated",
+        "curated/*",
+        local.athena_results_prefix,
+        "${local.athena_results_prefix}*",
+      ]
+    }
+  }
+
+  statement {
+    sid = "ReadCuratedObjects"
+
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+    ]
+
+    resources = ["arn:aws:s3:::${local.data_bucket_name}/curated/*"]
+  }
+
+  statement {
+    sid = "ManageBoundedQueryResults"
+
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:ListMultipartUploadParts",
+      "s3:PutObject",
+    ]
+
+    resources = ["arn:aws:s3:::${local.data_bucket_name}/${local.athena_results_prefix}*"]
+  }
+}
+
+resource "aws_iam_role_policy" "athena_query" {
+  name   = "${var.project_prefix}-athena-query-policy"
+  role   = aws_iam_role.athena_query.id
+  policy = data.aws_iam_policy_document.athena_query.json
 }

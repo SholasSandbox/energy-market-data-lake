@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the ListObjectsV2 operation: User: arn:aws:sts::464975959576:assumed-role/energy-market-athena-query-role/lakehouse-athena-verify-20260615T230827Z is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::energy-market-lake-464975959576-20260405" because no identity-based policy allows the s3:ListBucket action
