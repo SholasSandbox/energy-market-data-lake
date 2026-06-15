@@ -1,0 +1,22 @@
+{
+    "IsTruncated": true,
+    "Contents": [
+        {
+            "Key": "athena-results/0887e24a-1688-4a24-b52b-9114d9738b2e.csv",
+            "LastModified": "2026-05-07T10:21:31+00:00",
+            "ETag": "\"1393b73462358b16ab08954f3946fc6e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 4081,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "Name": "energy-market-lake-464975959576-20260405",
+    "Prefix": "athena-results/",
+    "MaxKeys": 1,
+    "EncodingType": "url",
+    "KeyCount": 1,
+    "NextContinuationToken": "18VXkDUC2RNRJMo+T6j5nbmWFWcKZmsDr9k6X16w+wZrAFZyqr1iSSqXb25fOaXYIyIRZnS09b3gRZh71tB8s8w9w+gHfcZFdQsizHnaIWNYJK7+gYd+UeaPWlNcVmRZSTq3ecvvtX9wYtswy80u+d7YSn+GCsWLq"
+}

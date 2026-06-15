@@ -702,9 +702,11 @@ These are historical references, not the current delivery path.
 ## Current Delivery Priorities
 
 1. Use the SAP-C02 readiness tracker as the delivery control document.
-2. Close the June-July lakehouse gaps: architecture/naming ADRs, live bucket
-   posture evidence, KMS design, Glue least privilege, Athena query access, and
-   one current end-to-end validation chain.
+2. Finish the remaining June-July closure cleanup: cost-allocation tag
+   activation remains a separate account-governance decision, and the stale
+   Phase 1 lakehouse checklist still needs reconciliation. Architecture, live
+   posture, encryption, versioning, lifecycle, bucket tagging, Glue/Athena IAM,
+   and one current end-to-end validation chain are documented.
 3. Preserve the existing scheduled managed workflow, hosted dashboard, SNS
    alerting, and AWS Budget as a maintained baseline rather than a feature
    roadmap.

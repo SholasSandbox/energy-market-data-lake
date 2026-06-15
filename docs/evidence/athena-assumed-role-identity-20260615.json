@@ -1,0 +1,5 @@
+{
+    "UserId": "AROAWYQV2CYMBOFGGRGJM:lakehouse-athena-verify-20260615T230827Z",
+    "Account": "464975959576",
+    "Arn": "arn:aws:sts::464975959576:assumed-role/energy-market-athena-query-role/lakehouse-athena-verify-20260615T230827Z"
+}

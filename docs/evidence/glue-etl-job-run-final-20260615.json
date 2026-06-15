@@ -1,0 +1,23 @@
+{
+    "JobRun": {
+        "Id": "jr_9319c5f2b342596eb0405f1850495267b13eeb6adc7c5c85901c20ff14ad75c3",
+        "Attempt": 0,
+        "JobName": "energy-market-etl-raw-to-parquet",
+        "JobMode": "SCRIPT",
+        "JobRunQueuingEnabled": false,
+        "StartedOn": "2026-06-16T00:01:33.426000+01:00",
+        "LastModifiedOn": "2026-06-16T00:05:09.626000+01:00",
+        "CompletedOn": "2026-06-16T00:05:09.626000+01:00",
+        "JobRunState": "SUCCEEDED",
+        "PredecessorRuns": [],
+        "AllocatedCapacity": 2,
+        "ExecutionTime": 203,
+        "Timeout": 2880,
+        "MaxCapacity": 2.0,
+        "WorkerType": "G.1X",
+        "NumberOfWorkers": 2,
+        "LogGroupName": "/aws-glue/jobs",
+        "GlueVersion": "4.0",
+        "DPUSeconds": 407.0
+    }
+}

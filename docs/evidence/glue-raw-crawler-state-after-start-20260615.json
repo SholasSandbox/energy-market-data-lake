@@ -1,0 +1,11 @@
+{
+    "Name": "energy-market-raw-crawler",
+    "State": "RUNNING",
+    "LastCrawl": {
+        "Status": "SUCCEEDED",
+        "LogGroup": "/aws-glue/crawlers",
+        "LogStream": "energy-market-raw-crawler",
+        "MessagePrefix": "d5363d39-3281-4d86-998c-75e99eff660a",
+        "StartTime": "2026-05-04T17:40:35+01:00"
+    }
+}

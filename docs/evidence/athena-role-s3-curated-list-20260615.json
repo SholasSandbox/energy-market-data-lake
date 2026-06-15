@@ -1,0 +1,22 @@
+{
+    "IsTruncated": true,
+    "Contents": [
+        {
+            "Key": "curated/dataset=electricity/source=elexon/region=gb/date=2026-03-06/part-00003-a87324e4-4fe8-41c6-bb4f-251b4b15bc5f.c000.snappy.parquet",
+            "LastModified": "2026-06-15T23:04:15+00:00",
+            "ETag": "\"b688a94f2d9c80b72ee3e46c89a6b5c2-1\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 2605,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "Name": "energy-market-lake-464975959576-20260405",
+    "Prefix": "curated/",
+    "MaxKeys": 1,
+    "EncodingType": "url",
+    "KeyCount": 1,
+    "NextContinuationToken": "1ju2I+9vOaRiwDe1m9owL/ZKLZHzds8OsUoZOb338l1meWtXFywpggk5OndPgYg6osn5H73h8sBz9bEm2y/gjQhI26WbpmEVFlnjtmi+vSoNknMauFK/lQCt055sJXFIDgoAJiDAz8zeU/nsddG7TCnrBZG4gxdmEM2R9hCJFVj/3jRanY3NI7UggR2JXKlK6QtjiYcnOcsNHxP8fP7+VoB3d4XPAgYo4sDl5YYsex4DBEbDqXaKhm+sFCW4JE4fi"
+}
