@@ -40,7 +40,7 @@ Historical planning references:
 
 ## Active SAP-C02 Delivery Sequence
 
-Status as of 2026-06-14: programme reset complete and lakehouse closure active.
+Status as of 2026-06-16: programme reset complete and lakehouse closure active.
 
 1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
    resolved tracker-governance version of `AGENTS.md`.
@@ -48,11 +48,11 @@ Status as of 2026-06-14: programme reset complete and lakehouse closure active.
    S3 zones, Glue Catalog/ETL, Parquet, Athena, logging, diagrams, tags, and a
    managed-workflow budget already have implementation or live evidence.
 3. The S3-zone ADR, live posture verification, encryption decision, versioning,
-   lifecycle protection, and bucket tags are complete. Next, tighten Glue
-   permissions, add dedicated Athena query access, and capture one current
-   end-to-end evidence chain. Billing cost-allocation tag activation remains a
-   separate account-governance action. SSE-KMS implementation remains
-   conditional on a documented promotion trigger and explicit approval.
+   lifecycle protection, bucket tags, Glue/Athena IAM closure, current
+   end-to-end evidence chain, and Phase 1 reconciliation are complete. Billing
+   cost-allocation tag activation remains a separate account-governance action.
+   SSE-KMS implementation remains conditional on a documented promotion trigger
+   and explicit approval.
 4. Freeze new AI orchestration and dashboard feature work. Preserve the proven
    scheduled workflow and hosted demo through maintenance, observation, cost
    control, and explicit rollback decisions only.
@@ -110,7 +110,7 @@ The current implementation boundary is:
 
 Goal: make the ingestion and transformation flow dependable before expanding the analytical surface area.
 
-Working checklist: `docs/phase-1-stabilize-ingestion-lakehouse.md`
+Reconciled checklist: `docs/phase-1-stabilize-ingestion-lakehouse.md`
 
 Focus:
 
@@ -3726,9 +3726,8 @@ Decision:
 4. Treat ADR 0004 and
    `docs/evidence/glue-athena-iam-live-verification-20260615.md` as the
    deployed Glue/Athena IAM evidence.
-5. Reconcile `docs/phase-1-stabilize-ingestion-lakehouse.md` against the
-   current mixed-energy implementation; keep Billing cost-allocation tag
-   activation as a separate account-governance decision.
+5. Keep Billing cost-allocation tag activation as a separate
+   account-governance decision; the Phase 1 checklist is reconciled and closed.
 6. Keep DNS, ACM, dashboard expansion, repeated live model invocation, and new
    AI orchestration features deferred under the SAP-C02 scope rules.
 

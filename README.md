@@ -598,7 +598,7 @@ python3 scripts/validate_athena_schema.py \
   progress, and completion tracker.
 - `PLANS.md`: active SAP-C02 execution sequence plus historical delivery record.
 - `docs/setup.md`: setup guide for the serverless energy lakehouse path.
-- `docs/phase-1-stabilize-ingestion-lakehouse.md`: active stabilization checklist.
+- `docs/phase-1-stabilize-ingestion-lakehouse.md`: reconciled historical Phase 1 checklist.
 - `docs/entsoe-operationalization-checklist.md`: ENTSO-E reliability checklist.
 - `docs/gas-implementation-checklist.md`: ENTSOG gas implementation checklist.
 - `docs/entsog-gas-build-plan.md`: time-budgeted ENTSOG gas build tracker.
@@ -703,10 +703,10 @@ These are historical references, not the current delivery path.
 
 1. Use the SAP-C02 readiness tracker as the delivery control document.
 2. Finish the remaining June-July closure cleanup: cost-allocation tag
-   activation remains a separate account-governance decision, and the stale
-   Phase 1 lakehouse checklist still needs reconciliation. Architecture, live
-   posture, encryption, versioning, lifecycle, bucket tagging, Glue/Athena IAM,
-   and one current end-to-end validation chain are documented.
+   activation remains a separate account-governance decision. Architecture,
+   live posture, encryption, versioning, lifecycle, bucket tagging,
+   Glue/Athena IAM, Phase 1 reconciliation, and one current end-to-end
+   validation chain are documented.
 3. Preserve the existing scheduled managed workflow, hosted dashboard, SNS
    alerting, and AWS Budget as a maintained baseline rather than a feature
    roadmap.
