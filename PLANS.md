@@ -50,9 +50,9 @@ Status as of 2026-06-16: programme reset complete and lakehouse closure active.
 3. The S3-zone ADR, live posture verification, encryption decision, versioning,
    lifecycle protection, bucket tags, Glue/Athena IAM closure, current
    end-to-end evidence chain, and Phase 1 reconciliation are complete. Billing
-   cost-allocation tag activation remains a separate account-governance action.
-   SSE-KMS implementation remains conditional on a documented promotion trigger
-   and explicit approval.
+   Cost Allocation Tag activation has approval but is blocked pending
+   payer/management account access. SSE-KMS implementation remains conditional
+   on a documented promotion trigger and explicit approval.
 4. Freeze new AI orchestration and dashboard feature work. Preserve the proven
    scheduled workflow and hosted demo through maintenance, observation, cost
    control, and explicit rollback decisions only.
@@ -3726,8 +3726,9 @@ Decision:
 4. Treat ADR 0004 and
    `docs/evidence/glue-athena-iam-live-verification-20260615.md` as the
    deployed Glue/Athena IAM evidence.
-5. Keep Billing cost-allocation tag activation as a separate
-   account-governance decision; the Phase 1 checklist is reconciled and closed.
+5. Keep Billing Cost Allocation Tag activation blocked until the
+   payer/management account or an authorized Billing administrator can run it;
+   the Phase 1 checklist is reconciled and closed.
 6. Keep DNS, ACM, dashboard expansion, repeated live model invocation, and new
    AI orchestration features deferred under the SAP-C02 scope rules.
 
