@@ -80,8 +80,10 @@ evidence and requires explicit approval.
 
 - Read-back evidence was captured in
   `docs/evidence/s3-versioning-tagging-apply-20260615.md`.
-- Activate selected user-defined cost-allocation tags in AWS Billing through a
-  separately approved account-governance action.
+- Cost Allocation Tag activation was approved and attempted on 2026-06-16, but
+  AWS blocked the action because the workload account is a linked account
+  without Billing tag-administration access. See
+  `docs/evidence/cost-allocation-tag-activation-preflight-20260616.md`.
 - Decide whether to import the existing bucket and child controls into the
   lakehouse Terraform root.
 - Monitor storage growth before extending the 30-day noncurrent-version window.
