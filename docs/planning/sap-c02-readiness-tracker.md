@@ -9,7 +9,7 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-06-15
+**Last repository reconciliation:** 2026-06-16
 
 ---
 
@@ -226,7 +226,7 @@ Official SAP-C02 domains:
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
 | Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, and budget evidence exist; Organizations, SCPs, Identity Center, central logging, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse and serverless workflow are substantially implemented; IAM deployment/service verification, resilience decisions, and consolidated evidence remain open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse and serverless workflow are substantially implemented; resilience decisions, cost-allocation governance, and final consolidation remain open |
 | Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, and cost guardrails exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Not started | 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, migration playbook |
 
@@ -325,8 +325,9 @@ is to close and evidence the readiness gaps:
 - [x] On 2026-06-15, capture one current raw -> Glue -> curated Parquet ->
   Athena validation evidence chain:
   `docs/evidence/glue-athena-iam-live-verification-20260615.md`.
-- [ ] Reconcile `docs/phase-1-stabilize-ingestion-lakehouse.md` against the
-  current mixed-energy implementation and close or replace its stale checks.
+- [x] On 2026-06-16, reconcile
+  `docs/phase-1-stabilize-ingestion-lakehouse.md` against the current
+  mixed-energy implementation and close its stale checks.
 - [ ] Mark the June-July milestone complete only after all required gaps above
   have evidence links.
 
@@ -528,7 +529,7 @@ Action:
 | Domain 1 governance notes complete | Not met |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
-| Lakehouse readiness closure complete and documented | Partially met: core path, encryption, versioning, lifecycle, bucket tags, IAM, and current end-to-end evidence are verified; cost-allocation tag activation and stale Phase 1 reconciliation remain open |
+| Lakehouse readiness closure complete and documented | Partially met: core path, encryption, versioning, lifecycle, bucket tags, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete; cost-allocation tag activation remains open as a separate governance decision |
 | IAM/Organizations/SCP design complete | Not met |
 | Wrong-answer log reviewed twice | Not met |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
