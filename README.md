@@ -713,8 +713,11 @@ These are historical references, not the current delivery path.
    portfolio polish unless the tracker explicitly approves the work.
 5. Produce weekly study/build artifacts, practice-question results, and
    wrong-answer entries alongside repository changes.
-6. Begin the IAM, Organizations, SCP, and central-governance phase only after
-   the lakehouse closure checklist is complete.
+6. Complete the June-July exit items that are not repository implementation
+   work: two 20-question practice blocks, wrong-answer logging, and separate
+   Python/serverless tutorial evidence.
+7. Begin the IAM, Organizations, SCP, and central-governance phase only after
+   the tracker explicitly opens that phase.
 
 ## Historical Phase 17 Operating Constraints
 
