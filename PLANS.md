@@ -58,8 +58,12 @@ complete.
    control, and explicit rollback decisions only.
 5. Begin the tracker operating cadence: weekly hours, small practice blocks,
    wrong-answer logging, and evidence-backed tracker updates.
-6. Move to IAM, Organizations, SCPs, and central governance only after the
-   June-July lakehouse closure gate is met.
+6. Complete the June-July exit items that are not repository implementation
+   work: two 20-question practice blocks, wrong-answer logging, and separate
+   Python/serverless tutorial evidence.
+7. Move to IAM, Organizations, SCPs, and central governance only after the
+   June-July lakehouse closure gate is met and the tracker explicitly opens
+   the governance phase.
 
 The detailed Phase 1-17 material below is a historical delivery record and
 implementation reference. It no longer authorizes continuation of deferred AI
