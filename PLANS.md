@@ -40,7 +40,8 @@ Historical planning references:
 
 ## Active SAP-C02 Delivery Sequence
 
-Status as of 2026-06-16: programme reset complete and lakehouse closure active.
+Status as of 2026-06-17: programme reset complete and lakehouse closure
+complete.
 
 1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
    resolved tracker-governance version of `AGENTS.md`.
@@ -48,11 +49,10 @@ Status as of 2026-06-16: programme reset complete and lakehouse closure active.
    S3 zones, Glue Catalog/ETL, Parquet, Athena, logging, diagrams, tags, and a
    managed-workflow budget already have implementation or live evidence.
 3. The S3-zone ADR, live posture verification, encryption decision, versioning,
-   lifecycle protection, bucket tags, Glue/Athena IAM closure, current
-   end-to-end evidence chain, and Phase 1 reconciliation are complete. Billing
-   Cost Allocation Tag activation has approval but is blocked pending
-   payer/management account access. SSE-KMS implementation remains conditional
-   on a documented promotion trigger and explicit approval.
+   lifecycle protection, bucket tags, Billing Cost Allocation Tag activation,
+   Glue/Athena IAM closure, current end-to-end evidence chain, and Phase 1
+   reconciliation are complete. SSE-KMS implementation remains conditional on a
+   documented promotion trigger and explicit approval.
 4. Freeze new AI orchestration and dashboard feature work. Preserve the proven
    scheduled workflow and hosted demo through maintenance, observation, cost
    control, and explicit rollback decisions only.
@@ -3726,9 +3726,8 @@ Decision:
 4. Treat ADR 0004 and
    `docs/evidence/glue-athena-iam-live-verification-20260615.md` as the
    deployed Glue/Athena IAM evidence.
-5. Keep Billing Cost Allocation Tag activation blocked until the
-   payer/management account or an authorized Billing administrator can run it;
-   the Phase 1 checklist is reconciled and closed.
+5. Treat Billing Cost Allocation Tag activation as complete based on
+   management-account evidence; the Phase 1 checklist is reconciled and closed.
 6. Keep DNS, ACM, dashboard expansion, repeated live model invocation, and new
    AI orchestration features deferred under the SAP-C02 scope rules.
 

@@ -9,7 +9,7 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-06-16
+**Last repository reconciliation:** 2026-06-17
 
 ---
 
@@ -225,8 +225,8 @@ Official SAP-C02 domains:
 
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
-| Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, and budget evidence exist; Organizations, SCPs, Identity Center, central logging, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse and serverless workflow are substantially implemented; resilience decisions, payer-account cost-allocation activation, and final consolidation remain open |
+| Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, and selected Cost Allocation Tag activation exist; OU design, SCPs, Identity Center, central logging, and enterprise networking remain open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse and serverless workflow are substantially implemented; lakehouse readiness closure is complete, while resilience decisions and final consolidation remain open |
 | Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, and cost guardrails exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Not started | 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, migration playbook |
 
@@ -281,13 +281,13 @@ Energy Data Lakehouse
 | IAM role for Glue least privilege | Verified | Terraform restricts listing and reads to `raw/`, `curated/`, and `scripts/`, with writes/deletes limited to `curated/`; live Glue crawler/job verification passed on 2026-06-15 |
 | IAM role or policy for Athena query access | Verified | Dedicated role is workgroup-scoped, catalog-read-only, limited to `curated/` reads and `athena-results/` writes; assumed-role Athena query passed and raw-prefix list was denied on 2026-06-15 |
 | CloudWatch logging enabled | Implemented | Lambda log groups, Glue continuous logging, Glue metrics, and Athena workgroup metrics are configured |
-| Cost and ownership tags applied | Partial | Eight live data-bucket tags were verified on 2026-06-15; Cost Allocation Tag activation was approved on 2026-06-16 but blocked because the current AWS account is a linked account without Billing tag-administration access |
+| Cost and ownership tags applied | Verified | Eight live data-bucket tags were verified on 2026-06-15; selected Billing Cost Allocation Tags were activated from the Organizations management account on 2026-06-17 |
 | Architecture diagram created | Verified | Current and target diagrams exist under `diagrams/`; `docs/target-operating-model.md` documents the target posture |
 
 ### Lakehouse closure gaps
 
-The core lakehouse path is already implemented. The remaining June-July work
-is to close and evidence the readiness gaps:
+The core lakehouse path is implemented, and the June-July closure gaps are
+complete with evidence links:
 
 - [x] On 2026-06-13, record an ADR confirming one shared data bucket
   with `raw/` and `curated/` prefixes, including when separate buckets would be
@@ -302,11 +302,9 @@ is to close and evidence the readiness gaps:
 - [x] On 2026-06-15, apply and verify the approved ownership, classification,
   environment, workload, and cost-attribution tags:
   `docs/evidence/s3-versioning-tagging-apply-20260615.md`.
-- [ ] Activate selected user-defined cost-allocation tags in AWS Billing.
-  Approval was granted on 2026-06-16, but activation is blocked until the
-  payer/management account or an authorized Billing administrator runs the
-  action; see
-  `docs/evidence/cost-allocation-tag-activation-preflight-20260616.md`.
+- [x] On 2026-06-17, activate selected user-defined cost-allocation tags in
+  AWS Billing from the Organizations management account:
+  `docs/evidence/cost-allocation-tag-activation-20260617.md`.
 - [x] On 2026-06-14, decide and document SSE-S3 versus SSE-KMS for raw,
   curated, Athena results, logs, and dashboard artifacts:
   `docs/adr/0002-encryption-and-kms-design.md`.
@@ -331,8 +329,8 @@ is to close and evidence the readiness gaps:
 - [x] On 2026-06-16, reconcile
   `docs/phase-1-stabilize-ingestion-lakehouse.md` against the current
   mixed-energy implementation and close its stale checks.
-- [ ] Mark the June-July milestone complete only after all required gaps above
-  have evidence links.
+- [x] On 2026-06-17, mark the lakehouse readiness closure complete after all
+  required June-July closure gaps above had evidence links.
 
 ### Lakehouse scope boundaries
 
@@ -380,7 +378,7 @@ AWS Organization
 
 | Item | Status | Evidence |
 |---|---|---|
-| AWS Organizations enabled | Not started |  |
+| AWS Organizations enabled | Verified | Management account and member accounts verified in `docs/evidence/cost-allocation-tag-activation-20260617.md` |
 | OU structure designed | Not started |  |
 | Management account rules documented | Not started |  |
 | Workload account purpose defined | Not started |  |
@@ -392,7 +390,7 @@ AWS Organization
 | CloudTrail organization trail design documented | Not started |  |
 | AWS Config design documented | Not started |  |
 | GuardDuty/Security Hub concept documented | Not started |  |
-| Cost allocation tags defined | Partial | Common Terraform tags exist; account-level activation and coverage evidence remain open |
+| Cost allocation tags defined | Verified | Common Terraform tags exist; selected Billing Cost Allocation Tags were activated from the Organizations management account on 2026-06-17 |
 | Budget alarms configured | Partial | A live `$1` managed-workflow AWS Budget with notifications is verified; broader workload/account budget design remains open |
 
 ### SCP catalogue
@@ -532,7 +530,7 @@ Action:
 | Domain 1 governance notes complete | Not met |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
-| Lakehouse readiness closure complete and documented | Partially met: core path, encryption, versioning, lifecycle, bucket tags, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete; Cost Allocation Tag activation is approved but blocked pending payer/management account access |
+| Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
 | IAM/Organizations/SCP design complete | Not met |
 | Wrong-answer log reviewed twice | Not met |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
