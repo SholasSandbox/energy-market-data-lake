@@ -702,11 +702,10 @@ These are historical references, not the current delivery path.
 ## Current Delivery Priorities
 
 1. Use the SAP-C02 readiness tracker as the delivery control document.
-2. Finish the remaining June-July closure cleanup: Cost Allocation Tag
-   activation has approval but is blocked until the payer/management account or
-   an authorized Billing administrator can run it. Architecture, live posture,
-   encryption, versioning, lifecycle, bucket tagging, Glue/Athena IAM, Phase 1
-   reconciliation, and one current end-to-end validation chain are documented.
+2. Treat the June-July lakehouse closure as complete: architecture, live
+   posture, encryption, versioning, lifecycle, bucket tagging, Billing Cost
+   Allocation Tag activation, Glue/Athena IAM, Phase 1 reconciliation, and one
+   current end-to-end validation chain are documented.
 3. Preserve the existing scheduled managed workflow, hosted dashboard, SNS
    alerting, and AWS Budget as a maintained baseline rather than a feature
    roadmap.

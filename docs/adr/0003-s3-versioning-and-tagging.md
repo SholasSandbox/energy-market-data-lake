@@ -53,8 +53,9 @@ The 30-day noncurrent-version expiry limits the storage growth introduced by
 versioning while leaving a practical recovery window.
 
 Tags establish ownership, environment, workload, data classification, and cost
-attribution. User-defined cost-allocation tags still require activation in AWS
-Billing before they appear in cost reporting.
+attribution. The selected low-cardinality user-defined cost-allocation tags were
+activated in AWS Billing from the Organizations management account on
+2026-06-17.
 
 ## Consequences
 
@@ -80,10 +81,11 @@ evidence and requires explicit approval.
 
 - Read-back evidence was captured in
   `docs/evidence/s3-versioning-tagging-apply-20260615.md`.
-- Cost Allocation Tag activation was approved and attempted on 2026-06-16, but
-  AWS blocked the action because the workload account is a linked account
-  without Billing tag-administration access. See
-  `docs/evidence/cost-allocation-tag-activation-preflight-20260616.md`.
+- Cost Allocation Tag activation was initially blocked from the workload
+  account on 2026-06-16, then completed from the Organizations management
+  account on 2026-06-17. See
+  `docs/evidence/cost-allocation-tag-activation-preflight-20260616.md` and
+  `docs/evidence/cost-allocation-tag-activation-20260617.md`.
 - Decide whether to import the existing bucket and child controls into the
   lakehouse Terraform root.
 - Monitor storage growth before extending the 30-day noncurrent-version window.
