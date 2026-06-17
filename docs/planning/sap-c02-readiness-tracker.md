@@ -95,8 +95,9 @@ architecture, including S3, Glue, Athena, Parquet, IAM, KMS, CloudTrail, AWS
 Config, cost controls, and Organizations/SCP guardrails.
 
 Source of truth: this repository, its README, its evidence files, and the
-lakehouse sections of this tracker. Its readiness closure remains the active
-June-July repository sequence.
+lakehouse sections of this tracker. Its readiness closure is complete; the
+remaining June-July work is study cadence, practice evidence, tutorial evidence,
+and carry-forward review before the scheduled governance phase.
 
 #### Scheduled AWS governance and multi-account work
 
@@ -226,7 +227,7 @@ Official SAP-C02 domains:
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
 | Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, and selected Cost Allocation Tag activation exist; OU design, SCPs, Identity Center, central logging, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse and serverless workflow are substantially implemented; lakehouse readiness closure is complete, while resilience decisions and final consolidation remain open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure and repository-side Domain 2 consolidation are complete; practice blocks, tutorial evidence, and later networking/DR decisions remain open |
 | Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, and cost guardrails exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Not started | 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, migration playbook |
 
@@ -622,14 +623,16 @@ phase plans from drifting apart again.
 
 ### June-July exit checklist
 
-- [ ] Complete every item in the Lakehouse closure gaps checklist.
-- [ ] Confirm Domain 2 evidence includes storage, transformation, query,
-  security, observability, cost, and resilience decisions.
+- [x] Complete every item in the Lakehouse closure gaps checklist.
+- [x] Confirm Domain 2 evidence includes storage, transformation, query,
+  security, observability, cost, and resilience decisions:
+  `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
 - [ ] Complete at least two 20-question practice blocks and log all wrong
   answers.
-- [ ] Review Domain 2 weak areas and update the next four-week plan.
+- [x] Review Domain 2 weak areas and update the next four-week plan:
+  `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
 - [ ] Change the June-July milestone to complete only when code, documentation,
-  diagrams, and evidence agree.
+  diagrams, evidence, practice blocks, and separate tutorial evidence agree.
 
 ---
 
