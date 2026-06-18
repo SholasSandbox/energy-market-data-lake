@@ -9,7 +9,7 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-06-17
+**Last repository reconciliation:** 2026-06-18
 
 ---
 
@@ -226,7 +226,7 @@ Official SAP-C02 domains:
 
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
-| Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, and selected Cost Allocation Tag activation exist; OU design, SCPs, Identity Center, central logging, and enterprise networking remain open |
+| Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, selected Cost Allocation Tag activation, and governance preflight evidence exist; final OU design, SCPs, Identity Center, central logging, and enterprise networking remain open |
 | Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure and repository-side Domain 2 consolidation are complete; practice blocks, tutorial evidence, and later networking/DR decisions remain open |
 | Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, and cost guardrails exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Not started | 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, migration playbook |
@@ -380,17 +380,17 @@ AWS Organization
 | Item | Status | Evidence |
 |---|---|---|
 | AWS Organizations enabled | Verified | Management account and member accounts verified in `docs/evidence/cost-allocation-tag-activation-20260617.md` |
-| OU structure designed | Not started |  |
-| Management account rules documented | Not started |  |
-| Workload account purpose defined | Not started |  |
-| Security/log archive account design documented | Not started |  |
-| IAM Identity Center access model documented | Not started |  |
-| Permission sets defined | Not started |  |
-| Break-glass access model documented | Not started |  |
-| SCP catalogue drafted | Not started |  |
-| CloudTrail organization trail design documented | Not started |  |
-| AWS Config design documented | Not started |  |
-| GuardDuty/Security Hub concept documented | Not started |  |
+| OU structure designed | Partial | Proposed target OU model recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; no live OU changes approved |
+| Management account rules documented | Partial | Control-plane account rules drafted in `docs/planning/domain-1-governance-preflight-20260618.md`; final governance phase remains open |
+| Workload account purpose defined | Partial | Lakehouse and container-lab account boundaries drafted in `docs/planning/domain-1-governance-preflight-20260618.md` |
+| Security/log archive account design documented | Partial | Future security/logging boundary outlined in `docs/planning/domain-1-governance-preflight-20260618.md`; no account or logging implementation exists |
+| IAM Identity Center access model documented | Partial | Permission-set candidates outlined in `docs/planning/domain-1-governance-preflight-20260618.md`; no permission sets implemented |
+| Permission sets defined | Partial | Candidate permission sets documented in `docs/planning/domain-1-governance-preflight-20260618.md`; final policies and assignments remain open |
+| Break-glass access model documented | Partial | Break-glass candidate permission set and constraints recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; procedure remains open |
+| SCP catalogue drafted | Partial | First-pass SCP catalogue recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; no SCPs attached or tested |
+| CloudTrail organization trail design documented | Partial | Organization trail outline recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; live enablement remains open |
+| AWS Config design documented | Partial | Organization aggregation outline recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; live enablement remains open |
+| GuardDuty/Security Hub concept documented | Partial | Security-service concepts recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; delegated-admin and enablement decisions remain open |
 | Cost allocation tags defined | Verified | Common Terraform tags exist; selected Billing Cost Allocation Tags were activated from the Organizations management account on 2026-06-17 |
 | Budget alarms configured | Partial | A live `$1` managed-workflow AWS Budget with notifications is verified; broader workload/account budget design remains open |
 
@@ -398,13 +398,13 @@ AWS Organization
 
 | SCP | Purpose | Status |
 |---|---|---|
-| Deny disabling CloudTrail | Protect audit evidence | Not started |
-| Deny deleting log buckets | Protect log archive | Not started |
-| Deny public S3 exposure | Reduce data leakage risk | Not started |
-| Deny unapproved regions | Cost/compliance control | Not started |
-| Deny root-user actions except emergencies | Reduce blast radius | Not started |
-| Require encryption where feasible | Improve compliance posture | Not started |
-| Deny leaving AWS Organization | Prevent governance bypass | Not started |
+| Deny disabling CloudTrail | Protect audit evidence | Partial |
+| Deny deleting log buckets | Protect log archive | Partial |
+| Deny public S3 exposure | Reduce data leakage risk | Partial |
+| Deny unapproved regions | Cost/compliance control | Partial |
+| Deny root-user actions except emergencies | Reduce blast radius | Partial |
+| Require encryption where feasible | Improve compliance posture | Partial |
+| Deny leaving AWS Organization | Prevent governance bypass | Partial |
 
 Critical note: **SCPs do not grant permissions.** They define maximum allowed permissions. IAM policies still grant permissions.
 
@@ -528,7 +528,7 @@ Action:
 | Criterion | Status |
 |---|---|
 | Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met |
-| Domain 1 governance notes complete | Not met |
+| Domain 1 governance notes complete | Partially met: governance preflight is documented; final OU/SCP/logging/IAM design remains open |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
@@ -633,6 +633,18 @@ phase plans from drifting apart again.
   `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
 - [ ] Change the June-July milestone to complete only when code, documentation,
   diagrams, evidence, practice blocks, and separate tutorial evidence agree.
+
+### Domain 1 governance preflight
+
+- [x] Record a repo-only governance preflight that aligns with the tracker and
+  keeps the Python/serverless tutorial workspace separate:
+  `docs/planning/domain-1-governance-preflight-20260618.md`.
+- [x] Draft current account structure, target OU shape, management-account
+  rules, workload boundaries, Identity Center permission-set candidates, SCP
+  catalogue, logging/security-service outline, and budget/tagging governance
+  without making live AWS changes.
+- [ ] During the scheduled governance phase, convert the preflight into final
+  OU/SCP/logging/IAM designs, explicit implementation boundaries, and evidence.
 
 ---
 
