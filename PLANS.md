@@ -40,8 +40,8 @@ Historical planning references:
 
 ## Active SAP-C02 Delivery Sequence
 
-Status as of 2026-06-17: programme reset complete and lakehouse closure
-complete.
+Status as of 2026-06-18: programme reset complete, lakehouse closure complete,
+and Domain 1 governance preflight documented.
 
 1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
    resolved tracker-governance version of `AGENTS.md`.
@@ -64,6 +64,10 @@ complete.
 7. Move to IAM, Organizations, SCPs, and central governance only after the
    June-July lakehouse closure gate is met and the tracker explicitly opens
    the governance phase.
+8. Use `docs/planning/domain-1-governance-preflight-20260618.md` as the
+   repo-only bridge into that governance phase. It is a planning artifact only:
+   no live AWS Organizations, SCP, Identity Center, CloudTrail, AWS Config, or
+   security-service changes are authorized by it.
 
 The detailed Phase 1-17 material below is a historical delivery record and
 implementation reference. It no longer authorizes continuation of deferred AI
