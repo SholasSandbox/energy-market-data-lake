@@ -33,6 +33,7 @@ When resolving a Git or patch conflict in `AGENTS.md`, preserve the tracker-read
 
 - Follow the tracker's current weekly focus, monthly milestones, lakehouse readiness checklist, governance checklist, and evidence requirements when choosing implementation order.
 - Prefer artifacts required by the tracker, including code commits, architecture diagrams, ADRs, service comparison tables, IAM/SCP policy examples, wrong-answer log entries, exam-domain notes, and operational runbooks or checklists.
+- Every ADR must articulate the design trade-offs behind the accepted decision. It must state the winning choice, the meaningful alternatives considered, why each rejected option was not chosen for the current repository context, and the conditions that would cause the decision to be revisited.
 - Treat tracker hard deferrals as out of scope until after the SAP-C02 attempt unless the user explicitly updates the tracker.
 - Do not expand polished UI/dashboard work, deep Kubernetes/EKS work, complex microservices, deep REMIT workflow build-out, or AI orchestration beyond light conceptual notes unless the tracker is updated first.
 - Keep application changes aligned with the Energy Data Lakehouse, AWS governance, SAP-C02 domain coverage, or immediate portfolio/job-market evidence.
