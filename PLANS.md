@@ -40,8 +40,9 @@ Historical planning references:
 
 ## Active SAP-C02 Delivery Sequence
 
-Status as of 2026-06-18: programme reset complete, lakehouse closure complete,
-and Domain 1 governance preflight documented.
+Status as of 2026-06-19: programme reset complete, lakehouse closure complete,
+Domain 1 governance preflight documented, and the first Organizations
+governance design ADR accepted.
 
 1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
    resolved tracker-governance version of `AGENTS.md`.
@@ -61,13 +62,15 @@ and Domain 1 governance preflight documented.
 6. Complete the June-July exit items that are not repository implementation
    work: two 20-question practice blocks, wrong-answer logging, and separate
    Python/serverless tutorial evidence.
-7. Move to IAM, Organizations, SCPs, and central governance only after the
-   June-July lakehouse closure gate is met and the tracker explicitly opens
-   the governance phase.
+7. Move from design into live IAM, Organizations, SCPs, and central governance
+   implementation only after the June-July lakehouse closure gate is met and
+   the tracker explicitly opens the governance phase.
 8. Use `docs/planning/domain-1-governance-preflight-20260618.md` as the
-   repo-only bridge into that governance phase. It is a planning artifact only:
-   no live AWS Organizations, SCP, Identity Center, CloudTrail, AWS Config, or
-   security-service changes are authorized by it.
+   repo-only bridge into that governance phase and
+   `docs/adr/0005-aws-organizations-governance-design.md` as the accepted
+   Organizations governance design. These artifacts do not authorize live AWS
+   Organizations, SCP, Identity Center, CloudTrail, AWS Config, or
+   security-service changes.
 
 The detailed Phase 1-17 material below is a historical delivery record and
 implementation reference. It no longer authorizes continuation of deferred AI

@@ -10,6 +10,7 @@
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
 **Last repository reconciliation:** 2026-06-18
+**Last practice evidence update:** 2026-06-19
 
 ---
 
@@ -227,9 +228,9 @@ Official SAP-C02 domains:
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
 | Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, selected Cost Allocation Tag activation, and governance preflight evidence exist; final OU design, SCPs, Identity Center, central logging, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure and repository-side Domain 2 consolidation are complete; practice blocks, tutorial evidence, and later networking/DR decisions remain open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, and two 20-question practice blocks are complete; tutorial evidence, practice review, and later networking/DR decisions remain open |
 | Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, and cost guardrails exist; systematic improvement notes and remaining hardening are open |
-| Domain 4: Accelerate Workload Migration and Modernization | 20% | Not started | 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, migration playbook |
+| Domain 4: Accelerate Workload Migration and Modernization | 20% | Partial | Exercise 002 exposed a rehost-vs-refactor/MGN weak area; 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, and migration playbook artifacts remain open |
 
 ### Weekly domain focus
 
@@ -380,17 +381,17 @@ AWS Organization
 | Item | Status | Evidence |
 |---|---|---|
 | AWS Organizations enabled | Verified | Management account and member accounts verified in `docs/evidence/cost-allocation-tag-activation-20260617.md` |
-| OU structure designed | Partial | Proposed target OU model recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; no live OU changes approved |
-| Management account rules documented | Partial | Control-plane account rules drafted in `docs/planning/domain-1-governance-preflight-20260618.md`; final governance phase remains open |
-| Workload account purpose defined | Partial | Lakehouse and container-lab account boundaries drafted in `docs/planning/domain-1-governance-preflight-20260618.md` |
-| Security/log archive account design documented | Partial | Future security/logging boundary outlined in `docs/planning/domain-1-governance-preflight-20260618.md`; no account or logging implementation exists |
-| IAM Identity Center access model documented | Partial | Permission-set candidates outlined in `docs/planning/domain-1-governance-preflight-20260618.md`; no permission sets implemented |
-| Permission sets defined | Partial | Candidate permission sets documented in `docs/planning/domain-1-governance-preflight-20260618.md`; final policies and assignments remain open |
-| Break-glass access model documented | Partial | Break-glass candidate permission set and constraints recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; procedure remains open |
-| SCP catalogue drafted | Partial | First-pass SCP catalogue recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; no SCPs attached or tested |
-| CloudTrail organization trail design documented | Partial | Organization trail outline recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; live enablement remains open |
-| AWS Config design documented | Partial | Organization aggregation outline recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; live enablement remains open |
-| GuardDuty/Security Hub concept documented | Partial | Security-service concepts recorded in `docs/planning/domain-1-governance-preflight-20260618.md`; delegated-admin and enablement decisions remain open |
+| OU structure designed | Design accepted | Target OU model recorded in `docs/adr/0005-aws-organizations-governance-design.md`; no live OU changes approved |
+| Management account rules documented | Design accepted | Control-plane account rules recorded in `docs/adr/0005-aws-organizations-governance-design.md`; implementation boundary remains future approval |
+| Workload account purpose defined | Design accepted | Lakehouse workload and sandbox account boundaries recorded in `docs/adr/0005-aws-organizations-governance-design.md` |
+| Security/log archive account design documented | Partial | Target security/log archive boundary recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed CloudTrail/log archive design and implementation remain open |
+| IAM Identity Center access model documented | Design accepted | Permission-set candidates and account targets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; no permission sets implemented |
+| Permission sets defined | Partial | Candidate permission sets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; final policies and assignments remain open |
+| Break-glass access model documented | Partial | Break-glass target recorded in `docs/adr/0005-aws-organizations-governance-design.md`; procedure, alerting, and review process remain open |
+| SCP catalogue drafted | Design accepted | Accepted SCP catalogue recorded in `docs/adr/0005-aws-organizations-governance-design.md`; no SCPs attached or tested |
+| CloudTrail organization trail design documented | Partial | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention design and live enablement remain open |
+| AWS Config design documented | Partial | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; recorder scope, managed rules, cost controls, and live enablement remain open |
+| GuardDuty/Security Hub concept documented | Partial | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; delegated-admin and enablement decisions remain open |
 | Cost allocation tags defined | Verified | Common Terraform tags exist; selected Billing Cost Allocation Tags were activated from the Organizations management account on 2026-06-17 |
 | Budget alarms configured | Partial | A live `$1` managed-workflow AWS Budget with notifications is verified; broader workload/account budget design remains open |
 
@@ -425,7 +426,7 @@ Critical note: **SCPs do not grant permissions.** They define maximum allowed pe
 | NAT Gateway | Medium | Yes | Cost and routing note |
 | Direct Connect | Low | Yes | Hybrid connectivity decision table |
 | Site-to-Site VPN | Low | Yes | DX vs VPN comparison |
-| Route 53 Resolver | Low | Yes | Hybrid DNS diagram |
+| Route 53 Resolver | Low: missed in exercise 002 | Yes | Hybrid DNS diagram |
 | Centralized inspection VPC | Low | Yes | Architecture sketch |
 
 ### Networking deliverables
@@ -448,7 +449,7 @@ Critical note: **SCPs do not grant permissions.** They define maximum allowed pe
 | Service / concept | Current confidence | Evidence required |
 |---|---:|---|
 | 6 Rs migration strategy | Medium | Decision table |
-| AWS Application Migration Service | Low | Rehost use-case note |
+| AWS Application Migration Service | Low: missed in exercise 002 | Rehost use-case note |
 | AWS Database Migration Service | Medium | Homogeneous vs heterogeneous examples |
 | AWS DataSync | Low | Storage transfer use-case note |
 | Snow Family | Low | Offline transfer decision note |
@@ -478,8 +479,8 @@ Start with small question blocks immediately. Full timed exams begin in late Oct
 
 | Date | Source | Mode | Score | Domain weakness | Action |
 |---|---|---|---:|---|---|
-|  |  | Untimed 20 questions |  |  |  |
-|  |  | Untimed 20 questions |  |  |  |
+| 2026-06-19 | SAP-C02 exercise 001: user-confirmed result | Untimed 20 questions | 20/20 | None identified | No wrong-answer logging required |
+| 2026-06-19 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-002-marking-and-revision-log.md` | Untimed 20 questions | 18/20 | Hybrid DNS; migration strategy selection | Wrong answers logged; drill Route 53 Resolver and rehost/MGN scenario wording |
 |  |  | Timed 30 questions |  |  |  |
 |  |  | Full timed exam |  |  |  |
 |  |  | Full timed exam |  |  |  |
@@ -517,7 +518,8 @@ Action:
 
 | Date | Theme | Domain | Trap | Remediation |
 |---|---|---|---|---|
-|  |  |  |  |  |
+| 2026-06-19 | Hybrid DNS: AWS and on-premises private name resolution | Domain 1 / networking | Confused AWS Config aggregation with DNS forwarding | Use Route 53 Resolver inbound/outbound endpoints and forwarding rules; see exercise 002 revision log |
+| 2026-06-19 | Migration strategy: urgent data-centre exit with minimal change | Domain 4 | Chose the attractive long-term refactor answer instead of the constraint-led rehost answer | Use AWS Application Migration Service for rehost first, then optimize; see exercise 002 revision log |
 
 ---
 
@@ -528,11 +530,11 @@ Action:
 | Criterion | Status |
 |---|---|
 | Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met |
-| Domain 1 governance notes complete | Partially met: governance preflight is documented; final OU/SCP/logging/IAM design remains open |
+| Domain 1 governance notes complete | Partially met: governance preflight and Organizations governance ADR are documented; detailed SCP policy examples, logging runbooks, and live-readiness evidence remain open |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
-| IAM/Organizations/SCP design complete | Not met |
+| IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, and SCP catalogue decisions are accepted in ADR 0005; policy examples, exception tests, rollback plans, and implementation evidence remain open |
 | Wrong-answer log reviewed twice | Not met |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
@@ -614,7 +616,7 @@ phase plans from drifting apart again.
 
 - [ ] Log actual, build, study, and practice hours for the current week.
 - [ ] Produce at least one required artifact for every study/build session.
-- [ ] Run one practice-question block and record misses in the wrong-answer
+- [x] Run one practice-question block and record misses in the wrong-answer
   log.
 - [ ] Update changed checklist rows with an evidence link, not only a status.
 - [ ] Review hard deferrals before opening a new implementation branch.
@@ -627,7 +629,7 @@ phase plans from drifting apart again.
 - [x] Confirm Domain 2 evidence includes storage, transformation, query,
   security, observability, cost, and resilience decisions:
   `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
-- [ ] Complete at least two 20-question practice blocks and log all wrong
+- [x] Complete at least two 20-question practice blocks and log all wrong
   answers.
 - [x] Review Domain 2 weak areas and update the next four-week plan:
   `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
@@ -643,8 +645,13 @@ phase plans from drifting apart again.
   rules, workload boundaries, Identity Center permission-set candidates, SCP
   catalogue, logging/security-service outline, and budget/tagging governance
   without making live AWS changes.
-- [ ] During the scheduled governance phase, convert the preflight into final
-  OU/SCP/logging/IAM designs, explicit implementation boundaries, and evidence.
+- [x] Convert the preflight into an accepted Organizations governance design
+  ADR with explicit decisions, trade-offs, rejected alternatives, SAP-C02
+  implications, revisit conditions, and implementation boundaries:
+  `docs/adr/0005-aws-organizations-governance-design.md`.
+- [ ] During the scheduled governance phase, convert the accepted design into
+  policy examples, runbooks, live-readiness evidence, and explicitly approved
+  implementation changes.
 
 ---
 

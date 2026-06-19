@@ -716,12 +716,15 @@ These are historical references, not the current delivery path.
 6. Complete the June-July exit items that are not repository implementation
    work: two 20-question practice blocks, wrong-answer logging, and separate
    Python/serverless tutorial evidence.
-7. Begin the IAM, Organizations, SCP, and central-governance phase only after
-   the tracker explicitly opens that phase.
+7. Begin live IAM, Organizations, SCP, and central-governance implementation
+   only after the tracker explicitly opens that phase.
 8. Use `docs/planning/domain-1-governance-preflight-20260618.md` as the
    repo-only bridge into Domain 1 governance. It documents the current account
    structure, target OU shape, permission-set candidates, SCP catalogue, and
    logging/security-service outline without authorizing live AWS changes.
+   Use `docs/adr/0005-aws-organizations-governance-design.md` as the accepted
+   Organizations governance design; it also does not authorize live AWS
+   changes.
 
 ## Historical Phase 17 Operating Constraints
 
