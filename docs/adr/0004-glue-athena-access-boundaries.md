@@ -63,19 +63,37 @@ or automation role must also receive an identity policy allowing
 `sts:AssumeRole` on this role ARN. Cross-account trust and console-wide list
 permissions remain outside this closure step.
 
-## Deployment Boundary
+## Alternatives Considered
 
-The Terraform configuration and local policy checks are complete, but no AWS
-IAM resource has been created or changed by this ADR. Before deployment:
+| Option | Decision | Why |
+|---|---|---|
+| Prefix-scope the existing Glue role and create a dedicated Athena query role | Accepted | Fits the current shared-bucket design, preserves the Glue service role, gives analysts a reusable bounded query boundary, and proves least privilege without a larger access-control migration. |
+| Keep broad whole-bucket Glue access | Rejected | Simpler operationally, but it lets Glue read/write/delete more data than the raw-to-curated flow requires and weakens the SAP-C02 least-privilege story. |
+| Let analysts or automation reuse the Glue service role for Athena queries | Rejected | Blurs service and human/query duties, exposes raw/source permissions unnecessarily, and makes auditing query access harder. |
+| Rely only on the Athena workgroup output location without an explicit query role | Rejected | Workgroup controls help with query settings but do not by themselves express curated-only S3 access, Glue catalog read-only scope, or raw-prefix denial. |
+| Introduce Lake Formation as the primary access-control boundary now | Deferred | Potentially useful later, but it would add governance scope and operational complexity beyond the current June-July closure. |
+| Create cross-account Athena access immediately | Rejected for now | Useful for future organizational analytics, but current verification is single-account and cross-account trust belongs in the later governance phase. |
+| Use one shared administrator role for Glue, Athena, and catalog changes | Rejected | Easier to configure, but fails separation of duties and would make future permission review less precise. |
 
-1. review a saved Terraform plan for the Glue policy update and new Athena
+## Deployment And Verification Boundary
+
+The original deployment boundary required:
+
+1. reviewing a saved Terraform plan for the Glue policy update and new Athena
    role;
-2. identify the approved principal or Identity Center permission set that may
-   assume the Athena role;
-3. obtain explicit approval for the IAM change;
-4. apply only the reviewed IAM delta; and
-5. run representative Glue crawler/job and Athena query tests, then capture
-   the effective role and result-location evidence.
+2. identifying the approved principal or Identity Center permission set that
+   may assume the Athena role;
+3. obtaining explicit approval for the IAM change;
+4. applying only the reviewed IAM delta; and
+5. running representative Glue crawler/job and Athena query tests, then
+   capturing the effective role and result-location evidence.
+
+That boundary was executed on 2026-06-15. The normal root Terraform plan was
+not applied because it contained unrelated changes outside the approval scope.
+The approved IAM-only targeted plan created the Athena query role and policy
+and updated the Glue S3 policy. Live verification then proved that Glue could
+crawl and transform data, Athena could query curated data, and the Athena role
+was denied raw-prefix list access.
 
 Rollback restores the previous Glue inline policy and removes the new Athena
 role only after confirming that no approved principal or automation depends on
@@ -97,6 +115,19 @@ solution under Domain 3.
 - New datasets outside the lakehouse database or prefixes require an explicit
   policy review rather than inheriting access automatically.
 - Live verification is complete for the approved Glue/Athena IAM boundary.
+- The chosen design adds policy detail and role-assumption steps, but that
+  complexity is intentional because it documents the service and analyst
+  boundaries required by the tracker.
+- Lake Formation, cross-account analytics, and Identity Center assignment
+  design remain future governance work rather than hidden assumptions in this
+  closure ADR.
+
+## Revisit Conditions
+
+Revisit this ADR if Lake Formation becomes the accepted governance layer,
+curated data is shared across accounts, new datasets require different catalog
+or S3 boundaries, a central analyst permission set is implemented through IAM
+Identity Center, or the shared-bucket decision in ADR 0001 changes.
 
 ## Implementation Artifacts
 

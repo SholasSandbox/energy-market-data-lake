@@ -63,6 +63,16 @@ Do not claim Terraform ownership of bucket-level controls while
 referenced-bucket arrangement is accepted temporarily, subject to the posture
 verification and ownership follow-up below.
 
+## Alternatives Considered
+
+| Option | Decision | Why |
+|---|---|---|
+| One shared private data bucket with `raw/` and `curated/` prefixes | Accepted | Matches the implemented platform, keeps cost and policy surface small, and is sufficient for one owner, one workload account, public data, and prefix-scoped IAM. |
+| Separate raw and curated buckets in the same account | Rejected for now | Adds bucket policies, lifecycle rules, logging decisions, Terraform/import work, and migration effort without a current ownership, compliance, recovery, or security requirement that prefixes cannot express. |
+| Separate ingestion and analytics accounts with separate buckets | Rejected for now | Stronger isolation, but materially larger than the current portfolio/lab scope and better reserved for a real multi-team or regulated boundary. |
+| Rebuild or rename the existing bucket to match a new naming ideal | Rejected | Would create unnecessary migration and evidence churn while the existing bucket name already fits the accepted naming pattern. |
+| Import the existing bucket into Terraform immediately | Deferred | Desirable for long-term ownership clarity, but bucket import and child-control reconciliation are separate operational changes and were not required to close the current architecture decision. |
+
 ## Why This Is Acceptable Now
 
 - The platform has one owner, one workload account, and a small portfolio/lab
@@ -172,8 +182,14 @@ from raw/curated terminology alone.
 - Add a dedicated Athena analyst/query policy with bounded results and catalog
   permissions.
 - Capture a current raw-to-curated-to-Athena evidence chain.
-- Revisit this ADR if account separation, regulation, team ownership, recovery,
-  or data-sharing requirements change.
+
+## Revisit Conditions
+
+Revisit this ADR if account separation, regulation, team ownership, recovery,
+data-sharing, Object Lock, cross-account sharing, KMS ownership, or replication
+requirements change. Also revisit it before claiming a production landing-zone
+posture, because the current single-bucket choice is intentionally scoped to
+the portfolio/lab platform.
 
 ## Evidence
 

@@ -46,6 +46,17 @@ Do not create a customer managed KMS key or change live encryption settings as
 part of this decision. Implementation requires both a promotion trigger and
 explicit approval for AWS changes.
 
+## Alternatives Considered
+
+| Option | Decision | Why |
+|---|---|---|
+| Retain SSE-S3 for lakehouse data, Athena results, dashboard artifacts, and default CloudWatch Logs encryption | Accepted | Fits the current public-data classification, single-account lab scope, and small budget while preserving encrypted-at-rest coverage. |
+| Promote all S3 and Athena storage to one customer managed SSE-KMS key now | Rejected for now | Adds key-policy, availability, cost, and lockout risk without a current sensitive-data, compliance, cross-account, or independent key-administration requirement. |
+| Use separate customer managed keys for raw, curated, Athena results, logs, and dashboard data now | Rejected | Provides finer separation but creates disproportionate operational overhead and cost for the current one-owner public-data platform. |
+| Use a future dedicated log key for centralized logging | Deferred | Correct target when central logging exists, but premature until the security/log archive boundary is designed. |
+| Use multi-Region KMS keys, CloudHSM custom key stores, imported key material, or external key stores | Rejected | These options solve specialized resilience, sovereignty, or external-control requirements that the current workload does not have. |
+| Use SSE-KMS for the public dashboard bucket | Rejected for now | Adds CloudFront/key-policy complexity to artifacts intended to be public-safe; restricted data should trigger a dashboard-boundary review first. |
+
 ## SSE-KMS Promotion Triggers
 
 Promote the private lakehouse boundary to SSE-KMS when at least one of these
@@ -169,8 +180,8 @@ enabled. S3 permissions remain separately scoped by prefix.
 The non-deploying policy template is stored at
 `docs/policies/kms-lakehouse-key-policy.example.json`. The named KMS
 administrator must exist before the template could be used. The Athena query
-role is now defined locally in Terraform under ADR 0004 but is not deployed.
-Any implementation must also attach least-privilege IAM policies to the listed
+role is defined, deployed, and live verified under ADR 0004. Any future SSE-KMS
+implementation must also attach least-privilege IAM policies to the listed
 roles; the key policy alone does not grant S3 data access.
 
 ## Workload Permission Matrix
@@ -273,11 +284,18 @@ solution design, and Domain 3 improvement of an existing solution.
 - Versioning, lifecycle protection, and bucket tags were implemented on
   2026-06-15 under ADR 0003.
 - Glue S3 access and dedicated Athena query access are now prefix-scoped in
-  local Terraform under `docs/adr/0004-glue-athena-access-boundaries.md`;
-  deployment and live service verification require separate approval.
+  Terraform and live verified under
+  `docs/adr/0004-glue-athena-access-boundaries.md`.
 - If an SSE-KMS trigger occurs, add Terraform variables and resources, policy
   tests, a cost estimate, `terraform plan` evidence, and an apply/rollback
   runbook before requesting deployment approval.
+
+## Revisit Conditions
+
+Revisit this ADR when data classification changes, cross-account access becomes
+real, a security/log archive account takes key ownership, compliance requires a
+customer managed key, KMS audit evidence becomes necessary, or the cost model
+changes enough that the operational benefit outweighs the added dependency.
 
 ## Design Artifacts
 

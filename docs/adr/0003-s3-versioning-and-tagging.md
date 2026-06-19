@@ -45,6 +45,18 @@ Add these bucket tags:
 the existing bucket. Change it to `terraform` only after an intentional import
 or ownership transfer.
 
+## Alternatives Considered
+
+| Option | Decision | Why |
+|---|---|---|
+| Enable versioning with lifecycle protection and approved governance tags | Accepted | Provides overwrite/delete recovery, cost controls for noncurrent versions, and ownership/cost attribution evidence. |
+| Leave versioning disabled | Rejected | Keeps storage cost lower, but leaves the raw/curated evidence path exposed to accidental overwrite or deletion. |
+| Enable versioning without noncurrent-version cleanup | Rejected | Improves recovery but creates uncontrolled storage growth, which conflicts with the lab cost-control posture. |
+| Use Object Lock or immutable retention | Rejected for now | Stronger protection, but unnecessary for public lab data and materially more complex to govern and reverse. |
+| Apply tags without enabling Billing Cost Allocation Tags | Rejected as incomplete | Useful for inventory, but insufficient for cost reporting until selected tag keys are activated in AWS Billing. |
+| Import the bucket and manage all controls in Terraform before any live change | Deferred | Desirable for ownership clarity, but would broaden the closure task into import/reconciliation work and delay the approved recovery/tagging remediation. |
+| Use different tag keys such as personal `Owner` or high-cardinality generated tags for Billing | Rejected for Billing activation | Noisier and less useful for cost allocation than stable low-cardinality governance keys. |
+
 ## Rationale
 
 Versioning provides recovery from accidental overwrite and deletion, which is
@@ -89,6 +101,13 @@ evidence and requires explicit approval.
 - Decide whether to import the existing bucket and child controls into the
   lakehouse Terraform root.
 - Monitor storage growth before extending the 30-day noncurrent-version window.
+
+## Revisit Conditions
+
+Revisit this ADR if storage growth from noncurrent versions becomes material,
+recovery requirements exceed 30 days, the bucket is imported into Terraform,
+data classification changes, Object Lock becomes a real audit requirement, or
+the account-level tagging standard changes during the governance phase.
 
 ## References
 
