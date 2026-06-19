@@ -385,10 +385,10 @@ AWS Organization
 | Management account rules documented | Design accepted | Control-plane account rules recorded in `docs/adr/0005-aws-organizations-governance-design.md`; implementation boundary remains future approval |
 | Workload account purpose defined | Design accepted | Lakehouse workload and sandbox account boundaries recorded in `docs/adr/0005-aws-organizations-governance-design.md` |
 | Security/log archive account design documented | Partial | Target security/log archive boundary recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed CloudTrail/log archive design and implementation remain open |
-| IAM Identity Center access model documented | Design accepted | Permission-set candidates and account targets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; no permission sets implemented |
-| Permission sets defined | Partial | Candidate permission sets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; final policies and assignments remain open |
-| Break-glass access model documented | Partial | Break-glass target recorded in `docs/adr/0005-aws-organizations-governance-design.md`; procedure, alerting, and review process remain open |
-| SCP catalogue drafted | Design accepted | Accepted SCP catalogue recorded in `docs/adr/0005-aws-organizations-governance-design.md`; no SCPs attached or tested |
+| IAM Identity Center access model documented | Design accepted | Permission-set candidates and account targets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; no permission sets implemented |
+| Permission sets defined | Design accepted | Permission-set matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; final AWS-managed/custom policy choice and assignments remain open |
+| Break-glass access model documented | Design accepted | Break-glass target recorded in ADR 0005 and procedure recorded in `docs/runbooks/break-glass-access-procedure.md`; live principal, alerting, and review implementation remain open |
+| SCP catalogue drafted | Design accepted | Accepted SCP catalogue recorded in ADR 0005; example policy files recorded in `docs/policies/scp/`; no SCPs attached or tested |
 | CloudTrail organization trail design documented | Partial | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention design and live enablement remain open |
 | AWS Config design documented | Partial | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; recorder scope, managed rules, cost controls, and live enablement remain open |
 | GuardDuty/Security Hub concept documented | Partial | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; delegated-admin and enablement decisions remain open |
@@ -408,6 +408,9 @@ AWS Organization
 | Deny leaving AWS Organization | Prevent governance bypass | Partial |
 
 Critical note: **SCPs do not grant permissions.** They define maximum allowed permissions. IAM policies still grant permissions.
+
+Example SCP files now exist in `docs/policies/scp/`, but no SCP is attached,
+tested, or authorized for live use.
 
 ---
 
@@ -530,11 +533,11 @@ Action:
 | Criterion | Status |
 |---|---|
 | Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met |
-| Domain 1 governance notes complete | Partially met: governance preflight and Organizations governance ADR are documented; detailed SCP policy examples, logging runbooks, and live-readiness evidence remain open |
+| Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, SCP examples, permission-set matrix, and break-glass procedure are documented; logging/security-service runbooks and live-readiness evidence remain open |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
-| IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, and SCP catalogue decisions are accepted in ADR 0005; policy examples, exception tests, rollback plans, and implementation evidence remain open |
+| IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; exception tests, assignment decisions, rollback plans, and implementation evidence remain open |
 | Wrong-answer log reviewed twice | Not met |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
@@ -649,9 +652,16 @@ phase plans from drifting apart again.
   ADR with explicit decisions, trade-offs, rejected alternatives, SAP-C02
   implications, revisit conditions, and implementation boundaries:
   `docs/adr/0005-aws-organizations-governance-design.md`.
+- [x] Create SCP policy examples for the accepted catalogue:
+  `docs/policies/scp/`.
+- [x] Create an IAM Identity Center permission-set matrix:
+  `docs/planning/identity-center-permission-set-matrix-20260619.md`.
+- [x] Document the break-glass access procedure:
+  `docs/runbooks/break-glass-access-procedure.md`.
+- [ ] In the next governance batch, document CloudTrail/log archive design, AWS
+  Config and GuardDuty design, and the Security Hub defer/adopt decision.
 - [ ] During the scheduled governance phase, convert the accepted design into
-  policy examples, runbooks, live-readiness evidence, and explicitly approved
-  implementation changes.
+  live-readiness evidence and explicitly approved implementation changes.
 
 ---
 

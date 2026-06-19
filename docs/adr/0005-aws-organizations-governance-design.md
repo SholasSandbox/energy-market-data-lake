@@ -188,9 +188,11 @@ Apply sequencing should be:
 
 ## Follow-Up Actions
 
-- Create policy example files for the accepted SCP catalogue.
-- Create a permission-set matrix with target accounts, personas, and access
-  level.
+- SCP policy example files are recorded in `docs/policies/scp/`.
+- The IAM Identity Center permission-set matrix is recorded in
+  `docs/planning/identity-center-permission-set-matrix-20260619.md`.
+- The break-glass procedure is recorded in
+  `docs/runbooks/break-glass-access-procedure.md`.
 - Create a CloudTrail and log archive design note, including bucket ownership,
   KMS posture, retention, and delete protection.
 - Create an AWS Config and GuardDuty design note with cost controls.

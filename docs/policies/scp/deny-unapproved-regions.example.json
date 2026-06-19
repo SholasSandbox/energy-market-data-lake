@@ -1,0 +1,35 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyActionsOutsideApprovedRegions",
+      "Effect": "Deny",
+      "NotAction": [
+        "a4b:*",
+        "acm:*",
+        "aws-marketplace:*",
+        "budgets:*",
+        "ce:*",
+        "cloudfront:*",
+        "iam:*",
+        "organizations:*",
+        "route53:*",
+        "route53domains:*",
+        "support:*",
+        "trustedadvisor:*",
+        "waf:*",
+        "waf-regional:*",
+        "wafv2:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": [
+            "eu-west-2",
+            "us-east-1"
+          ]
+        }
+      }
+    }
+  ]
+}
