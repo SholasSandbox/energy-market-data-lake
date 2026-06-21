@@ -712,10 +712,12 @@ These are historical references, not the current delivery path.
 4. Freeze new AI orchestration, dashboard expansion, DNS/ACM, and unrelated
    portfolio polish unless the tracker explicitly approves the work.
 5. Produce weekly study/build artifacts, practice-question results, and
-   wrong-answer entries alongside repository changes.
-6. Complete the June-July exit items that are not repository implementation
-   work: two 20-question practice blocks, wrong-answer logging, and separate
-   Python/serverless tutorial evidence.
+   wrong-answer entries alongside tracker updates and repository changes.
+6. Treat the first June-July exit items beyond repository implementation as
+   complete: two 20-question practice blocks, wrong-answer logging, and
+   separate Python/serverless tutorial evidence are recorded. Use the remaining
+   window for practice review and carry-forward Domain 2 notes, including
+   `docs/planning/domain-2-network-access-patterns-20260621.md`.
 7. Begin live IAM, Organizations, SCP, and central-governance implementation
    only after the tracker explicitly opens that phase.
 8. Use `docs/planning/domain-1-governance-preflight-20260618.md` as the

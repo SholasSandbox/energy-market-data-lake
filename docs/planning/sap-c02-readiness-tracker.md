@@ -97,8 +97,8 @@ architecture, including S3, Glue, Athena, Parquet, IAM, KMS, CloudTrail, AWS
 Config, cost controls, and Organizations/SCP guardrails.
 
 Source of truth: this repository, its README, its evidence files, and the
-lakehouse sections of this tracker. Its readiness closure is complete; the
-remaining June-July work is study cadence, practice evidence, tutorial evidence,
+lakehouse sections of this tracker. Its repo-side June-July closure milestone is
+complete; the remaining pre-governance work is study cadence, practice review,
 and carry-forward review before the scheduled governance phase.
 
 #### Scheduled AWS governance and multi-account work
@@ -192,7 +192,7 @@ for both workspaces.
 
 | Week starting | Target hours | Actual hours | Build hours | Study hours | Practice hours | Notes |
 |---|---:|---:|---:|---:|---:|---|
-| 2026-06-15 | 10–12 |  |  |  |  | Tutorial Lesson 26 idempotency evidence: 168 local tests passed; Glue/Athena IAM design |
+| 2026-06-15 | 10–12 | 20 | 6 | 10 | 4 | Tutorial Lesson 26 evidence: `/Users/[redacted-user]/Kiro-Workspace/handlers/learning-summary.md`; Glue/Athena IAM evidence: `docs/evidence/glue-athena-iam-live-verification-20260615.md`; practice blocks: Sections 8 and 9 below |
 | 2026-06-22 | 10–12 |  |  |  |  | Tutorial dependency and handler-boundary hardening + lakehouse IAM hardening |
 | 2026-06-29 | 10–12 |  |  |  |  | Serverless resilience + Glue/Athena IAM hardening |
 | 2026-07-06 | 10–12 |  |  |  |  | Tutorial evidence + lakehouse Domain 2 closure review |
@@ -429,21 +429,21 @@ tested, or authorized for live use.
 |---|---:|---|---|
 | VPC fundamentals | Medium | Yes | VPC/subnet/route table diagram |
 | Security groups vs NACLs | Medium | Yes | Comparison note |
-| VPC peering | Low | Yes | Use-case and limitation note |
-| Transit Gateway | Low | Yes | Hub-and-spoke diagram |
-| PrivateLink | Low | Yes | Comparison with peering/TGW |
+| VPC peering | Low | Yes | Use-case and limitation note; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
+| Transit Gateway | Low | Yes | Hub-and-spoke diagram; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
+| PrivateLink | Low | Yes | Comparison with peering/TGW; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | VPC endpoints | Medium | Yes | S3/DynamoDB endpoint lab or diagram |
 | NAT Gateway | Medium | Yes | Cost and routing note |
-| Direct Connect | Low | Yes | Hybrid connectivity decision table |
-| Site-to-Site VPN | Low | Yes | DX vs VPN comparison |
-| Route 53 Resolver | Low: missed in exercise 002 | Yes | Hybrid DNS diagram |
+| Direct Connect | Low | Yes | Hybrid connectivity decision table; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
+| Site-to-Site VPN | Low | Yes | DX vs VPN comparison; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
+| Route 53 Resolver | Low: missed in exercise 002 | Yes | Hybrid DNS diagram; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | Centralized inspection VPC | Low | Yes | Architecture sketch |
 
 ### Networking deliverables
 
 | Deliverable | Due | Status |
 |---|---|---|
-| VPC connectivity comparison matrix | 2026-08-31 | Not started |
+| VPC connectivity comparison matrix | 2026-08-31 | Partial: compact carry-forward note recorded in `docs/planning/domain-2-network-access-patterns-20260621.md`; full milestone matrix remains open |
 | Transit Gateway hub-and-spoke diagram | 2026-09-07 | Not started |
 | PrivateLink vs peering vs TGW decision table | 2026-09-07 | Not started |
 | Direct Connect vs VPN decision table | 2026-09-14 | Not started |
@@ -489,7 +489,7 @@ Start with small question blocks immediately. Full timed exams begin in late Oct
 
 | Date | Source | Mode | Score | Domain weakness | Action |
 |---|---|---|---:|---|---|
-| 2026-06-19 | SAP-C02 exercise 001: user-confirmed result | Untimed 20 questions | 20/20 | None identified | No wrong-answer logging required |
+| 2026-06-19 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/exercise-001.md` | Untimed 20 questions | 20/20 | None identified | User-confirmed 20/20; no wrong-answer logging required |
 | 2026-06-19 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-002-marking-and-revision-log.md` | Untimed 20 questions | 18/20 | Hybrid DNS; migration strategy selection | Wrong answers logged; drill Route 53 Resolver and rehost/MGN scenario wording |
 |  |  | Timed 30 questions |  |  |  |
 |  |  | Full timed exam |  |  |  |
@@ -581,7 +581,7 @@ Action:
 
 | Month | Main objective | Exit criteria |
 |---|---|---|
-| June–July | Python/serverless tutorial hardening + lakehouse readiness closure | Tutorial milestones evidenced separately; S3, Glue, Parquet, Athena, IAM, KMS decisions, and lakehouse closure evidence complete |
+| June–July | Python/serverless tutorial hardening + lakehouse readiness closure | Closeout complete: lakehouse code, documentation, diagrams, and evidence now agree with two 20-question practice blocks, wrong-answer logging, and separate tutorial evidence; remaining pre-governance work is carry-forward review |
 | August | IAM, Organizations, SCPs, logging, governance | OU/SCP/logging/IAM design complete |
 | September | Networking, hybrid connectivity, resilience | TGW/PrivateLink/DX/VPN/DR comparison artifacts complete |
 | October | Migration, modernization, and cost optimization | Migration and cost artifacts complete; first full practice exam; containers remain parked unless readiness is already on track and a short exception is approved |
@@ -624,11 +624,18 @@ phase plans from drifting apart again.
 
 ### Weekly progress control
 
-- [ ] Log actual, build, study, and practice hours for the current week.
-- [ ] Produce at least one required artifact for every study/build session.
+- [x] Log actual, build, study, and practice hours for the current week: see
+  the 2026-06-15 row in Weekly Hours Logged above.
+- [x] Produce at least one required artifact for every study/build session: see
+  `/Users/[redacted-user]/Kiro-Workspace/handlers/learning-summary.md`,
+  `docs/evidence/glue-athena-iam-live-verification-20260615.md`, and Sections 8
+  and 9 below.
 - [x] Run one practice-question block and record misses in the wrong-answer
   log.
-- [ ] Update changed checklist rows with an evidence link, not only a status.
+- [x] Update changed checklist rows with an evidence link, not only a status:
+  see the 2026-06-15 weekly hours row above, the External tutorial evidence
+  register, Sections 8 and 9 below, and
+  `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
 - [ ] Review hard deferrals before opening a new implementation branch.
 - [ ] Verify that any AWS-changing task has explicit approval and a cost/rollback
   boundary.
@@ -640,14 +647,21 @@ phase plans from drifting apart again.
   security, observability, cost, and resilience decisions:
   `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
 - [x] Complete at least two 20-question practice blocks and log all wrong
-  answers.
+  answers: see Sections 8 and 9 below,
+  `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/exercise-001.md`,
+  and
+  `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-002-marking-and-revision-log.md`.
 - [x] Record Python/serverless Lesson 26 idempotency evidence separately from
   lakehouse implementation evidence; 168 local tests passed and no AWS
-  resources were deployed.
+  resources were deployed: see the External tutorial evidence register above,
+  `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md`, and
+  `/Users/[redacted-user]/Kiro-Workspace/handlers/learning-summary.md`.
 - [x] Review Domain 2 weak areas and update the next four-week plan:
   `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
-- [ ] Change the June-July milestone to complete only when code, documentation,
-  diagrams, evidence, practice blocks, and separate tutorial evidence agree.
+- [x] Change the June-July milestone to complete only when code,
+  documentation, diagrams, evidence, practice blocks, and separate tutorial
+  evidence agree: see Section 12 above, `README.md`, `PLANS.md`, and
+  `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
 
 ### Domain 1 governance preflight
 

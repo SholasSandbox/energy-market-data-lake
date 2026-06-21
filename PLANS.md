@@ -57,11 +57,14 @@ governance design ADR accepted.
 4. Freeze new AI orchestration and dashboard feature work. Preserve the proven
    scheduled workflow and hosted demo through maintenance, observation, cost
    control, and explicit rollback decisions only.
-5. Begin the tracker operating cadence: weekly hours, small practice blocks,
-   wrong-answer logging, and evidence-backed tracker updates.
-6. Complete the June-July exit items that are not repository implementation
-   work: two 20-question practice blocks, wrong-answer logging, and separate
-   Python/serverless tutorial evidence.
+5. Continue the tracker operating cadence: weekly hours, ongoing study/practice
+   logging, wrong-answer review, and evidence-backed tracker updates.
+6. The first June-July exit items beyond repository implementation are now
+   complete: two 20-question practice blocks, wrong-answer logging, and
+   separate Python/serverless tutorial evidence are recorded. Use the remaining
+   window for practice review and carry-forward Domain 2 notes, including
+   `docs/planning/domain-2-network-access-patterns-20260621.md`, before the
+   2026-07-13 governance phase.
 7. Move from design into live IAM, Organizations, SCPs, and central governance
    implementation only after the June-July lakehouse closure gate is met and
    the tracker explicitly opens the governance phase.

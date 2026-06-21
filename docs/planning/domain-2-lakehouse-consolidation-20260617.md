@@ -58,22 +58,22 @@ new AWS changes, dashboard expansion, AI orchestration work, or container work.
 | Weak area | Why it matters for SAP-C02 | Next artifact |
 |---|---|---|
 | Resilience and DR selection | Domain 2 questions often require choosing the simplest reliable design under RTO, RPO, cost, and operational constraints. | RTO/RPO table and DR pattern matrix in the September resilience milestone |
-| Network access patterns | Data architecture questions often depend on choosing VPC endpoints, PrivateLink, peering, Transit Gateway, VPN, or Direct Connect correctly. | Networking comparison matrix before the September milestone |
+| Network access patterns | Data architecture questions often depend on choosing VPC endpoints, PrivateLink, peering, Transit Gateway, VPN, or Direct Connect correctly. | Compact carry-forward note in `docs/planning/domain-2-network-access-patterns-20260621.md`; fuller networking comparison matrix before the September milestone |
 | Terraform ownership of existing bucket controls | The current live bucket controls are evidenced, but ownership is split between manual controls and referenced Terraform inputs. | Bucket import or external-owner decision before production claims |
-| Practice-question calibration | The repository proves implementation knowledge, but exam readiness still needs timed scenario practice and wrong-answer review. | Two 20-question Domain 2 practice blocks with a wrong-answer log |
+| Practice-question calibration | The first two 20-question practice blocks and wrong-answer log are complete, but exam readiness still needs weak-area review and later timed scenario practice. | Carry-forward tracker review before the 2026-07-13 governance handoff |
 
 ## Four-Week Plan Update
 
 | Week | Focus | Artifact |
 |---|---|---|
-| 2026-06-17 to 2026-06-23 | Close repository-side Domain 2 consolidation and restart study cadence. | This consolidation note plus tracker update |
-| 2026-06-24 to 2026-06-30 | Run the first 20-question Domain 2 practice block and log missed questions. | Wrong-answer log entry |
-| 2026-07-01 to 2026-07-07 | Run the second 20-question Domain 2 practice block and review weak areas. | Wrong-answer log entry plus Domain 2 weak-area update |
+| 2026-06-17 to 2026-06-23 | Close repository-side Domain 2 consolidation, record the first two 20-question practice blocks, and restart study cadence. | This consolidation note, tracker update, and wrong-answer log entries |
+| 2026-06-24 to 2026-07-07 | Review weak areas from the completed blocks and keep study cadence moving. | Updated tracker notes, `docs/planning/domain-2-network-access-patterns-20260621.md`, and carry-forward review inputs |
 | 2026-07-08 to 2026-07-12 | Decide whether Domain 2 is ready to hand off to the July 13 governance phase. | Tracker review with open risks and carry-forward items |
 
 ## Exit Assessment
 
-The repository-side lakehouse closure is complete for June-July. The overall
-June-July programme milestone remains open until the practice blocks and any
-separate Python/serverless tutorial evidence are recorded without reusing
-lakehouse evidence as tutorial evidence.
+The repository-side lakehouse closure is complete for June-July, and the first
+two practice blocks plus separate Python/serverless tutorial evidence are now
+recorded without reusing lakehouse evidence as tutorial evidence. The remaining
+pre-governance work is Domain 2 carry-forward review, not additional lakehouse
+closure implementation.
