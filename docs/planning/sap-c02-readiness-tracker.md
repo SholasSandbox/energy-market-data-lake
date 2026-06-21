@@ -11,6 +11,7 @@
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
 **Last repository reconciliation:** 2026-06-18
 **Last practice evidence update:** 2026-06-19
+**Last tutorial evidence update:** 2026-06-21
 
 ---
 
@@ -191,7 +192,7 @@ for both workspaces.
 
 | Week starting | Target hours | Actual hours | Build hours | Study hours | Practice hours | Notes |
 |---|---:|---:|---:|---:|---:|---|
-| 2026-06-15 | 10–12 |  |  |  |  | Tutorial consolidation + Glue/Athena IAM design |
+| 2026-06-15 | 10–12 |  |  |  |  | Tutorial Lesson 26 idempotency evidence: 168 local tests passed; Glue/Athena IAM design |
 | 2026-06-22 | 10–12 |  |  |  |  | Tutorial dependency and handler-boundary hardening + lakehouse IAM hardening |
 | 2026-06-29 | 10–12 |  |  |  |  | Serverless resilience + Glue/Athena IAM hardening |
 | 2026-07-06 | 10–12 |  |  |  |  | Tutorial evidence + lakehouse Domain 2 closure review |
@@ -219,6 +220,12 @@ for both workspaces.
 | 2026-12-07 | 10–12 |  |  |  |  | Exam window |
 | 2026-12-14 | 10–12 |  |  |  |  | Final exam window |
 
+### External tutorial evidence register
+
+| Date | Workspace lesson | Status | SAP-C02 mapping | Evidence and boundary |
+|---|---|---|---|---|
+| 2026-06-21 | Python/serverless Lesson 26: idempotency and duplicate persistence protection | Completed locally | Domain 2 resilience; Domain 3 continuous improvement | `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; 168 tests passed; fake conditional-check exception injected at `persist_trade_status_record`; no AWS deployment; not lakehouse implementation evidence |
+
 ---
 
 ## 3. SAP-C02 Domain Coverage
@@ -228,8 +235,8 @@ Official SAP-C02 domains:
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
 | Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, selected Cost Allocation Tag activation, and governance preflight evidence exist; final OU design, SCPs, Identity Center, central logging, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, and two 20-question practice blocks are complete; tutorial evidence, practice review, and later networking/DR decisions remain open |
-| Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, and cost guardrails exist; systematic improvement notes and remaining hardening are open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, two 20-question practice blocks, and separate Lesson 26 idempotency tutorial evidence are complete; practice review and later networking/DR decisions remain open |
+| Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, cost guardrails, and separate Lesson 26 idempotency tutorial evidence exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Partial | Exercise 002 exposed a rehost-vs-refactor/MGN weak area; 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, and migration playbook artifacts remain open |
 
 ### Weekly domain focus
@@ -634,6 +641,9 @@ phase plans from drifting apart again.
   `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
 - [x] Complete at least two 20-question practice blocks and log all wrong
   answers.
+- [x] Record Python/serverless Lesson 26 idempotency evidence separately from
+  lakehouse implementation evidence; 168 local tests passed and no AWS
+  resources were deployed.
 - [x] Review Domain 2 weak areas and update the next four-week plan:
   `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
 - [ ] Change the June-July milestone to complete only when code, documentation,
