@@ -1,0 +1,9 @@
+{
+  "OrganizationalUnits": [
+    {
+      "Id": "ou-gbyf-zs0f26b5",
+      "Arn": "arn:aws:organizations::349687196588:ou/o-hmvgqmav88/ou-gbyf-zs0f26b5",
+      "Name": "Container Sandbox"
+    }
+  ]
+}

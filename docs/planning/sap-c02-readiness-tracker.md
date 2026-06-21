@@ -109,9 +109,13 @@ controls, and cost governance.
 
 This work supports both workspaces where relevant, but it is sequenced rather
 than maintained as a third simultaneous backlog. IAM, KMS, logging, and cost
-decisions needed for lakehouse closure may proceed now. The dedicated
+decisions needed for lakehouse closure may proceed now. The planned live-change
 Organizations/SCP phase begins on 2026-07-13 unless the tracker is explicitly
-changed.
+changed. Repo-only design artifacts for a later state may begin earlier once
+the prior state is complete and no architectural, design, structural, or
+sequencing blocker remains, and no explicit approval dependency is still open
+for a design decision that cannot be responsibly assumed or has not yet been
+recorded in an ADR or equivalent design artifact with explicit trade-offs.
 
 #### Parked work
 
@@ -387,18 +391,18 @@ AWS Organization
 
 | Item | Status | Evidence |
 |---|---|---|
-| AWS Organizations enabled | Verified | Management account and member accounts verified in `docs/evidence/cost-allocation-tag-activation-20260617.md` |
-| OU structure designed | Design accepted | Target OU model recorded in `docs/adr/0005-aws-organizations-governance-design.md`; no live OU changes approved |
+| AWS Organizations enabled | Verified | Management account and member accounts verified in `docs/evidence/cost-allocation-tag-activation-20260617.md`; prechange root/account/service-access inventory is recorded in `docs/evidence/domain1-governance-org-inventory-summary-20260621.md`; live OU creation and lakehouse account move are recorded in `docs/evidence/domain1-governance-lakehouse-workloads-ou-change-note-20260621.md` and `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md` |
+| OU structure designed | Partial | Target OU model recorded in `docs/adr/0005-aws-organizations-governance-design.md`; current-to-target placement decision recorded in `docs/planning/domain-1-ou-account-placement-decision-20260621.md`; live evidence now shows both `Container Sandbox` and `Lakehouse Workloads OU` exist, and the lakehouse account has been moved into `ou-gbyf-m6ppfmpq`; see `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md` |
 | Management account rules documented | Design accepted | Control-plane account rules recorded in `docs/adr/0005-aws-organizations-governance-design.md`; implementation boundary remains future approval |
 | Workload account purpose defined | Design accepted | Lakehouse workload and sandbox account boundaries recorded in `docs/adr/0005-aws-organizations-governance-design.md` |
-| Security/log archive account design documented | Partial | Target security/log archive boundary recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed CloudTrail/log archive design and implementation remain open |
+| Security/log archive account design documented | Partial | Target security/log archive boundary recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; future account creation and implementation remain open |
 | IAM Identity Center access model documented | Design accepted | Permission-set candidates and account targets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; no permission sets implemented |
 | Permission sets defined | Design accepted | Permission-set matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; final AWS-managed/custom policy choice and assignments remain open |
 | Break-glass access model documented | Design accepted | Break-glass target recorded in ADR 0005 and procedure recorded in `docs/runbooks/break-glass-access-procedure.md`; live principal, alerting, and review implementation remain open |
 | SCP catalogue drafted | Design accepted | Accepted SCP catalogue recorded in ADR 0005; example policy files recorded in `docs/policies/scp/`; no SCPs attached or tested |
-| CloudTrail organization trail design documented | Partial | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention design and live enablement remain open |
-| AWS Config design documented | Partial | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; recorder scope, managed rules, cost controls, and live enablement remain open |
-| GuardDuty/Security Hub concept documented | Partial | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; delegated-admin and enablement decisions remain open |
+| CloudTrail organization trail design documented | Partial | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention/delete-protection design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; live enablement remains open |
+| AWS Config design documented | Partial | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed recorder scope, aggregation, rule, and cost-control design recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; live enablement remains open |
+| GuardDuty/Security Hub concept documented | Partial | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed GuardDuty delegated-admin and cost-control design plus Security Hub defer/adopt decision recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; live enablement remains open |
 | Cost allocation tags defined | Verified | Common Terraform tags exist; selected Billing Cost Allocation Tags were activated from the Organizations management account on 2026-06-17 |
 | Budget alarms configured | Partial | A live `$1` managed-workflow AWS Budget with notifications is verified; broader workload/account budget design remains open |
 
@@ -540,7 +544,7 @@ Action:
 | Criterion | Status |
 |---|---|
 | Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met |
-| Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, SCP examples, permission-set matrix, and break-glass procedure are documented; logging/security-service runbooks and live-readiness evidence remain open |
+| Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, org inventory evidence, parent mapping, OU/account-placement decision, first approved live OU creation, approved lakehouse account move, SCP examples, permission-set matrix, break-glass procedure, logging/security-service design notes, and a governance live-readiness runbook are documented; broader read-only governance evidence and further approved implementation changes remain open |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
@@ -682,8 +686,29 @@ phase plans from drifting apart again.
   `docs/planning/identity-center-permission-set-matrix-20260619.md`.
 - [x] Document the break-glass access procedure:
   `docs/runbooks/break-glass-access-procedure.md`.
-- [ ] In the next governance batch, document CloudTrail/log archive design, AWS
-  Config and GuardDuty design, and the Security Hub defer/adopt decision.
+- [x] Document CloudTrail/log archive design:
+  `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`.
+- [x] Document AWS Config and GuardDuty design, and the Security Hub
+  defer/adopt decision:
+  `docs/planning/domain-1-config-guardduty-design-20260621.md`.
+- [x] Create a governance live-readiness runbook that turns the accepted design
+  into bounded change units, read-only evidence capture, rollback checkpoints,
+  and validation steps:
+  `docs/runbooks/domain-1-governance-live-readiness-runbook.md`.
+- [x] Capture the first read-only Organizations inventory evidence and record
+  the root/account/service-access state:
+  `docs/evidence/domain1-governance-org-inventory-summary-20260621.md`.
+- [x] Record the current-to-target OU/account-placement decision from that
+  inventory evidence:
+  `docs/planning/domain-1-ou-account-placement-decision-20260621.md`.
+- [x] Under explicit approval, create `Lakehouse Workloads OU` and record the
+  change boundary, prechange state, rollback, validation, and postchange
+  evidence:
+  `docs/evidence/domain1-governance-lakehouse-workloads-ou-change-note-20260621.md`.
+- [x] Under separate explicit approval, move `lakehouse-workload-account` from root into
+  `ou-gbyf-m6ppfmpq` and record the change boundary, propagation nuance,
+  rollback, validation, and postchange evidence:
+  `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md`.
 - [ ] During the scheduled governance phase, convert the accepted design into
   live-readiness evidence and explicitly approved implementation changes.
 

@@ -44,7 +44,7 @@ AWS Organization
 |-- Security OU
 |   `-- Future security/log archive account
 |
-|-- Workloads OU
+|-- Lakehouse Workloads OU
 |   `-- Energy Data Lakehouse workload account
 |
 |-- Sandbox OU
@@ -57,6 +57,27 @@ AWS Organization
 Use the management account only as the control plane. Keep lakehouse runtime
 services in the workload member account. Keep the container-lab account in
 separate sandbox scope.
+
+For the current organization shape, `Lakehouse Workloads OU` is the preferred
+name over the more generic `Workloads OU`.
+
+Reason:
+
+- it is more descriptive of the single active workload boundary that exists now;
+- it aligns directly with the Energy Data Lakehouse case study, which is the
+  primary applied architecture in this repository;
+- it is still broad enough to hold closely related lakehouse and analytics
+  runtime services without implying a much larger enterprise taxonomy.
+
+The first two approved workload-boundary changes are now recorded separately:
+
+1. create `Lakehouse Workloads OU`;
+2. move `lakehouse-workload-account` into that OU from the root.
+
+Evidence:
+
+- `docs/evidence/domain1-governance-lakehouse-workloads-ou-change-note-20260621.md`
+- `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md`
 
 Use IAM Identity Center as the preferred human-access model, with permission
 sets aligned to administrative duty boundaries:
@@ -112,6 +133,7 @@ governance tag set:
 | Option | Decision | Why |
 | --- | --- | --- |
 | Small landing-zone-shaped organization with management, security, workloads, sandbox, and suspended boundaries | Accepted | Gives SAP-C02-relevant account separation and guardrail reasoning while staying small enough for a personal lab organization. |
+| Use the generic name `Workloads OU` for the lakehouse workload boundary | Rejected for now | Understandable, but too vague for the current three-account organization; `Lakehouse Workloads OU` better explains what actually lives there today. |
 | Keep all accounts under root with no OU model | Rejected | Simple, but fails to demonstrate OU-based governance, scoped SCP attachment, account lifecycle thinking, and professional landing-zone reasoning. |
 | Deploy AWS Control Tower immediately | Rejected for now | Strong managed landing-zone option, but too broad for the current repo step and would introduce live account, guardrail, and lifecycle changes before design review. |
 | Create many environment-specific OUs such as Dev, Test, Prod, Shared Services, Network, and Data | Rejected for now | More enterprise-like, but over-engineered for two active member accounts and would blur learning goals with unnecessary account taxonomy. |
@@ -131,6 +153,11 @@ places to reason about account purpose, blast radius, SCP scope, logging, and
 cost ownership. It is lighter than Control Tower because it avoids a live
 platform rollout before the repo has finalized policies, rollback paths, and
 evidence requirements.
+
+Naming the workload OU `Lakehouse Workloads OU` adds a little specificity
+compared with the shorter `Workloads OU`, but that is a worthwhile trade-off
+for the current repo because it makes the intended lakehouse boundary explicit
+and easier to explain in review, exam, and portfolio contexts.
 
 The main cost of the design is additional documentation and policy discipline:
 each OU, permission set, and SCP needs an owner, target, exception model, test
@@ -193,9 +220,25 @@ Apply sequencing should be:
   `docs/planning/identity-center-permission-set-matrix-20260619.md`.
 - The break-glass procedure is recorded in
   `docs/runbooks/break-glass-access-procedure.md`.
-- Create a CloudTrail and log archive design note, including bucket ownership,
-  KMS posture, retention, and delete protection.
-- Create an AWS Config and GuardDuty design note with cost controls.
+- CloudTrail and log archive design is now recorded in
+  `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`, covering
+  bucket ownership, KMS posture, retention, and delete protection.
+- AWS Config and GuardDuty design with cost controls, plus the current Security
+  Hub defer/adopt decision, is now recorded in
+  `docs/planning/domain-1-config-guardduty-design-20260621.md`.
+- The governance live-readiness runbook that operationalizes this ADR's
+  per-change boundary and evidence requirements is now recorded in
+  `docs/runbooks/domain-1-governance-live-readiness-runbook.md`.
+- The first read-only organization inventory evidence is now recorded in
+  `docs/evidence/domain1-governance-org-inventory-summary-20260621.md`.
+- The current-to-target OU and account-placement decision is now recorded in
+  `docs/planning/domain-1-ou-account-placement-decision-20260621.md`.
+- The first approved live Organizations change, creating `Lakehouse Workloads
+  OU`, is now recorded in
+  `docs/evidence/domain1-governance-lakehouse-workloads-ou-change-note-20260621.md`.
+- The second approved live Organizations change, moving `lakehouse-workload-account` into
+  `Lakehouse Workloads OU`, is now recorded in
+  `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md`.
 - Define account-level budget thresholds for management, lakehouse workload,
   and sandbox accounts.
 - Update the tracker only as design artifacts are created; keep implementation

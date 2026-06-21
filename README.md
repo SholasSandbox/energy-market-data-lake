@@ -719,14 +719,21 @@ These are historical references, not the current delivery path.
    window for practice review and carry-forward Domain 2 notes, including
    `docs/planning/domain-2-network-access-patterns-20260621.md`.
 7. Begin live IAM, Organizations, SCP, and central-governance implementation
-   only after the tracker explicitly opens that phase.
-8. Use `docs/planning/domain-1-governance-preflight-20260618.md` as the
-   repo-only bridge into Domain 1 governance. It documents the current account
-   structure, target OU shape, permission-set candidates, SCP catalogue, and
-   logging/security-service outline without authorizing live AWS changes.
-   Use `docs/adr/0005-aws-organizations-governance-design.md` as the accepted
-   Organizations governance design; it also does not authorize live AWS
-   changes.
+   only after the tracker explicitly opens that phase or a smaller live change
+   is explicitly approved.
+8. Repo-only governance prep may continue earlier once the prior state is
+   complete and no architectural, design, structural, or sequencing blocker
+   remains, and no explicit approval dependency is still open for a design
+   decision that cannot be responsibly assumed or has not yet been recorded in
+   an ADR or equivalent design artifact with explicit trade-offs. Use
+   `docs/planning/domain-1-governance-preflight-20260618.md` as
+   the repo-only bridge into Domain 1 governance. It documents the current
+   account structure, target OU shape, permission-set candidates, SCP
+   catalogue, and logging/security-service outline without authorizing live AWS
+   changes. Use `docs/adr/0005-aws-organizations-governance-design.md` as the
+   accepted Organizations governance design and
+   `docs/runbooks/domain-1-governance-live-readiness-runbook.md` as the
+   implementation-readiness bridge; neither authorizes live AWS changes.
 
 ## Historical Phase 17 Operating Constraints
 

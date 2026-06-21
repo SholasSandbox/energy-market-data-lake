@@ -62,6 +62,9 @@ The completed Cost Allocation Tag activation evidence verifies the management
 account and member accounts:
 `docs/evidence/cost-allocation-tag-activation-20260617.md`.
 
+The later read-only organization inventory evidence is now recorded in
+`docs/evidence/domain1-governance-org-inventory-summary-20260621.md`.
+
 ## Proposed Target Governance Structure
 
 The target structure should be simple enough for a lab organization but shaped
@@ -79,7 +82,7 @@ AWS Organization
 ├── Security OU
 │   └── Future security/log archive account
 │
-├── Workloads OU
+├── Lakehouse Workloads OU
 │   └── Energy Data Lakehouse workload account
 │
 ├── Sandbox OU
@@ -92,6 +95,10 @@ AWS Organization
 This is a proposed design, not a live Organizations change. The current account
 placement should not be changed until the governance phase explicitly approves
 OU changes, rollback, and cost/safety boundaries.
+
+The current-to-target placement decision based on later organization inventory
+evidence is now recorded in
+`docs/planning/domain-1-ou-account-placement-decision-20260621.md`.
 
 ## Management Account Rules
 
@@ -171,10 +178,10 @@ has service exceptions, test cases, rollback guidance, and a target OU.
 
 | Control | Preflight decision | Open work |
 |---|---|---|
-| CloudTrail organization trail | Design one organization trail with management events, log-file validation, and a central log archive target. | Decide log archive account, bucket naming, KMS posture, retention, and protected-delete controls. |
-| AWS Config aggregation | Use organization aggregation to support account and region visibility. | Decide recorder scope, aggregator account, managed rules, and cost controls. |
-| GuardDuty | Treat as a security-service candidate for organization-level finding visibility. | Decide delegated administrator and member coverage. |
-| Security Hub | Treat as a later aggregation and standards-review layer. | Decide standards, delegated admin, cost controls, and whether it is needed before the exam. |
+| CloudTrail organization trail | Design one organization trail with management events, log-file validation, and a central log archive target. Detailed design is now recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`. | Live account creation, final bucket/prefix names, exact bucket/KMS policies, retention implementation, and validation evidence remain open. |
+| AWS Config aggregation | Use organization aggregation to support account and region visibility. Detailed design is now recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`. | Live recorder enablement, final exclusions, final ruleset, and validation evidence remain open. |
+| GuardDuty | Treat as a security-service candidate for organization-level finding visibility. Detailed delegated-admin and cost-control design is now recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`. | Final Region set, optional protection-plan choices, and live enablement evidence remain open. |
+| Security Hub | Treat as a later aggregation and standards-review layer. Current decision is to defer broad adoption until Config and GuardDuty scope is settled; see `docs/planning/domain-1-config-guardduty-design-20260621.md`. | Revisit delegated-admin, standards, and cost posture after Config and GuardDuty implementation scope is finalized. |
 
 ## Budget And Tagging Governance
 
@@ -210,4 +217,8 @@ This preflight does not:
 Rows touched by this preflight should move at most to `Partial`, because the
 artifact creates planning evidence but does not complete implementation or live
 verification. Full completion belongs to the scheduled Domain 1 governance
-phase unless the tracker is explicitly updated.
+phase unless the tracker is explicitly updated. The next repo-only bridge
+artifact for that phase is
+`docs/runbooks/domain-1-governance-live-readiness-runbook.md`, which packages
+the per-change evidence, rollback, validation, and approval boundary without
+authorizing live AWS changes.

@@ -1,0 +1,10 @@
+{
+  "Roots": [
+    {
+      "Id": "r-gbyf",
+      "Arn": "arn:aws:organizations::349687196588:root/o-hmvgqmav88/r-gbyf",
+      "Name": "Root",
+      "PolicyTypes": []
+    }
+  ]
+}

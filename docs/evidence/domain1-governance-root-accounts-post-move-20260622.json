@@ -1,0 +1,14 @@
+{
+  "Accounts": [
+    {
+      "Id": "349687196588",
+      "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/349687196588",
+      "Email": "[redacted-email]",
+      "Name": "management-account-alias",
+      "Status": "ACTIVE",
+      "State": "ACTIVE",
+      "JoinedMethod": "INVITED",
+      "JoinedTimestamp": "2026-05-08T15:54:26.223000+01:00"
+    }
+  ]
+}

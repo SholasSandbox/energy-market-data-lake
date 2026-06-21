@@ -1,0 +1,8 @@
+{
+  "EnabledServicePrincipals": [
+    {
+      "ServicePrincipal": "sso.amazonaws.com",
+      "DateEnabled": "2026-05-08T15:54:29.643000+01:00"
+    }
+  ]
+}

@@ -67,13 +67,19 @@ governance design ADR accepted.
    2026-07-13 governance phase.
 7. Move from design into live IAM, Organizations, SCPs, and central governance
    implementation only after the June-July lakehouse closure gate is met and
-   the tracker explicitly opens the governance phase.
-8. Use `docs/planning/domain-1-governance-preflight-20260618.md` as the
-   repo-only bridge into that governance phase and
-   `docs/adr/0005-aws-organizations-governance-design.md` as the accepted
-   Organizations governance design. These artifacts do not authorize live AWS
-   Organizations, SCP, Identity Center, CloudTrail, AWS Config, or
-   security-service changes.
+   the tracker explicitly opens the governance phase or a smaller live change is
+   explicitly approved.
+8. Repo-only governance prep may continue earlier once the prior state is
+   complete and no architectural, design, structural, or sequencing blocker
+   remains, and no explicit approval dependency is still open for a design
+   decision that cannot be responsibly assumed or has not yet been recorded in
+   an ADR or equivalent design artifact with explicit trade-offs. Use
+   `docs/planning/domain-1-governance-preflight-20260618.md`,
+   `docs/adr/0005-aws-organizations-governance-design.md`, and
+   `docs/runbooks/domain-1-governance-live-readiness-runbook.md` as the
+   repo-only bridge into that governance phase. These artifacts do not
+   authorize live AWS Organizations, SCP, Identity Center, CloudTrail,
+   AWS Config, or security-service changes.
 
 The detailed Phase 1-17 material below is a historical delivery record and
 implementation reference. It no longer authorizes continuation of deferred AI
