@@ -58,6 +58,21 @@ Use the management account only as the control plane. Keep lakehouse runtime
 services in the workload member account. Keep the container-lab account in
 separate sandbox scope.
 
+Although AWS Organizations allows the management account to be placed anywhere
+in the organization hierarchy, this design intentionally keeps the management
+account attached directly to the root.
+
+Reason:
+
+- it matches the standard small-landing-zone control-plane pattern used in AWS
+  guidance and commonly seen in SAP-C02-style designs;
+- it keeps the payer and organization-administration account visually distinct
+  from policy-target OUs that primarily exist for member accounts;
+- it avoids implying that OU placement would give meaningful SCP restriction on
+  the management account, which it does not;
+- it keeps the management account easy to explain as a special-case root-level
+  control plane rather than an ordinary workload-bearing account.
+
 For the current organization shape, `Lakehouse Workloads OU` is the preferred
 name over the more generic `Workloads OU`.
 
@@ -154,6 +169,13 @@ cost ownership. It is lighter than Control Tower because it avoids a live
 platform rollout before the repo has finalized policies, rollback paths, and
 evidence requirements.
 
+Keeping the management account at the root is slightly less symmetrical than
+placing every account inside an OU, but it is a worthwhile trade-off here. The
+management account is a control-plane exception, not a normal workload target,
+and keeping it at the root makes that distinction clearer while avoiding false
+confidence that OU-level SCP structure would constrain it like a member
+account.
+
 Naming the workload OU `Lakehouse Workloads OU` adds a little specificity
 compared with the shorter `Workloads OU`, but that is a worthwhile trade-off
 for the current repo because it makes the intended lakehouse boundary explicit
@@ -239,6 +261,18 @@ Apply sequencing should be:
 - The second approved live Organizations change, moving `lakehouse-workload-account` into
   `Lakehouse Workloads OU`, is now recorded in
   `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md`.
+- The first bounded OU-targeted SCP change note, choosing
+  `DenyLeavingOrganization` ahead of a root-user restriction because it has the
+  cleaner blast radius and lower recovery-path risk, is now recorded in
+  `docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`.
+- The first live OU-targeted SCP attachment attempt was rolled back after
+  `AttachPolicy` returned `PolicyTypeNotEnabledException`, which exposed a
+  separate root-level policy-type enablement prerequisite before OU-targeted
+  SCP rollout can begin.
+- That prerequisite has now been resolved by enabling
+  `SERVICE_CONTROL_POLICY` for root `r-gbyf`, and the retried
+  `DenyLeavingOrganization-LakehouseWorkloads` attachment to
+  `Lakehouse Workloads OU` has now succeeded under separate change evidence.
 - Define account-level budget thresholds for management, lakehouse workload,
   and sandbox accounts.
 - Update the tracker only as design artifacts are created; keep implementation

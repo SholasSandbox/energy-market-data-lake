@@ -1,0 +1,13 @@
+{
+    "Policy": {
+        "PolicySummary": {
+            "Id": "p-4stxl0u2",
+            "Arn": "arn:aws:organizations::349687196588:policy/o-hmvgqmav88/service_control_policy/p-4stxl0u2",
+            "Name": "DenyLeavingOrganization-LakehouseWorkloads",
+            "Description": "Prevent member accounts in Lakehouse Workloads OU from leaving the organization",
+            "Type": "SERVICE_CONTROL_POLICY",
+            "AwsManaged": false
+        },
+        "Content": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"DenyLeavingOrganization\",\n      \"Effect\": \"Deny\",\n      \"Action\": [\n        \"organizations:LeaveOrganization\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+    }
+}

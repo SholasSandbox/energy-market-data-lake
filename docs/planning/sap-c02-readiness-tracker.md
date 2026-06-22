@@ -399,7 +399,7 @@ AWS Organization
 | IAM Identity Center access model documented | Design accepted | Permission-set candidates and account targets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; no permission sets implemented |
 | Permission sets defined | Design accepted | Permission-set matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; final AWS-managed/custom policy choice and assignments remain open |
 | Break-glass access model documented | Design accepted | Break-glass target recorded in ADR 0005 and procedure recorded in `docs/runbooks/break-glass-access-procedure.md`; live principal, alerting, and review implementation remain open |
-| SCP catalogue drafted | Design accepted | Accepted SCP catalogue recorded in ADR 0005; example policy files recorded in `docs/policies/scp/`; no SCPs attached or tested |
+| SCP catalogue drafted | Partial live evidence | Accepted SCP catalogue recorded in ADR 0005; example policy files recorded in `docs/policies/scp/`; the first live OU-targeted `DenyLeavingOrganization` attempt, rollback, root policy-type enablement, and successful retry are recorded in `docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`, `docs/evidence/domain1-governance-enable-scp-root-change-note-20260622.md`, and `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md` |
 | CloudTrail organization trail design documented | Partial | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention/delete-protection design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; live enablement remains open |
 | AWS Config design documented | Partial | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed recorder scope, aggregation, rule, and cost-control design recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; live enablement remains open |
 | GuardDuty/Security Hub concept documented | Partial | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed GuardDuty delegated-admin and cost-control design plus Security Hub defer/adopt decision recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; live enablement remains open |
@@ -416,12 +416,19 @@ AWS Organization
 | Deny unapproved regions | Cost/compliance control | Partial |
 | Deny root-user actions except emergencies | Reduce blast radius | Partial |
 | Require encryption where feasible | Improve compliance posture | Partial |
-| Deny leaving AWS Organization | Prevent governance bypass | Partial |
+| Deny leaving AWS Organization | Prevent governance bypass | Live for `Lakehouse Workloads OU` |
 
 Critical note: **SCPs do not grant permissions.** They define maximum allowed permissions. IAM policies still grant permissions.
 
-Example SCP files now exist in `docs/policies/scp/`, but no SCP is attached,
-tested, or authorized for live use.
+Example SCP files now exist in `docs/policies/scp/`. The first bounded
+OU-targeted SCP change note records the initial failed attach attempt and
+rollback, the root-level policy-type enablement change note records how the
+structural blocker was resolved, and the retry change note records the
+successful attach to `Lakehouse Workloads OU`:
+`docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`,
+`docs/evidence/domain1-governance-enable-scp-root-change-note-20260622.md`,
+and
+`docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md`.
 
 ---
 
@@ -544,11 +551,11 @@ Action:
 | Criterion | Status |
 |---|---|
 | Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met |
-| Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, org inventory evidence, parent mapping, OU/account-placement decision, first approved live OU creation, approved lakehouse account move, SCP examples, permission-set matrix, break-glass procedure, logging/security-service design notes, and a governance live-readiness runbook are documented; broader read-only governance evidence and further approved implementation changes remain open |
+| Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, org inventory evidence, parent mapping, OU/account-placement decision, first approved live OU creation, approved lakehouse account move, SCP examples, first bounded OU-targeted SCP attempt and rollback evidence, root `SERVICE_CONTROL_POLICY` enablement evidence, first successful OU-targeted SCP attachment evidence, permission-set matrix, break-glass procedure, logging/security-service design notes, and a governance live-readiness runbook are documented; further approved implementation changes remain open |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
-| IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; exception tests, assignment decisions, rollback plans, and implementation evidence remain open |
+| IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; root `SERVICE_CONTROL_POLICY` is now enabled and `DenyLeavingOrganization` is live for `Lakehouse Workloads OU`, but exception tests, assignment decisions, broader rollback planning, and additional implementation evidence remain open |
 | Wrong-answer log reviewed twice | Not met |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
@@ -709,6 +716,21 @@ phase plans from drifting apart again.
   `ou-gbyf-m6ppfmpq` and record the change boundary, propagation nuance,
   rollback, validation, and postchange evidence:
   `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md`.
+- [x] Draft the first bounded OU-targeted SCP change note for
+  `Lakehouse Workloads OU`, using `DenyLeavingOrganization` as the narrowest
+  first guardrail candidate:
+  `docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`.
+- [x] Attempt the first bounded OU-targeted SCP live change and record the
+  blocker, error evidence, and rollback cleanup when `AttachPolicy` fails
+  because root `r-gbyf` is not yet ready for SCP attachment:
+  `docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`.
+- [x] Under separate explicit approval, enable `SERVICE_CONTROL_POLICY` for
+  root `r-gbyf`, validate that the root now exposes the enabled policy type,
+  and record that prerequisite change:
+  `docs/evidence/domain1-governance-enable-scp-root-change-note-20260622.md`.
+- [x] Retry the OU-targeted `DenyLeavingOrganization` attach after root
+  enablement is validated and record the successful policy attachment:
+  `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md`.
 - [ ] During the scheduled governance phase, convert the accepted design into
   live-readiness evidence and explicitly approved implementation changes.
 

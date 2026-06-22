@@ -1,0 +1,1 @@
+aws: [ERROR]: An error occurred (PolicyTypeNotEnabledException) when calling the AttachPolicy operation: This operation can be performed only for enabled policy types.
