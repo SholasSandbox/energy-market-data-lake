@@ -414,7 +414,7 @@ AWS Organization
 | Deny deleting log buckets | Protect log archive | Partial |
 | Deny public S3 exposure | Reduce data leakage risk | Partial |
 | Deny unapproved regions | Cost/compliance control | Partial |
-| Deny root-user actions except emergencies | Reduce blast radius | Partial |
+| Deny root-user actions except emergencies | Reduce blast radius | Prepared; blocked on break-glass live readiness |
 | Require encryption where feasible | Improve compliance posture | Partial |
 | Deny leaving AWS Organization | Prevent governance bypass | Live for `Lakehouse Workloads OU` |
 
@@ -429,6 +429,10 @@ successful attach to `Lakehouse Workloads OU`:
 `docs/evidence/domain1-governance-enable-scp-root-change-note-20260622.md`,
 and
 `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md`.
+The next narrow SCP candidate, `deny-root-user-actions.example.json`, is now
+recorded as prepared but blocked pending break-glass live-readiness and test
+preconditions:
+`docs/evidence/domain1-governance-deny-root-user-actions-change-note-20260622.md`.
 
 ---
 
@@ -731,6 +735,14 @@ phase plans from drifting apart again.
 - [x] Retry the OU-targeted `DenyLeavingOrganization` attach after root
   enablement is validated and record the successful policy attachment:
   `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md`.
+- [x] Record the next narrow root-user emergency-only SCP as the follow-on
+  candidate for `Lakehouse Workloads OU`, and capture the specific blocker that
+  prevents safe live attachment today:
+  `docs/evidence/domain1-governance-deny-root-user-actions-change-note-20260622.md`.
+- [ ] Before any live root-user emergency-only SCP attachment, define and test
+  the break-glass live prerequisites: emergency owner, notification path,
+  evidence location, credential storage/recovery location, and post-use access
+  reduction path.
 - [ ] During the scheduled governance phase, convert the accepted design into
   live-readiness evidence and explicitly approved implementation changes.
 
