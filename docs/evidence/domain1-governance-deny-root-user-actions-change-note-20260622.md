@@ -7,7 +7,7 @@
 Prepared as the next bounded SCP change candidate.
 
 Live attachment was **not** executed from this note because the required
-break-glass live-readiness prerequisites are still incomplete.
+break-glass live-readiness checks are not yet fully evidenced.
 
 ## Target Account And OU
 
@@ -30,10 +30,23 @@ Fresh 2026-06-22 read-only evidence shows:
 Break-glass design state:
 
 - the break-glass procedure exists and defines the target emergency model;
-- however, the live-ready prerequisites listed in that runbook are still open,
-  including emergency owner, notification recipients, evidence location,
-  credential storage and recovery location outside the repository, and the
-  post-use reduction path;
+- the live values are now defined as:
+  emergency owner `[redacted-email]`,
+  primary emergency contact `[redacted-email]`,
+  emergency email notifications to both mailboxes,
+  emergency SMS to `[redacted-phone]`,
+  Google Password Manager as the primary cross-platform recovery store,
+  an out-of-band backup requirement outside the repository and the primary
+  machine path,
+  the evidence location
+  `docs/evidence/domain1-governance-break-glass-usage-YYYYMMDD.md`,
+  workload-account-first scope for the current OU-targeted guardrail,
+  and a defined post-use reduction path;
+- the remaining live-readiness checks are now narrower:
+  confirm MFA on the relevant emergency principals,
+  generate and store the out-of-band backup material,
+  confirm notification reachability,
+  and record a light procedural validation;
 - the SCP policy README also states that
   `deny-root-user-actions.example.json` should be attached only after the
   emergency root-use process is documented and tested.
@@ -151,8 +164,8 @@ aws organizations list-policies-for-target \
 Blocking condition:
 
 - live attachment is not yet responsible because the emergency root-use process
-  is documented conceptually but not yet made live-ready and tested for this
-  repository context.
+  now has defined live values, but the remaining MFA, out-of-band backup, and
+  procedural test checks are not yet evidenced for this repository context.
 
 ## Cost Impact
 
@@ -172,13 +185,15 @@ Blocking condition:
 
 The next narrow SCP candidate is confirmed as the root-user emergency-only
 guardrail for `Lakehouse Workloads OU`, but live execution is blocked by
-missing break-glass live-readiness prerequisites.
+remaining break-glass live-readiness evidence.
 
 Current interpretation:
 
 - this is still the right next SCP in sequence after
   `DenyLeavingOrganization`;
 - the blocker is not OU structure or SCP mechanics;
-- the blocker is specifically the missing live owner, notification, evidence,
-  recovery, and testing posture required before a root-user restriction can be
-  attached responsibly.
+- the blocker is now narrower than before:
+  the owner, contact, notification, storage, evidence, scope, and reduction
+  values are defined, but MFA confirmation, out-of-band backup generation, and
+  procedural validation are still required before a root-user restriction can
+  be attached responsibly.

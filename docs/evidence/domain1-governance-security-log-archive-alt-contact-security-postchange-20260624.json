@@ -1,0 +1,9 @@
+{
+    "AlternateContact": {
+        "AlternateContactType": "SECURITY",
+        "EmailAddress": "[redacted-email]",
+        "Name": "Security Log Archive",
+        "PhoneNumber": "[redacted-phone]",
+        "Title": "Security Contact"
+    }
+}

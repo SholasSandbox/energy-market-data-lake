@@ -23,6 +23,26 @@ This note is an early design artifact created under explicit user approval
 before the scheduled 2026-07-13 governance phase. It does not pull the tracker
 phase forward, authorize AWS changes, or approve Terraform work.
 
+## Status Note
+
+The live organization state has since advanced beyond the original 2026-06-21
+design baseline:
+
+- `Security OU` now exists live;
+- the dedicated `Security Log Archive` account `955659429518` now exists live;
+- `account.amazonaws.com` trusted access and alternate contacts are now set for
+  that account;
+- the new account now sits in `Security OU`;
+- the dedicated log-archive bucket and customer-managed KMS key boundary now
+  also exist live;
+- `cloudtrail.amazonaws.com` trusted access is now enabled and the
+  management-account organization trail is now live.
+
+This note still records the accepted design intent. The remaining open logging
+work is now later retention refinement plus the downstream AWS Config and
+GuardDuty decisions, not account-boundary creation, storage-boundary bring-up,
+or organization-trail enablement.
+
 ## Confirmed Alignment
 
 This note supports the tracker because it advances:
@@ -43,7 +63,7 @@ This note supports the tracker because it advances:
 | `management-account-alias` | AWS Organizations management account | Owns organization control-plane decisions and should create the organization trail unless a later delegated-administrator design is explicitly adopted. |
 | `lakehouse-workload-account` | Energy Data Lakehouse workload account | Produces workload events that should flow into the centralized organization trail. |
 | `containers-lab.com` | Sandbox member account | Remains separate from lakehouse evidence, but its control-plane events should still be covered by the organization trail. |
-| Future security/log archive account | Not yet created | Target owner for the dedicated log archive bucket, KMS key, and later read-only security operations boundary. |
+| `Security Log Archive` | Dedicated member account in `Security OU` | Target owner for the dedicated log archive bucket, KMS key, and later read-only security operations boundary. |
 
 ## Design Decisions
 
@@ -228,12 +248,10 @@ This note does not complete implementation. The following remain open:
 - use `docs/runbooks/domain-1-governance-live-readiness-runbook.md` to package
   the exact prechange evidence, blast radius, rollback, validation, cost, and
   approval boundary before any live execution;
-- create the security/log archive account, if approved later;
-- choose final bucket name and prefix convention;
 - choose final retention transition schedule;
 - decide whether Object Lock is worth the extra operational burden;
-- write the exact bucket policy and KMS key policy examples;
-- capture read-only current-state evidence before any live change;
+- resolve the exact storage-step and organization-trail live approvals against
+  the now-recorded bucket policy, KMS policy, and fresh read-only baseline;
 - define AWS Config recorder scope and aggregator account;
 - define GuardDuty delegated-administrator and member coverage;
 - make a separate Security Hub adopt/defer decision.

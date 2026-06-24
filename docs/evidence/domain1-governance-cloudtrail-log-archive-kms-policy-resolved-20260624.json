@@ -1,0 +1,73 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnableAccountIAMDelegation",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::955659429518:root"
+      },
+      "Action": "kms:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowCloudTrailEncrypt",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+      },
+      "Action": "kms:GenerateDataKey*",
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "kms:EncryptionContext:aws:cloudtrail:arn": "arn:aws:cloudtrail:*:349687196588:trail/organization-management-events"
+        },
+        "StringEquals": {
+          "aws:SourceArn": "arn:aws:cloudtrail:eu-west-2:349687196588:trail/organization-management-events"
+        }
+      }
+    },
+    {
+      "Sid": "AllowCloudTrailDescribeKey",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+      },
+      "Action": "kms:DescribeKey",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceArn": "arn:aws:cloudtrail:eu-west-2:349687196588:trail/organization-management-events"
+        }
+      }
+    },
+    {
+      "Sid": "AllowCloudTrailDecryptTrail",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+      },
+      "Action": "kms:Decrypt",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowAuditReadersDecrypt",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::955659429518:role/OrganizationAccountAccessRole"
+        ]
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "kms:EncryptionContext:aws:cloudtrail:arn": "false"
+        }
+      }
+    }
+  ]
+}

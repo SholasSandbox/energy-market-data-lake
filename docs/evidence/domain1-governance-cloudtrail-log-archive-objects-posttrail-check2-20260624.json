@@ -1,0 +1,54 @@
+{
+    "IsTruncated": false,
+    "Contents": [
+        {
+            "Key": "AWSLogs/349687196588/CloudTrail-Digest/",
+            "LastModified": "2026-06-24T12:36:01+00:00",
+            "ETag": "\"ddd9636890b62a76db2d70209078b611\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/349687196588/CloudTrail/",
+            "LastModified": "2026-06-24T12:36:01+00:00",
+            "ETag": "\"baca9833bb60ba8cd0d87f03e3ff89b3\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/",
+            "LastModified": "2026-06-24T12:36:01+00:00",
+            "ETag": "\"5e08b960bd3dcfc9351618331b6caf11\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail/",
+            "LastModified": "2026-06-24T12:36:00+00:00",
+            "ETag": "\"bebe165218e46758104a1527cf925610\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "Name": "org-cloudtrail-log-archive-955659429518-eu-west-2",
+    "Prefix": "AWSLogs/",
+    "MaxKeys": 20,
+    "EncodingType": "url",
+    "KeyCount": 4
+}

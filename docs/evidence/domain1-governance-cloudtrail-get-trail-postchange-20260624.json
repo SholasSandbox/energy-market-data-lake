@@ -1,0 +1,15 @@
+{
+    "Trail": {
+        "Name": "organization-management-events",
+        "S3BucketName": "org-cloudtrail-log-archive-955659429518-eu-west-2",
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": true,
+        "HomeRegion": "eu-west-2",
+        "TrailARN": "arn:aws:cloudtrail:eu-west-2:349687196588:trail/organization-management-events",
+        "LogFileValidationEnabled": true,
+        "KmsKeyId": "arn:aws:kms:eu-west-2:955659429518:key/201876fa-d5f9-4810-9721-676b17f737f3",
+        "HasCustomEventSelectors": false,
+        "HasInsightSelectors": false,
+        "IsOrganizationTrail": true
+    }
+}

@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnableAccountIAMDelegation",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::REPLACE_WITH_SECURITY_ACCOUNT_ID:root"
+      },
+      "Action": "kms:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowCloudTrailEncrypt",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+      },
+      "Action": "kms:GenerateDataKey*",
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "kms:EncryptionContext:aws:cloudtrail:arn": "arn:aws:cloudtrail:*:REPLACE_WITH_MANAGEMENT_ACCOUNT_ID:trail/REPLACE_WITH_TRAIL_NAME"
+        },
+        "StringEquals": {
+          "aws:SourceArn": "arn:aws:cloudtrail:REPLACE_WITH_HOME_REGION:REPLACE_WITH_MANAGEMENT_ACCOUNT_ID:trail/REPLACE_WITH_TRAIL_NAME"
+        }
+      }
+    },
+    {
+      "Sid": "AllowCloudTrailDescribeKey",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+      },
+      "Action": "kms:DescribeKey",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceArn": "arn:aws:cloudtrail:REPLACE_WITH_HOME_REGION:REPLACE_WITH_MANAGEMENT_ACCOUNT_ID:trail/REPLACE_WITH_TRAIL_NAME"
+        }
+      }
+    },
+    {
+      "Sid": "AllowCloudTrailDecryptTrail",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+      },
+      "Action": "kms:Decrypt",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowAuditReadersDecrypt",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::REPLACE_WITH_SECURITY_ACCOUNT_ID:role/OrganizationAccountAccessRole",
+          "REPLACE_WITH_ADDITIONAL_AUDIT_PRINCIPAL_ARN"
+        ]
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "kms:EncryptionContext:aws:cloudtrail:arn": "false"
+        }
+      }
+    }
+  ]
+}

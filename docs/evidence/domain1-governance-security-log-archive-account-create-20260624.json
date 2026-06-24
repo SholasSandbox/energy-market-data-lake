@@ -1,0 +1,8 @@
+{
+    "CreateAccountStatus": {
+        "Id": "car-3d882c1859954699a2bd8f741175b331",
+        "AccountName": "Security Log Archive",
+        "State": "IN_PROGRESS",
+        "RequestedTimestamp": "2026-06-24T01:45:03.245000+01:00"
+    }
+}

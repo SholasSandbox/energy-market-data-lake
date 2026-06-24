@@ -1,0 +1,9 @@
+[
+    {
+        "AliasName": "alias/org-cloudtrail-log-archive",
+        "AliasArn": "arn:aws:kms:eu-west-2:955659429518:alias/org-cloudtrail-log-archive",
+        "TargetKeyId": "201876fa-d5f9-4810-9721-676b17f737f3",
+        "CreationDate": "2026-06-24T13:01:17.774000+01:00",
+        "LastUpdatedDate": "2026-06-24T13:01:17.774000+01:00"
+    }
+]

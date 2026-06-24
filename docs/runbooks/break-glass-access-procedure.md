@@ -58,6 +58,48 @@ Before this process can be considered live-ready:
   account, or both;
 - define how access is disabled or reduced after use.
 
+## Current Live-Readiness Values
+
+The following values are now recorded for the current governance slice:
+
+- emergency owner: `[redacted-email]`
+- primary emergency contact: `[redacted-email]`
+- emergency-use notifications: email to
+  `[redacted-email]` and `[redacted-email]`, plus SMS to
+  `[redacted-phone]`
+- credential and recovery storage: Google Password Manager as the primary
+  cross-platform store
+- out-of-band backup requirement: keep Google backup codes and a short AWS root
+  recovery note outside this repository and outside the primary machine path
+- evidence location for emergency-use logs:
+  `docs/evidence/domain1-governance-break-glass-usage-YYYYMMDD.md`, with saved
+  CLI output and screenshots where safe
+- current scope: workload-account emergency recovery is the active design
+  priority for OU-targeted root-user guardrails; the management account remains
+  a separate last-resort recovery path and is not in scope for the current OU
+  SCP attachment
+- post-use access reduction path: remove temporary access, confirm MFA remains
+  enabled, review CloudTrail or equivalent audit evidence, rotate any exposed
+  or newly created credentials, and document the follow-up action
+
+For this repository, "out-of-band backup" means recovery material that is not
+available only through the same day-to-day Google sign-in path or the same
+primary machine. Acceptable examples include:
+
+- printed backup codes stored securely;
+- an encrypted offline file on separate removable media; or
+- a secondary secure vault that does not depend solely on the same active
+  Google session.
+
+## Remaining Live-Readiness Checks
+
+Before a root-user emergency-only SCP is attached live:
+
+- confirm MFA on the relevant root user and any emergency principal;
+- generate and store the out-of-band backup codes and recovery note;
+- confirm the notification path is reachable in practice; and
+- record a light procedural validation of the evidence and reduction path.
+
 ## Activation Checklist
 
 Record the following before use whenever possible:

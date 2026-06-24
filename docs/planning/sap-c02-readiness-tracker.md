@@ -392,15 +392,15 @@ AWS Organization
 | Item | Status | Evidence |
 |---|---|---|
 | AWS Organizations enabled | Verified | Management account and member accounts verified in `docs/evidence/cost-allocation-tag-activation-20260617.md`; prechange root/account/service-access inventory is recorded in `docs/evidence/domain1-governance-org-inventory-summary-20260621.md`; live OU creation and lakehouse account move are recorded in `docs/evidence/domain1-governance-lakehouse-workloads-ou-change-note-20260621.md` and `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md` |
-| OU structure designed | Partial | Target OU model recorded in `docs/adr/0005-aws-organizations-governance-design.md`; current-to-target placement decision recorded in `docs/planning/domain-1-ou-account-placement-decision-20260621.md`; live evidence now shows both `Container Sandbox` and `Lakehouse Workloads OU` exist, and the lakehouse account has been moved into `ou-gbyf-m6ppfmpq`; see `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md` |
+| OU structure designed | Partial | Target OU model recorded in `docs/adr/0005-aws-organizations-governance-design.md`; current-to-target placement decision recorded in `docs/planning/domain-1-ou-account-placement-decision-20260621.md`; live evidence now shows `Container Sandbox`, `Lakehouse Workloads OU`, and `Security OU` exist under root, and the lakehouse account has been moved into `ou-gbyf-m6ppfmpq`; see `docs/evidence/domain1-governance-security-ou-change-note-20260622.md` and `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md` |
 | Management account rules documented | Design accepted | Control-plane account rules recorded in `docs/adr/0005-aws-organizations-governance-design.md`; implementation boundary remains future approval |
 | Workload account purpose defined | Design accepted | Lakehouse workload and sandbox account boundaries recorded in `docs/adr/0005-aws-organizations-governance-design.md` |
-| Security/log archive account design documented | Partial | Target security/log archive boundary recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; future account creation and implementation remain open |
+| Security/log archive account design documented | Verified | Target security/log archive boundary recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; the first bounded baseline/change note is recorded in `docs/evidence/domain1-governance-cloudtrail-log-archive-change-note-20260622.md`; the design-to-implementation boundary is recorded in `docs/planning/domain-1-security-log-archive-account-implementation-boundary-20260622.md`; `Security OU`, the dedicated `Security Log Archive` account, Account Management trusted access, alternate contacts, the dedicated log-archive bucket, and the customer-managed KMS key are now live via `docs/evidence/domain1-governance-cloudtrail-log-archive-storage-change-note-20260624.md` |
 | IAM Identity Center access model documented | Design accepted | Permission-set candidates and account targets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; no permission sets implemented |
 | Permission sets defined | Design accepted | Permission-set matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; final AWS-managed/custom policy choice and assignments remain open |
 | Break-glass access model documented | Design accepted | Break-glass target recorded in ADR 0005 and procedure recorded in `docs/runbooks/break-glass-access-procedure.md`; live principal, alerting, and review implementation remain open |
 | SCP catalogue drafted | Partial live evidence | Accepted SCP catalogue recorded in ADR 0005; example policy files recorded in `docs/policies/scp/`; the first live OU-targeted `DenyLeavingOrganization` attempt, rollback, root policy-type enablement, and successful retry are recorded in `docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`, `docs/evidence/domain1-governance-enable-scp-root-change-note-20260622.md`, and `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md` |
-| CloudTrail organization trail design documented | Partial | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention/delete-protection design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; live enablement remains open |
+| CloudTrail organization trail design documented | Verified | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention/delete-protection design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; earlier baseline evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-log-archive-change-note-20260622.md`; fresh post-account baseline evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-management-sts-prechange-20260624.json`, `docs/evidence/domain1-governance-cloudtrail-service-access-prechange-20260624.json`, `docs/evidence/domain1-governance-cloudtrail-list-prechange-20260624.json`, and the paired security-account prechange files; exact policy examples are recorded in `docs/policies/s3-cloudtrail-log-archive-bucket-policy.example.json`, `docs/policies/kms-cloudtrail-log-archive-key-policy.example.json`, and `docs/policies/s3-cloudtrail-log-archive-encryption.example.json`; live storage evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-log-archive-storage-change-note-20260624.md`; live trusted-access, organization-trail, and first delivered log/digest evidence are now recorded in `docs/evidence/domain1-governance-cloudtrail-organization-trail-change-note-20260624.md` |
 | AWS Config design documented | Partial | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed recorder scope, aggregation, rule, and cost-control design recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; live enablement remains open |
 | GuardDuty/Security Hub concept documented | Partial | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed GuardDuty delegated-admin and cost-control design plus Security Hub defer/adopt decision recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; live enablement remains open |
 | Cost allocation tags defined | Verified | Common Terraform tags exist; selected Billing Cost Allocation Tags were activated from the Organizations management account on 2026-06-17 |
@@ -414,7 +414,7 @@ AWS Organization
 | Deny deleting log buckets | Protect log archive | Partial |
 | Deny public S3 exposure | Reduce data leakage risk | Partial |
 | Deny unapproved regions | Cost/compliance control | Partial |
-| Deny root-user actions except emergencies | Reduce blast radius | Prepared; blocked on break-glass live readiness |
+| Deny root-user actions except emergencies | Reduce blast radius | Prepared; live values defined, MFA/test evidence pending |
 | Require encryption where feasible | Improve compliance posture | Partial |
 | Deny leaving AWS Organization | Prevent governance bypass | Live for `Lakehouse Workloads OU` |
 
@@ -430,8 +430,9 @@ successful attach to `Lakehouse Workloads OU`:
 and
 `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md`.
 The next narrow SCP candidate, `deny-root-user-actions.example.json`, is now
-recorded as prepared but blocked pending break-glass live-readiness and test
-preconditions:
+recorded as prepared with the emergency owner, contact, notification, storage,
+evidence, scope, and reduction values defined, but MFA and procedural-test
+evidence still pending:
 `docs/evidence/domain1-governance-deny-root-user-actions-change-note-20260622.md`.
 
 ---
@@ -739,10 +740,67 @@ phase plans from drifting apart again.
   candidate for `Lakehouse Workloads OU`, and capture the specific blocker that
   prevents safe live attachment today:
   `docs/evidence/domain1-governance-deny-root-user-actions-change-note-20260622.md`.
-- [ ] Before any live root-user emergency-only SCP attachment, define and test
-  the break-glass live prerequisites: emergency owner, notification path,
-  evidence location, credential storage/recovery location, and post-use access
+- [x] Define the break-glass live values for the next root-user emergency-only
+  SCP candidate: emergency owner, notification path, evidence location,
+  credential storage/recovery location, current scope, and post-use access
   reduction path.
+- [x] Capture the first bounded CloudTrail/log archive baseline in the
+  management account and record the current no-trail/no-bucket state:
+  `docs/evidence/domain1-governance-cloudtrail-log-archive-change-note-20260622.md`.
+- [x] Choose the SAP-C02-preferred CloudTrail ownership path and package the
+  security/log archive account implementation boundary:
+  `docs/planning/domain-1-security-log-archive-account-implementation-boundary-20260622.md`.
+- [x] Draft the next bounded `Security OU` live-change package with current
+  prechange evidence, rollback, validation, and blast-radius notes:
+  `docs/evidence/domain1-governance-security-ou-change-note-20260622.md`.
+- [x] Under separate explicit approval, create `Security OU` as the next narrow
+  live change unit for the centralized logging path:
+  `docs/evidence/domain1-governance-security-ou-change-note-20260622.md`.
+- [x] Under separate explicit approval, create the dedicated
+  `Security Log Archive` member account and record the durable
+  account-creation boundary:
+  `docs/evidence/domain1-governance-security-log-archive-account-change-note-20260624.md`.
+- [x] Under separate explicit approval, enable `account.amazonaws.com`
+  trusted access and set the alternate contacts for account `955659429518`:
+  `docs/evidence/domain1-governance-account-management-trusted-access-and-alternate-contacts-change-note-20260624.md`.
+- [x] Under separate explicit approval, move `Security Log Archive`
+  (`955659429518`) from root `r-gbyf` into `Security OU`
+  (`ou-gbyf-mug20ym0`):
+  `docs/evidence/domain1-governance-security-log-archive-account-move-change-note-20260624.md`.
+- [x] Capture fresh post-account CloudTrail baseline evidence from the
+  management account and `Security Log Archive` account, including the current
+  `cloudtrail.amazonaws.com` trusted-access gap and the no-bucket/no-CMK
+  storage state:
+  `docs/evidence/domain1-governance-cloudtrail-management-sts-prechange-20260624.json`,
+  `docs/evidence/domain1-governance-cloudtrail-service-access-prechange-20260624.json`,
+  `docs/evidence/domain1-governance-cloudtrail-list-prechange-20260624.json`,
+  and the paired security-account prechange files.
+- [x] Write the exact dedicated-log-archive S3 bucket policy and KMS key policy
+  examples for the CloudTrail target design:
+  `docs/policies/s3-cloudtrail-log-archive-bucket-policy.example.json` and
+  `docs/policies/kms-cloudtrail-log-archive-key-policy.example.json`.
+- [x] Package the next narrow `Security Log Archive` storage-step live change
+  for the CloudTrail bucket and KMS key:
+  `docs/evidence/domain1-governance-cloudtrail-log-archive-storage-change-note-20260624.md`.
+- [x] Under separate explicit approval, create the dedicated CloudTrail
+  log-archive bucket and customer-managed KMS key in the `Security Log Archive`
+  account, enable versioning, Block Public Access, SSE-KMS default encryption,
+  and key rotation, and attach the resolved bucket and key policies:
+  `docs/evidence/domain1-governance-cloudtrail-log-archive-storage-change-note-20260624.md`.
+- [x] Package the follow-on management-account organization-trail live change,
+  including the explicit `cloudtrail.amazonaws.com` trusted-access
+  prerequisite:
+  `docs/evidence/domain1-governance-cloudtrail-organization-trail-change-note-20260624.md`.
+- [x] Under separate explicit approval, enable
+  `cloudtrail.amazonaws.com` trusted access, create the multi-Region
+  organization trail `organization-management-events` from the management
+  account, start logging, and capture the first postchange trail and
+  bucket-path evidence:
+  `docs/evidence/domain1-governance-cloudtrail-organization-trail-change-note-20260624.md`.
+- [ ] Before any live root-user emergency-only SCP attachment, confirm MFA on
+  the relevant emergency principals, generate/store the out-of-band backup
+  material, and record a light procedural validation of the notification and
+  evidence path.
 - [ ] During the scheduled governance phase, convert the accepted design into
   live-readiness evidence and explicitly approved implementation changes.
 

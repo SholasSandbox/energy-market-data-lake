@@ -1,0 +1,1111 @@
+{
+    "IsTruncated": true,
+    "Contents": [
+        {
+            "Key": "AWSLogs/349687196588/CloudTrail-Digest/",
+            "LastModified": "2026-06-24T12:36:01+00:00",
+            "ETag": "\"ddd9636890b62a76db2d70209078b611\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/349687196588/CloudTrail/",
+            "LastModified": "2026-06-24T12:36:01+00:00",
+            "ETag": "\"baca9833bb60ba8cd0d87f03e3ff89b3\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/",
+            "LastModified": "2026-06-24T12:36:01+00:00",
+            "ETag": "\"5e08b960bd3dcfc9351618331b6caf11\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/ap-northeast-1/2026/06/24/349687196588_CloudTrail-Digest_ap-northeast-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:25+00:00",
+            "ETag": "\"3f0d7e392fe370a83eb28529226f36ce\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 395,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/ap-northeast-2/2026/06/24/349687196588_CloudTrail-Digest_ap-northeast-2_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:52+00:00",
+            "ETag": "\"1e23c37d9e69048069b1f67cfdac9421\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 393,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/ap-northeast-3/2026/06/24/349687196588_CloudTrail-Digest_ap-northeast-3_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:38+00:00",
+            "ETag": "\"396a5abb3a1fc5b5be1f17a70a9f704d\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 396,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/ap-south-1/2026/06/24/349687196588_CloudTrail-Digest_ap-south-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:06:37+00:00",
+            "ETag": "\"7f13a2c2d8fa9415ba4c5f0bfab37559\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 393,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/ap-southeast-1/2026/06/24/349687196588_CloudTrail-Digest_ap-southeast-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:51+00:00",
+            "ETag": "\"e73b447130cda8146bb0b4961e15d120\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 395,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/ap-southeast-2/2026/06/24/349687196588_CloudTrail-Digest_ap-southeast-2_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:21+00:00",
+            "ETag": "\"bd25ffb69074b81f05c1467f812f5ec6\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 394,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/ca-central-1/2026/06/24/349687196588_CloudTrail-Digest_ca-central-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:37+00:00",
+            "ETag": "\"5db71bb3fe4a803e90227a5c9bdb8ddd\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 394,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/eu-central-1/2026/06/24/349687196588_CloudTrail-Digest_eu-central-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:06:40+00:00",
+            "ETag": "\"f952daf3faff4fa6324a392e4ceb5a33\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 393,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/eu-north-1/2026/06/24/349687196588_CloudTrail-Digest_eu-north-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:39+00:00",
+            "ETag": "\"a53adda4b41bb8fc507d58cd8e86ee36\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 392,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/eu-west-1/2026/06/24/349687196588_CloudTrail-Digest_eu-west-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:17+00:00",
+            "ETag": "\"6692b726db59b2af2a9872a68de1b829\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 388,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/eu-west-2/2026/06/24/349687196588_CloudTrail-Digest_eu-west-2_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:06:01+00:00",
+            "ETag": "\"8b2fa294e6ba53050ff66c4517794c1a\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 384,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/eu-west-3/2026/06/24/349687196588_CloudTrail-Digest_eu-west-3_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:06:11+00:00",
+            "ETag": "\"b77c820cdccbb461a7a1f7a1e8de4e10\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 386,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/sa-east-1/2026/06/24/349687196588_CloudTrail-Digest_sa-east-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:06:02+00:00",
+            "ETag": "\"fb8caaa82bddc45ae4bf99c71013074c\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 391,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/us-east-1/2026/06/24/349687196588_CloudTrail-Digest_us-east-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:14+00:00",
+            "ETag": "\"ff75f4fae36204e64d87c6a66f3bf944\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 392,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/us-east-2/2026/06/24/349687196588_CloudTrail-Digest_us-east-2_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:06:03+00:00",
+            "ETag": "\"ebdad8b4377991ce4de461c0fd9fcd49\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 391,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/us-west-1/2026/06/24/349687196588_CloudTrail-Digest_us-west-1_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:28+00:00",
+            "ETag": "\"993782a95301510760e74585b0d7e966\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 388,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail-Digest/us-west-2/2026/06/24/349687196588_CloudTrail-Digest_us-west-2_organization-management-events_eu-west-2_20260624T123601Z.json.gz",
+            "LastModified": "2026-06-24T13:05:45+00:00",
+            "ETag": "\"8fcdd8ed6c9460db2a75fc0bccfdd1d6\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 390,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail/",
+            "LastModified": "2026-06-24T12:36:00+00:00",
+            "ETag": "\"bebe165218e46758104a1527cf925610\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail/eu-north-1/2026/06/24/349687196588_CloudTrail_eu-north-1_20260624T1325Z_T1v32VSHlzHOJkgC.json.gz",
+            "LastModified": "2026-06-24T13:25:14+00:00",
+            "ETag": "\"8f2955427abc1c7b46eedb0980b01e34\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1653,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail/eu-west-2/2026/06/24/349687196588_CloudTrail_eu-west-2_20260624T1240Z_zpKV6nRhbMHCJjFV.json.gz",
+            "LastModified": "2026-06-24T12:40:56+00:00",
+            "ETag": "\"cb456c5ae95d9d75f5b4b3487ed32a57\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 8939,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail/eu-west-2/2026/06/24/349687196588_CloudTrail_eu-west-2_20260624T1245Z_5QoEhS5v9Cf3B78E.json.gz",
+            "LastModified": "2026-06-24T12:46:56+00:00",
+            "ETag": "\"e57d022220a83bc07acaaa850c2956b9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 2228,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail/us-east-1/2026/06/24/349687196588_CloudTrail_us-east-1_20260624T1240Z_6wHJ8wQ2l4SVwd58.json.gz",
+            "LastModified": "2026-06-24T12:41:02+00:00",
+            "ETag": "\"a3e376ddee3364a743f959ab51c67f94\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1123,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/349687196588/CloudTrail/us-east-1/2026/06/24/349687196588_CloudTrail_us-east-1_20260624T1240Z_KmOMWuZlbMCfpfWb.json.gz",
+            "LastModified": "2026-06-24T12:40:59+00:00",
+            "ETag": "\"d51e6daff1a4aec48ec6430fbbbe7ac1\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 3780,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/ap-northeast-1/2026/06/24/464975959576_CloudTrail-Digest_ap-northeast-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:05+00:00",
+            "ETag": "\"03980ecb7e8501a4aeb34097290b7a09\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 395,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/ap-northeast-2/2026/06/24/464975959576_CloudTrail-Digest_ap-northeast-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:37+00:00",
+            "ETag": "\"236dcb17d80234c2b0ff304eb2a34492\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 393,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/ap-northeast-3/2026/06/24/464975959576_CloudTrail-Digest_ap-northeast-3_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:54:21+00:00",
+            "ETag": "\"e442368cf990d08704a4b4347c7053f5\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 394,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/ap-south-1/2026/06/24/464975959576_CloudTrail-Digest_ap-south-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:25+00:00",
+            "ETag": "\"44cb620a88a10d442767a34466593282\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 392,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/ap-southeast-1/2026/06/24/464975959576_CloudTrail-Digest_ap-southeast-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:53+00:00",
+            "ETag": "\"557b4a9111148ddf8a3dc0ab271a89a9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 395,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/ap-southeast-2/2026/06/24/464975959576_CloudTrail-Digest_ap-southeast-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:24+00:00",
+            "ETag": "\"fe8fa73b2b15c02b2a14fd4cedfed9ba\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 394,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/ca-central-1/2026/06/24/464975959576_CloudTrail-Digest_ca-central-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:51+00:00",
+            "ETag": "\"8928f7877e94a9527ef9818a784d1fce\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 394,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/eu-central-1/2026/06/24/464975959576_CloudTrail-Digest_eu-central-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:54:35+00:00",
+            "ETag": "\"1f904761cc07e316d149f67c9ca0cd4f\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 393,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/eu-north-1/2026/06/24/464975959576_CloudTrail-Digest_eu-north-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:54:16+00:00",
+            "ETag": "\"1bcf6c38549c6698adfa696a88765759\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 392,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/eu-west-1/2026/06/24/464975959576_CloudTrail-Digest_eu-west-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:54:35+00:00",
+            "ETag": "\"e520ef5757997ef736ac8f873adc1d15\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 388,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/eu-west-2/2026/06/24/464975959576_CloudTrail-Digest_eu-west-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:57+00:00",
+            "ETag": "\"6838a54276f2362811cee6a686e2b866\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 385,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/eu-west-3/2026/06/24/464975959576_CloudTrail-Digest_eu-west-3_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:54:09+00:00",
+            "ETag": "\"17539515c4d686a37494130ed8ad0ac9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 386,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/sa-east-1/2026/06/24/464975959576_CloudTrail-Digest_sa-east-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:54:06+00:00",
+            "ETag": "\"5c8936505a58e16e450d168dc9cbf459\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 391,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/us-east-1/2026/06/24/464975959576_CloudTrail-Digest_us-east-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:25+00:00",
+            "ETag": "\"5bba5e2d4b6ba6206ac61f729396174c\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 391,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/us-east-2/2026/06/24/464975959576_CloudTrail-Digest_us-east-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:59+00:00",
+            "ETag": "\"27ff5aaf16e2f36d3417cf1fc96354d3\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 390,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/us-west-1/2026/06/24/464975959576_CloudTrail-Digest_us-west-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:45+00:00",
+            "ETag": "\"fec4f525d72042e885084a7962f66ebe\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 388,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail-Digest/us-west-2/2026/06/24/464975959576_CloudTrail-Digest_us-west-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:53:55+00:00",
+            "ETag": "\"a6649a8dca0546ba86fa0907ed7a8dc6\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 390,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/eu-west-2/2026/06/24/464975959576_CloudTrail_eu-west-2_20260624T1245Z_LlJvGQA1QxnBqbdE.json.gz",
+            "LastModified": "2026-06-24T12:44:03+00:00",
+            "ETag": "\"6cbb0ade06148f9ea294e0ee68eea536\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 2067,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/eu-west-2/2026/06/24/464975959576_CloudTrail_eu-west-2_20260624T1255Z_Rss3y7gLDHEC4TzI.json.gz",
+            "LastModified": "2026-06-24T12:57:25+00:00",
+            "ETag": "\"11f9a2e4d08c64dec13ff83836ad942b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1348,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/eu-west-2/2026/06/24/464975959576_CloudTrail_eu-west-2_20260624T1255Z_dDt5H04FlGoO8r7Q.json.gz",
+            "LastModified": "2026-06-24T12:52:13+00:00",
+            "ETag": "\"bcc7da48eae93cc9c91177d2d262089b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 4850,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/eu-west-2/2026/06/24/464975959576_CloudTrail_eu-west-2_20260624T1310Z_4NtZAhgKMndEmDuq.json.gz",
+            "LastModified": "2026-06-24T13:10:46+00:00",
+            "ETag": "\"3fe43805605a1e0cc7d7779e157fc725\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 3413,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/eu-west-2/2026/06/24/464975959576_CloudTrail_eu-west-2_20260624T1325Z_kWINEo1FPpJKXYaB.json.gz",
+            "LastModified": "2026-06-24T13:25:38+00:00",
+            "ETag": "\"7fd1aa2b8d8f32c77713e6f5902efb23\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 4152,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/eu-west-2/2026/06/24/464975959576_CloudTrail_eu-west-2_20260624T1345Z_Aa2XlJyMZqqdP50e.json.gz",
+            "LastModified": "2026-06-24T13:40:39+00:00",
+            "ETag": "\"78895fdc63c5588b51670609a5d98092\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 4858,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/eu-west-2/2026/06/24/464975959576_CloudTrail_eu-west-2_20260624T1350Z_W823op69YCoAaGRp.json.gz",
+            "LastModified": "2026-06-24T13:47:20+00:00",
+            "ETag": "\"820aa46272424cae33f7c17e0b18c7c1\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 3916,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-east-1/2026/06/24/464975959576_CloudTrail_us-east-1_20260624T1245Z_hjjPLMNSytBMnxTb.json.gz",
+            "LastModified": "2026-06-24T12:48:31+00:00",
+            "ETag": "\"995fa129752b88ea5d1b8564019d7d19\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 926,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-east-1/2026/06/24/464975959576_CloudTrail_us-east-1_20260624T1245Z_lMZ3jyLYvOiTJLWR.json.gz",
+            "LastModified": "2026-06-24T12:48:45+00:00",
+            "ETag": "\"803b26d45160cfd9054d56e445f49068\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 7257,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-east-1/2026/06/24/464975959576_CloudTrail_us-east-1_20260624T1245Z_lOEEn0CTB27MOCzp.json.gz",
+            "LastModified": "2026-06-24T12:47:45+00:00",
+            "ETag": "\"feec5b0655bb3b0646052f389ab73ae7\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1318,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-east-1/2026/06/24/464975959576_CloudTrail_us-east-1_20260624T1245Z_n2s0fj0A53EEWcda.json.gz",
+            "LastModified": "2026-06-24T12:48:20+00:00",
+            "ETag": "\"36dbd60334d91adf30bb3512c050f8c7\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 646,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-east-1/2026/06/24/464975959576_CloudTrail_us-east-1_20260624T1245Z_v5MrE6lcZKdSWpJO.json.gz",
+            "LastModified": "2026-06-24T12:43:53+00:00",
+            "ETag": "\"3b02000445f8dfa46fc4ec95ac73472f\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 7110,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-east-1/2026/06/24/464975959576_CloudTrail_us-east-1_20260624T1320Z_1W6ayazo4NnpBxEC.json.gz",
+            "LastModified": "2026-06-24T13:22:11+00:00",
+            "ETag": "\"3ba3b499350396125bf38692d658ae7b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 2005,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-east-1/2026/06/24/464975959576_CloudTrail_us-east-1_20260624T1330Z_QofmJgVnN6N3LnZl.json.gz",
+            "LastModified": "2026-06-24T13:27:33+00:00",
+            "ETag": "\"d1f08edaf758044a27f8107f0b5986d0\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 2030,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-west-2/2026/06/24/464975959576_CloudTrail_us-west-2_20260624T1315Z_I9p5vr0qNmSIkd5e.json.gz",
+            "LastModified": "2026-06-24T13:17:01+00:00",
+            "ETag": "\"6deb8695cc4f3fadda0f1e0fcf5febad\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1408,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/464975959576/CloudTrail/us-west-2/2026/06/24/464975959576_CloudTrail_us-west-2_20260624T1315Z_fQk6wjcWsRiaRuYn.json.gz",
+            "LastModified": "2026-06-24T13:17:23+00:00",
+            "ETag": "\"120eefc4a9ee1d41f0dc1bc0d683c613\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 588,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-northeast-1/2026/06/24/955659429518_CloudTrail-Digest_ap-northeast-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:42:48+00:00",
+            "ETag": "\"8275d53ab021e18b4d23c2713ffb0e2d\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 387,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-northeast-1/2026/06/24/955659429518_CloudTrail-Digest_ap-northeast-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:53+00:00",
+            "ETag": "\"fec8a0330c33339cdf5009d3e5b725f1\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 756,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-northeast-2/2026/06/24/955659429518_CloudTrail-Digest_ap-northeast-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:05+00:00",
+            "ETag": "\"6d4bb853fb00134df2ffdc62f271bb91\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 385,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-northeast-2/2026/06/24/955659429518_CloudTrail-Digest_ap-northeast-2_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:52+00:00",
+            "ETag": "\"78d4d461d2394e700e15f25851bdd7e0\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 754,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-northeast-3/2026/06/24/955659429518_CloudTrail-Digest_ap-northeast-3_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:33+00:00",
+            "ETag": "\"0cdd1235eb164a200d0b81a64ef35cca\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 382,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-northeast-3/2026/06/24/955659429518_CloudTrail-Digest_ap-northeast-3_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:43:30+00:00",
+            "ETag": "\"76f8af45510c285184caa0a53fed873e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 759,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-south-1/2026/06/24/955659429518_CloudTrail-Digest_ap-south-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:42:58+00:00",
+            "ETag": "\"4ecb1a4b0ee61ea6b699d46e9b338777\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 386,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-south-1/2026/06/24/955659429518_CloudTrail-Digest_ap-south-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:41+00:00",
+            "ETag": "\"d81469e0a34e4f15f05e3c2bc702f9b0\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 755,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-southeast-1/2026/06/24/955659429518_CloudTrail-Digest_ap-southeast-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:21+00:00",
+            "ETag": "\"fda064f18e815b3a967c228d9cde3c78\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 387,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-southeast-1/2026/06/24/955659429518_CloudTrail-Digest_ap-southeast-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:43:18+00:00",
+            "ETag": "\"8d60464bb498fb4022561e08054f27e4\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 752,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-southeast-2/2026/06/24/955659429518_CloudTrail-Digest_ap-southeast-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:42:52+00:00",
+            "ETag": "\"716154c7cc6664b4a8e990a24e7f426a\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 381,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ap-southeast-2/2026/06/24/955659429518_CloudTrail-Digest_ap-southeast-2_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:33+00:00",
+            "ETag": "\"534774f3056d08ffe214959d798b320b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 756,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ca-central-1/2026/06/24/955659429518_CloudTrail-Digest_ca-central-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:19+00:00",
+            "ETag": "\"ef0a050d85096096aa71e5b91a4eea46\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 385,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/ca-central-1/2026/06/24/955659429518_CloudTrail-Digest_ca-central-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:43:18+00:00",
+            "ETag": "\"c9ca2a1eaf0ba27c100f206907b9af9b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 754,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-central-1/2026/06/24/955659429518_CloudTrail-Digest_eu-central-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:44:14+00:00",
+            "ETag": "\"dc46450fb2040aa969c35cb1e1cec64d\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 385,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-central-1/2026/06/24/955659429518_CloudTrail-Digest_eu-central-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:43:48+00:00",
+            "ETag": "\"fd6fa1ac164aec2fd7c5288bbe9d2ddf\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 756,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-north-1/2026/06/24/955659429518_CloudTrail-Digest_eu-north-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:34+00:00",
+            "ETag": "\"4e5e649fc5ed7bbfdd9be98749a17beb\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 385,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-north-1/2026/06/24/955659429518_CloudTrail-Digest_eu-north-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:43:25+00:00",
+            "ETag": "\"58fed2eb178d7e59cbbef3cd54e8e35a\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 753,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-west-1/2026/06/24/955659429518_CloudTrail-Digest_eu-west-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:42:27+00:00",
+            "ETag": "\"e02fd5c5d55168f242dd4371a04232ed\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 381,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-west-1/2026/06/24/955659429518_CloudTrail-Digest_eu-west-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:28+00:00",
+            "ETag": "\"5e7d105ebce522e410a8cc6e2f425a11\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 748,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-west-2/2026/06/24/955659429518_CloudTrail-Digest_eu-west-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:42:53+00:00",
+            "ETag": "\"2f8533640412d443b4fe8216ea825e9b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 378,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-west-2/2026/06/24/955659429518_CloudTrail-Digest_eu-west-2_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:23+00:00",
+            "ETag": "\"fd85c1cc4af865542c23948bc8cf898e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 2016,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-west-3/2026/06/24/955659429518_CloudTrail-Digest_eu-west-3_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:08+00:00",
+            "ETag": "\"6ede76e19f201bbd6892c29ecf2d9856\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 379,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/eu-west-3/2026/06/24/955659429518_CloudTrail-Digest_eu-west-3_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:43:26+00:00",
+            "ETag": "\"844e3ab3b7dd9768081b80f9dce71633\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 746,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/sa-east-1/2026/06/24/955659429518_CloudTrail-Digest_sa-east-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:08+00:00",
+            "ETag": "\"e78bc80ad5a99b846069e431532fdaae\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 384,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/sa-east-1/2026/06/24/955659429518_CloudTrail-Digest_sa-east-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:43:40+00:00",
+            "ETag": "\"4a9de287270b5cd1515c563422464610\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 751,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/us-east-1/2026/06/24/955659429518_CloudTrail-Digest_us-east-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:42:41+00:00",
+            "ETag": "\"14f69d8427f228ed49cecd2512069973\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 385,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/us-east-1/2026/06/24/955659429518_CloudTrail-Digest_us-east-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:54+00:00",
+            "ETag": "\"121d291b344bc7e84c219754cde70c11\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 913,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/us-east-2/2026/06/24/955659429518_CloudTrail-Digest_us-east-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:01+00:00",
+            "ETag": "\"b817e4ddc337ebe1cf6b14251af38a1d\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 382,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/us-east-2/2026/06/24/955659429518_CloudTrail-Digest_us-east-2_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:55+00:00",
+            "ETag": "\"fcff6e75f9a2b627a8927c24ac2f02b6\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 749,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/us-west-1/2026/06/24/955659429518_CloudTrail-Digest_us-west-1_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:42:33+00:00",
+            "ETag": "\"c085101eeb84718a28886efa304cafb3\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 382,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/us-west-1/2026/06/24/955659429518_CloudTrail-Digest_us-west-1_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:43:02+00:00",
+            "ETag": "\"52ee9a46f7859c7bf14ab9f3d2d1520d\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 749,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/us-west-2/2026/06/24/955659429518_CloudTrail-Digest_us-west-2_organization-management-events_eu-west-2_20260624T123914Z.json.gz",
+            "LastModified": "2026-06-24T12:43:10+00:00",
+            "ETag": "\"4800da97daed8e0690b55cd5bd302f1c\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 379,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail-Digest/us-west-2/2026/06/24/955659429518_CloudTrail-Digest_us-west-2_organization-management-events_eu-west-2_20260624T133914Z.json.gz",
+            "LastModified": "2026-06-24T13:42:50+00:00",
+            "ETag": "\"06fef72e2916b323f117fd1544f18a95\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 748,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail/eu-west-2/2026/06/24/955659429518_CloudTrail_eu-west-2_20260624T1240Z_UIc6KCZFKXnBdeeK.json.gz",
+            "LastModified": "2026-06-24T12:40:53+00:00",
+            "ETag": "\"b55a333581f4f5e69f1cbabcf0c1cb27\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 4418,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail/eu-west-2/2026/06/24/955659429518_CloudTrail_eu-west-2_20260624T1245Z_FsTBwGgNK4ycPLJx.json.gz",
+            "LastModified": "2026-06-24T12:45:54+00:00",
+            "ETag": "\"9f55eefaab472b8befa3b915e73a8c8c\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 689,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail/eu-west-2/2026/06/24/955659429518_CloudTrail_eu-west-2_20260624T1245Z_XEi7AG7NuxhktaUk.json.gz",
+            "LastModified": "2026-06-24T12:45:44+00:00",
+            "ETag": "\"0cd58b3083bebeee11a2c4cb134d59a9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 7963,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail/eu-west-2/2026/06/24/955659429518_CloudTrail_eu-west-2_20260624T1250Z_rZhJ1i0MEYrxmMEe.json.gz",
+            "LastModified": "2026-06-24T12:50:34+00:00",
+            "ETag": "\"37b9b3ef8d900d568444645c13fb20a2\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1095,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail/eu-west-2/2026/06/24/955659429518_CloudTrail_eu-west-2_20260624T1255Z_3RvQayBdlEr4JhWi.json.gz",
+            "LastModified": "2026-06-24T12:56:44+00:00",
+            "ETag": "\"ed21e7b83f93ada407375a98b17f67e0\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 8988,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail/eu-west-2/2026/06/24/955659429518_CloudTrail_eu-west-2_20260624T1255Z_tvGGCMRe4HsZ3Fhk.json.gz",
+            "LastModified": "2026-06-24T12:59:05+00:00",
+            "ETag": "\"a355d5ad7c5d494ea5135142e9b7748c\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 879,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/o-hmvgqmav88/955659429518/CloudTrail/eu-west-2/2026/06/24/955659429518_CloudTrail_eu-west-2_20260624T1255Z_uwBxDVCit9agDY10.json.gz",
+            "LastModified": "2026-06-24T12:51:54+00:00",
+            "ETag": "\"709dc5e1c8f28f9872292d2a59610a84\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1119,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "Name": "org-cloudtrail-log-archive-955659429518-eu-west-2",
+    "Prefix": "AWSLogs/",
+    "MaxKeys": 100,
+    "EncodingType": "url",
+    "KeyCount": 100,
+    "NextContinuationToken": "13LA6xP5Fa1MDHPa/MR9gGFR8af41TT3jPE36qKGSXn3WWnV7vE1It72QBbVWw8PK3omyfFOQIZlPUgRC/CCIv7q5Wu4quW82x+n1wvENIUBIbTOaKeENsnWNUGzd+/JzEAje/i6ScyxNYd1R5jOIIfIsH0DTIJs/O0hVZkTDXwiEWAlwPI25f/dl9/+2oEvFX7TJZ4btFYp1F3T10FUGi4QZvCXGb6+hu7k4JZHE6TVD84Gt35ptVT6MffhRhdjO1Uyesv0nRohAma20p3ZYiQ=="
+}

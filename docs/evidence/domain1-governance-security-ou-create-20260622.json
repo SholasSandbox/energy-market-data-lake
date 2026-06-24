@@ -1,0 +1,7 @@
+{
+    "OrganizationalUnit": {
+        "Id": "ou-gbyf-mug20ym0",
+        "Arn": "arn:aws:organizations::349687196588:ou/o-hmvgqmav88/ou-gbyf-mug20ym0",
+        "Name": "Security OU"
+    }
+}
