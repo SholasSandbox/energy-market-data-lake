@@ -1,0 +1,7 @@
+{
+  "name": "default",
+  "roleARN": "arn:aws:iam::464975959576:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig",
+  "recordingMode": {
+    "recordingFrequency": "CONTINUOUS"
+  }
+}

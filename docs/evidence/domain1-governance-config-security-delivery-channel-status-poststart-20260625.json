@@ -1,0 +1,15 @@
+{
+    "DeliveryChannelsStatus": [
+        {
+            "name": "default",
+            "configSnapshotDeliveryInfo": {
+                "nextDeliveryTime": "2026-06-25T09:00:26.159000+01:00"
+            },
+            "configHistoryDeliveryInfo": {},
+            "configStreamDeliveryInfo": {
+                "lastStatus": "NOT_APPLICABLE",
+                "lastStatusChangeTime": "2026-06-25T08:50:26.162000+01:00"
+            }
+        }
+    ]
+}

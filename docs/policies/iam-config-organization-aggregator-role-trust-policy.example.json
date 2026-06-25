@@ -1,0 +1,21 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowConfigToAssumeOrganizationAggregatorRole",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceAccount": "REPLACE_WITH_SECURITY_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "AWS:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SECURITY_ACCOUNT_ID:*"
+        }
+      }
+    }
+  ]
+}

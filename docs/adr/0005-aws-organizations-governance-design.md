@@ -207,6 +207,51 @@ The ADR also supports Domain 3 because it improves an existing architecture by
 adding governance boundaries, operational control points, and implementation
 gates without destabilizing the working lakehouse.
 
+## Revision Notes From Live Rollout
+
+The separate change notes remain the source of detailed operational evidence,
+but several condensed live lessons are now worth carrying directly in this ADR
+for later SAP-C02 revision:
+
+- organization AWS Config rules deployed from a delegated administrator depend
+  on `AWSServiceRoleForConfigMultiAccountSetup` not only in the delegated-admin
+  account, but also in the organization management account if that management
+  account is itself part of the in-scope deployment set;
+- an organization AWS Config rule does not deploy cleanly into an account that
+  lacks an in-scope AWS Config recorder; in this repo, the first rule attempt
+  exposed that exact gap in sandbox account `974893866311`;
+- once that sandbox account became an intended container and microservices
+  workload boundary, the correct fix was to give it its own recorder baseline
+  rather than leave it permanently excluded from governance coverage;
+- when sandbox scope is intentionally left open for later cost observation, it
+  is acceptable to exclude that sandbox account from the first organization
+  rule rather than widening the current change boundary into full sandbox
+  recorder rollout;
+- once the excluded account has a working recorder baseline and the central
+  Config archive path is authorized for that account, the correct follow-on is
+  to remove the exclusion from the same organization rule rather than leave a
+  lingering governance gap or create a duplicate account-local rule;
+- adding a new account to the central AWS Config archive path also requires the
+  central S3 bucket policy and Config KMS key policy to be extended for that
+  account before delivery-channel creation can succeed;
+- for this repository, `MULTI_REGION_CLOUD_TRAIL_ENABLED` was a better first
+  detective control than `CLOUD_TRAIL_ENABLED` because the accepted CloudTrail
+  design already centers on one organization multi-Region trail with
+  management events and a central archive bucket;
+- organization-managed AWS Config rules materialize as local
+  `OrgConfigRule-*` resources in each in-scope account, so both organization
+  deployment status and local account compliance views matter during
+  validation;
+- the clean rollout path was:
+  recorder baseline first, then one narrow organization rule, then blocker
+  resolution, then retry, rather than starting with multiple rule families at
+  once.
+
+These live lessons reinforce a recurring exam pattern: the correct answer is
+often not just "use Organizations" or "use Config," but "sequence delegated
+administration, recorder coverage, service-linked-role prerequisites, and
+scope boundaries in the right order."
+
 ## Implementation Boundary
 
 No live change is approved by this ADR.
@@ -248,6 +293,11 @@ Apply sequencing should be:
 - AWS Config and GuardDuty design with cost controls, plus the current Security
   Hub defer/adopt decision, is now recorded in
   `docs/planning/domain-1-config-guardduty-design-20260621.md`.
+- The first live organization AWS Config CloudTrail rule, the sandbox-recorder
+  deployment gap, the management-account multi-account-setup service-linked
+  role blocker, the sandbox recorder follow-on, and the final successful
+  four-account rollout are now recorded in
+  `docs/evidence/domain1-governance-config-org-cloudtrail-rule-change-note-20260625.md`.
 - The governance live-readiness runbook that operationalizes this ADR's
   per-change boundary and evidence requirements is now recorded in
   `docs/runbooks/domain-1-governance-live-readiness-runbook.md`.

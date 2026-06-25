@@ -1,0 +1,17 @@
+{
+    "OrganizationConfigRules": [
+        {
+            "OrganizationConfigRuleName": "org-multi-region-cloudtrail-enabled",
+            "OrganizationConfigRuleArn": "arn:aws:config:eu-west-2:955659429518:organization-config-rule/org-multi-region-cloudtrail-enabled-qtlavry8",
+            "OrganizationManagedRuleMetadata": {
+                "Description": "Detect at least one multi-Region CloudTrail using the central archive bucket and management events.",
+                "RuleIdentifier": "MULTI_REGION_CLOUD_TRAIL_ENABLED",
+                "InputParameters": "{\"s3BucketName\":\"org-cloudtrail-log-archive-955659429518-eu-west-2\",\"includeManagementEvents\":\"true\",\"readWriteType\":\"ALL\"}",
+                "MaximumExecutionFrequency": "TwentyFour_Hours",
+                "ResourceTypesScope": []
+            },
+            "ExcludedAccounts": [],
+            "LastUpdateTime": "2026-06-25T09:14:52.280000+01:00"
+        }
+    ]
+}

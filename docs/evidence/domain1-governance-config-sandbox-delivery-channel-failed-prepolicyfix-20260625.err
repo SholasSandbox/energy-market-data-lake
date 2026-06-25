@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (InsufficientDeliveryPolicyException) when calling the PutDeliveryChannel operation: Insufficient delivery policy to s3 bucket: org-config-log-archive-955659429518-eu-west-2, unable to write to bucket, provided s3 key prefix is 'null', provided kms key is 'arn:aws:kms:eu-west-2:955659429518:key/8078ec71-b17b-4826-b904-8cf62c0ad94b'.

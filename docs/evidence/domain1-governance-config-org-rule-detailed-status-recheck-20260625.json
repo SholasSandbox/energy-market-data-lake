@@ -1,0 +1,24 @@
+{
+    "OrganizationConfigRuleDetailedStatus": [
+        {
+            "AccountId": "464975959576",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T09:17:27.277000+01:00"
+        },
+        {
+            "AccountId": "955659429518",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T09:17:27.277000+01:00"
+        },
+        {
+            "AccountId": "349687196588",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_FAILED",
+            "ErrorCode": "UnableToAssumeServiceLinkedRoleException",
+            "ErrorMessage": "AWS Config can't assume the service-linked role (SLR) because this is an organization management account and you have used a delegated administrator for organizational deployment. You must create the SLR separately using IAM.",
+            "LastUpdateTime": "2026-06-25T09:17:27.277000+01:00"
+        }
+    ]
+}

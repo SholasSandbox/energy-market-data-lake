@@ -1,0 +1,26 @@
+{
+    "Role": {
+        "Path": "/aws-service-role/config-multiaccountsetup.amazonaws.com/",
+        "RoleName": "AWSServiceRoleForConfigMultiAccountSetup",
+        "RoleId": "AROA55AN5U2HHF3LQEYYE",
+        "Arn": "arn:aws:iam::955659429518:role/aws-service-role/config-multiaccountsetup.amazonaws.com/AWSServiceRoleForConfigMultiAccountSetup",
+        "CreateDate": "2026-06-24T15:46:36+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "config-multiaccountsetup.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        },
+        "MaxSessionDuration": 3600,
+        "RoleLastUsed": {
+            "LastUsedDate": "2026-06-25T09:17:52+00:00",
+            "Region": "us-east-1"
+        }
+    }
+}

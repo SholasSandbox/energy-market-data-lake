@@ -1,0 +1,16 @@
+{
+    "EnabledServicePrincipals": [
+        {
+            "ServicePrincipal": "account.amazonaws.com",
+            "DateEnabled": "2026-06-24T01:48:45.655000+01:00"
+        },
+        {
+            "ServicePrincipal": "cloudtrail.amazonaws.com",
+            "DateEnabled": "2026-06-24T13:35:58.192000+01:00"
+        },
+        {
+            "ServicePrincipal": "sso.amazonaws.com",
+            "DateEnabled": "2026-05-08T15:54:29.643000+01:00"
+        }
+    ]
+}

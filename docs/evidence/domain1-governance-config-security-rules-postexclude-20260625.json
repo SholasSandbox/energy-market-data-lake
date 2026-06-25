@@ -1,0 +1,24 @@
+{
+    "ConfigRules": [
+        {
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "ConfigRuleArn": "arn:aws:config:eu-west-2:955659429518:config-rule/aws-service-rule/config-multiaccountsetup.amazonaws.com/config-rule-kc7jqr",
+            "ConfigRuleId": "config-rule-kc7jqr",
+            "Description": "Detect at least one multi-Region CloudTrail using the central archive bucket and management events.",
+            "Scope": {},
+            "Source": {
+                "Owner": "AWS",
+                "SourceIdentifier": "MULTI_REGION_CLOUD_TRAIL_ENABLED"
+            },
+            "InputParameters": "{\"s3BucketName\":\"org-cloudtrail-log-archive-955659429518-eu-west-2\",\"includeManagementEvents\":\"true\",\"readWriteType\":\"ALL\"}",
+            "MaximumExecutionFrequency": "TwentyFour_Hours",
+            "ConfigRuleState": "ACTIVE",
+            "CreatedBy": "config-multiaccountsetup.amazonaws.com",
+            "EvaluationModes": [
+                {
+                    "Mode": "DETECTIVE"
+                }
+            ]
+        }
+    ]
+}

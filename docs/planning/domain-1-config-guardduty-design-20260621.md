@@ -265,8 +265,9 @@ This note does not complete implementation. The following remain open:
   governance aggregation artifacts;
 - choose the exact initial AWS Config resource exclusions, if any;
 - define the starter AWS Config managed ruleset explicitly;
-- decide whether the sandbox account should use continuous recording or a more
-  scoped approach after cost observation;
+- keep the sandbox account in the same continuous-recording baseline for now
+  because it is becoming a real container/microservices workload boundary, then
+  revisit scoped exclusions only after cost observation;
 - choose the exact GuardDuty Region set for first enablement;
 - decide which optional GuardDuty protection plan, if any, is the first
   workload-justified candidate;

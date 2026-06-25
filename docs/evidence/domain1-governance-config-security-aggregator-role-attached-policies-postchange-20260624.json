@@ -1,0 +1,8 @@
+{
+    "AttachedPolicies": [
+        {
+            "PolicyName": "AWSConfigRoleForOrganizations",
+            "PolicyArn": "arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations"
+        }
+    ]
+}

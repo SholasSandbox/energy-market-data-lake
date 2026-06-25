@@ -1,0 +1,39 @@
+{
+    "AggregatedSourceStatusList": [
+        {
+            "SourceId": "Organization",
+            "SourceType": "ORGANIZATION",
+            "AwsRegion": "eu-west-2",
+            "LastUpdateStatus": "SUCCEEDED",
+            "LastUpdateTime": "2026-06-24T16:45:13.551000+01:00"
+        },
+        {
+            "SourceId": "974893866311",
+            "SourceType": "ACCOUNT",
+            "AwsRegion": "eu-west-2",
+            "LastUpdateStatus": "SUCCEEDED",
+            "LastUpdateTime": "2026-06-24T16:50:51.191000+01:00"
+        },
+        {
+            "SourceId": "955659429518",
+            "SourceType": "ACCOUNT",
+            "AwsRegion": "eu-west-2",
+            "LastUpdateStatus": "SUCCEEDED",
+            "LastUpdateTime": "2026-06-24T21:25:10.779000+01:00"
+        },
+        {
+            "SourceId": "349687196588",
+            "SourceType": "ACCOUNT",
+            "AwsRegion": "eu-west-2",
+            "LastUpdateStatus": "SUCCEEDED",
+            "LastUpdateTime": "2026-06-25T03:47:04.358000+01:00"
+        },
+        {
+            "SourceId": "464975959576",
+            "SourceType": "ACCOUNT",
+            "AwsRegion": "eu-west-2",
+            "LastUpdateStatus": "SUCCEEDED",
+            "LastUpdateTime": "2026-06-25T05:15:40.579000+01:00"
+        }
+    ]
+}
