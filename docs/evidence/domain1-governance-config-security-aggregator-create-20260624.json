@@ -1,0 +1,15 @@
+{
+    "ConfigurationAggregator": {
+        "ConfigurationAggregatorName": "organization-config-aggregator-eu-west-2",
+        "ConfigurationAggregatorArn": "arn:aws:config:eu-west-2:955659429518:config-aggregator/config-aggregator-lav3u1uy",
+        "OrganizationAggregationSource": {
+            "RoleArn": "arn:aws:iam::955659429518:role/aws-config-organization-aggregator-role",
+            "AwsRegions": [
+                "eu-west-2"
+            ],
+            "AllAwsRegions": false
+        },
+        "CreationTime": "2026-06-24T16:45:12.301000+01:00",
+        "LastUpdatedTime": "2026-06-24T16:45:12.301000+01:00"
+    }
+}

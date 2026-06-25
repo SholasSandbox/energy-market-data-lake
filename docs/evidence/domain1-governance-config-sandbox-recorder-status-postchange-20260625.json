@@ -1,0 +1,12 @@
+{
+    "ConfigurationRecordersStatus": [
+        {
+            "arn": "arn:aws:config:eu-west-2:974893866311:configuration-recorder/default/elr0f9cco967wi5y",
+            "name": "default",
+            "lastStartTime": "2026-06-25T13:25:41.194000+01:00",
+            "recording": true,
+            "lastStatus": "PENDING",
+            "lastStatusChangeTime": "2026-06-25T13:25:41.194000+01:00"
+        }
+    ]
+}

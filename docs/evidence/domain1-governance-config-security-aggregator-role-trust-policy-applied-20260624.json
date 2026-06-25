@@ -1,0 +1,21 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowConfigToAssumeOrganizationAggregatorRole",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceAccount": "955659429518"
+        },
+        "ArnLike": {
+          "AWS:SourceArn": "arn:aws:config:eu-west-2:955659429518:*"
+        }
+      }
+    }
+  ]
+}

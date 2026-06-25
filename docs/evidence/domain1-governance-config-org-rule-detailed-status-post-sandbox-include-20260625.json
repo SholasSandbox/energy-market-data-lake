@@ -1,0 +1,28 @@
+{
+    "OrganizationConfigRuleDetailedStatus": [
+        {
+            "AccountId": "349687196588",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T13:32:40.721000+01:00"
+        },
+        {
+            "AccountId": "464975959576",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T13:32:40.721000+01:00"
+        },
+        {
+            "AccountId": "955659429518",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T13:32:40.721000+01:00"
+        },
+        {
+            "AccountId": "974893866311",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T13:32:40.721000+01:00"
+        }
+    ]
+}

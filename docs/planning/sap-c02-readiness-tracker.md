@@ -11,7 +11,7 @@
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
 **Last repository reconciliation:** 2026-06-18
 **Last practice evidence update:** 2026-06-19
-**Last tutorial evidence update:** 2026-06-21
+**Last tutorial evidence update:** 2026-06-25
 
 ---
 
@@ -197,7 +197,7 @@ for both workspaces.
 | Week starting | Target hours | Actual hours | Build hours | Study hours | Practice hours | Notes |
 |---|---:|---:|---:|---:|---:|---|
 | 2026-06-15 | 10–12 | 20 | 6 | 10 | 4 | Tutorial Lesson 26 evidence: `/Users/[redacted-user]/Kiro-Workspace/handlers/learning-summary.md`; Glue/Athena IAM evidence: `docs/evidence/glue-athena-iam-live-verification-20260615.md`; practice blocks: Sections 8 and 9 below |
-| 2026-06-22 | 10–12 |  |  |  |  | Tutorial dependency and handler-boundary hardening + lakehouse IAM hardening |
+| 2026-06-22 | 10–12 |  |  |  |  | Tutorial hardening evidence now includes Lesson 28 boundary isolation and the Ruff formatting baseline in `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; lakehouse IAM hardening |
 | 2026-06-29 | 10–12 |  |  |  |  | Serverless resilience + Glue/Athena IAM hardening |
 | 2026-07-06 | 10–12 |  |  |  |  | Tutorial evidence + lakehouse Domain 2 closure review |
 | 2026-07-13 | 10–12 |  |  |  |  | IAM foundation |
@@ -229,6 +229,9 @@ for both workspaces.
 | Date | Workspace lesson | Status | SAP-C02 mapping | Evidence and boundary |
 |---|---|---|---|---|
 | 2026-06-21 | Python/serverless Lesson 26: idempotency and duplicate persistence protection | Completed locally | Domain 2 resilience; Domain 3 continuous improvement | `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; 168 tests passed; fake conditional-check exception injected at `persist_trade_status_record`; no AWS deployment; not lakehouse implementation evidence |
+| 2026-06-21 | Python/serverless Lesson 27: consolidation review | Completed locally | Domain 3 operational excellence | `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; naming/import/formatting cleanup recorded; README/git-baseline note refreshed; 168 tests passed; no AWS deployment; not lakehouse implementation evidence |
+| 2026-06-25 | Python/serverless Lesson 28: persistence handler boundary hardening | Completed locally | Domain 3 operational excellence; Domain 2 resilience | `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; strict input validation, typed helpers, structured error responses, and 36 new handler-boundary tests recorded; 204 tests passed; no AWS deployment; not lakehouse implementation evidence |
+| 2026-06-25 | Python/serverless Ruff formatting baseline | Completed locally | Domain 3 operational excellence | `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; `ruff` added to `pyproject.toml`; consistent style applied across 20 tutorial source/test files; 204 tests passed with no behaviour changes; no AWS deployment; not lakehouse implementation evidence |
 
 ---
 
@@ -239,8 +242,8 @@ Official SAP-C02 domains:
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
 | Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, selected Cost Allocation Tag activation, and governance preflight evidence exist; final OU design, SCPs, Identity Center, central logging, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, two 20-question practice blocks, and separate Lesson 26 idempotency tutorial evidence are complete; practice review and later networking/DR decisions remain open |
-| Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, cost guardrails, and separate Lesson 26 idempotency tutorial evidence exist; systematic improvement notes and remaining hardening are open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, two 20-question practice blocks, and separate tutorial evidence through Lesson 28 are complete; practice review and later networking/DR decisions remain open |
+| Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, cost guardrails, and separate Lessons 26-28 tutorial hardening evidence plus the 204-test tutorial baseline exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Partial | Exercise 002 exposed a rehost-vs-refactor/MGN weak area; 6 Rs, MGN, DMS, DataSync, Snow Family, Storage Gateway, and migration playbook artifacts remain open |
 
 ### Weekly domain focus
@@ -401,7 +404,7 @@ AWS Organization
 | Break-glass access model documented | Design accepted | Break-glass target recorded in ADR 0005 and procedure recorded in `docs/runbooks/break-glass-access-procedure.md`; live principal, alerting, and review implementation remain open |
 | SCP catalogue drafted | Partial live evidence | Accepted SCP catalogue recorded in ADR 0005; example policy files recorded in `docs/policies/scp/`; the first live OU-targeted `DenyLeavingOrganization` attempt, rollback, root policy-type enablement, and successful retry are recorded in `docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`, `docs/evidence/domain1-governance-enable-scp-root-change-note-20260622.md`, and `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md` |
 | CloudTrail organization trail design documented | Verified | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention/delete-protection design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; earlier baseline evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-log-archive-change-note-20260622.md`; fresh post-account baseline evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-management-sts-prechange-20260624.json`, `docs/evidence/domain1-governance-cloudtrail-service-access-prechange-20260624.json`, `docs/evidence/domain1-governance-cloudtrail-list-prechange-20260624.json`, and the paired security-account prechange files; exact policy examples are recorded in `docs/policies/s3-cloudtrail-log-archive-bucket-policy.example.json`, `docs/policies/kms-cloudtrail-log-archive-key-policy.example.json`, and `docs/policies/s3-cloudtrail-log-archive-encryption.example.json`; live storage evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-log-archive-storage-change-note-20260624.md`; live trusted-access, organization-trail, and first delivered log/digest evidence are now recorded in `docs/evidence/domain1-governance-cloudtrail-organization-trail-change-note-20260624.md` |
-| AWS Config design documented | Partial | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed recorder scope, aggregation, rule, and cost-control design recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; live enablement remains open |
+| AWS Config design documented | Partial live evidence | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed recorder scope, aggregation, rule, and cost-control design recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; fresh baseline evidence is recorded in `docs/evidence/domain1-governance-config-*-prechange-20260624.json`, the follow-on lakehouse prechange evidence is recorded in `docs/evidence/domain1-governance-config-lakehouse-*-prechange-20260625.json`, the follow-on security-account prechange evidence is recorded in `docs/evidence/domain1-governance-config-security-*-prechange-20260625.json`, and the follow-on sandbox prechange evidence is recorded in `docs/evidence/domain1-governance-config-sandbox-*-prechange-20260625.json`; exact storage and role-trust policy examples are recorded in `docs/policies/s3-config-log-archive-bucket-policy.example.json`, `docs/policies/kms-config-log-archive-key-policy.example.json`, `docs/policies/s3-config-log-archive-encryption.example.json`, and `docs/policies/iam-config-organization-aggregator-role-trust-policy.example.json`; live storage evidence is recorded in `docs/evidence/domain1-governance-config-log-archive-storage-change-note-20260624.md`; live trusted access, delegated administration, and organization aggregation are recorded in `docs/evidence/domain1-governance-config-organization-aggregation-change-note-20260624.md`; the live management-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-management-recorder-change-note-20260624.md`; the live lakehouse-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-lakehouse-recorder-change-note-20260625.md`; the live security-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-security-recorder-change-note-20260625.md`; the first live organization CloudTrail rule, the sandbox-recorder gap, the management-account `AWSServiceRoleForConfigMultiAccountSetup` blocker, the management-account SLR fix, the temporary sandbox exclusion, and final successful deployment across management, lakehouse, security, and sandbox accounts are recorded in `docs/evidence/domain1-governance-config-org-cloudtrail-rule-change-note-20260625.md`; the live sandbox-account recorder rollout plus the central bucket/KMS policy extension needed to enable it are recorded in `docs/evidence/domain1-governance-config-sandbox-recorder-change-note-20260625.md`; additional Config rules remain open, but the first organization CloudTrail detective control now covers all four intended accounts |
 | GuardDuty/Security Hub concept documented | Partial | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed GuardDuty delegated-admin and cost-control design plus Security Hub defer/adopt decision recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; live enablement remains open |
 | Cost allocation tags defined | Verified | Common Terraform tags exist; selected Billing Cost Allocation Tags were activated from the Organizations management account on 2026-06-17 |
 | Budget alarms configured | Partial | A live `$1` managed-workflow AWS Budget with notifications is verified; broader workload/account budget design remains open |
@@ -797,6 +800,80 @@ phase plans from drifting apart again.
   account, start logging, and capture the first postchange trail and
   bucket-path evidence:
   `docs/evidence/domain1-governance-cloudtrail-organization-trail-change-note-20260624.md`.
+- [x] Capture the first AWS Config baseline evidence across the management,
+  lakehouse, and security accounts, including the current trusted-access and
+  delegated-administrator gaps:
+  `docs/evidence/domain1-governance-config-*-prechange-20260624.json`.
+- [x] Write the exact dedicated AWS Config archive bucket policy and KMS key
+  policy examples for the security-account storage target:
+  `docs/policies/s3-config-log-archive-bucket-policy.example.json` and
+  `docs/policies/kms-config-log-archive-key-policy.example.json`.
+- [x] Write the exact delegated-admin organization-aggregator trust-policy
+  example for the AWS Config security-account role:
+  `docs/policies/iam-config-organization-aggregator-role-trust-policy.example.json`.
+- [x] Package the next narrow `Security Log Archive` storage-step live change
+  for the AWS Config bucket and KMS key:
+  `docs/evidence/domain1-governance-config-log-archive-storage-change-note-20260624.md`.
+- [x] Under explicit approval, create the dedicated AWS Config archive bucket
+  and customer-managed KMS key in the `Security Log Archive` account, enable
+  Block Public Access, versioning, and SSE-KMS default encryption, apply the
+  resolved bucket and key policies, and confirm that no recorder, delivery
+  channel, or aggregator was created as part of the storage-only step:
+  `docs/evidence/domain1-governance-config-log-archive-storage-change-note-20260624.md`.
+- [x] Under explicit approval, enable `config.amazonaws.com` and
+  `config-multiaccountsetup.amazonaws.com` trusted access, register
+  `Security Log Archive` (`955659429518`) as delegated administrator for both
+  service principals, create IAM role
+  `aws-config-organization-aggregator-role`, and create aggregator
+  `organization-config-aggregator-eu-west-2` in `eu-west-2`, while confirming
+  that no recorder, delivery channel, or rule was created as part of the
+  control-plane step:
+  `docs/evidence/domain1-governance-config-organization-aggregation-change-note-20260624.md`.
+- [x] Under explicit approval, create the management-account AWS Config
+  service-linked role, create and start the first customer managed recorder and
+  delivery channel in `eu-west-2`, trigger a snapshot delivery into the
+  security-account archive bucket, and confirm successful delivery plus
+  preserved organization aggregation:
+  `docs/evidence/domain1-governance-config-management-recorder-change-note-20260624.md`.
+- [x] Under explicit approval, create the lakehouse-account AWS Config
+  service-linked role, create and start the next customer managed recorder and
+  delivery channel in `eu-west-2`, trigger a snapshot delivery into the
+  security-account archive bucket, and confirm successful recorder plus
+  delivery-channel status without changing the existing organization
+  aggregation boundary:
+  `docs/evidence/domain1-governance-config-lakehouse-recorder-change-note-20260625.md`.
+- [x] Under explicit approval, create the security-account AWS Config
+  service-linked role, create and start the final intended customer managed
+  recorder and delivery channel in `eu-west-2`, trigger a snapshot delivery
+  into the security-account archive bucket, and confirm successful recorder,
+  delivery-channel, bucket-object, and preserved aggregation evidence without
+  enabling Config rules:
+  `docs/evidence/domain1-governance-config-security-recorder-change-note-20260625.md`.
+- [x] Under explicit approval, create the first organization AWS Config managed
+  rule from the delegated-admin security account using
+  `MULTI_REGION_CLOUD_TRAIL_ENABLED`, capture the sandbox-recorder blocker in
+  `974893866311`, narrow the rule by excluding that sandbox account for now,
+  resolve the management-account
+  `AWSServiceRoleForConfigMultiAccountSetup` blocker, retry the same bounded
+  deployment, and record final successful deployment across management,
+  lakehouse, and security accounts:
+  `docs/evidence/domain1-governance-config-org-cloudtrail-rule-change-note-20260625.md`.
+- [x] Re-check `org-multi-region-cloudtrail-enabled` until management account
+  `349687196588` no longer reports `UPDATE_IN_PROGRESS`, resolve the
+  management-account `AWSServiceRoleForConfigMultiAccountSetup` blocker, and
+  refresh the evidence:
+  `docs/evidence/domain1-governance-config-org-cloudtrail-rule-change-note-20260625.md`.
+- [x] Under explicit approval, extend the central Config archive bucket and
+  Config KMS key policies to include sandbox account `974893866311`, create
+  the sandbox-account AWS Config service-linked role, recorder, and delivery
+  channel in `eu-west-2`, trigger a snapshot delivery into the central archive
+  bucket, and confirm successful recorder, delivery-channel, and bucket-object
+  evidence without yet changing the current organization rule exclusion:
+  `docs/evidence/domain1-governance-config-sandbox-recorder-change-note-20260625.md`.
+- [x] Update `org-multi-region-cloudtrail-enabled` so sandbox account
+  `974893866311` is no longer excluded, then verify successful organization
+  rule deployment across management, lakehouse, security, and sandbox:
+  `docs/evidence/domain1-governance-config-org-cloudtrail-rule-change-note-20260625.md`.
 - [ ] Before any live root-user emergency-only SCP attachment, confirm MFA on
   the relevant emergency principals, generate/store the out-of-band backup
   material, and record a light procedural validation of the notification and

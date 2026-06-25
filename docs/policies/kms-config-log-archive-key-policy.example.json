@@ -1,0 +1,109 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnableAccountIAMDelegation",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::REPLACE_WITH_SECURITY_ACCOUNT_ID:root"
+      },
+      "Action": "kms:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowConfigUseFromManagementAccount",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_MANAGEMENT_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_MANAGEMENT_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowConfigUseFromLakehouseAccount",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowConfigUseFromSecurityAccount",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_SECURITY_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SECURITY_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowConfigUseFromSandboxAccount",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_SANDBOX_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SANDBOX_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowAuditReadersDecrypt",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::REPLACE_WITH_SECURITY_ACCOUNT_ID:role/OrganizationAccountAccessRole",
+          "REPLACE_WITH_ADDITIONAL_AUDIT_PRINCIPAL_ARN"
+        ]
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

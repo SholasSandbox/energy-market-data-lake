@@ -1,0 +1,12 @@
+{
+    "DeliveryChannels": [
+        {
+            "name": "default",
+            "s3BucketName": "org-config-log-archive-955659429518-eu-west-2",
+            "s3KmsKeyArn": "arn:aws:kms:eu-west-2:955659429518:key/8078ec71-b17b-4826-b904-8cf62c0ad94b",
+            "configSnapshotDeliveryProperties": {
+                "deliveryFrequency": "TwentyFour_Hours"
+            }
+        }
+    ]
+}

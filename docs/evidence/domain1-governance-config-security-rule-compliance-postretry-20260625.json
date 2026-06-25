@@ -1,0 +1,10 @@
+{
+    "ComplianceByConfigRules": [
+        {
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "Compliance": {
+                "ComplianceType": "COMPLIANT"
+            }
+        }
+    ]
+}

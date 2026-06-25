@@ -1,0 +1,213 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AWSConfigBucketPermissionsCheckManagement",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:GetBucketAcl",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_MANAGEMENT_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_MANAGEMENT_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketExistenceCheckManagement",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_MANAGEMENT_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_MANAGEMENT_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketDeliveryManagement",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME/AWSLogs/REPLACE_WITH_MANAGEMENT_ACCOUNT_ID/Config/*",
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceAccount": "REPLACE_WITH_MANAGEMENT_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_MANAGEMENT_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketPermissionsCheckLakehouse",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:GetBucketAcl",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketExistenceCheckLakehouse",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketDeliveryLakehouse",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME/AWSLogs/REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID/Config/*",
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceAccount": "REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_LAKEHOUSE_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketPermissionsCheckSecurity",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:GetBucketAcl",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_SECURITY_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SECURITY_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketExistenceCheckSecurity",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_SECURITY_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SECURITY_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketDeliverySecurity",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME/AWSLogs/REPLACE_WITH_SECURITY_ACCOUNT_ID/Config/*",
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceAccount": "REPLACE_WITH_SECURITY_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SECURITY_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketPermissionsCheckSandbox",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:GetBucketAcl",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_SANDBOX_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SANDBOX_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketExistenceCheckSandbox",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "REPLACE_WITH_SANDBOX_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SANDBOX_ACCOUNT_ID:*"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketDeliverySandbox",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_CONFIG_LOG_ARCHIVE_BUCKET_NAME/AWSLogs/REPLACE_WITH_SANDBOX_ACCOUNT_ID/Config/*",
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceAccount": "REPLACE_WITH_SANDBOX_ACCOUNT_ID"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:REPLACE_WITH_HOME_REGION:REPLACE_WITH_SANDBOX_ACCOUNT_ID:*"
+        }
+      }
+    }
+  ]
+}

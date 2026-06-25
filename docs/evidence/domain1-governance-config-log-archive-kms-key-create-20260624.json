@@ -1,0 +1,21 @@
+{
+    "KeyMetadata": {
+        "AWSAccountId": "955659429518",
+        "KeyId": "8078ec71-b17b-4826-b904-8cf62c0ad94b",
+        "Arn": "arn:aws:kms:eu-west-2:955659429518:key/8078ec71-b17b-4826-b904-8cf62c0ad94b",
+        "CreationDate": "2026-06-24T15:09:05.137000+01:00",
+        "Enabled": true,
+        "Description": "AWS Config log archive key for centralized governance evidence",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "KeyState": "Enabled",
+        "Origin": "AWS_KMS",
+        "KeyManager": "CUSTOMER",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "KeySpec": "SYMMETRIC_DEFAULT",
+        "EncryptionAlgorithms": [
+            "SYMMETRIC_DEFAULT"
+        ],
+        "MultiRegion": false,
+        "CurrentKeyMaterialId": "2214016a111fbeb4f8f5bf8849d9d8ae735455faa59a960ee04d04668ac5f684"
+    }
+}

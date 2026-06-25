@@ -1,0 +1,5 @@
+
+aws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name AWSServiceRoleForConfigMultiAccountSetup cannot be found.
+
+Additional error details:
+Type: Sender

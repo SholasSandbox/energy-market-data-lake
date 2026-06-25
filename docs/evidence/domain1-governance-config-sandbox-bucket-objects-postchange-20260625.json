@@ -1,0 +1,28 @@
+{
+    "Contents": [
+        {
+            "Key": "AWSLogs/974893866311/Config/ConfigWritabilityCheckFile",
+            "LastModified": "2026-06-25T12:25:44+00:00",
+            "ETag": "\"3eb726da43f7ff697598dc601e12e4a0\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "AWSLogs/974893866311/Config/eu-west-2/2026/6/25/ConfigSnapshot/974893866311_Config_eu-west-2_ConfigSnapshot_20260625T122543Z_8399e6d0-1793-4621-a169-94d90f1a69e3.json.gz",
+            "LastModified": "2026-06-25T12:25:44+00:00",
+            "ETag": "\"69a414382c259638862e0687780fa251\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 537,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "RequestCharged": null,
+    "Prefix": "AWSLogs/974893866311/Config/"
+}

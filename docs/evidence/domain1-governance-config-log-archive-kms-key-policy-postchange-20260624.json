@@ -1,0 +1,86 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnableAccountIAMDelegation",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::955659429518:root"
+      },
+      "Action": "kms:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowConfigUseFromManagementAccount",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "349687196588"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:eu-west-2:349687196588:*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowConfigUseFromLakehouseAccount",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "464975959576"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:eu-west-2:464975959576:*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowConfigUseFromSecurityAccount",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "955659429518"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:eu-west-2:955659429518:*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowAuditReadersDecrypt",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::955659429518:role/OrganizationAccountAccessRole"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+[
+    {
+        "AliasName": "alias/org-aws-config-log-archive",
+        "AliasArn": "arn:aws:kms:eu-west-2:955659429518:alias/org-aws-config-log-archive",
+        "TargetKeyId": "8078ec71-b17b-4826-b904-8cf62c0ad94b",
+        "CreationDate": "2026-06-24T15:09:05.798000+01:00",
+        "LastUpdatedDate": "2026-06-24T15:09:05.798000+01:00"
+    }
+]

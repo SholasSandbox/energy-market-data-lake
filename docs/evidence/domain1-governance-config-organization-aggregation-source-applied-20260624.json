@@ -1,0 +1,5 @@
+{
+  "RoleArn": "arn:aws:iam::955659429518:role/aws-config-organization-aggregator-role",
+  "AwsRegions": ["eu-west-2"],
+  "AllAwsRegions": false
+}
