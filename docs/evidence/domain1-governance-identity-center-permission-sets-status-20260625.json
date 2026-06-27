@@ -1,0 +1,6 @@
+{
+    "PermissionSets": [
+        "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-7535514a7384530d",
+        "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-753598a7b4667850"
+    ]
+}

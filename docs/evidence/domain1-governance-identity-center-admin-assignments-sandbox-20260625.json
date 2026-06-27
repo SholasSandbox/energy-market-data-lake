@@ -1,0 +1,10 @@
+{
+    "AccountAssignments": [
+        {
+            "AccountId": "974893866311",
+            "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-753598a7b4667850",
+            "PrincipalType": "GROUP",
+            "PrincipalId": "9692f284-a011-700c-1b0a-4919f6ec9baf"
+        }
+    ]
+}

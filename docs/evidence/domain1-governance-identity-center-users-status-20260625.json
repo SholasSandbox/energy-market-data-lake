@@ -1,0 +1,48 @@
+{
+    "Users": [
+        {
+            "IdentityStoreId": "d-9c674fdf75",
+            "UserId": "663212d4-7091-70ab-ecc7-f4c876ab9bf0",
+            "UserName": "breakglass-principal",
+            "Name": {
+                "FamilyName": "breakglass",
+                "GivenName": "[redacted-breakglass-given-name]"
+            },
+            "DisplayName": "breakglass-principal",
+            "Emails": [
+                {
+                    "Value": "[redacted-email]",
+                    "Type": "work",
+                    "Primary": true
+                }
+            ],
+            "UserStatus": "ENABLED",
+            "CreatedAt": "2026-06-25T19:35:42.901000+01:00",
+            "CreatedBy": "349687196588",
+            "UpdatedAt": "2026-06-25T19:41:32.128000+01:00",
+            "UpdatedBy": "AROARH7BBEKHC3XXKEVZZ:i-087b325b40a737fd1"
+        },
+        {
+            "IdentityStoreId": "d-9c674fdf75",
+            "UserId": "b6b262e4-0041-70a7-df00-66e62c9af94a",
+            "UserName": "org-admin-principal",
+            "Name": {
+                "FamilyName": "[redacted-family-name]",
+                "GivenName": "[redacted-owner]"
+            },
+            "DisplayName": "[redacted-admin-display-name]",
+            "Emails": [
+                {
+                    "Value": "[redacted-email]",
+                    "Type": "work",
+                    "Primary": true
+                }
+            ],
+            "UserStatus": "ENABLED",
+            "CreatedAt": "2026-05-08T16:30:52.526000+01:00",
+            "CreatedBy": "349687196588",
+            "UpdatedAt": "2026-06-06T00:36:00.861000+01:00",
+            "UpdatedBy": "AROARH7BBEKHC3XXKEVZZ:i-09a5232b12044f3f8"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "PermissionSet": {
+        "Name": "BreakGlassAdmin",
+        "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-7535514a7384530d",
+        "Description": "Emergency recovery access for management-account Organizations and SCP administration",
+        "CreatedDate": "2026-06-25T20:37:32.588000+01:00",
+        "SessionDuration": "PT1H"
+    }
+}

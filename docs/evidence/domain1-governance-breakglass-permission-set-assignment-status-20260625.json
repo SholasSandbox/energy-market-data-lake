@@ -1,0 +1,12 @@
+{
+    "AccountAssignmentCreationStatus": {
+        "Status": "SUCCEEDED",
+        "RequestId": "c8eb8d7d-dc30-45c9-8946-7e61c5cc527a",
+        "TargetId": "349687196588",
+        "TargetType": "AWS_ACCOUNT",
+        "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-7535514a7384530d",
+        "PrincipalType": "USER",
+        "PrincipalId": "663212d4-7091-70ab-ecc7-f4c876ab9bf0",
+        "CreatedDate": "2026-06-25T20:37:47.377000+01:00"
+    }
+}

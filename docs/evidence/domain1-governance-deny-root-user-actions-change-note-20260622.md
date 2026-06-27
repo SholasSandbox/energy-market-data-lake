@@ -31,9 +31,11 @@ Break-glass design state:
 
 - the break-glass procedure exists and defines the target emergency model;
 - the live values are now defined as:
-  emergency owner `[redacted-email]`,
-  primary emergency contact `[redacted-email]`,
-  emergency email notifications to both mailboxes,
+  target emergency owner identity `[redacted-email]`,
+  current active emergency contact mailbox
+  `[redacted-email]`,
+  retirement of `[redacted-email]` from the active contact path,
+  emergency email notifications now centered on the emergency-owner mailbox,
   emergency SMS to `[redacted-phone]`,
   Google Password Manager as the primary cross-platform recovery store,
   an out-of-band backup requirement outside the repository and the primary
@@ -42,8 +44,18 @@ Break-glass design state:
   `docs/evidence/domain1-governance-break-glass-usage-YYYYMMDD.md`,
   workload-account-first scope for the current OU-targeted guardrail,
   and a defined post-use reduction path;
+- follow-on 2026-06-25 same-day IAM Identity Center evidence now clarifies
+  that the current live management-account admin principal is
+  `org-admin-principal` / `[redacted-email]`, that a
+  dedicated break-glass IAM Identity Center user now exists as
+  `breakglass-principal` / `[redacted-email]` with one enrolled
+  MFA device, and that a dedicated `BreakGlassAdmin` permission set now exists
+  with a direct management-account assignment for that user;
+- the management account is not the SCP target for this OU-level guardrail, but
+  it remains in the Organizations attach/detach rollback path unless explicit
+  delegated Organizations policy management is later implemented;
 - the remaining live-readiness checks are now narrower:
-  confirm MFA on the relevant emergency principals,
+  confirm root-user and management-account-path MFA evidence,
   generate and store the out-of-band backup material,
   confirm notification reachability,
   and record a light procedural validation;
@@ -57,6 +69,7 @@ Evidence:
 - `docs/evidence/domain1-governance-deny-root-user-actions-roots-prechange-20260622.json`
 - `docs/evidence/domain1-governance-deny-root-user-actions-lakehouse-ou-policies-prechange-20260622.json`
 - `docs/evidence/domain1-governance-deny-root-user-actions-lakehouse-ou-accounts-prechange-20260622.json`
+- `docs/evidence/domain1-governance-identity-center-current-state-20260625.md`
 - `docs/runbooks/break-glass-access-procedure.md`
 - `docs/policies/scp/README.md`
 
@@ -193,7 +206,10 @@ Current interpretation:
   `DenyLeavingOrganization`;
 - the blocker is not OU structure or SCP mechanics;
 - the blocker is now narrower than before:
-  the owner, contact, notification, storage, evidence, scope, and reduction
-  values are defined, but MFA confirmation, out-of-band backup generation, and
-  procedural validation are still required before a root-user restriction can
-  be attached responsibly.
+  the target owner, contact, notification, storage, evidence, scope, and
+  reduction values are defined, and the current live principal inventory is now
+  clearer, the dedicated break-glass principal now exists with MFA and a
+  management-account emergency assignment, but out-of-band backup generation,
+  notification-path validation, root-user MFA evidence, and procedural
+  validation are still required before a root-user restriction can be attached
+  responsibly.

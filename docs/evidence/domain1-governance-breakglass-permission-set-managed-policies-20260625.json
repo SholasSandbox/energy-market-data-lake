@@ -1,0 +1,8 @@
+{
+    "AttachedManagedPolicies": [
+        {
+            "Name": "AdministratorAccess",
+            "Arn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        }
+    ]
+}

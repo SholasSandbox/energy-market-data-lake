@@ -62,11 +62,16 @@ Before this process can be considered live-ready:
 
 The following values are now recorded for the current governance slice:
 
-- emergency owner: `[redacted-email]`
-- primary emergency contact: `[redacted-email]`
-- emergency-use notifications: email to
-  `[redacted-email]` and `[redacted-email]`, plus SMS to
-  `[redacted-phone]`
+- documented target emergency owner identity:
+  `[redacted-email]`
+- current active emergency contact mailbox:
+  `[redacted-email]`
+- retired contact path: `[redacted-email]` is no longer part of the active
+  break-glass design and should not be used for future notification testing
+- recorded emergency-use notifications currently include email to
+  `[redacted-email]` plus SMS to `[redacted-phone]`; any secondary
+  notification recipient must be re-recorded explicitly before restrictive SCP
+  rollout
 - credential and recovery storage: Google Password Manager as the primary
   cross-platform store
 - out-of-band backup requirement: keep Google backup codes and a short AWS root
@@ -76,11 +81,31 @@ The following values are now recorded for the current governance slice:
   CLI output and screenshots where safe
 - current scope: workload-account emergency recovery is the active design
   priority for OU-targeted root-user guardrails; the management account remains
-  a separate last-resort recovery path and is not in scope for the current OU
-  SCP attachment
+  out of scope as an SCP target for the current OU attachment, but it remains
+  in scope for Organizations control-plane rollback and recovery until
+  delegated Organizations policy management is explicitly implemented
 - post-use access reduction path: remove temporary access, confirm MFA remains
   enabled, review CloudTrail or equivalent audit evidence, rotate any exposed
   or newly created credentials, and document the follow-up action
+
+Follow-on clarification from 2026-06-25 same-day IAM Identity Center evidence:
+
+- the current live management-account admin principal used for Organizations
+  recovery is
+  `org-admin-principal` /
+  `[redacted-email]`;
+- a dedicated IAM Identity Center user now exists for the documented target
+  emergency owner identity:
+  `breakglass-principal` / `[redacted-email]`;
+- that dedicated break-glass user shows one enrolled MFA device in same-day
+  console evidence;
+- a dedicated `BreakGlassAdmin` permission set now exists with `PT1H` session
+  duration and the AWS-managed `AdministratorAccess` policy attached as the
+  first staged implementation;
+- that permission set is currently assigned only to the management account for
+  user `breakglass-principal`;
+- the current live principal inventory is recorded in
+  `docs/evidence/domain1-governance-identity-center-current-state-20260625.md`.
 
 For this repository, "out-of-band backup" means recovery material that is not
 available only through the same day-to-day Google sign-in path or the same
@@ -95,7 +120,8 @@ primary machine. Acceptable examples include:
 
 Before a root-user emergency-only SCP is attached live:
 
-- confirm MFA on the relevant root user and any emergency principal;
+- confirm MFA on the relevant root user and preserve the MFA evidence for the
+  management-account recovery path;
 - generate and store the out-of-band backup codes and recovery note;
 - confirm the notification path is reachable in practice; and
 - record a light procedural validation of the evidence and reduction path.

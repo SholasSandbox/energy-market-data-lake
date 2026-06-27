@@ -1,0 +1,22 @@
+{
+    "AccountAssignments": [
+        {
+            "AccountId": "349687196588",
+            "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-753598a7b4667850",
+            "PrincipalType": "GROUP",
+            "PrincipalId": "96828204-a021-7096-12d7-85afa6c75ffa"
+        },
+        {
+            "AccountId": "349687196588",
+            "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-753598a7b4667850",
+            "PrincipalType": "USER",
+            "PrincipalId": "b6b262e4-0041-70a7-df00-66e62c9af94a"
+        },
+        {
+            "AccountId": "349687196588",
+            "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-753598a7b4667850",
+            "PrincipalType": "GROUP",
+            "PrincipalId": "9692f284-a011-700c-1b0a-4919f6ec9baf"
+        }
+    ]
+}

@@ -87,6 +87,24 @@ Use only for emergency recovery. The permission set should be assigned to the
 minimum possible number of owners, protected with MFA, monitored, and reviewed
 after every use.
 
+Same-day 2026-06-25 evidence now shows that the current IAM Identity Center
+instance has one enabled live admin principal,
+`org-admin-principal` / `[redacted-email]`, one dedicated
+emergency principal,
+`breakglass-principal` / `[redacted-email]`, and two visible
+permission sets, `AdministratorAccess` and `BreakGlassAdmin`. The first staged
+`BreakGlassAdmin` implementation is now live with `PT1H` session duration,
+AWS-managed `AdministratorAccess`, and a direct management-account assignment
+for `breakglass-principal`:
+`docs/evidence/domain1-governance-identity-center-current-state-20260625.md`.
+
+The current repository now uses the staged combination that was recommended:
+`BreakGlassAdmin` is backed initially by the AWS-managed
+`AdministratorAccess` policy, kept to a short one-hour session, targeted only
+at the management account, and assigned only to the dedicated emergency
+principal. A later hardening pass can replace that broad base with a custom
+policy once the exact Organizations and recovery action set is proven.
+
 ## Assignment Rules
 
 - Assign management-account administration only from the management account.
@@ -97,15 +115,18 @@ after every use.
 
 ## Open Items Before Live Use
 
-- Decide the actual Identity Center users or groups.
-- Decide whether the first implementation uses AWS-managed policies, custom
-  policies, or a staged combination.
+- Keep the existing `org-admin-principal` principal as the normal
+  management-account administrator, not the primary dedicated break-glass
+  identity.
+- Decide whether the next hardening step should move the break-glass assignment
+  from a direct user assignment to a single-purpose emergency group.
 - Write custom permission-set policy documents where broad AWS-managed policies
   are too permissive.
-- Capture read-only evidence of the current Identity Center instance and
-  account assignments.
+- Reconcile notification recipients and MFA ownership with the actual live
+  Identity Center principal inventory.
 - Create rollback steps for removing each assignment.
-- Obtain explicit approval before creating or assigning permission sets.
+- Keep explicit approval as a prerequisite before changing this permission set,
+  broadening its account scope, or adding more principals.
 
 ## SAP-C02 Relevance
 
