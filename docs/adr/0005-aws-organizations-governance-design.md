@@ -42,7 +42,8 @@ AWS Organization
 |   `-- SCP administration
 |
 |-- Security OU
-|   `-- Future security/log archive account
+|   |-- Log Archive account
+|   `-- Security Tooling account
 |
 |-- Lakehouse Workloads OU
 |   `-- Energy Data Lakehouse workload account
@@ -57,6 +58,51 @@ AWS Organization
 Use the management account only as the control plane. Keep lakehouse runtime
 services in the workload member account. Keep the container-lab account in
 separate sandbox scope.
+
+For the longer-term security boundary, prefer two separate security accounts
+over one permanently combined security/log archive account:
+
+- a write-mostly `Log Archive` account that owns the organization CloudTrail
+  archive bucket, AWS Config archive bucket, the related KMS keys, and
+  retention or delete-protection controls; and
+- a separate `Security Tooling` account that owns delegated-administrator and
+  security-operations functions such as the AWS Config aggregator, GuardDuty
+  delegated administration, OAM/cross-account observability, possible later
+  Security Hub administration, and read-only investigation tooling.
+
+Reason:
+
+- it separates tamper-resistant audit storage from day-to-day security-service
+  administration;
+- it keeps the archive account quieter, narrower, and easier to protect with
+  write-mostly access assumptions;
+- it gives GuardDuty, Security Hub, Config aggregation, and future automation a
+  cleaner delegated-administration home without mixing them into evidence
+  storage;
+- it maps more cleanly to the SAP-C02 mental model of centralized logging,
+  delegated security tooling, and separation of duties;
+- it reduces future policy coupling, because archive-bucket protection and
+  security-operations permissions can evolve independently.
+
+The current live `Security Log Archive` account is still a valid transitional
+implementation boundary for this lab. It keeps the first CloudTrail and Config
+rollout small. It is not, however, the preferred steady-state target if the
+security boundary is expanded further.
+
+Accepted transition and sequencing:
+
+- do not interrupt the current break-glass and root-user-emergency-SCP closure
+  to refactor the account boundary immediately;
+- after that blocker closes, the next bounded architecture step is to create a
+  separate `Security Tooling` account in `Security OU`;
+- keep the existing `Security Log Archive` account as the storage-only
+  boundary for central audit buckets, KMS keys, and related retention or
+  delete-protection controls;
+- migrate delegated-administrator and security-operations functions in this
+  order: AWS Config first, GuardDuty next, and Security Hub only if it is
+  later intentionally adopted;
+- treat OAM as a later `Security Tooling` or central monitoring concern, not as
+  part of the storage-only log archive boundary.
 
 Although AWS Organizations allows the management account to be placed anywhere
 in the organization hierarchy, this design intentionally keeps the management
@@ -101,7 +147,7 @@ sets aligned to administrative duty boundaries:
 | --- | --- | --- |
 | `OrganizationAdmin` | Management account | Organizations, OU placement, and SCP administration. |
 | `BillingAdmin` | Management account | Billing, budgets, Cost Allocation Tags, and cost reports. |
-| `SecurityAudit` | Management and workload accounts | Read-only security, logging, and audit visibility. |
+| `SecurityAudit` | Management, workload, log archive, and security tooling accounts | Read-only security, logging, and audit visibility. |
 | `LakehouseOperator` | Lakehouse workload account | Operate lakehouse workload services without organization administration. |
 | `LakehouseReadOnly` | Lakehouse workload account | Review runtime posture and evidence without write access. |
 | `BreakGlassAdmin` | As required | Emergency recovery only, with MFA, owner, logging, and review. |
@@ -114,7 +160,7 @@ Adopt this initial SCP catalogue as design intent only:
 | SCP | Target | Design intent |
 | --- | --- | --- |
 | Deny disabling CloudTrail | Workloads, Sandbox, future Security OU | Protect audit evidence once an organization trail exists. |
-| Deny deleting central log buckets | Future Security OU and member accounts | Protect central logs after log archive naming and ownership are finalized. |
+| Deny deleting central log buckets | Log Archive account and member accounts | Protect central logs after log archive naming and ownership are finalized. |
 | Deny public S3 exposure by default | Workloads and Sandbox | Reduce data leakage while allowing explicitly approved public dashboard patterns. |
 | Deny unapproved Regions | Workloads and Sandbox | Limit cost and operational spread, with global-service and `eu-west-2` exceptions. |
 | Deny root-user actions except emergencies | Member accounts | Reduce blast radius after break-glass procedure is documented. |
@@ -125,12 +171,16 @@ Design organization logging as:
 
 - one organization CloudTrail trail with management events and log-file
   validation;
-- central log archive ownership in a future security/log archive account;
-- AWS Config organization aggregation after recorder scope and cost controls are
-  defined;
-- GuardDuty as the first security-service aggregation candidate;
+- central log archive ownership in a dedicated `Log Archive` account;
+- AWS Config organization aggregation in a separate `Security Tooling` account
+  after recorder scope and cost controls are defined;
+- GuardDuty as the first security-service aggregation candidate in the
+  `Security Tooling` account;
+- OAM as a later cross-account observability option in the `Security Tooling`
+  or central monitoring boundary;
 - Security Hub as a later standards and finding-aggregation layer if the cost
-  and study value justify it.
+  and study value justify it, also anchored in the `Security Tooling` account
+  if adopted.
 
 Retain the currently activated cost-allocation tag keys as the baseline
 governance tag set:
@@ -150,6 +200,7 @@ governance tag set:
 | Small landing-zone-shaped organization with management, security, workloads, sandbox, and suspended boundaries | Accepted | Gives SAP-C02-relevant account separation and guardrail reasoning while staying small enough for a personal lab organization. |
 | Use the generic name `Workloads OU` for the lakehouse workload boundary | Rejected for now | Understandable, but too vague for the current three-account organization; `Lakehouse Workloads OU` better explains what actually lives there today. |
 | Keep all accounts under root with no OU model | Rejected | Simple, but fails to demonstrate OU-based governance, scoped SCP attachment, account lifecycle thinking, and professional landing-zone reasoning. |
+| Use one permanently combined security/log archive account for both archive storage and delegated security tooling | Rejected as the preferred target state | Simpler for first implementation, and acceptable as a temporary lab step, but it mixes write-mostly audit storage with active delegated-administrator and security-operations duties. |
 | Deploy AWS Control Tower immediately | Rejected for now | Strong managed landing-zone option, but too broad for the current repo step and would introduce live account, guardrail, and lifecycle changes before design review. |
 | Create many environment-specific OUs such as Dev, Test, Prod, Shared Services, Network, and Data | Rejected for now | More enterprise-like, but over-engineered for two active member accounts and would blur learning goals with unnecessary account taxonomy. |
 | Treat the lakehouse and container accounts as the same workload class | Rejected | Weakens portfolio clarity; the lakehouse is the applied case study, while container labs remain parked/sandbox study scope. |
@@ -168,6 +219,13 @@ places to reason about account purpose, blast radius, SCP scope, logging, and
 cost ownership. It is lighter than Control Tower because it avoids a live
 platform rollout before the repo has finalized policies, rollback paths, and
 evidence requirements.
+
+Splitting the security boundary into a `Log Archive` account and a `Security
+Tooling` account adds one more account and later migration work, but it is a
+worthwhile trade-off for the target state. The cleaner split keeps audit
+storage write-mostly and easier to harden, while delegated administration,
+findings aggregation, and future response automation can evolve separately
+without broadening archive-account permissions.
 
 Keeping the management account at the root is slightly less symmetrical than
 placing every account inside an OU, but it is a worthwhile trade-off here. The
@@ -198,6 +256,12 @@ distinctions explicit:
 - IAM Identity Center permission sets are human-access grants through roles;
 - central logging and audit protection require account, bucket, KMS, retention,
   and deletion-control decisions;
+- separating write-mostly log retention from delegated security tooling can be
+  the cleaner answer when tamper resistance and operational separation both
+  matter;
+- OAM, CloudTrail log archive, and AWS Config aggregation answer different
+  exam prompts: live operational visibility, API audit evidence, and
+  configuration/compliance posture respectively;
 - security services need delegated-administrator, aggregation, region, and cost
   decisions;
 - cost-allocation tags are useful only when tagging standards and billing
@@ -234,6 +298,11 @@ for later SAP-C02 revision:
 - adding a new account to the central AWS Config archive path also requires the
   central S3 bucket policy and Config KMS key policy to be extended for that
   account before delivery-channel creation can succeed;
+- using the same account for archive storage and delegated Config operations was
+  a reasonable early implementation shortcut, but it also made the longer-term
+  two-account target easier to justify: archive storage should stay narrow and
+  write-mostly, while delegated administration can expand separately in a
+  future `Security Tooling` account;
 - for this repository, `MULTI_REGION_CLOUD_TRAIL_ENABLED` was a better first
   detective control than `CLOUD_TRAIL_ENABLED` because the accepted CloudTrail
   design already centers on one organization multi-Region trail with
@@ -293,6 +362,13 @@ Apply sequencing should be:
 - AWS Config and GuardDuty design with cost controls, plus the current Security
   Hub defer/adopt decision, is now recorded in
   `docs/planning/domain-1-config-guardduty-design-20260621.md`.
+- If the current combined `Security Log Archive` live boundary is later split,
+  record that as a separate account-boundary and delegated-administration
+  migration note rather than silently rewriting earlier evidence.
+- The external governance study note
+  `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Security_Observability_Comparison.md`
+  records the OAM vs CloudTrail log archive vs AWS Config aggregator exam
+  distinction that informed this split.
 - The first live organization AWS Config CloudTrail rule, the sandbox-recorder
   deployment gap, the management-account multi-account-setup service-linked
   role blocker, the sandbox recorder follow-on, and the final successful
@@ -332,6 +408,7 @@ Apply sequencing should be:
 
 Revisit this ADR if a new member account is added, the lakehouse becomes
 production or regulated, Control Tower is intentionally adopted, the user
-chooses to create a dedicated security/log archive account, container work is
-unparked, or live governance changes reveal service exceptions that materially
-change the OU or SCP model.
+chooses to split the current combined security boundary into separate `Log
+Archive` and `Security Tooling` accounts, container work is unparked, or live
+governance changes reveal service exceptions that materially change the OU or
+SCP model.

@@ -43,6 +43,13 @@ work is now later retention refinement plus the downstream AWS Config and
 GuardDuty decisions, not account-boundary creation, storage-boundary bring-up,
 or organization-trail enablement.
 
+The long-term architecture decision has also been tightened since the original
+draft: keep the current `Security Log Archive` account as the storage-only
+boundary, and later create a separate `Security Tooling` account for delegated
+security-service operations after the current break-glass and root-SCP closure
+is complete. OAM/cross-account observability belongs in that later tooling or
+central monitoring boundary, not in the write-mostly log archive account.
+
 ## Confirmed Alignment
 
 This note supports the tracker because it advances:
@@ -63,7 +70,7 @@ This note supports the tracker because it advances:
 | `management-account-alias` | AWS Organizations management account | Owns organization control-plane decisions and should create the organization trail unless a later delegated-administrator design is explicitly adopted. |
 | `lakehouse-workload-account` | Energy Data Lakehouse workload account | Produces workload events that should flow into the centralized organization trail. |
 | `containers-lab.com` | Sandbox member account | Remains separate from lakehouse evidence, but its control-plane events should still be covered by the organization trail. |
-| `Security Log Archive` | Dedicated member account in `Security OU` | Target owner for the dedicated log archive bucket, KMS key, and later read-only security operations boundary. |
+| `Security Log Archive` | Dedicated member account in `Security OU` | Target owner for the dedicated log archive bucket, KMS key, and the long-term storage-only audit boundary. |
 
 ## Design Decisions
 
@@ -77,14 +84,14 @@ Rationale:
 - AWS CloudTrail organization trails can be created by the management account or
   a delegated administrator, but the current repo governance model still treats
   the management account as the control plane.
-- This keeps trail ownership aligned with Organizations administration until a
-  dedicated security/log archive account exists and a delegated-administrator
-  model is intentionally designed.
+- This keeps trail ownership aligned with Organizations administration while
+  the `Security Log Archive` account remains storage-only and before any later
+  CloudTrail delegated-administrator model is intentionally designed.
 
 Revisit if:
 
-- a dedicated security/log archive account is created and later chosen as the
-  CloudTrail delegated administrator account; or
+- a later `Security Tooling` account is intentionally chosen as the CloudTrail
+  delegated administrator account; or
 - control-plane duties are intentionally separated further.
 
 ### 2. Trail scope
@@ -111,8 +118,8 @@ need outweighs the added cost and noise.
 
 ### 3. Log archive bucket ownership
 
-Target a dedicated S3 bucket in a future security/log archive account rather
-than a shared bucket in the management or workload account.
+Target a dedicated S3 bucket in the current `Security Log Archive` account
+rather than a shared bucket in the management or workload account.
 
 Design posture:
 
@@ -137,8 +144,8 @@ Rationale:
 - central audit logs justify stricter control over decrypt permissions than the
   current public-data lakehouse baseline;
 - KMS gives explicit control over which audit users and roles can decrypt logs;
-- the future security/log archive account is the right ownership boundary for
-  that key.
+- the current `Security Log Archive` account is the right ownership boundary
+  for that key.
 
 Design rules:
 
@@ -196,26 +203,35 @@ The default read model should favor separation of duties:
 
 This design unlocks later decisions cleanly:
 
-- AWS Config can aggregate configuration and compliance data into a central
-  account after recorder scope and cost controls are chosen.
-- GuardDuty can use the same security/log archive boundary as the likely home
-  for delegated security operations.
+- AWS Config can aggregate configuration and compliance data into a separate
+  `Security Tooling` account after recorder scope and cost controls are chosen.
+- GuardDuty can use that later `Security Tooling` account as the delegated
+  security-operations home.
 - Security Hub can be evaluated later as a standards and finding aggregation
-  layer once the logging and GuardDuty boundaries are settled.
+  layer once the logging and GuardDuty boundaries are settled, and if adopted
+  it should follow the same `Security Tooling` boundary rather than expand the
+  log archive account.
+- OAM can be evaluated later for cross-account operational visibility, but it
+  should remain separate from the CloudTrail log archive because it answers
+  live troubleshooting questions rather than audit-retention questions.
 
 The sequence matters:
 
 1. define the CloudTrail/log archive ownership and protection model;
 2. define AWS Config recorder scope and aggregator account;
-3. define GuardDuty delegated-administrator and member coverage;
-4. decide whether Security Hub adds enough value before the exam.
+3. after the current break-glass/root-SCP blocker closes, create the separate
+   `Security Tooling` account;
+4. define AWS Config migration into that account;
+5. define GuardDuty delegated-administrator and member coverage;
+6. decide whether Security Hub adds enough value before the exam.
 
 ## Alternatives Considered
 
 | Option | Decision | Why |
 |---|---|---|
-| Dedicated log archive bucket in a future security/log archive account | Accepted target design | Best matches centralized logging, separation of duties, and later security-service aggregation. |
+| Dedicated log archive bucket in the current `Security Log Archive` account, with later delegated security tooling split into a separate account | Accepted target design | Best matches centralized logging, storage hardening, and cleaner later separation of duties. |
 | Keep CloudTrail logs in the management account long term | Rejected as target, acceptable only as temporary fallback | Simpler initially, but weaker segregation of duties and weaker future security-account narrative. |
+| Keep archive storage and delegated security tooling permanently combined in one security account | Rejected as the preferred target | Smaller at first, but it mixes write-mostly audit storage with expanding operational permissions for Config, GuardDuty, and possible later Security Hub. |
 | Use SSE-S3 as the permanent audit-log encryption model | Rejected as target | Lower operational overhead, but weaker control over decrypt permissions for a centralized audit boundary. |
 | Enable organization-wide data events immediately | Rejected for baseline | Higher cost and noise than the current lab step needs; targeted later enablement is more deliberate. |
 | Use MFA Delete as the main delete-protection design | Rejected | Root-centric operations and lifecycle incompatibility make it a poor default fit for an intentionally managed archive bucket. |
@@ -227,18 +243,23 @@ The sequence matters:
 Management account
   └─ owns one multi-Region organization trail
        └─ writes CloudTrail logs and digest files
-            to dedicated S3 bucket in future security/log archive account
+            to dedicated S3 bucket in current Log Archive boundary
                  ├─ Block Public Access
                  ├─ versioning
                  ├─ dedicated bucket policy with CloudTrail service principal
                  ├─ aws:SourceArn condition
                  └─ customer-managed KMS key in same Region
 
-Future security/log archive account
+Security Log Archive account
   ├─ owns bucket and KMS key
-  ├─ exposes read-only audit access
-  └─ becomes the natural landing point for later Config aggregation and
-     GuardDuty/Security Hub operations
+  ├─ stays storage-first and write-mostly
+  └─ exposes read-only audit access
+
+Future Security Tooling account
+  ├─ becomes the later home for Config aggregation
+  ├─ becomes the later home for GuardDuty delegated administration
+  ├─ becomes the later home for OAM / cross-account observability if adopted
+  └─ hosts Security Hub only if it is later adopted
 ```
 
 ## Open Implementation Work
@@ -252,8 +273,14 @@ This note does not complete implementation. The following remain open:
 - decide whether Object Lock is worth the extra operational burden;
 - resolve the exact storage-step and organization-trail live approvals against
   the now-recorded bucket policy, KMS policy, and fresh read-only baseline;
-- define AWS Config recorder scope and aggregator account;
-- define GuardDuty delegated-administrator and member coverage;
+- after the current break-glass/root-SCP blocker closes, create the separate
+  `Security Tooling` account and keep `Security Log Archive` storage-only;
+- define AWS Config recorder scope and migrate aggregation first into that later
+  `Security Tooling` account;
+- define GuardDuty delegated-administrator and member coverage after Config
+  migration is settled;
+- evaluate OAM as a separate cross-account observability pattern if the workload
+  needs centralized CloudWatch metrics, logs, or traces;
 - make a separate Security Hub adopt/defer decision.
 
 ## References

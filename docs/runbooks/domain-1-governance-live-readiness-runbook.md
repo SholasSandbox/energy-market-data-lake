@@ -32,7 +32,7 @@ This runbook is still **repo-only preparation**.
 It does not:
 
 - approve Organizations, SCP, Identity Center, CloudTrail, AWS Config,
-  GuardDuty, Security Hub, S3, KMS, or budget changes;
+  GuardDuty, OAM, Security Hub, S3, KMS, or budget changes;
 - replace explicit approval for one live change at a time;
 - override the tracker or ADR implementation boundary;
 - treat a future start date as the only blocker.
@@ -68,6 +68,7 @@ Do not bundle these into one apply:
 - SCP attachment
 - AWS Config recorder or aggregator enablement
 - GuardDuty delegated-admin designation
+- OAM / cross-account observability link setup
 - Security Hub adoption
 - budget creation or threshold changes
 
@@ -269,6 +270,7 @@ calendar date is later than today.
 | SCP attachment note | Exact SCP, target OU/account, service exceptions, rollback, and test case are explicit | Exceptions or rollback are unclear |
 | AWS Config change note | Recorder scope, exclusions, Region set, aggregator account, and validation are explicit | Region scope or cost posture is unclear |
 | GuardDuty change note | Delegated admin, Region set, foundational coverage, and optional-plan stance are explicit | Region consistency or admin account choice is unclear |
+| OAM review note | Monitoring account, source accounts, telemetry types, Region scope, and access model are explicit | It is being confused with CloudTrail retention or Config compliance aggregation |
 | Security Hub review note | Config and GuardDuty decisions are stable enough to revisit adoption | Underlying recorder/admin decisions are still moving |
 | Budget and tag-policy change note | Account-level thresholds and notification targets are explicit | Thresholds are still arbitrary or unsupported |
 
@@ -310,6 +312,14 @@ Use these as the minimum validation questions for each change note.
 - Is the delegated administrator the intended account in each enabled Region?
 - Is foundational coverage enabled for the intended member accounts?
 - Are optional protection plans still in the approved state?
+
+### OAM
+
+- Is the monitoring account the intended `Security Tooling` or central
+  monitoring account?
+- Are source accounts, telemetry types, and Region scope explicit?
+- Is the design separate from CloudTrail log retention and AWS Config
+  compliance aggregation?
 
 ### Budgets And Tag Policies
 
@@ -379,8 +389,8 @@ The first live governance note should usually be one of these, in this order:
 4. AWS Config recorder plus aggregator enablement.
 5. GuardDuty delegated-admin designation and foundational coverage.
 
-Security Hub should remain a later review note unless Config and GuardDuty scope
-is already stable.
+OAM and Security Hub should remain later review notes unless the account
+boundary, Config scope, and GuardDuty scope are already stable.
 
 ## References
 
@@ -404,3 +414,5 @@ is already stable.
   `https://docs.aws.amazon.com/guardduty/latest/ug/delegated-admin-designate.html`
 - Changing the delegated GuardDuty administrator account:
   `https://docs.aws.amazon.com/guardduty/latest/ug/change-guardduty-delegated-admin.html`
+- CloudWatch cross-account observability:
+  `https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Unified-Cross-Account.html`

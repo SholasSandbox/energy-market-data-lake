@@ -73,7 +73,7 @@ new AWS changes, dashboard expansion, AI orchestration work, or container work.
 ## Exit Assessment
 
 The repository-side lakehouse closure is complete for June-July, and the first
-two practice blocks plus separate Python/serverless tutorial evidence are now
-recorded without reusing lakehouse evidence as tutorial evidence. The remaining
-pre-governance work is Domain 2 carry-forward review, not additional lakehouse
-closure implementation.
+two practice blocks plus separate Python/serverless tutorial evidence through
+Lesson 33 are now recorded without reusing lakehouse evidence as tutorial
+evidence. The remaining pre-governance work is Domain 2 carry-forward review,
+not additional lakehouse closure implementation.

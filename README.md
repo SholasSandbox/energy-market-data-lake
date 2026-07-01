@@ -715,7 +715,8 @@ These are historical references, not the current delivery path.
    wrong-answer entries alongside tracker updates and repository changes.
 6. Treat the first June-July exit items beyond repository implementation as
    complete: two 20-question practice blocks, wrong-answer logging, and
-   separate Python/serverless tutorial evidence are recorded. Use the remaining
+   separate Python/serverless tutorial evidence through Lesson 33 are recorded.
+   Use the remaining
    window for practice review and carry-forward Domain 2 notes, including
    `docs/planning/domain-2-network-access-patterns-20260621.md`.
 7. Begin live IAM, Organizations, SCP, and central-governance implementation

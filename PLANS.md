@@ -61,7 +61,8 @@ governance design ADR accepted.
    logging, wrong-answer review, and evidence-backed tracker updates.
 6. The first June-July exit items beyond repository implementation are now
    complete: two 20-question practice blocks, wrong-answer logging, and
-   separate Python/serverless tutorial evidence are recorded. Use the remaining
+   separate Python/serverless tutorial evidence through Lesson 33 are recorded.
+   Use the remaining
    window for practice review and carry-forward Domain 2 notes, including
    `docs/planning/domain-2-network-access-patterns-20260621.md`, before the
    2026-07-13 governance phase.
