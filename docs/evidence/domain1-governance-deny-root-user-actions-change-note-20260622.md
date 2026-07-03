@@ -4,10 +4,11 @@
 
 ## Status
 
-Prepared as the next bounded SCP change candidate.
+Superseded by the successful 2026-07-03 live attachment note.
 
-Live attachment was **not** executed from this note because the required
-break-glass live-readiness checks are not yet fully evidenced.
+Live attachment was **not** executed from this original preparation note. The
+prepared change was later approved and completed in
+`docs/evidence/domain1-governance-deny-root-user-actions-attach-success-change-note-20260703.md`.
 
 ## Target Account And OU
 
@@ -54,11 +55,11 @@ Break-glass design state:
 - the management account is not the SCP target for this OU-level guardrail, but
   it remains in the Organizations attach/detach rollback path unless explicit
   delegated Organizations policy management is later implemented;
-- the remaining live-readiness checks are now narrower:
-  confirm root-user and management-account-path MFA evidence,
-  generate and store the out-of-band backup material,
-  confirm notification reachability,
-  and record a light procedural validation;
+- the pre-attachment readiness checks are now evidenced:
+  root-user and management-account-path MFA evidence,
+  out-of-band recovery-code readability,
+  notification reachability,
+  and light procedural validation;
 - the SCP policy README also states that
   `deny-root-user-actions.example.json` should be attached only after the
   emergency root-use process is documented and tested.
@@ -70,6 +71,12 @@ Evidence:
 - `docs/evidence/domain1-governance-deny-root-user-actions-lakehouse-ou-policies-prechange-20260622.json`
 - `docs/evidence/domain1-governance-deny-root-user-actions-lakehouse-ou-accounts-prechange-20260622.json`
 - `docs/evidence/domain1-governance-identity-center-current-state-20260625.md`
+- `docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md`
+- `docs/evidence/domain1-governance-root-mfa-readiness-check-20260702.md`
+- `docs/evidence/domain1-governance-breakglass-mfa2-readiness-check-20260703.md`
+- `docs/evidence/domain1-governance-notification-reachability-check-20260703.md`
+- `docs/evidence/domain1-governance-recovery-code-readability-check-20260703.md`
+- `docs/evidence/domain1-governance-breakglass-procedural-validation-20260703.md`
 - `docs/runbooks/break-glass-access-procedure.md`
 - `docs/policies/scp/README.md`
 
@@ -147,7 +154,7 @@ aws organizations list-accounts-for-parent \
   --output json
 ```
 
-Planned live command sequence after the blocker is resolved:
+Live command sequence later executed under separate 2026-07-03 approval:
 
 ```bash
 aws organizations create-policy \
@@ -174,18 +181,23 @@ aws organizations list-policies-for-target \
   --output json
 ```
 
-Blocking condition:
+Follow-on live attachment:
 
-- live attachment is not yet responsible because the emergency root-use process
-  now has defined live values, but the remaining MFA, out-of-band backup, and
-  procedural test checks are not yet evidenced for this repository context.
+- the original readiness blocker was closed with MFA, notification,
+  recovery-code, and light procedural-validation evidence;
+- the live SCP was created as `p-dv2ss5us` /
+  `DenyRootUserActions-LakehouseWorkloads`;
+- the SCP was attached only to `ou-gbyf-m6ppfmpq` /
+  `Lakehouse Workloads OU`;
+- the successful live change is recorded in
+  `docs/evidence/domain1-governance-deny-root-user-actions-attach-success-change-note-20260703.md`.
 
 ## Cost Impact
 
-- No direct AWS service charge is expected from this SCP if later attached.
-- Operational risk is the main cost here, because an unready emergency path
-  would make a restrictive root-user guardrail harder to recover from than the
-  current `DenyLeavingOrganization` policy.
+- No direct AWS service charge is expected from this SCP.
+- Operational risk remains the main cost. The attached guardrail depends on the
+  documented emergency path, rollback path, and post-use review process staying
+  current.
 
 ## Approval
 
@@ -196,20 +208,12 @@ Blocking condition:
 
 ## Result
 
-The next narrow SCP candidate is confirmed as the root-user emergency-only
-guardrail for `Lakehouse Workloads OU`, but live execution is blocked by
-remaining break-glass live-readiness evidence.
+The next narrow SCP candidate was confirmed as the root-user emergency-only
+guardrail for `Lakehouse Workloads OU`.
 
 Current interpretation:
 
-- this is still the right next SCP in sequence after
-  `DenyLeavingOrganization`;
-- the blocker is not OU structure or SCP mechanics;
-- the blocker is now narrower than before:
-  the target owner, contact, notification, storage, evidence, scope, and
-  reduction values are defined, and the current live principal inventory is now
-  clearer, the dedicated break-glass principal now exists with MFA and a
-  management-account emergency assignment, but out-of-band backup generation,
-  notification-path validation, root-user MFA evidence, and procedural
-  validation are still required before a root-user restriction can be attached
-  responsibly.
+- this was the right next SCP in sequence after `DenyLeavingOrganization`;
+- the readiness blocker was closed before live attachment;
+- the live attachment is now recorded in
+  `docs/evidence/domain1-governance-deny-root-user-actions-attach-success-change-note-20260703.md`.

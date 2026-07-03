@@ -69,6 +69,26 @@ For the current OU-targeted root-user emergency-only SCP planning:
   management-account-capable path unless explicit delegated Organizations
   policy management is later implemented.
 
+## Follow-on Assignment Cleanup - 2026-07-02
+
+Later live read-only verification showed that `breakglass-principal` also
+inherited management-account `AdministratorAccess` through
+`cloud-lab-aws-admins`.
+
+Under explicit approval, that group membership was removed. Postchange
+verification shows:
+
+- `breakglass-principal` has no group memberships;
+- `cloud-lab-aws-admins` still contains the normal
+  `org-admin-principal` principal;
+- `BreakGlassAdmin` remains directly assigned to `breakglass-principal` for
+  management account `349687196588`;
+- `AdministratorAccess` remains available for the normal management-account
+  admin path, but is no longer inherited by `breakglass-principal`.
+
+Detailed evidence is recorded in
+`docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md`.
+
 ## Evidence Files
 
 - `docs/evidence/domain1-governance-identity-center-instances-status-20260625.json`

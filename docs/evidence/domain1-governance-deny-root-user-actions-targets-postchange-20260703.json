@@ -1,0 +1,10 @@
+{
+    "Targets": [
+        {
+            "TargetId": "ou-gbyf-m6ppfmpq",
+            "Arn": "arn:aws:organizations::349687196588:ou/o-hmvgqmav88/ou-gbyf-m6ppfmpq",
+            "Name": "Lakehouse Workloads OU",
+            "Type": "ORGANIZATIONAL_UNIT"
+        }
+    ]
+}

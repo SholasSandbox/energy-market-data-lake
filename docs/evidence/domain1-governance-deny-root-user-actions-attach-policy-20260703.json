@@ -1,0 +1,7 @@
+{
+  "Command": "aws organizations attach-policy --profile org-admin --policy-id p-dv2ss5us --target-id ou-gbyf-m6ppfmpq",
+  "Result": "Success",
+  "Note": "AWS Organizations attach-policy returned an empty response body. Postchange verification is recorded in the paired targets, OU policy list, account inventory, and policy description evidence files.",
+  "PolicyId": "p-dv2ss5us",
+  "TargetId": "ou-gbyf-m6ppfmpq"
+}

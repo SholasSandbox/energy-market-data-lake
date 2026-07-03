@@ -105,6 +105,14 @@ at the management account, and assigned only to the dedicated emergency
 principal. A later hardening pass can replace that broad base with a custom
 policy once the exact Organizations and recovery action set is proven.
 
+Follow-on 2026-07-02 live cleanup removed the same emergency principal from
+`cloud-lab-aws-admins` after read-only verification showed that the group
+membership caused inherited management-account `AdministratorAccess` to appear
+alongside `BreakGlassAdmin` in the AWS access portal. Postchange evidence shows
+`breakglass-principal` now has no group memberships and retains only the direct
+management-account `BreakGlassAdmin` assignment:
+`docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md`.
+
 ## Assignment Rules
 
 - Assign management-account administration only from the management account.

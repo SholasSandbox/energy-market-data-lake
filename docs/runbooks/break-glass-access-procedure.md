@@ -107,6 +107,75 @@ Follow-on clarification from 2026-06-25 same-day IAM Identity Center evidence:
 - the current live principal inventory is recorded in
   `docs/evidence/domain1-governance-identity-center-current-state-20260625.md`.
 
+Follow-on cleanup from 2026-07-02 live IAM Identity Center evidence:
+
+- the dedicated break-glass user previously inherited management-account
+  `AdministratorAccess` through `cloud-lab-aws-admins`;
+- under explicit approval, `breakglass-principal` was removed from
+  `cloud-lab-aws-admins`;
+- postchange read-only verification shows `breakglass-principal` now has no
+  group memberships and retains the direct management-account
+  `BreakGlassAdmin` assignment;
+- the cleanup evidence is recorded in
+  `docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md`.
+
+Follow-on root-MFA clarification from 2026-07-02 read-only IAM evidence:
+
+- the authenticator entry labelled `emergency@464975959576` maps to virtual
+  MFA device `arn:aws:iam::464975959576:mfa/Pixel-6-Pro-emergency`;
+- that virtual MFA device is assigned to `arn:aws:iam::464975959576:root`;
+- no IAM user named `emergency` exists in workload account `464975959576`;
+- the read-only evidence is recorded in
+  `docs/evidence/domain1-governance-root-mfa-readiness-check-20260702.md`.
+
+Follow-on break-glass MFA clarification from 2026-07-03 console evidence:
+
+- `breakglass-principal` now has two registered IAM Identity Center
+  authenticator-app MFA devices;
+- the second MFA device was registered on a separate device;
+- the secret-free evidence is recorded in
+  `docs/evidence/domain1-governance-breakglass-mfa2-readiness-check-20260703.md`.
+
+Follow-on notification-path clarification from 2026-07-03 receipt evidence:
+
+- the active emergency SMS notification path was tested with a harmless
+  break-glass readability message;
+- the user confirmed receipt at 2026-07-03 13:33 BST;
+- the secret-free evidence is recorded in
+  `docs/evidence/domain1-governance-notification-reachability-check-20260703.md`.
+
+Follow-on recovery-code clarification from 2026-07-03 user-confirmed evidence:
+
+- Google backup codes for the emergency mailbox are readable in both private
+  recorded storage locations;
+- the Microsoft/Outlook recovery code for the management-account root mailbox
+  is readable in both private recorded storage locations;
+- both recovery-code sets are stored in electronic and paper formats;
+- the secret-free evidence is recorded in
+  `docs/evidence/domain1-governance-recovery-code-readability-check-20260703.md`.
+
+Follow-on procedural validation from 2026-07-03 tabletop evidence:
+
+- the break-glass notification, evidence-capture, and post-use reduction path
+  was rehearsed without using emergency access or changing AWS resources;
+- the validation closes the light procedural-validation prerequisite for the
+  root-user emergency-only SCP candidate;
+- any live SCP attachment still requires separate explicit approval and fresh
+  prechange Organizations evidence;
+- the secret-free evidence is recorded in
+  `docs/evidence/domain1-governance-breakglass-procedural-validation-20260703.md`.
+
+Follow-on root-user SCP attachment from 2026-07-03 live Organizations evidence:
+
+- `DenyRootUserActions-LakehouseWorkloads` / `p-dv2ss5us` is now attached to
+  `Lakehouse Workloads OU`;
+- the policy was created from
+  `docs/policies/scp/deny-root-user-actions.example.json`;
+- the management account is not affected by the OU-targeted SCP;
+- rollback is documented in the change note;
+- the secret-free evidence is recorded in
+  `docs/evidence/domain1-governance-deny-root-user-actions-attach-success-change-note-20260703.md`.
+
 For this repository, "out-of-band backup" means recovery material that is not
 available only through the same day-to-day Google sign-in path or the same
 primary machine. Acceptable examples include:
@@ -116,15 +185,32 @@ primary machine. Acceptable examples include:
 - a secondary secure vault that does not depend solely on the same active
   Google session.
 
-## Remaining Live-Readiness Checks
+## Root-User SCP Live Status
 
-Before a root-user emergency-only SCP is attached live:
+Before the root-user emergency-only SCP was attached live, the following
+evidence was preserved:
 
 - confirm MFA on the relevant root user and preserve the MFA evidence for the
-  management-account recovery path;
-- generate and store the out-of-band backup codes and recovery note;
-- confirm the notification path is reachable in practice; and
-- record a light procedural validation of the evidence and reduction path.
+  management-account recovery path (workload account `464975959576` root MFA is
+  now recorded in
+  `docs/evidence/domain1-governance-root-mfa-readiness-check-20260702.md`);
+- preserve evidence that the dedicated Identity Center break-glass user has a
+  second MFA device (recorded in
+  `docs/evidence/domain1-governance-breakglass-mfa2-readiness-check-20260703.md`);
+- preserve evidence that the active emergency SMS notification path is
+  reachable (recorded in
+  `docs/evidence/domain1-governance-notification-reachability-check-20260703.md`);
+- preserve evidence that the out-of-band recovery-code material is readable in
+  both private recorded storage locations (recorded in
+  `docs/evidence/domain1-governance-recovery-code-readability-check-20260703.md`);
+- preserve a light procedural validation of the evidence and reduction path
+  (recorded in
+  `docs/evidence/domain1-governance-breakglass-procedural-validation-20260703.md`).
+
+The live SCP is now attached to `Lakehouse Workloads OU` as
+`DenyRootUserActions-LakehouseWorkloads` / `p-dv2ss5us`. Any change to detach,
+replace, broaden, or reuse the policy for another OU still requires separate
+explicit approval, fresh prechange evidence, and postchange verification.
 
 ## Activation Checklist
 

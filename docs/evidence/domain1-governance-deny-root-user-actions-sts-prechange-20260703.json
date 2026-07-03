@@ -1,0 +1,5 @@
+{
+    "UserId": "AROAVC2X3FOWPACVYQN6H:org-admin-principal",
+    "Account": "349687196588",
+    "Arn": "arn:aws:sts::349687196588:assumed-role/AWSReservedSSO_AdministratorAccess_be84055d6f72e1b2/org-admin-principal"
+}
