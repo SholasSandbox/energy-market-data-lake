@@ -1,0 +1,11 @@
+{
+    "AggregatedSourceStatusList": [
+        {
+            "SourceId": "Organization",
+            "SourceType": "ORGANIZATION",
+            "AwsRegion": "eu-west-2",
+            "LastUpdateStatus": "SUCCEEDED",
+            "LastUpdateTime": "2026-07-06T12:45:54.406000+01:00"
+        }
+    ]
+}

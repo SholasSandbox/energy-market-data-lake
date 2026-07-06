@@ -1,0 +1,44 @@
+{
+    "OrganizationConfigRuleDetailedStatus": [
+        {
+            "AccountId": "054394900225",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "CREATE_FAILED",
+            "ErrorCode": "NoAvailableConfigurationRecorder",
+            "ErrorMessage": "There are no configuration recorders available to provide the role needed to describe your AWS resources. Create a configuration recorder and try again later.",
+            "LastUpdateTime": "2026-07-06T12:45:53.555000+01:00"
+        },
+        {
+            "AccountId": "668848431187",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "CREATE_FAILED",
+            "ErrorCode": "NoAvailableConfigurationRecorder",
+            "ErrorMessage": "There are no configuration recorders available to provide the role needed to describe your AWS resources. Create a configuration recorder and try again later.",
+            "LastUpdateTime": "2026-07-06T12:45:53.555000+01:00"
+        },
+        {
+            "AccountId": "349687196588",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "CREATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-06T12:45:53.555000+01:00"
+        },
+        {
+            "AccountId": "464975959576",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "CREATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-06T12:45:53.555000+01:00"
+        },
+        {
+            "AccountId": "955659429518",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "CREATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-06T12:45:53.555000+01:00"
+        },
+        {
+            "AccountId": "974893866311",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "CREATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-06T12:45:53.555000+01:00"
+        }
+    ]
+}

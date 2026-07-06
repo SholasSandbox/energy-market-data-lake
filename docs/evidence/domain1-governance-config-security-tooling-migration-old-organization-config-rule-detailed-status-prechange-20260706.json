@@ -1,0 +1,44 @@
+{
+    "OrganizationConfigRuleDetailedStatus": [
+        {
+            "AccountId": "054394900225",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "CREATE_FAILED",
+            "ErrorCode": "NoAvailableConfigurationRecorder",
+            "ErrorMessage": "There are no configuration recorders available to provide the role needed to describe your AWS resources. Create a configuration recorder and try again later.",
+            "LastUpdateTime": "2026-06-25T15:49:43.933000+01:00"
+        },
+        {
+            "AccountId": "668848431187",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "CREATE_FAILED",
+            "ErrorCode": "NoAvailableConfigurationRecorder",
+            "ErrorMessage": "There are no configuration recorders available to provide the role needed to describe your AWS resources. Create a configuration recorder and try again later.",
+            "LastUpdateTime": "2026-07-04T19:08:46.017000+01:00"
+        },
+        {
+            "AccountId": "349687196588",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T13:32:40.721000+01:00"
+        },
+        {
+            "AccountId": "464975959576",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T13:32:40.721000+01:00"
+        },
+        {
+            "AccountId": "955659429518",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T13:32:40.721000+01:00"
+        },
+        {
+            "AccountId": "974893866311",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-qtlavry8",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-06-25T13:32:40.721000+01:00"
+        }
+    ]
+}

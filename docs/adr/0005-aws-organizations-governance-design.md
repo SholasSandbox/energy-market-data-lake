@@ -84,23 +84,23 @@ Reason:
 - it reduces future policy coupling, because archive-bucket protection and
   security-operations permissions can evolve independently.
 
-The current live `Security Log Archive` account is still a valid transitional
-implementation boundary for this lab. It keeps the first CloudTrail and Config
-rollout small. It is not, however, the preferred steady-state target if the
-security boundary is expanded further.
+The earlier live `Security Log Archive` AWS Config delegated-admin placement was
+a valid transitional implementation boundary for this lab. It kept the first
+CloudTrail and Config rollout small. As of 2026-07-06, AWS Config delegated
+administration and organization aggregation have moved to `Security Tooling`,
+while `Security Log Archive` remains the storage-only boundary.
 
 Accepted transition and sequencing:
 
-- do not interrupt the current break-glass and root-user-emergency-SCP closure
-  to refactor the account boundary immediately;
-- after that blocker closes, the next bounded architecture step is to create a
-  separate `Security Tooling` account in `Security OU`;
+- the root-user-emergency-SCP closure completed before this split moved forward;
+- a separate `Security Tooling` account now exists in `Security OU`;
 - keep the existing `Security Log Archive` account as the storage-only
   boundary for central audit buckets, KMS keys, and related retention or
   delete-protection controls;
 - migrate delegated-administrator and security-operations functions in this
-  order: AWS Config first, GuardDuty next, and Security Hub only if it is
-  later intentionally adopted;
+  order: AWS Config first, GuardDuty next, and Security Hub only if it is later
+  intentionally adopted. AWS Config migration is complete; GuardDuty delegated
+  admin planning now targets `Security Tooling` with no new account;
 - treat OAM as a later `Security Tooling` or central monitoring concern, not as
   part of the storage-only log archive boundary.
 
@@ -172,10 +172,11 @@ Design organization logging as:
 - one organization CloudTrail trail with management events and log-file
   validation;
 - central log archive ownership in a dedicated `Log Archive` account;
-- AWS Config organization aggregation in a separate `Security Tooling` account
-  after recorder scope and cost controls are defined;
+- AWS Config organization aggregation in the separate `Security Tooling`
+  account, with `Security Tooling` recorder onboarding as the next bounded
+  follow-on and `so-aws-admin` excluded on the decommission path;
 - GuardDuty as the first security-service aggregation candidate in the
-  `Security Tooling` account;
+  `Security Tooling` account, with no additional GuardDuty account;
 - OAM as a later cross-account observability option in the `Security Tooling`
   or central monitoring boundary;
 - Security Hub as a later standards and finding-aggregation layer if the cost
@@ -302,7 +303,7 @@ for later SAP-C02 revision:
   a reasonable early implementation shortcut, but it also made the longer-term
   two-account target easier to justify: archive storage should stay narrow and
   write-mostly, while delegated administration can expand separately in a
-  future `Security Tooling` account;
+  dedicated `Security Tooling` account;
 - for this repository, `MULTI_REGION_CLOUD_TRAIL_ENABLED` was a better first
   detective control than `CLOUD_TRAIL_ENABLED` because the accepted CloudTrail
   design already centers on one organization multi-Region trail with
@@ -362,9 +363,21 @@ Apply sequencing should be:
 - AWS Config and GuardDuty design with cost controls, plus the current Security
   Hub defer/adopt decision, is now recorded in
   `docs/planning/domain-1-config-guardduty-design-20260621.md`.
-- If the current combined `Security Log Archive` live boundary is later split,
-  record that as a separate account-boundary and delegated-administration
-  migration note rather than silently rewriting earlier evidence.
+- The combined `Security Log Archive` live boundary was split through separate
+  account-boundary and delegated-administration migration notes rather than by
+  silently rewriting earlier evidence.
+- The AWS Config recorder-scope decision is now recorded in
+  `docs/planning/domain-1-config-recorder-scope-decision-20260706.md`:
+  `Security Tooling` is in scope for the next bounded recorder implementation,
+  while `so-aws-admin` remains excluded on the decommission path.
+- The `so-aws-admin` account-purpose decision is now recorded in
+  `docs/planning/domain-1-so-aws-admin-decommission-decision-20260706.md`:
+  retire it only after read-only dependency checks and dependency resolution,
+  and keep Security Hub in `Security Tooling` if adopted.
+- GuardDuty delegated-admin planning is now recorded in
+  `docs/planning/domain-1-guardduty-delegated-admin-planning-20260706.md`:
+  use `Security Tooling` as the delegated administrator if GuardDuty is adopted;
+  do not create another account.
 - The external governance study note
   `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Security_Observability_Comparison.md`
   records the OAM vs CloudTrail log archive vs AWS Config aggregator exam

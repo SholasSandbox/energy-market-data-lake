@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (NoSuchOrganizationConfigRuleException) when calling the GetOrganizationConfigRuleDetailedStatus operation: One or more organization config rules with specified names are not present. Ensure your names are correct and try your request again later.

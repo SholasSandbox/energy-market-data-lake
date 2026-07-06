@@ -1,0 +1,9 @@
+{
+    "AlternateContact": {
+        "AlternateContactType": "BILLING",
+        "EmailAddress": "[redacted-email]",
+        "Name": "[redacted-contact-name]",
+        "PhoneNumber": "[redacted-phone]",
+        "Title": "AWS Governance Contact"
+    }
+}

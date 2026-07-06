@@ -1,0 +1,12 @@
+{
+    "Policies": [
+        {
+            "Id": "p-FullAWSAccess",
+            "Arn": "arn:aws:organizations::aws:policy/service_control_policy/p-FullAWSAccess",
+            "Name": "FullAWSAccess",
+            "Description": "Allows access to every operation",
+            "Type": "SERVICE_CONTROL_POLICY",
+            "AwsManaged": true
+        }
+    ]
+}

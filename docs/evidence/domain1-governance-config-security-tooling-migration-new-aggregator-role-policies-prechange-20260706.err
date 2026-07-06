@@ -1,0 +1,5 @@
+
+aws: [ERROR]: An error occurred (NoSuchEntity) when calling the ListAttachedRolePolicies operation: The role with name aws-config-organization-aggregator-role cannot be found.
+
+Additional error details:
+Type: Sender

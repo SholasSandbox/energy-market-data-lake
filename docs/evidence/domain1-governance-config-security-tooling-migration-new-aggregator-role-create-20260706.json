@@ -1,0 +1,30 @@
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "aws-config-organization-aggregator-role",
+        "RoleId": "AROAZXOTZEBJUPPVYRKSP",
+        "Arn": "arn:aws:iam::668848431187:role/aws-config-organization-aggregator-role",
+        "CreateDate": "2026-07-06T11:43:46+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "AllowConfigToAssumeOrganizationAggregatorRole",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "config.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole",
+                    "Condition": {
+                        "StringEquals": {
+                            "AWS:SourceAccount": "668848431187"
+                        },
+                        "ArnLike": {
+                            "AWS:SourceArn": "arn:aws:config:eu-west-2:668848431187:*"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

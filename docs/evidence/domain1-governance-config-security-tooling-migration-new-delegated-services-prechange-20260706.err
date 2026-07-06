@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (AccountNotRegisteredException) when calling the ListDelegatedServicesForAccount operation: The provided account is not a registered delegated administrator for your organization.

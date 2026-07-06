@@ -1,0 +1,10 @@
+{
+    "CreateAccountStatus": {
+        "Id": "car-a3d99e94ff4c4267924a51132cb8dd27",
+        "AccountName": "Security Tooling",
+        "State": "SUCCEEDED",
+        "RequestedTimestamp": "2026-07-04T19:08:44.238000+01:00",
+        "CompletedTimestamp": "2026-07-04T19:08:46.795000+01:00",
+        "AccountId": "668848431187"
+    }
+}

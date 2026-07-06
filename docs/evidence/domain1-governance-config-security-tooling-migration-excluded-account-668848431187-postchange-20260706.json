@@ -1,0 +1,12 @@
+{
+    "Account": {
+        "Id": "668848431187",
+        "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/668848431187",
+        "Email": "[redacted-email]",
+        "Name": "Security Tooling",
+        "Status": "ACTIVE",
+        "State": "ACTIVE",
+        "JoinedMethod": "CREATED",
+        "JoinedTimestamp": "2026-07-04T19:08:45.845000+01:00"
+    }
+}

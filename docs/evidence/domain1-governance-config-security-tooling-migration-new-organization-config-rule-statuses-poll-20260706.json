@@ -1,0 +1,11 @@
+{
+    "OrganizationConfigRuleStatuses": [
+        {
+            "OrganizationConfigRuleName": "org-multi-region-cloudtrail-enabled",
+            "OrganizationRuleStatus": "CREATE_FAILED",
+            "ErrorCode": "InternalError",
+            "ErrorMessage": "One or more member accounts failed to process your request. Use the GetOrganizationConfigRuleDetailedStatus API to retrieve detailed error status for each member account.",
+            "LastUpdateTime": "2026-07-06T12:47:04.247000+01:00"
+        }
+    ]
+}

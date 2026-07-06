@@ -1,0 +1,15 @@
+{
+    "DelegatedAdministrators": [
+        {
+            "Id": "955659429518",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/955659429518",
+            "Email": "[redacted-email]",
+            "Name": "Security Log Archive",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "CREATED",
+            "JoinedTimestamp": "2026-06-24T01:45:05.248000+01:00",
+            "DelegationEnabledDate": "2026-06-24T16:44:59.332000+01:00"
+        }
+    ]
+}

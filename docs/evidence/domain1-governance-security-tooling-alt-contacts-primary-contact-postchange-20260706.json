@@ -1,0 +1,11 @@
+{
+    "ContactInformation": {
+        "AddressLine1": "[redacted-address-line]",
+        "City": "[redacted-city]",
+        "CountryCode": "GB",
+        "FullName": "Security Tooling",
+        "PhoneNumber": "[redacted-phone]",
+        "PostalCode": "[redacted-postal-code]",
+        "StateOrRegion": "[redacted-region]"
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "DelegatedServices": [
+        {
+            "ServicePrincipal": "config-multiaccountsetup.amazonaws.com",
+            "DelegationEnabledDate": "2026-07-06T12:45:34.300000+01:00"
+        },
+        {
+            "ServicePrincipal": "config.amazonaws.com",
+            "DelegationEnabledDate": "2026-07-06T12:45:35.275000+01:00"
+        }
+    ]
+}

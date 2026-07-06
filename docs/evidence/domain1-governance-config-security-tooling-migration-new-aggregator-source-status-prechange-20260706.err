@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (NoSuchConfigurationAggregatorException) when calling the DescribeConfigurationAggregatorSourcesStatus operation: The configuration aggregator does not exist. Check the configuration aggregator name and try again.

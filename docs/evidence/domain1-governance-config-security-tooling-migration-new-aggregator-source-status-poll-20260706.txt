@@ -1,0 +1,1 @@
+New aggregator sources all SUCCEEDED after poll 1.

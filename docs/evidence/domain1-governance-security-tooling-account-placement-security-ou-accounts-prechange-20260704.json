@@ -1,0 +1,24 @@
+{
+    "Accounts": [
+        {
+            "Id": "955659429518",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/955659429518",
+            "Email": "[redacted-email]",
+            "Name": "Security Log Archive",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "CREATED",
+            "JoinedTimestamp": "2026-06-24T01:45:05.248000+01:00"
+        },
+        {
+            "Id": "054394900225",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+            "Email": "[redacted-email]",
+            "Name": "so-aws-admin",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "CREATED",
+            "JoinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+        }
+    ]
+}

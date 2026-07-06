@@ -1,0 +1,64 @@
+{
+    "Accounts": [
+        {
+            "Id": "464975959576",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/464975959576",
+            "Email": "[redacted-email]",
+            "Name": "lakehouse-workload-account",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "INVITED",
+            "JoinedTimestamp": "2026-06-05T11:15:25.850000+01:00"
+        },
+        {
+            "Id": "955659429518",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/955659429518",
+            "Email": "[redacted-email]",
+            "Name": "Security Log Archive",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "CREATED",
+            "JoinedTimestamp": "2026-06-24T01:45:05.248000+01:00"
+        },
+        {
+            "Id": "349687196588",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/349687196588",
+            "Email": "[redacted-email]",
+            "Name": "management-account-alias",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "INVITED",
+            "JoinedTimestamp": "2026-05-08T15:54:26.223000+01:00"
+        },
+        {
+            "Id": "054394900225",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+            "Email": "[redacted-email]",
+            "Name": "so-aws-admin",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "CREATED",
+            "JoinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+        },
+        {
+            "Id": "668848431187",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/668848431187",
+            "Email": "[redacted-email]",
+            "Name": "Security Tooling",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "CREATED",
+            "JoinedTimestamp": "2026-07-04T19:08:45.845000+01:00"
+        },
+        {
+            "Id": "974893866311",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/974893866311",
+            "Email": "[redacted-email]",
+            "Name": "containers-lab.com",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "CREATED",
+            "JoinedTimestamp": "2026-06-05T18:37:08.888000+01:00"
+        }
+    ]
+}

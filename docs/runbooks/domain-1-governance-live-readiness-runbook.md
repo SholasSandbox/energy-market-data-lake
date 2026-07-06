@@ -264,6 +264,7 @@ calendar date is later than today.
 |---|---|---|
 | Organizations inventory evidence | Current account, OU, and service-access state is captured read-only | The acting account is unclear or inventory evidence is missing |
 | Final OU and account-placement decision | Target OU names and target accounts are explicit | Account placement is still ambiguous |
+| Account alternate-contact readiness | SECURITY, OPERATIONS, and BILLING contacts are defined for newly active governance accounts before service migration | Contact values or notification ownership are unclear |
 | Identity Center assignment plan | Target permission sets and account assignments are explicit | Role boundaries are still unclear |
 | Break-glass implementation note | Named principal, alerting path, and review cadence are explicit | Emergency access is not auditable |
 | CloudTrail and log archive change note | Target trail owner, bucket, KMS posture, retention, rollback, and validation are explicit | Bucket/KMS ownership or delete protection is unresolved |
@@ -299,6 +300,16 @@ Use these as the minimum validation questions for each change note.
 - Is the SCP attached only to the intended root, OU, or account?
 - Does the expected deny behavior occur for the test case?
 - Are approved service exceptions still working?
+
+### Account Alternate Contacts
+
+- Are `SECURITY`, `OPERATIONS`, and `BILLING` contacts present for the target
+  governance account?
+- Are the contact values durable, monitored, and explicitly approved?
+- Is `account.amazonaws.com` trusted access still enabled if contacts are
+  managed from the Organizations management account?
+- Is the contact step separate from delegated-admin migration and service
+  enablement?
 
 ### AWS Config
 
