@@ -37,6 +37,12 @@ docs/evidence/run-summary-*.md
 docs/evidence/athena-run-*.md
 docs/evidence/athena-schema-*.md
 
+# Private governance evidence exports that may contain contact or account PII.
+docs/evidence/private/
+docs/evidence/raw-private/
+*.private.json
+*.private.md
+
 # IDE files
 .idea/
 .vscode/*

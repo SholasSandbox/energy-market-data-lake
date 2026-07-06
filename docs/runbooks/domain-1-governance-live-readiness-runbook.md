@@ -255,6 +255,27 @@ aws guardduty list-members \
   --output json
 ```
 
+## Public Evidence Redaction Gate
+
+This repository is public. Do not commit exact personal contact values, mailbox
+addresses, phone numbers, postal addresses, or local user home paths as
+governance evidence.
+
+Use this split for every live governance change:
+
+- private evidence store: exact AWS CLI JSON exports and exact contact values;
+- public repository: sanitized evidence summaries, redacted JSON snapshots, and
+  implementation outcomes.
+
+Before staging governance evidence, run:
+
+```bash
+scripts/check_public_evidence_redaction.sh
+```
+
+If the check fails, move the exact file into a private evidence store and commit
+only a redacted summary or redacted copy.
+
 ## Ordered Implementation Sequence
 
 Move through these states in order. Do not skip prerequisites just because a
@@ -263,6 +284,7 @@ calendar date is later than today.
 | State | Ready when | Stop if |
 |---|---|---|
 | Organizations inventory evidence | Current account, OU, and service-access state is captured read-only | The acting account is unclear or inventory evidence is missing |
+| Public evidence redaction | Exact contact values and local user paths are absent from public evidence; private raw evidence is stored outside this repository | Raw email, phone, address, personal name, or local user path appears in the public tree |
 | Final OU and account-placement decision | Target OU names and target accounts are explicit | Account placement is still ambiguous |
 | Account alternate-contact readiness | SECURITY, OPERATIONS, and BILLING contacts are defined for newly active governance accounts before service migration | Contact values or notification ownership are unclear |
 | Identity Center assignment plan | Target permission sets and account assignments are explicit | Role boundaries are still unclear |
@@ -305,7 +327,10 @@ Use these as the minimum validation questions for each change note.
 
 - Are `SECURITY`, `OPERATIONS`, and `BILLING` contacts present for the target
   governance account?
-- Are the contact values durable, monitored, and explicitly approved?
+- Are the contact values durable, monitored, explicitly approved, and stored
+  only in private evidence?
+- Are public evidence files redacted while still proving the contact type and
+  verification outcome?
 - Is `account.amazonaws.com` trusted access still enabled if contacts are
   managed from the Organizations management account?
 - Is the contact step separate from delegated-admin migration and service
