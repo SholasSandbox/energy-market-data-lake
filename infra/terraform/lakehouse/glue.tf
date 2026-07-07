@@ -34,6 +34,26 @@ resource "aws_glue_crawler" "curated" {
   }
 }
 
+resource "aws_glue_crawler" "energy_specific" {
+  for_each = var.enable_energy_specific_crawlers ? local.energy_specific_crawlers : {}
+
+  name          = each.value.name
+  role          = aws_iam_role.glue.arn
+  database_name = aws_glue_catalog_database.lakehouse.name
+  table_prefix  = each.value.table_prefix
+  tags = merge(
+    local.common_tags,
+    {
+      DataDomain = each.value.data_domain
+      Dataset    = each.value.dataset
+    }
+  )
+
+  s3_target {
+    path = each.value.path
+  }
+}
+
 resource "aws_glue_job" "raw_to_parquet" {
   name              = var.glue_job_name
   role_arn          = aws_iam_role.glue.arn

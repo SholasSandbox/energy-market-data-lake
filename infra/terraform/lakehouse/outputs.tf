@@ -38,6 +38,11 @@ output "curated_crawler_name" {
   value       = aws_glue_crawler.curated.name
 }
 
+output "energy_specific_crawler_names" {
+  description = "Optional energy-specific Glue crawler names keyed by source or curated dataset."
+  value       = { for key, crawler in aws_glue_crawler.energy_specific : key => crawler.name }
+}
+
 output "glue_job_name" {
   description = "Glue ETL job name."
   value       = aws_glue_job.raw_to_parquet.name

@@ -7,7 +7,8 @@ This Terraform root recreates the serverless energy lakehouse resources used by 
 - Lambda ingestion function and execution role
 - EventBridge ingestion schedule
 - Optional data lake S3 bucket
-- Prefix-scoped Glue role, database, raw crawler, curated crawler, and ETL job
+- Prefix-scoped Glue role, database, raw crawler, curated crawler, optional
+  energy-specific crawlers, and ETL job
 - Athena workgroup, query result location, and dedicated query role
 - Phase 8 deterministic AI insight Lambda, Step Functions state machine,
   failure SNS topic, and optional dashboard snapshot bucket
@@ -115,6 +116,16 @@ approved same-account user, Identity Center permission set, or automation role
 must separately receive `sts:AssumeRole` permission for the output
 `athena_query_role_arn`. Creating the role does not grant it to every principal
 in the account.
+
+Energy-specific Glue crawlers are optional and disabled by default:
+
+```hcl
+enable_energy_specific_crawlers = false
+```
+
+Keep the default when planning routine changes. Set it to `true` only after a
+reviewed plan confirms the extra Elexon, ENTSO-E, ENTSOG, curated electricity,
+and curated gas crawlers are the intended live-change boundary.
 
 Phase 8 orchestration is optional and disabled by default:
 

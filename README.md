@@ -393,7 +393,10 @@ config/                Sample environment settings
 dashboard-ui/          React + TypeScript dashboard application
 diagrams/              Mermaid, SVG, PNG, and generated architecture diagrams
 docs/                  Active documentation and implementation plans
+docs/adr/              Accepted historical Architecture Decision Records
+docs/adrs/             Current ADR template and issue-driven ADR drafts
 docs/archive/          Historical completed plans and old demo artifacts
+docs/exam-prep/        SAP-C02 practice logs and review artifacts
 docs/evidence/         Generated run, schema, and dashboard evidence
 docs/evidence/screenshots/
                        Dashboard screenshots for portfolio/demo use
@@ -597,6 +600,10 @@ python3 scripts/validate_athena_schema.py \
 - `docs/planning/sap-c02-readiness-tracker.md`: controlling scope, sequence,
   progress, and completion tracker.
 - `PLANS.md`: active SAP-C02 execution sequence plus historical delivery record.
+- `docs/exam-prep/wrong-answers.md`: durable SAP-C02 wrong-answer log seeded
+  from the tracker.
+- `docs/adrs/`: current ADR template and issue-driven ADR drafts; accepted
+  historical ADRs remain under `docs/adr/`.
 - `docs/setup.md`: setup guide for the serverless energy lakehouse path.
 - `docs/phase-1-stabilize-ingestion-lakehouse.md`: reconciled historical Phase 1 checklist.
 - `docs/entsoe-operationalization-checklist.md`: ENTSO-E reliability checklist.

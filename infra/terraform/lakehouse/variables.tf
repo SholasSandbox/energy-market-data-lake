@@ -391,6 +391,12 @@ variable "curated_crawler_name" {
   default     = "energy-market-curated-crawler"
 }
 
+variable "enable_energy_specific_crawlers" {
+  description = "When true, create additional source- and dataset-specific Glue crawlers for the energy market lakehouse. Default false keeps live resource creation as an explicit boundary."
+  type        = bool
+  default     = false
+}
+
 variable "glue_job_name" {
   description = "Glue ETL job name."
   type        = string

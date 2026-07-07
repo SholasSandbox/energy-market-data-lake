@@ -564,6 +564,8 @@ Start with small question blocks immediately. Full timed exams begin in late Oct
 
 ## 9. Wrong-Answer Log
 
+Durable log file: `docs/exam-prep/wrong-answers.md`.
+
 Use this format for every missed question.
 
 ```text
@@ -602,7 +604,7 @@ Action:
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
 | IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; root `SERVICE_CONTROL_POLICY` is enabled, `DenyLeavingOrganization` and `DenyRootUserActions-LakehouseWorkloads` are live for `Lakehouse Workloads OU`, but exception tests, assignment decisions, broader rollback planning, and additional implementation evidence remain open |
-| Wrong-answer log reviewed twice | Not met: wrong-answer log is current through local practice block 006, but two separate review cycles are not yet evidenced |
+| Wrong-answer log reviewed twice | Not met: standalone log now exists at `docs/exam-prep/wrong-answers.md` and is current through local practice block 006, but two separate review cycles are not yet evidenced |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
 ### Final booking decision
