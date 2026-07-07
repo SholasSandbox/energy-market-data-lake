@@ -1,0 +1,25 @@
+{
+    "ConfigurationRecorders": [
+        {
+            "arn": "arn:aws:config:eu-west-2:668848431187:configuration-recorder/default/mhirv52d794gc3io",
+            "name": "default",
+            "roleARN": "arn:aws:iam::668848431187:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig",
+            "recordingGroup": {
+                "allSupported": true,
+                "includeGlobalResourceTypes": false,
+                "resourceTypes": [],
+                "exclusionByResourceTypes": {
+                    "resourceTypes": []
+                },
+                "recordingStrategy": {
+                    "useOnly": "ALL_SUPPORTED_RESOURCE_TYPES"
+                }
+            },
+            "recordingMode": {
+                "recordingFrequency": "CONTINUOUS",
+                "recordingModeOverrides": []
+            },
+            "recordingScope": "PAID"
+        }
+    ]
+}

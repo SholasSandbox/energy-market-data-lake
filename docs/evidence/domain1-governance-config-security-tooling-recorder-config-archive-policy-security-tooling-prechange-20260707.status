@@ -1,0 +1,2 @@
+bucket_policy_contains_security_tooling=false
+kms_policy_contains_security_tooling=false

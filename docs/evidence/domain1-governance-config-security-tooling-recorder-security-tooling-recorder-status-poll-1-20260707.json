@@ -1,0 +1,12 @@
+{
+    "ConfigurationRecordersStatus": [
+        {
+            "arn": "arn:aws:config:eu-west-2:668848431187:configuration-recorder/default/mhirv52d794gc3io",
+            "name": "default",
+            "lastStartTime": "2026-07-07T10:38:11.227000+01:00",
+            "recording": true,
+            "lastStatus": "SUCCESS",
+            "lastStatusChangeTime": "2026-07-07T10:38:21.708000+01:00"
+        }
+    ]
+}

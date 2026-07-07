@@ -1,0 +1,15 @@
+{
+    "DelegatedAdministrators": [
+        {
+            "Id": "668848431187",
+            "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/668848431187",
+            "Email": "[redacted-email]",
+            "Name": "Security Tooling",
+            "Status": "ACTIVE",
+            "State": "ACTIVE",
+            "JoinedMethod": "CREATED",
+            "JoinedTimestamp": "2026-07-04T19:08:45.845000+01:00",
+            "DelegationEnabledDate": "2026-07-06T12:45:34.300000+01:00"
+        }
+    ]
+}

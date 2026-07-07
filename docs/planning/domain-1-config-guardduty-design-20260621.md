@@ -45,8 +45,8 @@ This note supports the tracker because it advances:
 |---|---|---|
 | Organization structure | Management account plus lakehouse and sandbox member accounts | Small enough to keep the design simple, but still worth modeling as a real multi-account governance pattern |
 | Logging boundary | CloudTrail/log archive design now keeps `Security Log Archive` as the storage-only boundary and points delegated security operations to the separate live `Security Tooling` account | AWS Config and GuardDuty should align to `Security Tooling` rather than permanently stay in the log archive account |
-| Account-readiness boundary | `Security Tooling` now exists in `Security OU`, its `SECURITY`, `OPERATIONS`, and `BILLING` alternate contacts are configured, and AWS Config delegated administration plus aggregation have migrated to it | GuardDuty delegated-admin setup is now the next security-service candidate if adopted |
-| Config recorder boundary | The migrated organization CloudTrail Config rule excludes `so-aws-admin` and `Security Tooling` because both lacked recorders before migration | Recorder-scope decision is now closed: onboard the `Security Tooling` recorder as the next bounded implementation if explicitly approved, and keep `so-aws-admin` excluded on the decommission path |
+| Account-readiness boundary | `Security Tooling` now exists in `Security OU`, its `SECURITY`, `OPERATIONS`, and `BILLING` alternate contacts are configured, AWS Config delegated administration plus aggregation have migrated to it, and its AWS Config recorder is live in `eu-west-2` | GuardDuty delegated-admin setup is now the next security-service candidate if adopted |
+| Config recorder boundary | The migrated organization CloudTrail Config rule now includes `Security Tooling` and excludes only `so-aws-admin` | Keep `so-aws-admin` excluded on the decommission path; do not expand recorder scope into retired or placeholder accounts |
 | GuardDuty delegated-admin boundary | GuardDuty delegated-admin planning now targets `Security Tooling` and explicitly rejects creating another account | Use `Security Tooling` as the delegated administrator if GuardDuty is adopted; no new GuardDuty account is needed |
 | Observability boundary | External governance study now distinguishes OAM, CloudTrail log archive, and AWS Config aggregator | OAM is a future operational visibility option for `Security Tooling`, not a replacement for audit logging or Config compliance posture |
 | Primary active Region | `eu-west-2` | Use one home Region assumption for the design unless a later networking or resilience decision changes that |
@@ -294,9 +294,8 @@ This note does not complete implementation. The following remain open:
 
 - keep `Security Log Archive` as the storage-only account while active AWS
   Config delegated administration and aggregation run from `Security Tooling`;
-- implement the `Security Tooling` recorder onboarding under separate explicit
-  approval, then remove only `668848431187` from the migrated organization
-  CloudTrail Config rule exclusions;
+- keep the `Security Tooling` recorder and organization-rule inclusion stable
+  after the 2026-07-07 bounded implementation;
 - keep `so-aws-admin` excluded while read-only dependency checks and dependency
   resolution prepare it for retirement;
 - implement GuardDuty delegated administration in `Security Tooling` under

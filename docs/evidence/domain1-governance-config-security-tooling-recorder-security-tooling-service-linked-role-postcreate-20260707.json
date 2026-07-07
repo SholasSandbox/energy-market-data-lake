@@ -1,0 +1,23 @@
+{
+    "Role": {
+        "Path": "/aws-service-role/config.amazonaws.com/",
+        "RoleName": "AWSServiceRoleForConfig",
+        "RoleId": "AROAZXOTZEBJQHEWWYMBX",
+        "Arn": "arn:aws:iam::668848431187:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig",
+        "CreateDate": "2026-07-07T09:38:08+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "config.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        },
+        "MaxSessionDuration": 3600,
+        "RoleLastUsed": {}
+    }
+}

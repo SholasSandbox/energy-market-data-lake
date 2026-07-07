@@ -276,6 +276,19 @@ scripts/check_public_evidence_redaction.sh
 If the check fails, move the exact file into a private evidence store and commit
 only a redacted summary or redacted copy.
 
+History cleanup caveat:
+
+- A repository history rewrite removes the exposed values from refs controlled
+  by this repository, but it does not guarantee removal from GitHub caches,
+  forks, or other local clones.
+- After any public exposure of personal contact data, treat the values as
+  exposed and rotate or replace them where practical.
+- If the exposed data must be purged beyond this repository's refs, follow the
+  current GitHub sensitive-data removal process and contact GitHub Support for
+  cache cleanup where needed.
+- Keep this caveat visible in the tracker until the next governance evidence
+  commit has passed the redaction check.
+
 ## Ordered Implementation Sequence
 
 Move through these states in order. Do not skip prerequisites just because a
@@ -424,6 +437,10 @@ The first live governance note should usually be one of these, in this order:
 3. One SCP attachment with narrow blast radius and explicit exceptions.
 4. AWS Config recorder plus aggregator enablement.
 5. GuardDuty delegated-admin designation and foundational coverage.
+
+As of 2026-07-07, the current Security Tooling AWS Config delegated-admin,
+aggregator, recorder, and organization-rule inclusion sequence is complete in
+`eu-west-2`; GuardDuty live-readiness is the next security-service transition.
 
 OAM and Security Hub should remain later review notes unless the account
 boundary, Config scope, and GuardDuty scope are already stable.

@@ -1,0 +1,34 @@
+{
+    "OrganizationConfigRuleDetailedStatus": [
+        {
+            "AccountId": "349687196588",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-07T10:39:27.883000+01:00"
+        },
+        {
+            "AccountId": "464975959576",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-07T10:39:27.883000+01:00"
+        },
+        {
+            "AccountId": "668848431187",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-07T10:39:27.883000+01:00"
+        },
+        {
+            "AccountId": "955659429518",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-07T10:39:27.883000+01:00"
+        },
+        {
+            "AccountId": "974893866311",
+            "ConfigRuleName": "OrgConfigRule-org-multi-region-cloudtrail-enabled-ul1imzy1",
+            "MemberAccountRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-07T10:39:27.883000+01:00"
+        }
+    ]
+}

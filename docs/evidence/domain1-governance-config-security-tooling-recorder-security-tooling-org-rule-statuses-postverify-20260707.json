@@ -1,0 +1,9 @@
+{
+    "OrganizationConfigRuleStatuses": [
+        {
+            "OrganizationConfigRuleName": "org-multi-region-cloudtrail-enabled",
+            "OrganizationRuleStatus": "UPDATE_SUCCESSFUL",
+            "LastUpdateTime": "2026-07-07T10:40:39.280000+01:00"
+        }
+    ]
+}

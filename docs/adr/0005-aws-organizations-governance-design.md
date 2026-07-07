@@ -173,8 +173,8 @@ Design organization logging as:
   validation;
 - central log archive ownership in a dedicated `Log Archive` account;
 - AWS Config organization aggregation in the separate `Security Tooling`
-  account, with `Security Tooling` recorder onboarding as the next bounded
-  follow-on and `so-aws-admin` excluded on the decommission path;
+  account, with the `Security Tooling` recorder now live in `eu-west-2` and
+  `so-aws-admin` excluded on the decommission path;
 - GuardDuty as the first security-service aggregation candidate in the
   `Security Tooling` account, with no additional GuardDuty account;
 - OAM as a later cross-account observability option in the `Security Tooling`
@@ -368,8 +368,8 @@ Apply sequencing should be:
   silently rewriting earlier evidence.
 - The AWS Config recorder-scope decision is now recorded in
   `docs/planning/domain-1-config-recorder-scope-decision-20260706.md`:
-  `Security Tooling` is in scope for the next bounded recorder implementation,
-  while `so-aws-admin` remains excluded on the decommission path.
+  `Security Tooling` recorder onboarding was implemented on 2026-07-07, while
+  `so-aws-admin` remains excluded on the decommission path.
 - The `so-aws-admin` account-purpose decision is now recorded in
   `docs/planning/domain-1-so-aws-admin-decommission-decision-20260706.md`:
   retire it only after read-only dependency checks and dependency resolution,
