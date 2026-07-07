@@ -1,0 +1,5 @@
+{
+    "UserId": "AROAZXOTZEBJUUBIFYLXG:guardduty-live-readiness-prechange",
+    "Account": "668848431187",
+    "Arn": "arn:aws:sts::668848431187:assumed-role/OrganizationAccountAccessRole/guardduty-live-readiness-prechange"
+}

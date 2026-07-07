@@ -1,0 +1,38 @@
+[
+    {
+        "Id": "464975959576",
+        "Name": "lakehouse-workload-account",
+        "Status": "ACTIVE",
+        "JoinedMethod": "INVITED"
+    },
+    {
+        "Id": "955659429518",
+        "Name": "Security Log Archive",
+        "Status": "ACTIVE",
+        "JoinedMethod": "CREATED"
+    },
+    {
+        "Id": "349687196588",
+        "Name": "management-account",
+        "Status": "ACTIVE",
+        "JoinedMethod": "INVITED"
+    },
+    {
+        "Id": "054394900225",
+        "Name": "so-aws-admin",
+        "Status": "ACTIVE",
+        "JoinedMethod": "CREATED"
+    },
+    {
+        "Id": "668848431187",
+        "Name": "Security Tooling",
+        "Status": "ACTIVE",
+        "JoinedMethod": "CREATED"
+    },
+    {
+        "Id": "974893866311",
+        "Name": "container-sandbox",
+        "Status": "ACTIVE",
+        "JoinedMethod": "CREATED"
+    }
+]

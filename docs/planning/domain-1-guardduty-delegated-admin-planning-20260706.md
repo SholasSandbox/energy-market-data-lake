@@ -4,8 +4,13 @@
 
 ## Status
 
-Planning decision recorded. No live AWS change is authorized or performed by this
-note.
+Planning decision recorded. Live-readiness evidence collected on 2026-07-07.
+
+No live GuardDuty change is authorized or performed by this note.
+
+Live-readiness evidence:
+
+- `docs/evidence/domain1-governance-guardduty-live-readiness-20260707.md`
 
 ## Decision
 
@@ -71,6 +76,21 @@ Before any live GuardDuty change is approved, collect read-only evidence for:
    posture if any delegated administrator already exists.
 6. Budget/cost expectation for foundational GuardDuty and any optional protection
    plans under consideration.
+
+## 2026-07-07 Live-Readiness Result
+
+Fresh read-only evidence confirms the current prechange state:
+
+- no GuardDuty delegated administrator exists in `eu-west-2`;
+- GuardDuty Organizations service access is not currently enabled;
+- no GuardDuty detector exists in the checked active accounts;
+- no GuardDuty organization configuration, member list, or optional-plan state
+  exists to preserve;
+- `Security Tooling` remains the correct target delegated administrator;
+- `so-aws-admin` remains excluded on the decommission path.
+
+The next action is not another planning decision. It is a separately approved
+live implementation boundary if GuardDuty is adopted.
 
 ## Next Bounded Live Change If Later Approved
 
