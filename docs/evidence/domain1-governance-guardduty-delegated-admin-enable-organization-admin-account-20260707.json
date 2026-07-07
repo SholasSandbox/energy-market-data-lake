@@ -1,0 +1,5 @@
+{
+  "Command": "guardduty enable-organization-admin-account Security Tooling",
+  "Region": "eu-west-2",
+  "Status": "success"
+}

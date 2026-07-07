@@ -1,0 +1,320 @@
+{
+    "MemberDataSourceConfigurations": [
+        {
+            "AccountId": "464975959576",
+            "DataSources": {
+                "CloudTrail": {
+                    "Status": "ENABLED"
+                },
+                "DNSLogs": {
+                    "Status": "ENABLED"
+                },
+                "FlowLogs": {
+                    "Status": "ENABLED"
+                },
+                "S3Logs": {
+                    "Status": "DISABLED"
+                },
+                "Kubernetes": {
+                    "AuditLogs": {
+                        "Status": "DISABLED"
+                    }
+                },
+                "MalwareProtection": {
+                    "ScanEc2InstanceWithFindings": {
+                        "EbsVolumes": {
+                            "Status": "DISABLED"
+                        }
+                    }
+                }
+            },
+            "Features": [
+                {
+                    "Name": "CLOUD_TRAIL",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "DNS_LOGS",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "FLOW_LOGS",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "S3_DATA_EVENTS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EKS_AUDIT_LOGS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EBS_MALWARE_PROTECTION",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "RDS_LOGIN_EVENTS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EKS_RUNTIME_MONITORING",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:41+01:00",
+                    "AdditionalConfiguration": [
+                        {
+                            "Name": "EKS_ADDON_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        }
+                    ]
+                },
+                {
+                    "Name": "LAMBDA_NETWORK_LOGS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "RUNTIME_MONITORING",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00",
+                    "AdditionalConfiguration": [
+                        {
+                            "Name": "EKS_ADDON_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        },
+                        {
+                            "Name": "ECS_FARGATE_AGENT_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        },
+                        {
+                            "Name": "EC2_AGENT_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "AccountId": "955659429518",
+            "DataSources": {
+                "CloudTrail": {
+                    "Status": "ENABLED"
+                },
+                "DNSLogs": {
+                    "Status": "ENABLED"
+                },
+                "FlowLogs": {
+                    "Status": "ENABLED"
+                },
+                "S3Logs": {
+                    "Status": "DISABLED"
+                },
+                "Kubernetes": {
+                    "AuditLogs": {
+                        "Status": "DISABLED"
+                    }
+                },
+                "MalwareProtection": {
+                    "ScanEc2InstanceWithFindings": {
+                        "EbsVolumes": {
+                            "Status": "DISABLED"
+                        }
+                    }
+                }
+            },
+            "Features": [
+                {
+                    "Name": "CLOUD_TRAIL",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "DNS_LOGS",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "FLOW_LOGS",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "S3_DATA_EVENTS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EKS_AUDIT_LOGS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EBS_MALWARE_PROTECTION",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "RDS_LOGIN_EVENTS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EKS_RUNTIME_MONITORING",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:41+01:00",
+                    "AdditionalConfiguration": [
+                        {
+                            "Name": "EKS_ADDON_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        }
+                    ]
+                },
+                {
+                    "Name": "LAMBDA_NETWORK_LOGS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "RUNTIME_MONITORING",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00",
+                    "AdditionalConfiguration": [
+                        {
+                            "Name": "EKS_ADDON_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        },
+                        {
+                            "Name": "ECS_FARGATE_AGENT_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        },
+                        {
+                            "Name": "EC2_AGENT_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "AccountId": "974893866311",
+            "DataSources": {
+                "CloudTrail": {
+                    "Status": "ENABLED"
+                },
+                "DNSLogs": {
+                    "Status": "ENABLED"
+                },
+                "FlowLogs": {
+                    "Status": "ENABLED"
+                },
+                "S3Logs": {
+                    "Status": "DISABLED"
+                },
+                "Kubernetes": {
+                    "AuditLogs": {
+                        "Status": "DISABLED"
+                    }
+                },
+                "MalwareProtection": {
+                    "ScanEc2InstanceWithFindings": {
+                        "EbsVolumes": {
+                            "Status": "DISABLED"
+                        }
+                    }
+                }
+            },
+            "Features": [
+                {
+                    "Name": "CLOUD_TRAIL",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "DNS_LOGS",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "FLOW_LOGS",
+                    "Status": "ENABLED",
+                    "UpdatedAt": "2026-07-07T16:17:44+01:00"
+                },
+                {
+                    "Name": "S3_DATA_EVENTS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EKS_AUDIT_LOGS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EBS_MALWARE_PROTECTION",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "RDS_LOGIN_EVENTS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "EKS_RUNTIME_MONITORING",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:41+01:00",
+                    "AdditionalConfiguration": [
+                        {
+                            "Name": "EKS_ADDON_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        }
+                    ]
+                },
+                {
+                    "Name": "LAMBDA_NETWORK_LOGS",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                },
+                {
+                    "Name": "RUNTIME_MONITORING",
+                    "Status": "DISABLED",
+                    "UpdatedAt": "2026-07-07T16:17:43+01:00",
+                    "AdditionalConfiguration": [
+                        {
+                            "Name": "EKS_ADDON_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        },
+                        {
+                            "Name": "ECS_FARGATE_AGENT_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        },
+                        {
+                            "Name": "EC2_AGENT_MANAGEMENT",
+                            "Status": "DISABLED",
+                            "UpdatedAt": "2026-07-07T16:17:43+01:00"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "UnprocessedAccounts": []
+}

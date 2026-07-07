@@ -1,0 +1,5 @@
+{
+  "Command": "guardduty update-member-detectors optional features disabled",
+  "Region": "eu-west-2",
+  "Status": "success"
+}

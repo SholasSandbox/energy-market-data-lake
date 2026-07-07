@@ -1,0 +1,5 @@
+{
+  "Command": "guardduty update-organization-configuration auto-enable NONE and optional features NONE",
+  "Region": "eu-west-2",
+  "Status": "success"
+}

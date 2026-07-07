@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 -->
 
-- Status: Accepted for design; implementation not approved
+- Status: Accepted for design; live implementation occurs only through separate approved change notes
 - Date: 2026-06-19
 - Related tracker section: Domain 1 governance readiness
 - Related preflight: `docs/planning/domain-1-governance-preflight-20260618.md`
@@ -100,7 +100,8 @@ Accepted transition and sequencing:
 - migrate delegated-administrator and security-operations functions in this
   order: AWS Config first, GuardDuty next, and Security Hub only if it is later
   intentionally adopted. AWS Config migration is complete; GuardDuty delegated
-  admin planning now targets `Security Tooling` with no new account;
+  administration and foundational coverage are live in `Security Tooling` for
+  `eu-west-2`;
 - treat OAM as a later `Security Tooling` or central monitoring concern, not as
   part of the storage-only log archive boundary.
 
@@ -175,7 +176,7 @@ Design organization logging as:
 - AWS Config organization aggregation in the separate `Security Tooling`
   account, with the `Security Tooling` recorder now live in `eu-west-2` and
   `so-aws-admin` excluded on the decommission path;
-- GuardDuty as the first security-service aggregation candidate in the
+- GuardDuty delegated administration and foundational coverage in the
   `Security Tooling` account, with no additional GuardDuty account;
 - OAM as a later cross-account observability option in the `Security Tooling`
   or central monitoring boundary;
@@ -316,6 +317,10 @@ for later SAP-C02 revision:
   recorder baseline first, then one narrow organization rule, then blocker
   resolution, then retry, rather than starting with multiple rule families at
   once.
+- the GuardDuty rollout followed the same narrow-boundary pattern: enable the
+  delegated administrator in `Security Tooling`, enroll only approved active
+  accounts, keep `so-aws-admin` excluded, and leave optional protection plans
+  disabled until a separate cost/value decision exists.
 
 These live lessons reinforce a recurring exam pattern: the correct answer is
 often not just "use Organizations" or "use Config," but "sequence delegated
@@ -376,8 +381,9 @@ Apply sequencing should be:
   and keep Security Hub in `Security Tooling` if adopted.
 - GuardDuty delegated-admin planning is now recorded in
   `docs/planning/domain-1-guardduty-delegated-admin-planning-20260706.md`:
-  use `Security Tooling` as the delegated administrator if GuardDuty is adopted;
-  do not create another account.
+  use `Security Tooling` as the delegated administrator; do not create another
+  account. The live delegated-admin implementation is recorded in
+  `docs/evidence/domain1-governance-guardduty-delegated-admin-change-note-20260707.md`.
 - The external governance study note
   `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Security_Observability_Comparison.md`
   records the OAM vs CloudTrail log archive vs AWS Config aggregator exam

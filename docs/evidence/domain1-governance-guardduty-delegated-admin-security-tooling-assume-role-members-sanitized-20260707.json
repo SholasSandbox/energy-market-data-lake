@@ -1,0 +1,7 @@
+{
+  "AssumedRoleUser": {
+    "AssumedRoleId": "AROAZXOTZEBJUUBIFYLXG:guardduty-members-20260707",
+    "Arn": "arn:aws:sts::668848431187:assumed-role/OrganizationAccountAccessRole/guardduty-members-20260707"
+  },
+  "PackedPolicySize": null
+}

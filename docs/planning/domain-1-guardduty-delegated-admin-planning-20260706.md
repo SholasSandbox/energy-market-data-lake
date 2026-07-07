@@ -4,18 +4,24 @@
 
 ## Status
 
-Planning decision recorded. Live-readiness evidence collected on 2026-07-07.
+Planning decision implemented under separate explicit approval on 2026-07-07.
 
-No live GuardDuty change is authorized or performed by this note.
+This note did not authorize the live change by itself. The live implementation
+is recorded separately in
+`docs/evidence/domain1-governance-guardduty-delegated-admin-change-note-20260707.md`.
 
 Live-readiness evidence:
 
 - `docs/evidence/domain1-governance-guardduty-live-readiness-20260707.md`
 
+Live implementation evidence:
+
+- `docs/evidence/domain1-governance-guardduty-delegated-admin-change-note-20260707.md`
+
 ## Decision
 
 Use `Security Tooling` (`668848431187`) as the GuardDuty delegated administrator
-account if GuardDuty is adopted.
+account.
 
 Do not create another account for GuardDuty. Do not use `Security Log Archive`,
 `so-aws-admin`, the Organizations management account, or any workload account as
@@ -29,8 +35,7 @@ This follows the accepted security-account split:
   AWS Config archive buckets, KMS keys, retention controls, and log-storage
   evidence.
 - `Security Tooling` (`668848431187`) owns active delegated security tooling,
-  including AWS Config aggregation today and GuardDuty delegated administration
-  if adopted next.
+  including AWS Config aggregation and GuardDuty delegated administration today.
 - `so-aws-admin` (`054394900225`) is on the decommission path and must not become
   a new security-service home.
 
@@ -52,7 +57,7 @@ The GuardDuty planning target is:
 - account coverage target: active organization accounts, excluding
   `so-aws-admin` while it remains on the decommission path.
 
-Initial active-account coverage should be evaluated for:
+Initial active-account coverage was evaluated for:
 
 | Account | Planned GuardDuty posture |
 |---|---|
@@ -89,22 +94,23 @@ Fresh read-only evidence confirms the current prechange state:
 - `Security Tooling` remains the correct target delegated administrator;
 - `so-aws-admin` remains excluded on the decommission path.
 
-The next action is not another planning decision. It is a separately approved
-live implementation boundary if GuardDuty is adopted.
+The next action was a separately approved live implementation boundary. That
+boundary is now complete.
 
-## Next Bounded Live Change If Later Approved
+## 2026-07-07 Live Implementation Result
 
-The first GuardDuty live implementation should be its own change boundary:
+GuardDuty is now configured in `eu-west-2` with:
 
-1. Confirm fresh prechange evidence and the acting account.
-2. Enable or verify GuardDuty in `Security Tooling` for `eu-west-2` if required.
-3. Designate `Security Tooling` as the GuardDuty delegated administrator in
-   `eu-west-2`.
-4. Configure foundational organization coverage for the approved active accounts.
-5. Leave optional protection plans disabled unless separately approved.
-6. Verify delegated administrator, detector, member, and organization
-   configuration state.
-7. Record postchange evidence and cost-observation follow-up.
+- delegated administrator: `Security Tooling` (`668848431187`);
+- foundational coverage in the management account, `Security Tooling`, Security
+  Log Archive, lakehouse workload account, and container sandbox;
+- `so-aws-admin` (`054394900225`) excluded on the decommission path;
+- GuardDuty organization auto-enable set to `NONE`;
+- optional protection plans disabled.
+
+Next bounded work is cost observation and later, separate Security Hub/OAM
+review. Do not enable optional GuardDuty protection plans or additional Regions
+without a new value/cost decision and explicit approval.
 
 ## Explicitly Out Of Scope
 

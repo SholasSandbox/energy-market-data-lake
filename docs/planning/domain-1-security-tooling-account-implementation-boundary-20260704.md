@@ -78,7 +78,7 @@ Accepted target parent:
 Accepted purpose:
 
 - AWS Config organization aggregation and delegated administration;
-- GuardDuty delegated administration if GuardDuty is adopted next;
+- GuardDuty delegated administration in `eu-west-2`;
 - possible future Security Hub administration if later adopted;
 - OAM/cross-account observability if operational telemetry centralization
   becomes useful;
@@ -116,8 +116,8 @@ Explicitly out of scope for this account:
 | Alternate contacts | `SECURITY`, `OPERATIONS`, and `BILLING` configured on 2026-07-06 |
 | AWS Config delegated admin | `config.amazonaws.com` and `config-multiaccountsetup.amazonaws.com` migrated to `Security Tooling` on 2026-07-06 |
 | AWS Config aggregator | `organization-config-aggregator-eu-west-2` in `eu-west-2` |
-| AWS Config recorder scope | In scope for next bounded recorder onboarding in `eu-west-2`; `so-aws-admin` remains excluded on the decommission path |
-| GuardDuty delegated admin | Planning target only: use `Security Tooling` as delegated administrator if GuardDuty is adopted; no new account |
+| AWS Config recorder scope | Recorder onboarding completed in `eu-west-2`; `so-aws-admin` remains excluded on the decommission path |
+| GuardDuty delegated admin | Live in `eu-west-2` with foundational coverage only; no new account |
 
 ### Completed Separate Account-Readiness Step
 
@@ -245,18 +245,19 @@ Accepted order:
 3. Migrate AWS Config delegated administration and aggregation. Completed on
    2026-07-06.
 4. Close recorder scope for `so-aws-admin` and `Security Tooling`. Completed on
-   2026-07-06: `Security Tooling` is the next bounded recorder-onboarding
-   candidate; `so-aws-admin` remains excluded on the decommission path. See
+   2026-07-06: `Security Tooling` was approved for bounded recorder onboarding;
+   `so-aws-admin` remains excluded on the decommission path. See
    `docs/planning/domain-1-config-recorder-scope-decision-20260706.md`.
 5. Under separate explicit approval, onboard the `Security Tooling` recorder in
    `eu-west-2`, then remove only `668848431187` from the migrated organization
-   Config rule exclusions.
+   Config rule exclusions. Completed on 2026-07-07.
 6. Collect read-only dependency evidence for `so-aws-admin`, resolve any
    dependencies, and retire it only under separate explicit approval.
 7. Record GuardDuty delegated-admin planning with `Security Tooling` as the
    delegated-admin target and no new account. Completed on 2026-07-06.
 8. Under separate explicit approval, configure GuardDuty delegated
-   administration in `Security Tooling` if GuardDuty is adopted.
+   administration in `Security Tooling`. Completed on 2026-07-07 for
+   foundational coverage in `eu-west-2`.
 9. Adopt Security Hub only if later intentionally adopted in `Security Tooling`.
 10. Adopt OAM only if centralized operational telemetry becomes useful.
 

@@ -1,0 +1,15 @@
+{
+  "Status": "passed",
+  "Region": "eu-west-2",
+  "SecurityToolingDetectorId": "6ccf9e93cbfefca63bcb3c31593649c3",
+  "ManagementDetectorId": "d2cf9e93cf11b0e1a118ec7c756b7008",
+  "DelegatedAdmin": "668848431187",
+  "ExcludedAccount": "054394900225",
+  "MemberAccounts": [
+    "464975959576",
+    "955659429518",
+    "974893866311"
+  ],
+  "OptionalFeatures": "disabled",
+  "OrganizationAutoEnable": "NONE"
+}

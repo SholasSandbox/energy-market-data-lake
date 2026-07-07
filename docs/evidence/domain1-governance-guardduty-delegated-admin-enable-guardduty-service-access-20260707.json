@@ -1,0 +1,5 @@
+{
+  "Command": "organizations enable-aws-service-access guardduty.amazonaws.com",
+  "Region": "eu-west-2",
+  "Status": "success"
+}

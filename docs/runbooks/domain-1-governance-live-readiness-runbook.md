@@ -440,9 +440,15 @@ The first live governance note should usually be one of these, in this order:
 
 As of 2026-07-07, the current Security Tooling AWS Config delegated-admin,
 aggregator, recorder, and organization-rule inclusion sequence is complete in
-`eu-west-2`; GuardDuty live-readiness evidence has also been collected. The next
-security-service transition is a separately approved GuardDuty implementation
-boundary.
+`eu-west-2`. GuardDuty delegated administration is also live in `eu-west-2`,
+with `Security Tooling` as delegated administrator, foundational coverage for
+the approved active accounts, `so-aws-admin` excluded, organization auto-enable
+set to `NONE`, and optional protection plans disabled.
+
+The next governance transitions are not another GuardDuty enablement step. They
+are GuardDuty usage/cost observation, `so-aws-admin` read-only dependency
+checks, and only later separate Security Hub or OAM review if those are still
+worth adopting.
 
 OAM and Security Hub should remain later review notes unless the account
 boundary, Config scope, and GuardDuty scope are already stable.
