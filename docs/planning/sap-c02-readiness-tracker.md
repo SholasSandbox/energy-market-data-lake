@@ -10,9 +10,9 @@
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
 **Last repository reconciliation:** 2026-07-01
-**Last practice evidence update:** 2026-07-01
+**Last practice evidence update:** 2026-07-07
 **Last tutorial evidence update:** 2026-07-01
-**Last governance study evidence update:** 2026-07-01
+**Last governance study evidence update:** 2026-07-07
 
 ---
 
@@ -546,9 +546,13 @@ Start with small question blocks immediately. Full timed exams begin in late Oct
 | 2026-07-01 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-block-004-review.md` | Untimed 25 questions | 25/25 | None identified | Clean pass; keep no-heading exam-style blocks |
 | 2026-07-01 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-block-005-review.md` | Untimed 25 questions | 25/25 | None identified | Clean pass; no-heading format improved scenario parsing |
 | 2026-07-01 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-block-006-review.md` | Untimed 25 questions | 24/25 | Kinesis Data Streams vs SQS FIFO; block quality caveat | Wrong answer logged; drill event-streaming vs queueing decision patterns; treat the score as useful learning evidence but not fully exam-quality because the block had a flawed single-answer distribution |
+| 2026-07-07 | `docs/exam-prep/wrong-answers.md` | Untimed 25 questions | 25/25 | None identified | Block 007 clean pass; stronger coverage of Domain 2 and Domain 3 topics |
 |  |  | Timed 30 questions |  |  |  |
 |  |  | Full timed exam |  |  |  |
 |  |  | Full timed exam |  |  |  |
+
+Artifact manifest for completed exercise archive Blocks 003 through 006:
+`docs/exam-prep/artifacts/sap-c02-completed-exercises-003-to-006-manifest.md`.
 
 ### Score interpretation
 
@@ -598,13 +602,13 @@ Action:
 
 | Criterion | Status |
 |---|---|
-| Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met: four additional untimed 25-question blocks now show 96%, 100%, 100%, and 96%, but Block 006 has an answer-distribution quality caveat and full timed practice evidence has not started |
+| Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met: five additional untimed 25-question blocks now show 96%, 100%, 100%, 96%, and 100%, but Block 006 has an answer-distribution quality caveat and full timed practice evidence has not started |
 | Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, org inventory evidence, parent mapping, OU/account-placement decision, first approved live OU creation, approved lakehouse account move, SCP examples, first bounded OU-targeted SCP attempt and rollback evidence, root `SERVICE_CONTROL_POLICY` enablement evidence, first and second successful OU-targeted SCP attachment evidence, permission-set matrix, break-glass procedure, logging/security-service design notes, Security Tooling vs Log Archive split, Security Tooling AWS Config migration/recorder evidence, GuardDuty delegated-admin evidence, and a governance live-readiness runbook are documented; Security Hub/OAM, broader Identity Center, `so-aws-admin` retirement checks, budget thresholds, and networking remain open |
 | Networking comparison matrix complete | Not met |
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
 | IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; root `SERVICE_CONTROL_POLICY` is enabled, `DenyLeavingOrganization` and `DenyRootUserActions-LakehouseWorkloads` are live for `Lakehouse Workloads OU`, but exception tests, assignment decisions, broader rollback planning, and additional implementation evidence remain open |
-| Wrong-answer log reviewed twice | Not met: standalone log now exists at `docs/exam-prep/wrong-answers.md` and is current through local practice block 006, but two separate review cycles are not yet evidenced |
+| Wrong-answer log reviewed twice | Not met: standalone log now exists at `docs/exam-prep/wrong-answers.md`, is current through local practice block 007, and has a first review checklist opened; two separate completed review cycles are not yet evidenced |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
 ### Final booking decision

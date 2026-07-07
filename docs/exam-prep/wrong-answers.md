@@ -8,10 +8,41 @@ implementation evidence from any external tutorial workspace.
 
 | Item | Status |
 |---|---|
-| Current through practice block | 006 |
-| First review cycle evidenced | Not yet |
+| Current through practice block | 007 |
+| First review cycle evidenced | Not yet; checklist opened below |
 | Second review cycle evidenced | Not yet |
 | Controlling tracker reference | `docs/planning/sap-c02-readiness-tracker.md` |
+
+## Practice Score Summary
+
+| Block | Score | Percentage | Notes |
+|---|---:|---:|---|
+| Block 002 | 18 / 20 | 90% | Missed hybrid DNS and rehost vs refactor. |
+| Block 003 | 24 / 25 | 96% | One multi-select option-selection miss on hybrid networking. |
+| Block 004 | 25 / 25 | 100% | Clean pass. |
+| Block 005 | 25 / 25 | 100% | Clean pass. Strong multi-select discipline. |
+| Block 006 | 24 / 25 | 96% | Missed Kinesis vs SQS FIFO streaming distinction. |
+| Block 007 | 25 / 25 | 100% | Clean pass. Stronger coverage of Domain 2 and Domain 3 topics. |
+
+## Artifact Evidence
+
+| Artifact | Scope | Repository Handling |
+|---|---|---|
+| `sap-c02-completed-exercises-003-to-006.zip` | Completed review logs for Blocks 003 through 006 | Binary archive retained outside the public repo; sanitized manifest recorded at `docs/exam-prep/artifacts/sap-c02-completed-exercises-003-to-006-manifest.md`. |
+
+## Review Cycle 1 Checklist
+
+Opened: 2026-07-07
+
+Completion rule: mark this cycle complete only after each drill can be answered
+from memory without looking at the correction text first.
+
+| Drill | Review Question | Status |
+|---|---|---|
+| Hybrid DNS | Which AWS service pair handles private DNS forwarding between VPCs and on-premises DNS? | Pending |
+| Urgent migration | When the scenario says urgent data-centre exit and minimal change, which migration pattern wins first? | Pending |
+| Private hybrid network | Which services map to private multi-VPC hybrid routing and DNS, and why is Internet Gateway excluded? | Pending |
+| Replayable event ingestion | Which requirements push the answer from SQS FIFO to Kinesis Data Streams? | Pending |
 
 ## Decision Rules To Drill
 
