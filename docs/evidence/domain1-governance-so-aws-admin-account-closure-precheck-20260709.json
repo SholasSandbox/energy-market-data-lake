@@ -1,0 +1,1350 @@
+{
+  "metadata": {
+    "runDate": "2026-07-09",
+    "generatedAt": "2026-07-09T19:21:04.595Z",
+    "targetAccount": "054394900225",
+    "targetName": "so-aws-admin",
+    "managementAccount": "349687196588",
+    "managementProfile": "org-admin",
+    "scope": "Fresh pre-close read-only checks before approved CloseAccount. No closure action is included in this file."
+  },
+  "management": {
+    "caller": {
+      "account": "349687196588",
+      "arn": "arn:aws:sts::349687196588:assumed-role/AWSReservedSSO_AdministratorAccess_be84055d6f72e1b2/shola-cloud-lab-admin"
+    },
+    "account": {
+      "id": "054394900225",
+      "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+      "name": "so-aws-admin",
+      "status": "ACTIVE",
+      "state": "ACTIVE",
+      "joinedMethod": "CREATED",
+      "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+    },
+    "parents": [
+      {
+        "Id": "ou-gbyf-mug20ym0",
+        "Type": "ORGANIZATIONAL_UNIT"
+      }
+    ],
+    "accountScps": [
+      {
+        "id": "p-FullAWSAccess",
+        "name": "FullAWSAccess",
+        "awsManaged": true,
+        "type": "SERVICE_CONTROL_POLICY"
+      }
+    ],
+    "accountTagCount": 0,
+    "delegatedAdministrators": [
+      {
+        "id": "668848431187",
+        "name": "Security Tooling",
+        "status": "ACTIVE"
+      }
+    ]
+  },
+  "identityCenter": {
+    "permissionSetNames": [
+      "AdministratorAccess",
+      "BreakGlassAdmin"
+    ],
+    "soAwsAdminReadOnlyInventoryExists": false,
+    "provisionedPermissionSetStatus": "ok",
+    "provisionedPermissionSetCount": 0,
+    "accountAssignmentCount": 0
+  },
+  "target": {
+    "assumeRole": {
+      "status": "ok",
+      "roleArn": "arn:aws:iam::054394900225:role/BreakGlassAdminRole",
+      "sessionDurationSeconds": 3600,
+      "credentialsPersisted": false
+    },
+    "caller": {
+      "account": "054394900225",
+      "arn": "arn:aws:sts::054394900225:assumed-role/BreakGlassAdminRole/preclose-20260709"
+    },
+    "enabledRegions": [
+      "ap-northeast-1",
+      "ap-northeast-2",
+      "ap-northeast-3",
+      "ap-south-1",
+      "ap-southeast-1",
+      "ap-southeast-2",
+      "ca-central-1",
+      "eu-central-1",
+      "eu-north-1",
+      "eu-west-1",
+      "eu-west-2",
+      "eu-west-3",
+      "sa-east-1",
+      "us-east-1",
+      "us-east-2",
+      "us-west-1",
+      "us-west-2"
+    ],
+    "enabledRegionCount": 17,
+    "budgets": {
+      "status": "ok-empty-output",
+      "budgetCount": 0
+    },
+    "primaryContact": {
+      "status": "present",
+      "fieldPresence": {
+        "name": true,
+        "address": true,
+        "city": true,
+        "region": true,
+        "postalCode": true,
+        "country": true,
+        "phone": true
+      }
+    },
+    "alternateContacts": [
+      {
+        "type": "BILLING",
+        "status": "absent",
+        "errorCode": null
+      },
+      {
+        "type": "OPERATIONS",
+        "status": "absent",
+        "errorCode": null
+      },
+      {
+        "type": "SECURITY",
+        "status": "absent",
+        "errorCode": null
+      }
+    ],
+    "iamAccountSummary": {
+      "AccountAccessKeysPresent": 0,
+      "AccountSigningCertificatesPresent": 0,
+      "AccountMFAEnabled": 1,
+      "AccountPasswordPresent": 1,
+      "MFADevices": 1,
+      "MFADevicesInUse": 1,
+      "Users": 0,
+      "Groups": 0,
+      "Roles": 8,
+      "Policies": 0,
+      "InstanceProfiles": 0,
+      "ServerCertificates": 0
+    },
+    "iamRoles": {
+      "totalRoleCount": 8,
+      "serviceLinkedRoleNames": [
+        "AWSServiceRoleForCloudTrail",
+        "AWSServiceRoleForConfigMultiAccountSetup",
+        "AWSServiceRoleForOrganizations",
+        "AWSServiceRoleForResourceExplorer",
+        "AWSServiceRoleForSSO",
+        "AWSServiceRoleForSupport",
+        "AWSServiceRoleForTrustedAdvisor"
+      ],
+      "nonServiceLinkedRoleNames": [
+        "BreakGlassAdminRole"
+      ]
+    },
+    "breakGlassRole": {
+      "expectedResidual": true,
+      "attachedPolicyNames": [
+        "AdministratorAccess"
+      ],
+      "inlinePolicyCount": 0
+    },
+    "s3": {
+      "status": "ok",
+      "bucketCount": 0,
+      "bucketNamesRedacted": []
+    },
+    "route53": {
+      "status": "ok",
+      "hostedZoneCount": 0,
+      "publicHostedZoneCount": 0,
+      "privateHostedZoneCount": 0,
+      "recordSetCountTotal": 0,
+      "zoneNamesRedacted": []
+    }
+  },
+  "regional": [
+    {
+      "region": "ap-northeast-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "ap-northeast-2",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "ap-northeast-3",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "ap-south-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "ap-southeast-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "ap-southeast-2",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "ca-central-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "eu-central-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "eu-north-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "eu-west-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "eu-west-2",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "eu-west-3",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "sa-east-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "us-east-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "us-east-2",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "us-west-1",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    },
+    {
+      "region": "us-west-2",
+      "cloudTrailLake": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudTrail": {
+        "status": "ok",
+        "visibleTrailCount": 1,
+        "organizationTrailCount": 1,
+        "localTargetOwnedTrailCount": 0
+      },
+      "configRecorders": {
+        "status": "ok",
+        "count": 0
+      },
+      "configDeliveryChannels": {
+        "status": "ok",
+        "count": 0
+      },
+      "configRules": {
+        "status": "ok",
+        "count": 0
+      },
+      "guardDutyDetectors": {
+        "status": "ok",
+        "count": 0
+      },
+      "securityHub": {
+        "status": "not-enabled",
+        "errorCode": null
+      },
+      "oamSinks": {
+        "status": "ok",
+        "count": 0
+      },
+      "cloudWatchLogGroups": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "cloudWatchAlarms": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "eventBridgeDefaultRules": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "snsTopics": {
+        "status": "ok",
+        "count": 0
+      },
+      "backupVaults": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      },
+      "kmsKeys": {
+        "status": "ok",
+        "hasAny": false,
+        "firstPageCount": 0
+      }
+    }
+  ],
+  "rollups": {
+    "blockerCount": 0,
+    "warningCount": 0,
+    "regionsChecked": 17,
+    "cloudTrailLakeAnyEventDataStore": false,
+    "cloudTrailLocalTargetOwnedTrails": 0,
+    "configRecorders": 0,
+    "configDeliveryChannels": 0,
+    "configRules": 0,
+    "guardDutyDetectors": 0,
+    "securityHubEnabledRegions": 0,
+    "oamSinks": 0,
+    "cloudWatchLogGroupsAny": false,
+    "cloudWatchAlarmsAny": false,
+    "eventBridgeDefaultRulesAny": false,
+    "snsTopics": 0,
+    "backupVaultsAny": false,
+    "kmsKeysAny": false,
+    "regionalErrorRegions": {
+      "cloudTrailLake": [],
+      "cloudTrail": [],
+      "configRecorders": [],
+      "configDeliveryChannels": [],
+      "configRules": [],
+      "guardDuty": [],
+      "securityHub": [],
+      "oam": [],
+      "logs": [],
+      "alarms": [],
+      "eventBridge": [],
+      "sns": [],
+      "backup": [],
+      "kms": []
+    }
+  },
+  "blockers": [],
+  "warnings": []
+}

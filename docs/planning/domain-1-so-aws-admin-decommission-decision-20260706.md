@@ -120,6 +120,28 @@ customer-managed key, log group, alarm, EventBridge rule, SNS topic, Backup
 vault, Config recorder/rule, GuardDuty detector, Security Hub hub, OAM sink, or
 unexpected IAM principal appears, stop and do not close the account.
 
+## 2026-07-09 Account Closure
+
+Under separate explicit approval, `so-aws-admin` (`054394900225`) was closed
+with AWS Organizations `CloseAccount`.
+
+Evidence:
+
+- `docs/evidence/domain1-governance-so-aws-admin-account-closure-20260709.md`
+- `docs/evidence/domain1-governance-so-aws-admin-account-closure-precheck-20260709.json`
+- `docs/evidence/domain1-governance-so-aws-admin-account-closure-close-account-result-20260709.json`
+- `docs/evidence/domain1-governance-so-aws-admin-account-closure-postclose-status-20260709.json`
+
+The fresh pre-close check found `0` blockers and `0` warnings. The
+`CloseAccount` request returned success with the expected empty response.
+Post-close `DescribeAccount` polling recorded final observed status
+`SUSPENDED` and final observed state `CLOSED`.
+
+This closes the `so-aws-admin` decommission path. Do not use this account for
+future governance-service placement. If AWS Support reopening is ever required
+during the 90-day post-closure period, treat it as a separate explicitly
+approved incident/recovery action.
+
 ## Explicitly Out Of Scope
 
 - enabling AWS Config, GuardDuty, Security Hub, OAM, or any other new service in

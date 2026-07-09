@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "runDate": "2026-07-09",
+    "startedAt": "2026-07-09T19:21:20.982Z",
+    "completedAt": "2026-07-09T19:21:21.887Z",
+    "targetAccount": "054394900225",
+    "managementProfile": "org-admin",
+    "scope": "Approved AWS Organizations CloseAccount request for only so-aws-admin / 054394900225."
+  },
+  "command": "aws organizations close-account --account-id 054394900225 --profile org-admin --region us-east-1",
+  "exitStatus": 0,
+  "success": true,
+  "stdoutEmpty": true,
+  "stdoutSummary": "",
+  "stderrSanitized": ""
+}

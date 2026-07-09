@@ -1,0 +1,182 @@
+{
+  "metadata": {
+    "runDate": "2026-07-09",
+    "generatedAt": "2026-07-09T19:24:51.330Z",
+    "targetAccount": "054394900225",
+    "managementProfile": "org-admin",
+    "scope": "Post-CloseAccount DescribeAccount polling evidence.",
+    "normalizedAt": "2026-07-09T19:25:16.585Z"
+  },
+  "observations": [
+    {
+      "observedAt": "2026-07-09T19:21:42.073Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:21:57.881Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:22:13.720Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:22:29.553Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:22:45.410Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:23:01.235Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:23:17.136Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:23:33.019Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:23:48.865Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:24:04.703Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:24:20.507Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    },
+    {
+      "observedAt": "2026-07-09T19:24:36.325Z",
+      "exitStatus": 0,
+      "success": true,
+      "account": {
+        "id": "054394900225",
+        "arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+        "name": "so-aws-admin",
+        "status": "SUSPENDED",
+        "state": "CLOSED",
+        "joinedMethod": "CREATED",
+        "joinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+      }
+    }
+  ],
+  "finalObservedState": "CLOSED",
+  "finalObservedStatus": "SUSPENDED"
+}
