@@ -10,9 +10,9 @@
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
 **Last repository reconciliation:** 2026-07-09
-**Last practice evidence update:** 2026-07-07
+**Last practice evidence update:** 2026-07-09
 **Last tutorial evidence update:** 2026-07-01
-**Last governance study evidence update:** 2026-07-07
+**Last governance study evidence update:** 2026-07-09
 
 ---
 
@@ -615,7 +615,7 @@ Action:
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
 | IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; root `SERVICE_CONTROL_POLICY` is enabled, `DenyLeavingOrganization` and `DenyRootUserActions-LakehouseWorkloads` are live for `Lakehouse Workloads OU`, but exception tests, assignment decisions, broader rollback planning, and additional implementation evidence remain open |
-| Wrong-answer log reviewed twice | Not met: standalone log now exists at `docs/exam-prep/wrong-answers.md`, is current through local practice block 007, and has a first review checklist opened; two separate completed review cycles are not yet evidenced |
+| Wrong-answer log reviewed twice | Not met: the 2026-07-09 source-backed carry-forward review confirms durable decision rules and later milestones, but the recall-based first and second review cycles are not yet evidenced in `docs/exam-prep/wrong-answers.md` |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
 ### Final booking decision
@@ -706,7 +706,10 @@ phase plans from drifting apart again.
   see the 2026-06-15 weekly hours row above, the External tutorial evidence
   register, Sections 8 and 9 below, and
   `docs/planning/domain-2-lakehouse-consolidation-20260617.md`.
-- [ ] Review hard deferrals before opening a new implementation branch.
+- [x] Review hard deferrals before opening a new implementation branch:
+  `docs/planning/domain-1-governance-focus-preflight-20260709.md` confirms the
+  2026-07-13 focus remains documentation-first and preserves the tracker
+  deferrals.
 - [ ] Verify that any AWS-changing task has explicit approval and a cost/rollback
   boundary.
 

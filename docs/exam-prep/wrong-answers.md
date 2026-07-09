@@ -9,6 +9,7 @@ implementation evidence from any external tutorial workspace.
 | Item | Status |
 |---|---|
 | Current through practice block | 007 |
+| Source-backed carry-forward review | Completed 2026-07-09; recall validation remains open |
 | First review cycle evidenced | Not yet; checklist opened below |
 | Second review cycle evidenced | Not yet |
 | Controlling tracker reference | `docs/planning/sap-c02-readiness-tracker.md` |
@@ -43,6 +44,23 @@ from memory without looking at the correction text first.
 | Urgent migration | When the scenario says urgent data-centre exit and minimal change, which migration pattern wins first? | Pending |
 | Private hybrid network | Which services map to private multi-VPC hybrid routing and DNS, and why is Internet Gateway excluded? | Pending |
 | Replayable event ingestion | Which requirements push the answer from SQS FIFO to Kinesis Data Streams? | Pending |
+
+## Carry-Forward Review - 2026-07-09
+
+Scope: this is a repository-backed review of the logged corrections and their
+supporting comparison notes. It does not claim that the learner completed the
+recall-based Review Cycle 1 checklist; those four drills remain pending.
+
+| Weak area | Verified decision rule | Supporting repository evidence | Carry-forward action |
+|---|---|---|---|
+| Hybrid DNS | Use Route 53 Resolver inbound/outbound endpoints and forwarding rules; AWS Config does not resolve DNS. | `docs/planning/domain-2-network-access-patterns-20260621.md` | Complete the pending recall drill, then retain this pattern for the September networking matrix. |
+| Urgent migration | Rehost first with AWS Application Migration Service when speed and minimal change are explicit. | This log's 2026-06-19 entry and the tracker migration weak-area register. | Revisit in the September migration decision table; do not treat one corrected question as full migration readiness. |
+| Private hybrid network | Map each service to a stated need: Direct Connect Gateway and Transit Gateway for private hybrid routing, Route 53 Resolver for DNS, and no Internet Gateway unless public access is required. | `docs/planning/domain-2-network-access-patterns-20260621.md` | Complete the pending recall drill, then carry the decision pattern into the September networking artifacts. |
+| Replayable event ingestion | Prefer Kinesis Data Streams for per-key ordering, replay, and independent consumers; use SQS FIFO for ordered queueing and deduplication. | This log's 2026-07-01 entry and tracker wrong-answer table. | Complete the pending recall drill and test the distinction in a future timed practice block. |
+
+The carry-forward review confirms that the identified weak areas have durable
+decision rules and a later milestone. It does not change the booking criterion:
+two recall-based review cycles and timed-practice evidence are still required.
 
 ## Decision Rules To Drill
 
