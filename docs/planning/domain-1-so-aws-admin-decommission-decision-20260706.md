@@ -61,6 +61,35 @@ Do not retire or close the account until:
 - the closure blast radius and rollback limitations are documented;
 - the final closure action receives separate explicit approval.
 
+## 2026-07-09 Initial Read-Only Dependency Evidence
+
+Initial management-visible dependency evidence is recorded in
+`docs/evidence/domain1-governance-so-aws-admin-dependency-readiness-20260709.md`.
+
+Result: `so-aws-admin` was not ready for retirement. Organizations, IAM Identity
+Center, AWS Config, GuardDuty, Security Hub, OAM, CloudTrail, contact-presence,
+and account-placement evidence were collected where visible from the management
+or `Security Tooling` accounts. At that point, direct account inventory was
+still blocked because the management-account SSO session could not assume
+`OrganizationAccountAccessRole` into `054394900225`.
+
+A follow-on existing-profile access check is recorded in
+`docs/evidence/domain1-governance-so-aws-admin-direct-access-profile-check-20260709.md`.
+It confirms that no configured local AWS profile directly reaches
+`054394900225` and that all usable configured profiles fail the
+`OrganizationAccountAccessRole` assume-role path. The planned temporary
+read-only access path is recorded in
+`docs/planning/domain-1-so-aws-admin-direct-inventory-access-plan-20260709.md`.
+
+Under separate explicit approval, the temporary Identity Center path was used to
+collect direct read-only inventory, then the target-account assignment was
+removed and verified:
+`docs/evidence/domain1-governance-so-aws-admin-direct-inventory-live-readiness-20260709.md`.
+The account remains not ready for retirement because `BreakGlassAdminRole`,
+service-linked-role/root posture, budget metadata, and CloudTrail Lake
+event-data-store evidence still need closure decisions or additional
+public-safe evidence.
+
 ## Explicitly Out Of Scope
 
 - enabling AWS Config, GuardDuty, Security Hub, OAM, or any other new service in

@@ -1,0 +1,30 @@
+{
+  "Profile": "AdministratorAccess-349687196588",
+  "Status": 255,
+  "Result": "assume-role-failed",
+  "ErrorCategory": "SSOTokenUnavailable"
+}
+{
+  "Profile": "containers-lab",
+  "Status": 254,
+  "Result": "assume-role-failed",
+  "ErrorCategory": "AccessDenied"
+}
+{
+  "Profile": "default",
+  "Status": 254,
+  "Result": "assume-role-failed",
+  "ErrorCategory": "AccessDenied"
+}
+{
+  "Profile": "org-admin",
+  "Status": 254,
+  "Result": "assume-role-failed",
+  "ErrorCategory": "AccessDenied"
+}
+{
+  "Profile": "sandbox",
+  "Status": 253,
+  "Result": "assume-role-failed",
+  "ErrorCategory": "NoCredentials"
+}

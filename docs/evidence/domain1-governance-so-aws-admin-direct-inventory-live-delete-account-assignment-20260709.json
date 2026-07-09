@@ -1,0 +1,11 @@
+{
+    "AccountAssignmentDeletionStatus": {
+        "Status": "IN_PROGRESS",
+        "RequestId": "949062e2-cc90-4a6a-ba39-8e4025e26407",
+        "TargetId": "054394900225",
+        "TargetType": "AWS_ACCOUNT",
+        "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-7535033d400a9267",
+        "PrincipalType": "USER",
+        "PrincipalId": "b6b262e4-0041-70a7-df00-66e62c9af94a"
+    }
+}

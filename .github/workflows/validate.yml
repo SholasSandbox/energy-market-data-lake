@@ -21,14 +21,35 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install Python validation dependencies
+        run: python -m pip install -r requirements-dev.txt
+
       - name: Compile Python sources
-        run: python -m compileall lambda glue scripts
+        run: python -m compileall lambda glue scripts energy_market
 
       - name: Check lakehouse IAM policy boundaries
         run: python scripts/check_lakehouse_iam_policies.py
 
+      - name: Validate JSON contracts
+        run: python scripts/validate_contracts.py --include-evidence --check-failures
+
+      - name: Check public evidence redaction
+        run: bash scripts/check_public_evidence_redaction.sh
+
       - name: Validate bash script syntax
         run: bash -n scripts/closeout_demo.sh
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive
+
+      - name: Initialize Terraform without backend
+        run: terraform -chdir=infra/terraform/lakehouse init -backend=false
+
+      - name: Validate Terraform
+        run: terraform -chdir=infra/terraform/lakehouse validate -no-color
 
   dashboard-build:
     runs-on: ubuntu-latest

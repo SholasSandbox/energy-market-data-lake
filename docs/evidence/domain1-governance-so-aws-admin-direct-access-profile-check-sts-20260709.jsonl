@@ -1,0 +1,31 @@
+{
+  "Profile": "AdministratorAccess-349687196588",
+  "Status": 255,
+  "ErrorCategory": "SSOTokenUnavailable"
+}
+{
+  "Profile": "containers-lab",
+  "Status": 0,
+  "Account": "349687196588",
+  "ArnClass": "assumed-role",
+  "DirectTargetAccount": false
+}
+{
+  "Profile": "default",
+  "Status": 0,
+  "Account": "464975959576",
+  "ArnClass": "iam-user",
+  "DirectTargetAccount": false
+}
+{
+  "Profile": "org-admin",
+  "Status": 0,
+  "Account": "349687196588",
+  "ArnClass": "assumed-role",
+  "DirectTargetAccount": false
+}
+{
+  "Profile": "sandbox",
+  "Status": 253,
+  "ErrorCategory": "NoCredentials"
+}

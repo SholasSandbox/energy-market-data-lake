@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (InvalidAccessException) when calling the DescribeHub operation: Account 054394900225 is not subscribed to AWS Security Hub

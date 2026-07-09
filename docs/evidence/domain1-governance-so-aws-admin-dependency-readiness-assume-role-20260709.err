@@ -1,0 +1,5 @@
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:sts::349687196588:assumed-role/AWSReservedSSO_AdministratorAccess_be84055d6f72e1b2/shola-cloud-lab-admin is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::054394900225:role/OrganizationAccountAccessRole
+
+Additional error details:
+Type: Sender

@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (AccessDeniedException) when calling the ListEventDataStores operation: User: arn:aws:sts::[ACCOUNT]:assumed-role/[REDACTED] is not authorized to perform: cloudtrail:ListEventDataStores because no identity-based policy allows the cloudtrail:ListEventDataStores action

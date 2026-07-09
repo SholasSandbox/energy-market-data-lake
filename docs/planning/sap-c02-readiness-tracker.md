@@ -1012,7 +1012,18 @@ phase plans from drifting apart again.
   `docs/evidence/domain1-governance-config-security-tooling-recorder-change-note-20260707.md`.
 - [ ] Collect read-only dependency evidence for `so-aws-admin` retirement
   readiness, resolve any dependencies, and require separate explicit approval
-  before any account closure or retirement action.
+  before any account closure or retirement action. Initial management-visible
+  evidence is recorded in
+  `docs/evidence/domain1-governance-so-aws-admin-dependency-readiness-20260709.md`;
+  the existing-profile access check is recorded in
+  `docs/evidence/domain1-governance-so-aws-admin-direct-access-profile-check-20260709.md`;
+  the temporary direct-inventory access plan is recorded in
+  `docs/planning/domain-1-so-aws-admin-direct-inventory-access-plan-20260709.md`.
+  Under separate explicit approval, direct read-only inventory was captured and
+  the temporary target-account assignment was removed and verified:
+  `docs/evidence/domain1-governance-so-aws-admin-direct-inventory-live-readiness-20260709.md`.
+  Retirement remains not ready until the residual role, root/break-glass,
+  budget, and CloudTrail Lake evidence items are resolved.
 - [x] Record GuardDuty delegated-admin planning with no new account and
   `Security Tooling` (`668848431187`) as the target delegated administrator:
   `docs/planning/domain-1-guardduty-delegated-admin-planning-20260706.md`.

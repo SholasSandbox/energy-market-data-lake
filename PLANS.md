@@ -40,9 +40,13 @@ Historical planning references:
 
 ## Active SAP-C02 Delivery Sequence
 
-Status as of 2026-06-19: programme reset complete, lakehouse closure complete,
-Domain 1 governance preflight documented, and the first Organizations
-governance design ADR accepted.
+Status as of 2026-07-09: lakehouse closure remains complete, Domain 1 live
+governance has progressed through Security Tooling account placement, AWS
+Config migration/recorder onboarding, and foundational GuardDuty delegated
+administration in `eu-west-2`, and the current repo-local hardening slice is
+focused on Terraform governance safety plus validation coverage. Evidence:
+`docs/evidence/repository-validation-hardening-20260709.md`. No live AWS change
+is authorized by this plan entry.
 
 1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
    resolved tracker-governance version of `AGENTS.md`.
@@ -59,28 +63,28 @@ governance design ADR accepted.
    control, and explicit rollback decisions only.
 5. Continue the tracker operating cadence: weekly hours, ongoing study/practice
    logging, wrong-answer review, and evidence-backed tracker updates.
-6. The first June-July exit items beyond repository implementation are now
-   complete: two 20-question practice blocks, wrong-answer logging, and
-   separate Python/serverless tutorial evidence through Lesson 33 are recorded.
-   Use the remaining
-   window for practice review and carry-forward Domain 2 notes, including
-   `docs/planning/domain-2-network-access-patterns-20260621.md`, before the
-   2026-07-13 governance phase.
-7. Move from design into live IAM, Organizations, SCPs, and central governance
-   implementation only after the June-July lakehouse closure gate is met and
-   the tracker explicitly opens the governance phase or a smaller live change is
-   explicitly approved.
-8. Repo-only governance prep may continue earlier once the prior state is
-   complete and no architectural, design, structural, or sequencing blocker
-   remains, and no explicit approval dependency is still open for a design
-   decision that cannot be responsibly assumed or has not yet been recorded in
-   an ADR or equivalent design artifact with explicit trade-offs. Use
-   `docs/planning/domain-1-governance-preflight-20260618.md`,
-   `docs/adr/0005-aws-organizations-governance-design.md`, and
-   `docs/runbooks/domain-1-governance-live-readiness-runbook.md` as the
-   repo-only bridge into that governance phase. These artifacts do not
-   authorize live AWS Organizations, SCP, Identity Center, CloudTrail,
-   AWS Config, or security-service changes.
+6. The June-July lakehouse exit items beyond repository implementation are
+   complete: practice blocks, wrong-answer logging, and separate
+   Python/serverless tutorial evidence through Lesson 33 are recorded. Keep
+   using `docs/planning/domain-2-network-access-patterns-20260621.md` as the
+   Domain 2 carry-forward note until the later networking milestone.
+7. Domain 1 governance implementation remains split into bounded, explicitly
+   approved change units. Initial management-visible `so-aws-admin` dependency
+   evidence, the existing-profile direct-access check, and the approved
+   temporary direct read-only inventory run are recorded; the target-account
+   assignment was removed and verified. `so-aws-admin` retirement remains not
+   ready until the residual role, root/break-glass, budget, and CloudTrail Lake
+   evidence items are resolved. GuardDuty cost observation, Security Hub/OAM
+   adoption, broader Identity Center assignment decisions, and networking also
+   remain open.
+8. Keep AWS Organizations, SCP, Identity Center, AWS Config, GuardDuty,
+   CloudTrail, and account-boundary changes out of ordinary lakehouse Terraform
+   unless a future task explicitly approves that live-change boundary. The
+   lakehouse Terraform root may record non-mutating governance inventory and
+   manage workload-local IAM, but live organization guardrails remain governed
+   by `docs/adr/0005-aws-organizations-governance-design.md`,
+   `docs/runbooks/domain-1-governance-live-readiness-runbook.md`, and the
+   tracker evidence chain.
 
 The detailed Phase 1-17 material below is a historical delivery record and
 implementation reference. It no longer authorizes continuation of deferred AI

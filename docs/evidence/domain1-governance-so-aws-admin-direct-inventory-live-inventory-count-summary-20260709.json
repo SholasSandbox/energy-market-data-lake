@@ -1,0 +1,23 @@
+{
+  "Account": "054394900225",
+  "IamUsers": 0,
+  "IamGroups": 0,
+  "IamRoles": 9,
+  "IamLocalPolicies": 0,
+  "IamInstanceProfiles": 0,
+  "ConfigRecorders": 0,
+  "ConfigDeliveryChannels": 0,
+  "ConfigRules": 0,
+  "GuardDutyDetectors": 0,
+  "CloudTrailTrails": 1,
+  "CloudTrailTrailsAreOrganizationTrails": true,
+  "CloudWatchAlarms": 0,
+  "LogGroups": 0,
+  "EventBuses": 1,
+  "DefaultEventRules": 0,
+  "SnsTopics": 0,
+  "S3Buckets": 0,
+  "KmsKeys": 0,
+  "Route53HostedZones": 0,
+  "BackupVaults": 0
+}

@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (AccessDeniedException) when calling the DescribeBudgets operation: User: arn:aws:sts::[ACCOUNT]:assumed-role/[REDACTED] is not authorized to perform: budgets:ViewBudget on resource: arn:aws:budgets::054394900225:budget/* because no identity-based policy allows the budgets:ViewBudget action

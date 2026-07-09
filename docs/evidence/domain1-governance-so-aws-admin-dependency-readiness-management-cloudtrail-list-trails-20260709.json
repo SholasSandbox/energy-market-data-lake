@@ -1,0 +1,9 @@
+{
+    "Trails": [
+        {
+            "TrailARN": "arn:aws:cloudtrail:eu-west-2:349687196588:trail/organization-management-events",
+            "Name": "organization-management-events",
+            "HomeRegion": "eu-west-2"
+        }
+    ]
+}

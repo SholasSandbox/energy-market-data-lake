@@ -1,0 +1,28 @@
+{
+    "EnabledServicePrincipals": [
+        {
+            "ServicePrincipal": "account.amazonaws.com",
+            "DateEnabled": "2026-06-24T01:48:45.655000+01:00"
+        },
+        {
+            "ServicePrincipal": "cloudtrail.amazonaws.com",
+            "DateEnabled": "2026-06-24T13:35:58.192000+01:00"
+        },
+        {
+            "ServicePrincipal": "config-multiaccountsetup.amazonaws.com",
+            "DateEnabled": "2026-06-24T16:44:55.553000+01:00"
+        },
+        {
+            "ServicePrincipal": "config.amazonaws.com",
+            "DateEnabled": "2026-06-24T16:44:56.407000+01:00"
+        },
+        {
+            "ServicePrincipal": "guardduty.amazonaws.com",
+            "DateEnabled": "2026-07-07T16:17:16.095000+01:00"
+        },
+        {
+            "ServicePrincipal": "sso.amazonaws.com",
+            "DateEnabled": "2026-05-08T15:54:29.643000+01:00"
+        }
+    ]
+}

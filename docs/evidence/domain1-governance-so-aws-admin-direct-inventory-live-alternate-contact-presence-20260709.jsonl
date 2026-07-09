@@ -1,0 +1,18 @@
+{
+  "ContactType": "BILLING",
+  "Present": false,
+  "ValuesStored": false,
+  "Result": "ResourceNotFound"
+}
+{
+  "ContactType": "OPERATIONS",
+  "Present": false,
+  "ValuesStored": false,
+  "Result": "ResourceNotFound"
+}
+{
+  "ContactType": "SECURITY",
+  "Present": false,
+  "ValuesStored": false,
+  "Result": "ResourceNotFound"
+}

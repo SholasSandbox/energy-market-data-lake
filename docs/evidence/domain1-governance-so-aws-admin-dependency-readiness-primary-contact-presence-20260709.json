@@ -1,0 +1,9 @@
+{
+    "HasFullName": true,
+    "HasCompanyName": false,
+    "HasAddress": true,
+    "HasCity": true,
+    "HasCountryCode": true,
+    "HasPhoneNumber": true,
+    "HasWebsiteUrl": false
+}

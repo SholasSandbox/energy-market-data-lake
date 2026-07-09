@@ -1,0 +1,8 @@
+{
+    "Id": "054394900225",
+    "Arn": "arn:aws:organizations::349687196588:account/o-hmvgqmav88/054394900225",
+    "Name": "so-aws-admin",
+    "Status": "ACTIVE",
+    "JoinedMethod": "CREATED",
+    "JoinedTimestamp": "2026-06-25T15:49:43.769000+01:00"
+}

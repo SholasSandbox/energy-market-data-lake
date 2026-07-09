@@ -1,0 +1,12 @@
+{
+    "AttachedManagedPolicies": [
+        {
+            "Name": "SecurityAudit",
+            "Arn": "arn:aws:iam::aws:policy/SecurityAudit"
+        },
+        {
+            "Name": "ViewOnlyAccess",
+            "Arn": "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"
+        }
+    ]
+}

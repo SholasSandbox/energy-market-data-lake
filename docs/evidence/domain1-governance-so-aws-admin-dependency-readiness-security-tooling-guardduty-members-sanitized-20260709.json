@@ -1,0 +1,26 @@
+[
+    {
+        "AccountId": "464975959576",
+        "RelationshipStatus": "Enabled",
+        "UpdatedAt": "2026-07-07T15:17:40.567Z",
+        "DetectorId": "42cf9e9402530cd620c93a2fa042fe37",
+        "AdministratorId": "668848431187",
+        "MasterId": "668848431187"
+    },
+    {
+        "AccountId": "955659429518",
+        "RelationshipStatus": "Enabled",
+        "UpdatedAt": "2026-07-07T15:17:40.845Z",
+        "DetectorId": "e4cf9e9402da06855732ebafafaccd1b",
+        "AdministratorId": "668848431187",
+        "MasterId": "668848431187"
+    },
+    {
+        "AccountId": "974893866311",
+        "RelationshipStatus": "Enabled",
+        "UpdatedAt": "2026-07-07T15:17:40.762Z",
+        "DetectorId": "76cf9e9402ad3712bc8dafa6732c5f50",
+        "AdministratorId": "668848431187",
+        "MasterId": "668848431187"
+    }
+]

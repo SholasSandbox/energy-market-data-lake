@@ -1,0 +1,68 @@
+{
+    "Roles": [
+        {
+            "RoleName": "AWSReservedSSO_SoAwsAdminReadOnlyInventory_692aac3373ad0e04",
+            "Path": "/aws-reserved/sso.amazonaws.com/eu-west-2/",
+            "Arn": "arn:aws:iam::054394900225:role/aws-reserved/sso.amazonaws.com/eu-west-2/AWSReservedSSO_SoAwsAdminReadOnlyInventory_692aac3373ad0e04",
+            "CreateDate": "2026-07-09T03:25:40+00:00",
+            "MaxSessionDuration": 43200
+        },
+        {
+            "RoleName": "AWSServiceRoleForCloudTrail",
+            "Path": "/aws-service-role/cloudtrail.amazonaws.com/",
+            "Arn": "arn:aws:iam::054394900225:role/aws-service-role/cloudtrail.amazonaws.com/AWSServiceRoleForCloudTrail",
+            "CreateDate": "2026-06-25T14:52:45+00:00",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "RoleName": "AWSServiceRoleForConfigMultiAccountSetup",
+            "Path": "/aws-service-role/config-multiaccountsetup.amazonaws.com/",
+            "Arn": "arn:aws:iam::054394900225:role/aws-service-role/config-multiaccountsetup.amazonaws.com/AWSServiceRoleForConfigMultiAccountSetup",
+            "CreateDate": "2026-06-25T14:49:54+00:00",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "RoleName": "AWSServiceRoleForOrganizations",
+            "Path": "/aws-service-role/organizations.amazonaws.com/",
+            "Arn": "arn:aws:iam::054394900225:role/aws-service-role/organizations.amazonaws.com/AWSServiceRoleForOrganizations",
+            "CreateDate": "2026-06-25T14:49:43+00:00",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "RoleName": "AWSServiceRoleForResourceExplorer",
+            "Path": "/aws-service-role/resource-explorer-2.amazonaws.com/",
+            "Arn": "arn:aws:iam::054394900225:role/aws-service-role/resource-explorer-2.amazonaws.com/AWSServiceRoleForResourceExplorer",
+            "CreateDate": "2026-06-25T16:22:04+00:00",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "RoleName": "AWSServiceRoleForSSO",
+            "Path": "/aws-service-role/sso.amazonaws.com/",
+            "Arn": "arn:aws:iam::054394900225:role/aws-service-role/sso.amazonaws.com/AWSServiceRoleForSSO",
+            "CreateDate": "2026-06-25T14:49:53+00:00",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "RoleName": "AWSServiceRoleForSupport",
+            "Path": "/aws-service-role/support.amazonaws.com/",
+            "Arn": "arn:aws:iam::054394900225:role/aws-service-role/support.amazonaws.com/AWSServiceRoleForSupport",
+            "CreateDate": "2026-06-25T14:49:42+00:00",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "RoleName": "AWSServiceRoleForTrustedAdvisor",
+            "Path": "/aws-service-role/trustedadvisor.amazonaws.com/",
+            "Arn": "arn:aws:iam::054394900225:role/aws-service-role/trustedadvisor.amazonaws.com/AWSServiceRoleForTrustedAdvisor",
+            "CreateDate": "2026-06-25T14:49:42+00:00",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "RoleName": "BreakGlassAdminRole",
+            "Path": "/",
+            "Arn": "arn:aws:iam::054394900225:role/BreakGlassAdminRole",
+            "CreateDate": "2026-06-25T14:49:42+00:00",
+            "MaxSessionDuration": 3600
+        }
+    ],
+    "IsTruncated": null
+}

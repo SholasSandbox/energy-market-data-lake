@@ -1,0 +1,6 @@
+
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the GetAlternateContact operation: No contact of the inputted alternate contact type found.
+
+Additional error details:
+errorType: ResourceNotFoundException
+message: No contact of the inputted alternate contact type found.
