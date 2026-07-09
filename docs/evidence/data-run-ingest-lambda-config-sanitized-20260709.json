@@ -1,0 +1,25 @@
+{
+    "FunctionName": "energy-market-elexon-ingest",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
+    "Runtime": "python3.11",
+    "Timeout": 900,
+    "MemorySize": 256,
+    "EnvironmentKeys": [
+        "ENTSOG_POINT_DIRECTIONS",
+        "S3_BUCKET",
+        "ENTSOG_BASE_URL",
+        "ENTSOG_LIMIT",
+        "ENTSOG_DEMAND_INDICATOR",
+        "ENTSOE_BASE_URL",
+        "ENTSOG_TIMEZONE",
+        "HTTP_TIMEOUT_SECONDS",
+        "ELEXON_BASE_URL",
+        "ENTSOG_FLOW_INDICATOR",
+        "ENTSOG_INCLUDE_EXEMPTIONS",
+        "ENTSOG_PERIOD_TYPE",
+        "ENTSOE_TOKEN",
+        "BACKFILL_DAYS",
+        "ENTSOE_ZONES"
+    ]
+}

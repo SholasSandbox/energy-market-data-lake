@@ -1,0 +1,50 @@
+[
+    {
+        "timestamp": 1783606687039,
+        "message": "START RequestId: 3fc8df02-018c-4843-ab1c-8f1acfceaed2 Version: $LATEST\n"
+    },
+    {
+        "timestamp": 1783606747835,
+        "message": "START RequestId: 5ea00b0b-c5bf-4cae-ba9a-cbdb9708d970 Version: $LATEST\n"
+    },
+    {
+        "timestamp": 1783606767920,
+        "message": "END RequestId: 3fc8df02-018c-4843-ab1c-8f1acfceaed2\n"
+    },
+    {
+        "timestamp": 1783606767920,
+        "message": "REPORT RequestId: 3fc8df02-018c-4843-ab1c-8f1acfceaed2\tDuration: 80880.56 ms\tBilled Duration: 81020 ms\tMemory Size: 256 MB\tMax Memory Used: 95 MB\tInit Duration: 138.93 ms\t\n"
+    },
+    {
+        "timestamp": 1783606808040,
+        "message": "START RequestId: 303e8a6b-ef6f-4fc5-ad0b-263812e71bd6 Version: $LATEST\n"
+    },
+    {
+        "timestamp": 1783606864870,
+        "message": "END RequestId: 5ea00b0b-c5bf-4cae-ba9a-cbdb9708d970\n"
+    },
+    {
+        "timestamp": 1783606864870,
+        "message": "REPORT RequestId: 5ea00b0b-c5bf-4cae-ba9a-cbdb9708d970\tDuration: 117035.16 ms\tBilled Duration: 117169 ms\tMemory Size: 256 MB\tMax Memory Used: 96 MB\tInit Duration: 133.21 ms\t\n"
+    },
+    {
+        "timestamp": 1783606912081,
+        "message": "END RequestId: 303e8a6b-ef6f-4fc5-ad0b-263812e71bd6\n"
+    },
+    {
+        "timestamp": 1783606912081,
+        "message": "REPORT RequestId: 303e8a6b-ef6f-4fc5-ad0b-263812e71bd6\tDuration: 104040.86 ms\tBilled Duration: 104041 ms\tMemory Size: 256 MB\tMax Memory Used: 96 MB\t\n"
+    },
+    {
+        "timestamp": 1783606967582,
+        "message": "START RequestId: a1f0954e-8e92-4cb4-b7e9-9a23d049d187 Version: $LATEST\n"
+    },
+    {
+        "timestamp": 1783606999338,
+        "message": "END RequestId: a1f0954e-8e92-4cb4-b7e9-9a23d049d187\n"
+    },
+    {
+        "timestamp": 1783606999338,
+        "message": "REPORT RequestId: a1f0954e-8e92-4cb4-b7e9-9a23d049d187\tDuration: 31754.78 ms\tBilled Duration: 31755 ms\tMemory Size: 256 MB\tMax Memory Used: 96 MB\t\n"
+    }
+]

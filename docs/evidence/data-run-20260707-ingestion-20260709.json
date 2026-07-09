@@ -1,0 +1,17 @@
+{
+  "status": "partial",
+  "s3_keys": [
+    "raw/source=elexon/dataset=atl/date=2026-07-07/payload.json",
+    "raw/source=elexon/dataset=system_prices/date=2026-07-07/payload.json",
+    "raw/source=entsog/dataset=gas_flow/point_direction=BE-TSO-0001ITP-00115exit/date=2026-07-07/payload.json",
+    "raw/source=entsog/dataset=gas_demand/point_direction=BE-TSO-0001ITP-00115exit/date=2026-07-07/payload.json",
+    "raw/source=entsog/dataset=gas_flow/point_direction=BE-TSO-0001ITP-00555exit/date=2026-07-07/payload.json",
+    "raw/source=entsog/dataset=gas_demand/point_direction=BE-TSO-0001ITP-00555exit/date=2026-07-07/payload.json"
+  ],
+  "warnings": [
+    "ENTSOG gas_flow ingestion failed for BE-TSO-0001ITP-00061entry 2026-07-07: TimeoutError: The read operation timed out",
+    "ENTSOG gas_demand ingestion failed for BE-TSO-0001ITP-00061entry 2026-07-07: URLError: <urlopen error timed out>",
+    "ENTSOG gas_flow ingestion failed for CZ-TSO-0001ITP-00537entry 2026-07-07: TimeoutError: The read operation timed out",
+    "ENTSOG gas_demand ingestion failed for CZ-TSO-0001ITP-00537entry 2026-07-07: TimeoutError: The read operation timed out"
+  ]
+}
