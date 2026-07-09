@@ -1,0 +1,23 @@
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "BreakGlassAdminRole",
+        "RoleId": "AROAQZKRQJ4AT7ABDIRZW",
+        "Arn": "arn:aws:iam::054394900225:role/BreakGlassAdminRole",
+        "CreateDate": "2026-06-25T14:49:42+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "AWS": "arn:aws:iam::349687196588:root"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        },
+        "MaxSessionDuration": 3600,
+        "RoleLastUsed": {}
+    }
+}

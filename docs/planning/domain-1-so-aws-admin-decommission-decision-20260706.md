@@ -85,10 +85,11 @@ Under separate explicit approval, the temporary Identity Center path was used to
 collect direct read-only inventory, then the target-account assignment was
 removed and verified:
 `docs/evidence/domain1-governance-so-aws-admin-direct-inventory-live-readiness-20260709.md`.
-The account remains not ready for retirement because `BreakGlassAdminRole`,
-service-linked-role/root posture, budget metadata, and CloudTrail Lake
-event-data-store evidence still need closure decisions or additional
-public-safe evidence.
+The role-specific decision for `BreakGlassAdminRole` is now recorded in
+`docs/planning/domain-1-so-aws-admin-breakglass-role-decision-20260709.md`.
+The account remains not ready for retirement because service-linked-role/root
+posture, budget metadata, and CloudTrail Lake event-data-store evidence still
+need closure decisions or additional public-safe evidence.
 
 The temporary `SoAwsAdminReadOnlyInventory` permission set was deleted under
 separate explicit approval after the direct inventory run:
