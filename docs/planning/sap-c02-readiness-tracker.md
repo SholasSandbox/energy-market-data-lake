@@ -9,7 +9,7 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-07-01
+**Last repository reconciliation:** 2026-07-09
 **Last practice evidence update:** 2026-07-07
 **Last tutorial evidence update:** 2026-07-01
 **Last governance study evidence update:** 2026-07-07
@@ -69,6 +69,10 @@ implemented configuration path; it does not by itself prove that a live
 resource exists. Existing dashboard and AI capabilities may be maintained, but
 new expansion remains deferred unless the tracker is explicitly changed.
 
+This vocabulary applies to readiness and deliverable status fields. Booking
+criteria use `Met`, `Partially met`, or `Not met`; checklist items use their
+checkbox state.
+
 ### Planning authority
 
 1. This tracker controls scope, milestones, and next-step priority.
@@ -99,8 +103,8 @@ Config, cost controls, and Organizations/SCP guardrails.
 
 Source of truth: this repository, its README, its evidence files, and the
 lakehouse sections of this tracker. Its repo-side June-July closure milestone is
-complete; the remaining pre-governance work is study cadence, practice review,
-and carry-forward review before the scheduled governance phase.
+complete; the remaining work before the formal Domain 1 focus is study cadence,
+practice review, and carry-forward review.
 
 #### Scheduled AWS governance and multi-account work
 
@@ -109,14 +113,13 @@ Organizations, OUs, SCPs, IAM Identity Center, centralized logging, audit
 controls, and cost governance.
 
 This work supports both workspaces where relevant, but it is sequenced rather
-than maintained as a third simultaneous backlog. IAM, KMS, logging, and cost
-decisions needed for lakehouse closure may proceed now. The planned live-change
-Organizations/SCP phase begins on 2026-07-13 unless the tracker is explicitly
-changed. Repo-only design artifacts for a later state may begin earlier once
-the prior state is complete and no architectural, design, structural, or
-sequencing blocker remains, and no explicit approval dependency is still open
-for a design decision that cannot be responsibly assumed or has not yet been
-recorded in an ADR or equivalent design artifact with explicit trade-offs.
+than maintained as a third simultaneous backlog. The formal Domain 1 governance
+focus begins on 2026-07-13. Before then, repo-only design artifacts may begin
+once the prior state is complete and no architectural, design, structural, or
+sequencing blocker remains. Bounded live governance changes before that focus
+require separate explicit approval, prechange evidence, and defined rollback,
+validation, cost, and blast-radius boundaries; they do not open a general
+implementation backlog.
 
 #### Parked work
 
@@ -189,6 +192,10 @@ and Energy Data Lakehouse implementation as build hours. Use the Notes column
 to identify the workspace and artifact. Do not count one artifact as evidence
 for both workspaces.
 
+For completed historical weeks, use `Not recorded` when durable time data is
+unavailable; do not infer hours from artifact timestamps. Use `In progress` for
+the current week and leave future planned weeks blank.
+
 ### Programme kickoff
 
 | Date | Session | Planned artifact | Status |
@@ -198,9 +205,9 @@ for both workspaces.
 | Week starting | Target hours | Actual hours | Build hours | Study hours | Practice hours | Notes |
 |---|---:|---:|---:|---:|---:|---|
 | 2026-06-15 | 10–12 | 20 | 6 | 10 | 4 | Tutorial Lesson 26 evidence: `/Users/[redacted-user]/Kiro-Workspace/handlers/learning-summary.md`; Glue/Athena IAM evidence: `docs/evidence/glue-athena-iam-live-verification-20260615.md`; practice blocks: Sections 8 and 9 below |
-| 2026-06-22 | 10–12 |  |  |  |  | Tutorial hardening evidence now includes Lesson 28 boundary isolation and the Ruff formatting baseline in `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; lakehouse IAM hardening |
-| 2026-06-29 | 10–12 |  |  |  |  | Governance study evidence now includes SAP-C02 mental-model diagrams, OAM vs CloudTrail log archive vs AWS Config aggregator comparison, and local practice blocks 003-006 in `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance`; Serverless Architecture evidence now includes Lessons 29-33 and 217 local tests in `/Users/[redacted-user]/Kiro-Workspace/handlers`; no new lakehouse implementation evidence |
-| 2026-07-06 | 10–12 |  |  |  |  | Tutorial evidence + lakehouse Domain 2 closure review |
+| 2026-06-22 | 10–12 | Not recorded | Not recorded | Not recorded | Not recorded | Tutorial hardening evidence now includes Lesson 28 boundary isolation and the Ruff formatting baseline in `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; lakehouse IAM hardening |
+| 2026-06-29 | 10–12 | Not recorded | Not recorded | Not recorded | Not recorded | Governance study evidence now includes SAP-C02 mental-model diagrams, OAM vs CloudTrail log archive vs AWS Config aggregator comparison, and local practice blocks 003-006 in `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance`; Serverless Architecture evidence now includes Lessons 29-33 and 217 local tests in `/Users/[redacted-user]/Kiro-Workspace/handlers`; no new lakehouse implementation evidence |
+| 2026-07-06 | 10–12 | In progress | In progress | In progress | In progress | Tutorial evidence + lakehouse Domain 2 closure review; record final totals when the week ends |
 | 2026-07-13 | 10–12 |  |  |  |  | IAM foundation |
 | 2026-07-20 | 10–12 |  |  |  |  | Organizations/SCP design |
 | 2026-07-27 | 10–12 |  |  |  |  | Logging/governance |
@@ -422,17 +429,17 @@ AWS Organization
 |---|---|---|
 | AWS Organizations enabled | Verified | Management account and member accounts verified in `docs/evidence/cost-allocation-tag-activation-20260617.md`; prechange root/account/service-access inventory is recorded in `docs/evidence/domain1-governance-org-inventory-summary-20260621.md`; live OU creation and lakehouse account move are recorded in `docs/evidence/domain1-governance-lakehouse-workloads-ou-change-note-20260621.md` and `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md` |
 | OU structure designed | Partial | Target OU model recorded in `docs/adr/0005-aws-organizations-governance-design.md`; current-to-target placement decision recorded in `docs/planning/domain-1-ou-account-placement-decision-20260621.md`; live evidence now shows `Container Sandbox`, `Lakehouse Workloads OU`, and `Security OU` exist under root, and the lakehouse account has been moved into `ou-gbyf-m6ppfmpq`; see `docs/evidence/domain1-governance-security-ou-change-note-20260622.md` and `docs/evidence/domain1-governance-lakehouse-account-move-change-note-20260622.md` |
-| Management account rules documented | Design accepted | Control-plane account rules recorded in `docs/adr/0005-aws-organizations-governance-design.md`; implementation boundary remains future approval |
-| Workload account purpose defined | Design accepted | Lakehouse workload and sandbox account boundaries recorded in `docs/adr/0005-aws-organizations-governance-design.md` |
+| Management account rules documented | Verified | Control-plane account rules recorded in `docs/adr/0005-aws-organizations-governance-design.md`; implementation boundary remains future approval |
+| Workload account purpose defined | Verified | Lakehouse workload and sandbox account boundaries recorded in `docs/adr/0005-aws-organizations-governance-design.md` |
 | Security/log archive account design documented | Verified | Target security/log archive boundary recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; the first bounded baseline/change note is recorded in `docs/evidence/domain1-governance-cloudtrail-log-archive-change-note-20260622.md`; the design-to-implementation boundary is recorded in `docs/planning/domain-1-security-log-archive-account-implementation-boundary-20260622.md`; `Security OU`, the dedicated `Security Log Archive` account, Account Management trusted access, alternate contacts, the dedicated log-archive bucket, and the customer-managed KMS key are now live via `docs/evidence/domain1-governance-cloudtrail-log-archive-storage-change-note-20260624.md`; the separate `Security Tooling` account now exists in `Security OU` via `docs/evidence/domain1-governance-security-tooling-account-placement-change-note-20260704.md`, its `SECURITY`, `OPERATIONS`, and `BILLING` alternate contacts are configured via `docs/evidence/domain1-governance-security-tooling-alt-contacts-change-note-20260706.md`, and AWS Config delegated administration plus aggregation migrated into it via `docs/evidence/domain1-governance-config-security-tooling-migration-change-note-20260706.md`; long-term design keeps `Security Log Archive` storage-only and places active delegated security tooling in `Security Tooling` |
-| Public governance evidence redaction | Verified, ongoing gate | The public-repository evidence boundary is recorded in `docs/runbooks/domain-1-governance-live-readiness-runbook.md`; `scripts/check_public_evidence_redaction.sh` is the required pre-staging check for governance evidence; exact AWS contact values, raw contact JSON, and private evidence belong outside this public repository; the known GitHub cache/fork limitation remains documented in the runbook after the 2026-07-07 history-cleanup pass |
-| IAM Identity Center access model documented | Partial live evidence | Permission-set candidates and account targets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; same-day evidence now confirms one active IAM Identity Center instance, the live management-account admin principal `org-admin-principal` / `[redacted-email]`, the dedicated emergency principal `breakglass-principal` / `[redacted-email]`, and current management/sandbox account assignments in `docs/evidence/domain1-governance-identity-center-current-state-20260625.md`; follow-on live cleanup removed inherited `AdministratorAccess` from `breakglass-principal` by removing its `cloud-lab-aws-admins` group membership in `docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md`; the broader governance permission-set model remains open |
-| Permission sets defined | Partial live evidence | Permission-set matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; same-day evidence now confirms two live permission sets, `AdministratorAccess` and `BreakGlassAdmin`, plus the first direct management-account emergency assignment for `breakglass-principal` in `docs/evidence/domain1-governance-identity-center-current-state-20260625.md`; the target `OrganizationAdmin`, `BillingAdmin`, `SecurityAudit`, `LakehouseOperator`, `LakehouseReadOnly`, and later hardening of `BreakGlassAdmin` remain open |
-| Break-glass access model documented | Partial live evidence | Break-glass target recorded in ADR 0005 and procedure recorded in `docs/runbooks/break-glass-access-procedure.md`; same-day IAM Identity Center evidence in `docs/evidence/domain1-governance-identity-center-current-state-20260625.md` now distinguishes the documented emergency owner from the currently live management-account admin principal and records that the dedicated break-glass principal exists with MFA plus a management-account emergency permission-set assignment; follow-on cleanup evidence in `docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md` confirms the emergency user now has no group memberships and retains only the direct `BreakGlassAdmin` management-account path; root MFA for workload account `464975959576` is confirmed in `docs/evidence/domain1-governance-root-mfa-readiness-check-20260702.md`; second Identity Center MFA for `breakglass-principal` is confirmed in `docs/evidence/domain1-governance-breakglass-mfa2-readiness-check-20260703.md`; emergency SMS notification reachability is confirmed in `docs/evidence/domain1-governance-notification-reachability-check-20260703.md`; recovery-code readability is confirmed in `docs/evidence/domain1-governance-recovery-code-readability-check-20260703.md`; light procedural validation is confirmed in `docs/evidence/domain1-governance-breakglass-procedural-validation-20260703.md`; post-use review implementation remains open for any actual emergency use |
-| SCP catalogue drafted | Partial live evidence | Accepted SCP catalogue recorded in ADR 0005; example policy files recorded in `docs/policies/scp/`; the first live OU-targeted `DenyLeavingOrganization` attempt, rollback, root policy-type enablement, and successful retry are recorded in `docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`, `docs/evidence/domain1-governance-enable-scp-root-change-note-20260622.md`, and `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md`; the second live OU-targeted guardrail, `DenyRootUserActions-LakehouseWorkloads`, is recorded in `docs/evidence/domain1-governance-deny-root-user-actions-attach-success-change-note-20260703.md` |
+| Public governance evidence redaction | Verified | The public-repository evidence boundary is recorded in `docs/runbooks/domain-1-governance-live-readiness-runbook.md`; `scripts/check_public_evidence_redaction.sh` is the required pre-staging check for governance evidence; exact AWS contact values, raw contact JSON, and private evidence belong outside this public repository; the known GitHub cache/fork limitation remains documented in the runbook after the 2026-07-07 history-cleanup pass |
+| IAM Identity Center access model documented | Partial | Permission-set candidates and account targets recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; same-day evidence now confirms one active IAM Identity Center instance, the live management-account admin principal `org-admin-principal` / `[redacted-email]`, the dedicated emergency principal `breakglass-principal` / `[redacted-email]`, and current management/sandbox account assignments in `docs/evidence/domain1-governance-identity-center-current-state-20260625.md`; follow-on live cleanup removed inherited `AdministratorAccess` from `breakglass-principal` by removing its `cloud-lab-aws-admins` group membership in `docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md`; the broader governance permission-set model remains open |
+| Permission sets defined | Partial | Permission-set matrix recorded in `docs/planning/identity-center-permission-set-matrix-20260619.md`; same-day evidence now confirms two live permission sets, `AdministratorAccess` and `BreakGlassAdmin`, plus the first direct management-account emergency assignment for `breakglass-principal` in `docs/evidence/domain1-governance-identity-center-current-state-20260625.md`; the target `OrganizationAdmin`, `BillingAdmin`, `SecurityAudit`, `LakehouseOperator`, `LakehouseReadOnly`, and later hardening of `BreakGlassAdmin` remain open |
+| Break-glass access model documented | Partial | Break-glass target recorded in ADR 0005 and procedure recorded in `docs/runbooks/break-glass-access-procedure.md`; same-day IAM Identity Center evidence in `docs/evidence/domain1-governance-identity-center-current-state-20260625.md` now distinguishes the documented emergency owner from the currently live management-account admin principal and records that the dedicated break-glass principal exists with MFA plus a management-account emergency permission-set assignment; follow-on cleanup evidence in `docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md` confirms the emergency user now has no group memberships and retains only the direct `BreakGlassAdmin` management-account path; root MFA for workload account `464975959576` is confirmed in `docs/evidence/domain1-governance-root-mfa-readiness-check-20260702.md`; second Identity Center MFA for `breakglass-principal` is confirmed in `docs/evidence/domain1-governance-breakglass-mfa2-readiness-check-20260703.md`; emergency SMS notification reachability is confirmed in `docs/evidence/domain1-governance-notification-reachability-check-20260703.md`; recovery-code readability is confirmed in `docs/evidence/domain1-governance-recovery-code-readability-check-20260703.md`; light procedural validation is confirmed in `docs/evidence/domain1-governance-breakglass-procedural-validation-20260703.md`; post-use review implementation remains open for any actual emergency use |
+| SCP catalogue drafted | Partial | Accepted SCP catalogue recorded in ADR 0005; example policy files recorded in `docs/policies/scp/`; the first live OU-targeted `DenyLeavingOrganization` attempt, rollback, root policy-type enablement, and successful retry are recorded in `docs/evidence/domain1-governance-deny-leaving-organization-change-note-20260622.md`, `docs/evidence/domain1-governance-enable-scp-root-change-note-20260622.md`, and `docs/evidence/domain1-governance-deny-leaving-organization-attach-success-change-note-20260622.md`; the second live OU-targeted guardrail, `DenyRootUserActions-LakehouseWorkloads`, is recorded in `docs/evidence/domain1-governance-deny-root-user-actions-attach-success-change-note-20260703.md` |
 | CloudTrail organization trail design documented | Verified | Organization trail direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed log archive/KMS/retention/delete-protection design recorded in `docs/planning/domain-1-cloudtrail-log-archive-design-20260621.md`; earlier baseline evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-log-archive-change-note-20260622.md`; fresh post-account baseline evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-management-sts-prechange-20260624.json`, `docs/evidence/domain1-governance-cloudtrail-service-access-prechange-20260624.json`, `docs/evidence/domain1-governance-cloudtrail-list-prechange-20260624.json`, and the paired security-account prechange files; exact policy examples are recorded in `docs/policies/s3-cloudtrail-log-archive-bucket-policy.example.json`, `docs/policies/kms-cloudtrail-log-archive-key-policy.example.json`, and `docs/policies/s3-cloudtrail-log-archive-encryption.example.json`; live storage evidence is recorded in `docs/evidence/domain1-governance-cloudtrail-log-archive-storage-change-note-20260624.md`; live trusted-access, organization-trail, and first delivered log/digest evidence are now recorded in `docs/evidence/domain1-governance-cloudtrail-organization-trail-change-note-20260624.md` |
-| AWS Config design documented | Partial live evidence | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed recorder scope, aggregation, rule, and cost-control design recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; fresh baseline evidence is recorded in `docs/evidence/domain1-governance-config-*-prechange-20260624.json`, the follow-on lakehouse prechange evidence is recorded in `docs/evidence/domain1-governance-config-lakehouse-*-prechange-20260625.json`, the follow-on security-account prechange evidence is recorded in `docs/evidence/domain1-governance-config-security-*-prechange-20260625.json`, and the follow-on sandbox prechange evidence is recorded in `docs/evidence/domain1-governance-config-sandbox-*-prechange-20260625.json`; exact storage and role-trust policy examples are recorded in `docs/policies/s3-config-log-archive-bucket-policy.example.json`, `docs/policies/kms-config-log-archive-key-policy.example.json`, `docs/policies/s3-config-log-archive-encryption.example.json`, and `docs/policies/iam-config-organization-aggregator-role-trust-policy.example.json`; live storage evidence is recorded in `docs/evidence/domain1-governance-config-log-archive-storage-change-note-20260624.md`; live trusted access, delegated administration, and organization aggregation were first recorded in `docs/evidence/domain1-governance-config-organization-aggregation-change-note-20260624.md`, then migrated from `Security Log Archive` to `Security Tooling` in `docs/evidence/domain1-governance-config-security-tooling-migration-change-note-20260706.md`; the live management-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-management-recorder-change-note-20260624.md`; the live lakehouse-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-lakehouse-recorder-change-note-20260625.md`; the live security-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-security-recorder-change-note-20260625.md`; Security Tooling recorder onboarding and removal of only `668848431187` from the migrated organization CloudTrail Config rule exclusions are recorded in `docs/evidence/domain1-governance-config-security-tooling-recorder-change-note-20260707.md`; `so-aws-admin` remains excluded on the decommission path; additional Config rules remain open |
-| GuardDuty/Security Hub/OAM concept documented | Partial live GuardDuty evidence | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed GuardDuty delegated-admin and cost-control design plus Security Hub defer/adopt decision recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; `so-aws-admin` decommission and future Security Hub placement in `Security Tooling` are recorded in `docs/planning/domain-1-so-aws-admin-decommission-decision-20260706.md`; GuardDuty delegated-admin planning with no new account and `Security Tooling` as the target delegated administrator is recorded in `docs/planning/domain-1-guardduty-delegated-admin-planning-20260706.md`; fresh GuardDuty live-readiness evidence is recorded in `docs/evidence/domain1-governance-guardduty-live-readiness-20260707.md`; GuardDuty delegated administration and foundational coverage in `eu-west-2` are live via `docs/evidence/domain1-governance-guardduty-delegated-admin-change-note-20260707.md`; OAM vs CloudTrail log archive vs AWS Config aggregator study note recorded in `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Security_Observability_Comparison.md`; Security Hub and OAM enablement remain open |
+| AWS Config design documented | Partial | Organization aggregation direction recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed recorder scope, aggregation, rule, and cost-control design recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; fresh baseline evidence is recorded in `docs/evidence/domain1-governance-config-*-prechange-20260624.json`, the follow-on lakehouse prechange evidence is recorded in `docs/evidence/domain1-governance-config-lakehouse-*-prechange-20260625.json`, the follow-on security-account prechange evidence is recorded in `docs/evidence/domain1-governance-config-security-*-prechange-20260625.json`, and the follow-on sandbox prechange evidence is recorded in `docs/evidence/domain1-governance-config-sandbox-*-prechange-20260625.json`; exact storage and role-trust policy examples are recorded in `docs/policies/s3-config-log-archive-bucket-policy.example.json`, `docs/policies/kms-config-log-archive-key-policy.example.json`, `docs/policies/s3-config-log-archive-encryption.example.json`, and `docs/policies/iam-config-organization-aggregator-role-trust-policy.example.json`; live storage evidence is recorded in `docs/evidence/domain1-governance-config-log-archive-storage-change-note-20260624.md`; live trusted access, delegated administration, and organization aggregation were first recorded in `docs/evidence/domain1-governance-config-organization-aggregation-change-note-20260624.md`, then migrated from `Security Log Archive` to `Security Tooling` in `docs/evidence/domain1-governance-config-security-tooling-migration-change-note-20260706.md`; the live management-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-management-recorder-change-note-20260624.md`; the live lakehouse-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-lakehouse-recorder-change-note-20260625.md`; the live security-account recorder rollout is recorded in `docs/evidence/domain1-governance-config-security-recorder-change-note-20260625.md`; Security Tooling recorder onboarding and removal of only `668848431187` from the migrated organization CloudTrail Config rule exclusions are recorded in `docs/evidence/domain1-governance-config-security-tooling-recorder-change-note-20260707.md`; `so-aws-admin` was excluded pending its 2026-07-09 closure; additional Config rules remain open |
+| GuardDuty/Security Hub/OAM concept documented | Partial | Security-service sequencing recorded in `docs/adr/0005-aws-organizations-governance-design.md`; detailed GuardDuty delegated-admin and cost-control design plus Security Hub defer/adopt decision recorded in `docs/planning/domain-1-config-guardduty-design-20260621.md`; `so-aws-admin` decommission and future Security Hub placement in `Security Tooling` are recorded in `docs/planning/domain-1-so-aws-admin-decommission-decision-20260706.md`; GuardDuty delegated-admin planning with no new account and `Security Tooling` as the target delegated administrator is recorded in `docs/planning/domain-1-guardduty-delegated-admin-planning-20260706.md`; fresh GuardDuty live-readiness evidence is recorded in `docs/evidence/domain1-governance-guardduty-live-readiness-20260707.md`; GuardDuty delegated administration and foundational coverage in `eu-west-2` are live via `docs/evidence/domain1-governance-guardduty-delegated-admin-change-note-20260707.md`; OAM vs CloudTrail log archive vs AWS Config aggregator study note recorded in `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Security_Observability_Comparison.md`; Security Hub and OAM enablement remain open |
 | Cost allocation tags defined | Verified | Common Terraform tags exist; selected Billing Cost Allocation Tags were activated from the Organizations management account on 2026-06-17 |
 | Budget alarms configured | Partial | A live `$1` managed-workflow AWS Budget with notifications is verified; broader workload/account budget design remains open |
 
@@ -444,9 +451,9 @@ AWS Organization
 | Deny deleting log buckets | Protect log archive | Partial |
 | Deny public S3 exposure | Reduce data leakage risk | Partial |
 | Deny unapproved regions | Cost/compliance control | Partial |
-| Deny root-user actions except emergencies | Reduce blast radius | Live for `Lakehouse Workloads OU` as `DenyRootUserActions-LakehouseWorkloads` / `p-dv2ss5us` |
+| Deny root-user actions except emergencies | Reduce blast radius | Verified for `Lakehouse Workloads OU` as `DenyRootUserActions-LakehouseWorkloads` / `p-dv2ss5us` |
 | Require encryption where feasible | Improve compliance posture | Partial |
-| Deny leaving AWS Organization | Prevent governance bypass | Live for `Lakehouse Workloads OU` |
+| Deny leaving AWS Organization | Prevent governance bypass | Verified for `Lakehouse Workloads OU` |
 
 Critical note: **SCPs do not grant permissions.** They define maximum allowed permissions. IAM policies still grant permissions.
 
@@ -687,8 +694,8 @@ phase plans from drifting apart again.
 
 ### Weekly progress control
 
-- [x] Log actual, build, study, and practice hours for the current week: see
-  the 2026-06-15 row in Weekly Hours Logged above.
+- [ ] Record actual, build, study, and practice hours for each current week;
+  retain `Not recorded` where historical totals have no durable source.
 - [x] Produce at least one required artifact for every study/build session: see
   `/Users/[redacted-user]/Kiro-Workspace/handlers/learning-summary.md`,
   `docs/evidence/glue-athena-iam-live-verification-20260615.md`, and Sections 8
@@ -1010,10 +1017,9 @@ phase plans from drifting apart again.
   account from the migrated organization CloudTrail Config rule exclusions;
   keep `so-aws-admin` excluded on the decommission path:
   `docs/evidence/domain1-governance-config-security-tooling-recorder-change-note-20260707.md`.
-- [ ] Collect read-only dependency evidence for `so-aws-admin` retirement
+- [x] Collect read-only dependency evidence for `so-aws-admin` retirement
   readiness, resolve any dependencies, and require separate explicit approval
-  before any account closure or retirement action. Initial management-visible
-  evidence is recorded in
+  before account closure. Initial management-visible evidence is recorded in
   `docs/evidence/domain1-governance-so-aws-admin-dependency-readiness-20260709.md`;
   the existing-profile access check is recorded in
   `docs/evidence/domain1-governance-so-aws-admin-direct-access-profile-check-20260709.md`;
@@ -1024,8 +1030,12 @@ phase plans from drifting apart again.
   `docs/evidence/domain1-governance-so-aws-admin-direct-inventory-live-readiness-20260709.md`.
   Follow-on deletion of the temporary permission set is recorded in
   `docs/evidence/domain1-governance-so-aws-admin-permission-set-cleanup-20260709.md`.
-  Retirement remains not ready until the residual role, root/break-glass,
-  budget, and CloudTrail Lake evidence items are resolved.
+  Under separate explicit approval, the account was closed on 2026-07-09 after
+  a fresh pre-close check returned zero blockers; post-close Organizations
+  evidence reports `Status: SUSPENDED` and `State: CLOSED`:
+  `docs/evidence/domain1-governance-so-aws-admin-account-closure-20260709.md`
+  and
+  `docs/evidence/domain1-governance-so-aws-admin-account-closure-postclose-status-20260709.json`.
 - [x] Record GuardDuty delegated-admin planning with no new account and
   `Security Tooling` (`668848431187`) as the target delegated administrator:
   `docs/planning/domain-1-guardduty-delegated-admin-planning-20260706.md`.
@@ -1042,8 +1052,8 @@ phase plans from drifting apart again.
   plans.
 - [ ] Adopt Security Hub only if later intentionally adopted in
   `Security Tooling`.
-- [ ] During the scheduled governance phase, convert the accepted design into
-  live-readiness evidence and explicitly approved implementation changes.
+- [ ] During the remaining governance focus, maintain current live-readiness
+  evidence and use separate explicit approval for any further live changes.
 
 ---
 
