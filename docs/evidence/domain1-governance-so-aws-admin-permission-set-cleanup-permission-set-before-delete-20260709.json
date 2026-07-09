@@ -1,0 +1,9 @@
+{
+    "PermissionSet": {
+        "Name": "SoAwsAdminReadOnlyInventory",
+        "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-7535033d400a9267",
+        "Description": "Temporary read-only inventory access for so-aws-admin retirement dependency evidence. Remove assignment after evidence capture.",
+        "CreatedDate": "2026-07-09T04:25:36.354000+01:00",
+        "SessionDuration": "PT1H"
+    }
+}

@@ -90,6 +90,10 @@ service-linked-role/root posture, budget metadata, and CloudTrail Lake
 event-data-store evidence still need closure decisions or additional
 public-safe evidence.
 
+The temporary `SoAwsAdminReadOnlyInventory` permission set was deleted under
+separate explicit approval after the direct inventory run:
+`docs/evidence/domain1-governance-so-aws-admin-permission-set-cleanup-20260709.md`.
+
 ## Explicitly Out Of Scope
 
 - enabling AWS Config, GuardDuty, Security Hub, OAM, or any other new service in

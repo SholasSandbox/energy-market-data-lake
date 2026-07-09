@@ -1,0 +1,2 @@
+
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the DescribePermissionSet operation: Could not find PermissionSet with id ps-7535033d400a9267.

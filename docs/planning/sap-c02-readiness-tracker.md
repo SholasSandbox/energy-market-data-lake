@@ -1022,6 +1022,8 @@ phase plans from drifting apart again.
   Under separate explicit approval, direct read-only inventory was captured and
   the temporary target-account assignment was removed and verified:
   `docs/evidence/domain1-governance-so-aws-admin-direct-inventory-live-readiness-20260709.md`.
+  Follow-on deletion of the temporary permission set is recorded in
+  `docs/evidence/domain1-governance-so-aws-admin-permission-set-cleanup-20260709.md`.
   Retirement remains not ready until the residual role, root/break-glass,
   budget, and CloudTrail Lake evidence items are resolved.
 - [x] Record GuardDuty delegated-admin planning with no new account and

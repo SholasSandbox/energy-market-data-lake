@@ -1,0 +1,8 @@
+{
+  "Instances": [
+    {
+      "InstanceArn": "arn:aws:sso:::instance/ssoins-7535b4aeae7b57d7",
+      "IdentityStoreId": "d-9c674fdf75"
+    }
+  ]
+}

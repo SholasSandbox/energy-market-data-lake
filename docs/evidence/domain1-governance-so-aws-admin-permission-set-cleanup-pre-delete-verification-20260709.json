@@ -1,0 +1,8 @@
+{
+  "PermissionSetName": "SoAwsAdminReadOnlyInventory",
+  "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-7535033d400a9267",
+  "TargetAssignmentCount": 0,
+  "TargetProvisionedPermissionSetCount": 0,
+  "AllProvisionedAccountCount": 0,
+  "SafeToDelete": true
+}

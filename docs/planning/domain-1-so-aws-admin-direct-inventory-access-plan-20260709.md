@@ -14,6 +14,8 @@ was blocked before the approved temporary access path was created.
 
 Execution evidence is recorded in
 `docs/evidence/domain1-governance-so-aws-admin-direct-inventory-live-readiness-20260709.md`.
+Follow-on deletion of the temporary permission set is recorded in
+`docs/evidence/domain1-governance-so-aws-admin-permission-set-cleanup-20260709.md`.
 
 ## Problem
 

@@ -1,0 +1,10 @@
+{
+  "Name": "BreakGlassAdmin",
+  "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-7535514a7384530d",
+  "SessionDuration": "PT1H"
+}
+{
+  "Name": "AdministratorAccess",
+  "PermissionSetArn": "arn:aws:sso:::permissionSet/ssoins-7535b4aeae7b57d7/ps-753598a7b4667850",
+  "SessionDuration": "PT1H"
+}

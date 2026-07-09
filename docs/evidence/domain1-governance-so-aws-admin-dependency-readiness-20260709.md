@@ -88,8 +88,9 @@ Read-only checks covered:
   read-only policy set.
 - Budget metadata is not proven absent because `budgets:ViewBudget` was not
   included in the approved temporary read-only policy set.
-- The unassigned `SoAwsAdminReadOnlyInventory` permission set needs a retain or
-  delete decision; it is not assigned or provisioned to `054394900225`.
+- The temporary `SoAwsAdminReadOnlyInventory` permission set was deleted under
+  separate explicit approval after the direct inventory run:
+  `docs/evidence/domain1-governance-so-aws-admin-permission-set-cleanup-20260709.md`.
 
 ## Evidence Files
 

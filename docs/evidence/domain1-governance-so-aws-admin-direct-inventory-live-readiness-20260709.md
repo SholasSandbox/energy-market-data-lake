@@ -40,10 +40,10 @@ The approved live-change scope was:
 - Verified a fresh post-delete role-credential request fails with
   `ForbiddenException`.
 
-The permission set object still exists in IAM Identity Center, but it is not
-assigned or provisioned to `054394900225`. It was left in place because the
+The permission set object was initially left in IAM Identity Center because the
 approved rollback scope required assignment removal and verification, not
-permission-set deletion.
+permission-set deletion. Under separate explicit approval, it was later deleted:
+`docs/evidence/domain1-governance-so-aws-admin-permission-set-cleanup-20260709.md`.
 
 ## Direct Inventory Findings
 
@@ -108,8 +108,6 @@ surface. Before any closure package is drafted, the remaining items are:
   checklist;
 - clear or explicitly waive CloudTrail Lake event-data-store evidence;
 - clear or privately review budget/cost metadata;
-- decide whether to delete or retain the now-unassigned
-  `SoAwsAdminReadOnlyInventory` permission set;
 - record a separate explicit account-closure approval if closure is ever pursued.
 
 ## Evidence Files

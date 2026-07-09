@@ -72,11 +72,12 @@ is authorized by this plan entry.
    approved change units. Initial management-visible `so-aws-admin` dependency
    evidence, the existing-profile direct-access check, and the approved
    temporary direct read-only inventory run are recorded; the target-account
-   assignment was removed and verified. `so-aws-admin` retirement remains not
-   ready until the residual role, root/break-glass, budget, and CloudTrail Lake
-   evidence items are resolved. GuardDuty cost observation, Security Hub/OAM
-   adoption, broader Identity Center assignment decisions, and networking also
-   remain open.
+   assignment was removed and verified, and the temporary permission set was
+   deleted under separate explicit approval. `so-aws-admin` retirement remains
+   not ready until the residual role, root/break-glass, budget, and CloudTrail
+   Lake evidence items are resolved. GuardDuty cost observation, Security
+   Hub/OAM adoption, broader Identity Center assignment decisions, and networking
+   also remain open.
 8. Keep AWS Organizations, SCP, Identity Center, AWS Config, GuardDuty,
    CloudTrail, and account-boundary changes out of ordinary lakehouse Terraform
    unless a future task explicitly approves that live-change boundary. The
