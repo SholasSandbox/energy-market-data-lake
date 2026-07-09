@@ -60,7 +60,9 @@ task, create a control-specific change note using
 
 ## Completion Criteria
 
-This preflight is complete when it is referenced by the tracker. The following
-outcomes remain open and require separate evidence: the GuardDuty usage/cost
-observation, any Security Hub or OAM adoption decision, broader Identity Center
-assignment decisions, and account-level budget thresholds.
+This preflight is complete when it is referenced by the tracker. The first
+GuardDuty usage/cost observation is recorded in
+`docs/evidence/domain1-governance-guardduty-usage-cost-observation-20260709.md`.
+The following outcomes remain open and require separate evidence: any Security
+Hub or OAM adoption decision, broader Identity Center assignment decisions, and
+account-level budget thresholds.

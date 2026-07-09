@@ -446,9 +446,11 @@ the approved active accounts, organization auto-enable set to `NONE`, and
 optional protection plans disabled. `so-aws-admin` was closed on 2026-07-09
 after final pre-close checks returned no blockers.
 
-The next governance transitions are not another GuardDuty enablement step. They
-are GuardDuty usage/cost observation and only later separate Security Hub or
-OAM review if those are still worth adopting.
+The first GuardDuty usage/cost observation is recorded in
+`docs/evidence/domain1-governance-guardduty-usage-cost-observation-20260709.md`.
+The next governance transitions are not another GuardDuty enablement step; they
+are continued cost observation and only later separate Security Hub or OAM
+review if those are still worth adopting.
 
 OAM and Security Hub should remain later review notes unless the account
 boundary, Config scope, and GuardDuty scope are already stable.

@@ -1051,8 +1051,11 @@ phase plans from drifting apart again.
   foundational coverage for approved active accounts, keep `so-aws-admin`
   excluded, and leave optional protection plans disabled:
   `docs/evidence/domain1-governance-guardduty-delegated-admin-change-note-20260707.md`.
-- [ ] Observe GuardDuty usage/cost before adding Regions or optional protection
-  plans.
+- [x] Capture the first read-only GuardDuty usage/cost observation before
+  considering another Region or optional protection plan:
+  `docs/evidence/domain1-governance-guardduty-usage-cost-observation-20260709.md`.
+  The initial Cost Explorer buckets are estimated at `$0`; keep the current
+  foundational-only posture and continue observing before any expansion.
 - [ ] Adopt Security Hub only if later intentionally adopted in
   `Security Tooling`.
 - [ ] During the remaining governance focus, maintain current live-readiness

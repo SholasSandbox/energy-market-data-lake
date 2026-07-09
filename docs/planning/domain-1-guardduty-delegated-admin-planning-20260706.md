@@ -108,9 +108,10 @@ GuardDuty is now configured in `eu-west-2` with:
 - GuardDuty organization auto-enable set to `NONE`;
 - optional protection plans disabled.
 
-Next bounded work is cost observation and later, separate Security Hub/OAM
-review. Do not enable optional GuardDuty protection plans or additional Regions
-without a new value/cost decision and explicit approval.
+The first read-only usage/cost observation is recorded in
+`docs/evidence/domain1-governance-guardduty-usage-cost-observation-20260709.md`.
+Continue observation and do not enable optional GuardDuty protection plans or
+additional Regions without a new value/cost decision and explicit approval.
 
 ## Explicitly Out Of Scope
 
