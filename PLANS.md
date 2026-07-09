@@ -74,9 +74,10 @@ is authorized by this plan entry.
    temporary direct read-only inventory run are recorded; the target-account
    assignment was removed and verified, and the temporary permission set was
    deleted under separate explicit approval. The residual `BreakGlassAdminRole`
-   decision is now recorded as retain-only-until-closure/recovery; `so-aws-admin`
-   retirement remains not ready until root/break-glass posture, budget, and
-   CloudTrail Lake evidence items are resolved. GuardDuty cost observation, Security
+   decision is now recorded as retain-only-until-closure/recovery; CloudTrail
+   Lake, budget, root, and service-linked-role closure-blocker evidence is now
+   recorded. `so-aws-admin` still requires a final closure package and separate
+   explicit account-closure approval. GuardDuty cost observation, Security
    Hub/OAM adoption, broader Identity Center assignment decisions, and networking
    also remain open.
 8. Keep AWS Organizations, SCP, Identity Center, AWS Config, GuardDuty,

@@ -87,9 +87,16 @@ removed and verified:
 `docs/evidence/domain1-governance-so-aws-admin-direct-inventory-live-readiness-20260709.md`.
 The role-specific decision for `BreakGlassAdminRole` is now recorded in
 `docs/planning/domain-1-so-aws-admin-breakglass-role-decision-20260709.md`.
-The account remains not ready for retirement because service-linked-role/root
-posture, budget metadata, and CloudTrail Lake event-data-store evidence still
-need closure decisions or additional public-safe evidence.
+Follow-on read-only closure-blocker evidence is recorded in
+`docs/evidence/domain1-governance-so-aws-admin-closure-blockers-20260709.md`.
+That evidence clears CloudTrail Lake event-data-store evidence, clears
+public-safe budget metadata, and records root plus service-linked-role posture
+as closure-procedural rather than standalone dependency blockers.
+
+The account is still not closed and no closure is approved. The remaining
+boundary is a final closure package: preserve required evidence, document blast
+radius and rollback limitations, optionally complete a private billing/contact
+console check, and obtain separate explicit account-closure approval.
 
 The temporary `SoAwsAdminReadOnlyInventory` permission set was deleted under
 separate explicit approval after the direct inventory run:

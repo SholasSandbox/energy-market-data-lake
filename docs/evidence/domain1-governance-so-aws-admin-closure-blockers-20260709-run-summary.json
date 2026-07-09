@@ -1,0 +1,7 @@
+{
+  "status": "completed",
+  "account": "054394900225",
+  "credentials_stored": false,
+  "commands": "read-only sts/ec2/cloudtrail/budgets/iam",
+  "captured_at": "2026-07-09"
+}

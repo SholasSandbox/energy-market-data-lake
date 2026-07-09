@@ -1,0 +1,50 @@
+{
+  "ServiceLinkedRoleCount": 7,
+  "ServiceLinkedRoles": [
+    {
+      "RoleName": "AWSServiceRoleForCloudTrail",
+      "Service": "cloudtrail.amazonaws.com",
+      "CreateDate": "2026-06-25T14:52:45+00:00",
+      "MaxSessionDuration": 3600
+    },
+    {
+      "RoleName": "AWSServiceRoleForConfigMultiAccountSetup",
+      "Service": "config-multiaccountsetup.amazonaws.com",
+      "CreateDate": "2026-06-25T14:49:54+00:00",
+      "MaxSessionDuration": 3600
+    },
+    {
+      "RoleName": "AWSServiceRoleForOrganizations",
+      "Service": "organizations.amazonaws.com",
+      "CreateDate": "2026-06-25T14:49:43+00:00",
+      "MaxSessionDuration": 3600
+    },
+    {
+      "RoleName": "AWSServiceRoleForResourceExplorer",
+      "Service": "resource-explorer-2.amazonaws.com",
+      "CreateDate": "2026-06-25T16:22:04+00:00",
+      "MaxSessionDuration": 3600
+    },
+    {
+      "RoleName": "AWSServiceRoleForSSO",
+      "Service": "sso.amazonaws.com",
+      "CreateDate": "2026-06-25T14:49:53+00:00",
+      "MaxSessionDuration": 3600
+    },
+    {
+      "RoleName": "AWSServiceRoleForSupport",
+      "Service": "support.amazonaws.com",
+      "CreateDate": "2026-06-25T14:49:42+00:00",
+      "MaxSessionDuration": 3600
+    },
+    {
+      "RoleName": "AWSServiceRoleForTrustedAdvisor",
+      "Service": "trustedadvisor.amazonaws.com",
+      "CreateDate": "2026-06-25T14:49:42+00:00",
+      "MaxSessionDuration": 3600
+    }
+  ],
+  "NonServiceLinkedRoleNames": [
+    "BreakGlassAdminRole"
+  ]
+}

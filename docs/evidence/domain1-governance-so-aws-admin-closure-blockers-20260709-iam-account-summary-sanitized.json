@@ -1,0 +1,16 @@
+{
+  "SummaryMap": {
+    "AccountAccessKeysPresent": 0,
+    "AccountMFAEnabled": 1,
+    "AccountPasswordPresent": 1,
+    "AccountSigningCertificatesPresent": 0,
+    "MFADevices": 1,
+    "MFADevicesInUse": 1,
+    "Users": 0,
+    "Groups": 0,
+    "Roles": 8,
+    "Policies": 0,
+    "InstanceProfiles": 0,
+    "ServerCertificates": 0
+  }
+}

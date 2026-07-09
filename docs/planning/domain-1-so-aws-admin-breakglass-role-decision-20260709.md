@@ -62,16 +62,20 @@ Findings:
 
 ## Retirement Impact
 
-This resolves the role-specific decision blocker, but it does not make
-`so-aws-admin` ready for retirement.
+This resolves the role-specific decision blocker, but it does not by itself
+make `so-aws-admin` ready for retirement.
 
-Remaining blockers before a closure package:
+Follow-on read-only closure-blocker evidence is recorded in
+`docs/evidence/domain1-governance-so-aws-admin-closure-blockers-20260709.md`.
+That follow-on evidence clears CloudTrail Lake event-data-store evidence, clears
+public-safe budget metadata, and records root plus service-linked-role posture
+as closure-procedural rather than standalone dependency blockers.
 
-- account for service-linked roles and root/break-glass posture in the closure
-  checklist;
-- clear or explicitly waive CloudTrail Lake event-data-store evidence;
-- clear or privately review budget/cost metadata;
+Remaining boundaries before closure:
+
 - preserve any required evidence outside the account;
+- document closure blast radius and rollback limitations;
+- optionally complete a private billing/contact console check;
 - obtain separate explicit approval for any account closure or IAM deletion.
 
 ## SAP-C02 Relevance
