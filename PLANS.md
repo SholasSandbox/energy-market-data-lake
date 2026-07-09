@@ -76,10 +76,12 @@ is authorized by this plan entry.
    deleted under separate explicit approval. The residual `BreakGlassAdminRole`
    decision is now recorded as retain-only-until-closure/recovery; CloudTrail
    Lake, budget, root, and service-linked-role closure-blocker evidence is now
-   recorded. `so-aws-admin` still requires a final closure package and separate
-   explicit account-closure approval. GuardDuty cost observation, Security
-   Hub/OAM adoption, broader Identity Center assignment decisions, and networking
-   also remain open.
+   recorded; the final closure package is recorded in
+   `docs/evidence/domain1-governance-so-aws-admin-final-closure-package-20260709.md`.
+   `so-aws-admin` still requires separate explicit account-closure approval and
+   a fresh pre-close re-run before any closure action. GuardDuty cost
+   observation, Security Hub/OAM adoption, broader Identity Center assignment
+   decisions, and networking also remain open.
 8. Keep AWS Organizations, SCP, Identity Center, AWS Config, GuardDuty,
    CloudTrail, and account-boundary changes out of ordinary lakehouse Terraform
    unless a future task explicitly approves that live-change boundary. The

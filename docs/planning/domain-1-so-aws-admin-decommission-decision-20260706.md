@@ -102,6 +102,24 @@ The temporary `SoAwsAdminReadOnlyInventory` permission set was deleted under
 separate explicit approval after the direct inventory run:
 `docs/evidence/domain1-governance-so-aws-admin-permission-set-cleanup-20260709.md`.
 
+## 2026-07-09 Final Closure Package
+
+The final read-only closure package is recorded in
+`docs/evidence/domain1-governance-so-aws-admin-final-closure-package-20260709.md`.
+
+Result: the package found no active workload, security-service, billing,
+identity, DNS, data-retention, or local evidence-preservation dependency in the
+approved read-only service set. The account is ready for a separate explicit
+account-closure approval from the repository-evidence perspective, but it is
+still not closed and no closure is approved by this decision note.
+
+Immediately before any closure command or console action, the final pre-close
+checks must be re-run. If any new dependency, assignment, budget, CloudTrail
+Lake event data store, target-owned trail, S3 bucket, hosted zone,
+customer-managed key, log group, alarm, EventBridge rule, SNS topic, Backup
+vault, Config recorder/rule, GuardDuty detector, Security Hub hub, OAM sink, or
+unexpected IAM principal appears, stop and do not close the account.
+
 ## Explicitly Out Of Scope
 
 - enabling AWS Config, GuardDuty, Security Hub, OAM, or any other new service in
