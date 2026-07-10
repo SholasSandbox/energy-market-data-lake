@@ -63,6 +63,8 @@ task, create a control-specific change note using
 This preflight is complete when it is referenced by the tracker. The first
 GuardDuty usage/cost observation is recorded in
 `docs/evidence/domain1-governance-guardduty-usage-cost-observation-20260709.md`.
+The documentation-only IAM Identity Center assignment decision is recorded in
+`docs/planning/domain-1-identity-center-assignment-decision-20260710.md`.
 The following outcomes remain open and require separate evidence: any Security
-Hub or OAM adoption decision, broader Identity Center assignment decisions, and
+Hub or OAM adoption decision, live IAM Identity Center assignment changes, and
 account-level budget thresholds.
