@@ -65,6 +65,8 @@ GuardDuty usage/cost observation is recorded in
 `docs/evidence/domain1-governance-guardduty-usage-cost-observation-20260709.md`.
 The documentation-only IAM Identity Center assignment decision is recorded in
 `docs/planning/domain-1-identity-center-assignment-decision-20260710.md`.
+Its fresh read-only assignment baseline is recorded in
+`docs/evidence/domain1-governance-identity-center-assignment-inventory-20260710.md`.
 The following outcomes remain open and require separate evidence: any Security
 Hub or OAM adoption decision, live IAM Identity Center assignment changes, and
 account-level budget thresholds.
