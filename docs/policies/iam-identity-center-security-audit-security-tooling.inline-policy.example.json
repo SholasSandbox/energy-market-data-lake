@@ -1,0 +1,103 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CallerIdentity",
+      "Effect": "Allow",
+      "Action": "sts:GetCallerIdentity",
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "config:BatchGet*",
+        "config:Describe*",
+        "config:Get*",
+        "config:List*",
+        "config:Select*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:Describe*",
+        "guardduty:Get*",
+        "guardduty:List*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "cloudtrail:Describe*",
+        "cloudtrail:Get*",
+        "cloudtrail:List*",
+        "cloudtrail:LookupEvents"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchLogsReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "logs:Describe*",
+        "logs:FilterLogEvents",
+        "logs:GetLogEvents",
+        "logs:List*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IamReadOnlyWithoutReportGeneration",
+      "Effect": "Allow",
+      "Action": [
+        "iam:Get*",
+        "iam:List*",
+        "iam:SimulateCustomPolicy",
+        "iam:SimulatePrincipalPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3PostureReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetAccessPoint*",
+        "s3:GetAccountPublicAccessBlock",
+        "s3:GetBucket*",
+        "s3:ListAccessPoints",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KmsPostureReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Describe*",
+        "kms:GetKeyPolicy",
+        "kms:GetKeyRotationStatus",
+        "kms:List*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAndTagReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:Describe*",
+        "cloudwatch:GetDashboard",
+        "cloudwatch:ListDashboards",
+        "tag:GetResources",
+        "tag:GetTagKeys",
+        "tag:GetTagValues"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

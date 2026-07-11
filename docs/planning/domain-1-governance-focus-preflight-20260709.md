@@ -67,6 +67,10 @@ The documentation-only IAM Identity Center assignment decision is recorded in
 `docs/planning/domain-1-identity-center-assignment-decision-20260710.md`.
 Its fresh read-only assignment baseline is recorded in
 `docs/evidence/domain1-governance-identity-center-assignment-inventory-20260710.md`.
+The first bounded `SecurityAudit` direct-access change is prepared, has a fresh
+2026-07-11 precheck, and awaits an immediate repeat precheck plus separate
+approval in
+`docs/planning/domain-1-identity-center-security-audit-direct-access-change-note-20260711.md`.
 The following outcomes remain open and require separate evidence: any Security
 Hub or OAM adoption decision, live IAM Identity Center assignment changes, and
 account-level budget thresholds.

@@ -113,6 +113,14 @@ alongside `BreakGlassAdmin` in the AWS access portal. Postchange evidence shows
 management-account `BreakGlassAdmin` assignment:
 `docs/evidence/domain1-governance-breakglass-group-membership-cleanup-20260702.md`.
 
+The first bounded routine-access change is now prepared for Security Tooling:
+`SecurityAudit` through a dedicated `security-tooling-auditors` group containing
+only the normal Workforce Identity. The prepared inline policy excludes the
+current AWS-managed `SecurityAudit` policy's Config snapshot-delivery and IAM
+report-generation actions. It remains unapproved and unprovisioned until a
+fresh SSO precheck and the separate approval stated in
+`docs/planning/domain-1-identity-center-security-audit-direct-access-change-note-20260711.md`.
+
 ## Assignment Rules
 
 - Assign management-account administration only from the management account.

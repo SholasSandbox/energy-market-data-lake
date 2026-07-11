@@ -80,8 +80,10 @@ is authorized by this plan entry.
    `docs/evidence/domain1-governance-so-aws-admin-final-closure-package-20260709.md`;
    and `so-aws-admin` was closed under separate explicit approval via
    `docs/evidence/domain1-governance-so-aws-admin-account-closure-20260709.md`.
-   GuardDuty cost observation, Security Hub/OAM adoption, broader Identity
-   Center assignment decisions, and networking also remain open.
+   GuardDuty cost observation is recorded; Security Hub/OAM adoption and
+   networking remain open. The first bounded Identity Center direct-access
+   change is prepared but not approved in
+   `docs/planning/domain-1-identity-center-security-audit-direct-access-change-note-20260711.md`.
 8. Keep AWS Organizations, SCP, Identity Center, AWS Config, GuardDuty,
    CloudTrail, and account-boundary changes out of ordinary lakehouse Terraform
    unless a future task explicitly approves that live-change boundary. The

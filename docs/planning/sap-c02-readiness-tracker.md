@@ -9,10 +9,10 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-07-10
+**Last repository reconciliation:** 2026-07-11
 **Last practice evidence update:** 2026-07-09
 **Last tutorial evidence update:** 2026-07-01
-**Last governance study evidence update:** 2026-07-10
+**Last governance study evidence update:** 2026-07-11
 
 ---
 
@@ -756,6 +756,17 @@ phase plans from drifting apart again.
 - [x] Record the documentation-only IAM Identity Center assignment decision,
   including normal/emergency path boundaries and first-live-assignment gates:
   `docs/planning/domain-1-identity-center-assignment-decision-20260710.md`.
+- [x] Prepare the first bounded `SecurityAudit` direct-access change for
+  Security Tooling, including a dedicated Workforce Identity group, policy
+  boundary, precheck, rollback, validation, and approval wording:
+  `docs/planning/domain-1-identity-center-security-audit-direct-access-change-note-20260711.md`.
+  The 2026-07-11 fresh precheck and custom no-mutation policy are recorded in
+  `docs/evidence/domain1-governance-identity-center-security-audit-precheck-20260711.md`
+  and
+  `docs/policies/iam-identity-center-security-audit-security-tooling.inline-policy.example.json`.
+- [ ] Under separate explicit approval, execute only the prepared
+  `SecurityAudit` group assignment in Security Tooling after a fresh read-only
+  precheck succeeds.
 - [x] Document the break-glass access procedure:
   `docs/runbooks/break-glass-access-procedure.md`.
 - [x] Document CloudTrail/log archive design:
