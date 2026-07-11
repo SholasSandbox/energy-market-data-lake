@@ -49,4 +49,6 @@ does not grant a role in those member accounts or permission to change their
 resources.
 
 Immediately before any approved execution, repeat this inventory and policy
-validation. This evidence does not authorize the proposed assignment.
+validation. This precheck was repeated successfully before the approved
+assignment; post-change evidence is recorded in
+`docs/evidence/domain1-governance-identity-center-security-audit-assignment-change-note-20260711.md`.

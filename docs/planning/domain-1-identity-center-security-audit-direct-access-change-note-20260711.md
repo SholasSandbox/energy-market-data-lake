@@ -4,12 +4,13 @@
 
 ## Status
 
-Prepared for a single bounded IAM Identity Center change. This document does
-not approve or perform the change. Its fresh read-only precheck is recorded in
-`docs/evidence/domain1-governance-identity-center-security-audit-precheck-20260711.md`.
+Executed under separate explicit approval on 2026-07-11. The immediate
+read-only precheck passed and the completed change evidence is recorded in
+`docs/evidence/domain1-governance-identity-center-security-audit-assignment-change-note-20260711.md`.
 
-Repeat the precheck immediately before execution. This evidence does not
-substitute for the execution-session baseline.
+This document remains the rollback and execution reference for that one
+assignment. Every future assignment still requires a new immediate precheck
+and separate approval.
 
 ## Purpose
 
@@ -21,7 +22,7 @@ normal management-administrator path and the emergency break-glass path.
 This implements the first routine-access candidate accepted in
 `docs/planning/domain-1-identity-center-assignment-decision-20260710.md`.
 
-## Exact Proposed Change
+## Executed Change
 
 | Item | Proposed value |
 |---|---|
@@ -248,9 +249,9 @@ preserved by the existing organization CloudTrail. No new user is created, so
 no invitation email is expected. The normal Workforce Identity may need to
 sign out and in again before the new account role is visible.
 
-## Approval Required
+## Approval Recorded
 
-Execution requires a separate explicit approval that names this exact scope:
+Execution used the separately recorded explicit approval for this exact scope:
 
 > Create `security-tooling-auditors`, add only `org-admin-principal`, create
 > `SecurityAudit` with `PT1H` and only the approved custom no-mutation inline
