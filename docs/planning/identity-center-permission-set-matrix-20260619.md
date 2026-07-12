@@ -32,7 +32,8 @@ Related design:
 | `management-account-alias` | Organizations management account | `OrganizationAdmin`, `BillingAdmin`, and `SecurityAudit` only. |
 | `lakehouse-workload-account` | Energy Data Lakehouse workload account | `LakehouseOperator`, `LakehouseReadOnly`, and `SecurityAudit`. |
 | `containers-lab.com` | Sandbox/container lab account | Future `SandboxOperator` or `SecurityAudit`; not lakehouse evidence. |
-| Future security/log archive account | Central audit and logging boundary | `SecurityAudit`, limited log administration, and emergency access only. |
+| `Security Tooling` | Config and GuardDuty delegated-administrator account | `SecurityAudit` plus a bounded, temporary `AdministratorAccess` path through `security-tooling-admins`. |
+| `Security Log Archive` | Storage-only central logging boundary | `SecurityAudit`, limited log administration, and emergency access only. |
 
 ## Permission-Set Matrix
 
@@ -41,6 +42,7 @@ Related design:
 | `OrganizationAdmin` | Organization administrator | `management-account-alias` | High privilege | Organizations, OU placement, SCP management, delegated-admin setup. | Lakehouse runtime work, routine data operations, dashboard changes. |
 | `BillingAdmin` | Cost/governance operator | `management-account-alias` | Billing administration | Billing views, budgets, cost allocation tags, Cost Explorer. | Organizations account movement, SCP changes, workload administration. |
 | `SecurityAudit` | Security reviewer | Management, workload, sandbox, future security account | Read-only | IAM, CloudTrail, Config, GuardDuty, Security Hub, S3 posture, logs, and evidence review. | Mutating resources, disabling controls, changing policies. |
+| `AdministratorAccess` | Security Tooling administrator | `Security Tooling` only | Full account administrator | Bounded administration of delegated Config, GuardDuty, and supporting account resources. | Management-account Organizations/SCP work, other accounts, routine read-only review. |
 | `LakehouseOperator` | Lakehouse maintainer | `lakehouse-workload-account` | Workload operator | Lambda, Glue, Athena, S3 lakehouse prefixes, EventBridge, Step Functions, SQS/DynamoDB if used by the lakehouse. | Organizations, SCPs, billing, account-level IAM administration. |
 | `LakehouseReadOnly` | Reviewer/interviewer/demo user | `lakehouse-workload-account` | Read-only | Runtime posture, CloudWatch logs, Athena metadata, S3 inventory-style review, evidence checks. | Data mutation, IAM mutation, deployment, schedule changes. |
 | `BreakGlassAdmin` | Emergency owner | As required | Emergency administrator | Account recovery only when normal Identity Center or delegated admin paths fail. | Routine use, convenience operations, long-running project work. |
@@ -121,6 +123,14 @@ report-generation actions. Precheck, provisioning, portal-entitlement, service
 read checks, and CloudTrail evidence are recorded in
 `docs/evidence/domain1-governance-identity-center-security-audit-assignment-change-note-20260711.md`.
 
+The first bounded routine administrator path is also live in Security Tooling:
+the existing one-hour `AdministratorAccess` permission set is assigned through
+the dedicated `security-tooling-admins` group containing only the normal
+Workforce Identity. This is an account-scoped learning and administration path,
+not the final least-privilege design. Precheck, assignment, portal-session,
+read-only service validation, and rollback evidence are recorded in
+`docs/evidence/domain1-governance-identity-center-security-tooling-admin-assignment-change-note-20260712.md`.
+
 ## Assignment Rules
 
 - Assign management-account administration only from the management account.
@@ -138,6 +148,9 @@ read checks, and CloudTrail evidence are recorded in
   from a direct user assignment to a single-purpose emergency group.
 - Write custom permission-set policy documents where broad AWS-managed policies
   are too permissive.
+- Replace the bounded Security Tooling `AdministratorAccess` path with a custom
+  least-privilege administrator permission set after the required Config,
+  GuardDuty, and supporting-account actions are proven.
 - Reconcile notification recipients and MFA ownership with the actual live
   Identity Center principal inventory.
 - Create rollback steps for removing each assignment.
