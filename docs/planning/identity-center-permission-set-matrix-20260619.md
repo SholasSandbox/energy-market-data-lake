@@ -32,7 +32,7 @@ Related design:
 | `management-account-alias` | Organizations management account | `OrganizationAdmin`, `BillingAdmin`, and `SecurityAudit` only. |
 | `lakehouse-workload-account` | Energy Data Lakehouse workload account | `LakehouseOperator`, `LakehouseReadOnly`, and `SecurityAudit`. |
 | `containers-lab.com` | Sandbox/container lab account | Future `SandboxOperator` or `SecurityAudit`; not lakehouse evidence. |
-| `Security Tooling` | Config and GuardDuty delegated-administrator account | Live `SecurityAudit` and staged `SecurityToolingAdmin`, plus a bounded temporary `AdministratorAccess` path through `security-tooling-admins`. |
+| `Security Tooling` | Config and GuardDuty delegated-administrator account | Live `SecurityAudit` and least-privilege `SecurityToolingAdmin`; the temporary `AdministratorAccess` path through `security-tooling-admins` was removed on 2026-07-12. |
 | `Security Log Archive` | Storage-only central logging boundary | `SecurityAudit`, limited log administration, and emergency access only. |
 
 ## Permission-Set Matrix
@@ -42,7 +42,7 @@ Related design:
 | `OrganizationAdmin` | Organization administrator | `management-account-alias` | High privilege | Organizations, OU placement, SCP management, delegated-admin setup. | Lakehouse runtime work, routine data operations, dashboard changes. |
 | `BillingAdmin` | Cost/governance operator | `management-account-alias` | Billing administration | Billing views, budgets, cost allocation tags, Cost Explorer. | Organizations account movement, SCP changes, workload administration. |
 | `SecurityAudit` | Security reviewer | Management, workload, sandbox, future security account | Read-only | IAM, CloudTrail, Config, GuardDuty, Security Hub, S3 posture, logs, and evidence review. | Mutating resources, disabling controls, changing policies. |
-| `AdministratorAccess` | Security Tooling administrator | `Security Tooling` only | Full account administrator | Bounded administration of delegated Config, GuardDuty, and supporting account resources. | Management-account Organizations/SCP work, other accounts, routine read-only review. |
+| `AdministratorAccess` | Former Security Tooling migration fallback | No active Security Tooling assignment | Full account administrator when assigned | Historical stage-1 fallback only; not a routine Security Tooling entitlement. | Routine Security Tooling use, other accounts, or control-plane work. |
 | `SecurityToolingAdmin` | Security Tooling administrator | `Security Tooling` only | Least-privilege delegated-security operator | Existing Config aggregation/recording and GuardDuty organization/member operations in `eu-west-2`. | Control-plane delegation, IAM lifecycle, security-baseline teardown, archive storage, other accounts/Regions. |
 | `LakehouseOperator` | Lakehouse maintainer | `lakehouse-workload-account` | Workload operator | Lambda, Glue, Athena, S3 lakehouse prefixes, EventBridge, Step Functions, SQS/DynamoDB if used by the lakehouse. | Organizations, SCPs, billing, account-level IAM administration. |
 | `LakehouseReadOnly` | Reviewer/interviewer/demo user | `lakehouse-workload-account` | Read-only | Runtime posture, CloudWatch logs, Athena metadata, S3 inventory-style review, evidence checks. | Data mutation, IAM mutation, deployment, schedule changes. |
@@ -124,11 +124,11 @@ report-generation actions. Precheck, provisioning, portal-entitlement, service
 read checks, and CloudTrail evidence are recorded in
 `docs/evidence/domain1-governance-identity-center-security-audit-assignment-change-note-20260711.md`.
 
-The first bounded routine administrator path is also live in Security Tooling:
-the existing one-hour `AdministratorAccess` permission set is assigned through
-the dedicated `security-tooling-admins` group containing only the normal
-Workforce Identity. This is an account-scoped learning and administration path,
-not the final least-privilege design. Precheck, assignment, portal-session,
+The first bounded routine administrator path was staged in Security Tooling
+through the existing one-hour `AdministratorAccess` permission set and the
+dedicated `security-tooling-admins` group containing only the normal Workforce
+Identity. This was an account-scoped learning and administration path, not the
+final least-privilege design. Its precheck, assignment, portal-session,
 read-only service validation, and rollback evidence are recorded in
 `docs/evidence/domain1-governance-identity-center-security-tooling-admin-assignment-change-note-20260712.md`.
 
@@ -139,11 +139,12 @@ with its proposed inline policy in
 Stage 1 is live through the existing `security-tooling-admins` group, with
 portal and read-only service validation recorded in
 `docs/evidence/domain1-governance-identity-center-security-tooling-admin-staged-assignment-change-note-20260712.md`.
-The temporary broad path remains until a representative write test and separate
-removal approval are complete. The GuardDuty write call and unchanged
-postcondition evidence are recorded in
+The broad Security Tooling path has since been removed under separate explicit
+approval. The GuardDuty write call, unchanged postconditions, delayed Event
+History, and organization-trail object evidence are recorded in
 `docs/evidence/domain1-governance-identity-center-security-tooling-admin-guardduty-write-test-20260712.md`;
-its missing immediate audit-event evidence keeps the broad path in place.
+the removal and fresh-session validation are recorded in
+`docs/evidence/domain1-governance-identity-center-security-tooling-admin-broad-assignment-removal-change-note-20260712.md`.
 
 ## Assignment Rules
 
@@ -162,9 +163,6 @@ its missing immediate audit-event evidence keeps the broad path in place.
   from a direct user assignment to a single-purpose emergency group.
 - Write custom permission-set policy documents where broad AWS-managed policies
   are too permissive.
-- Validate and, under separate approval, stage the prepared
-  `SecurityToolingAdmin` permission set before removing the bounded Security
-  Tooling `AdministratorAccess` path.
 - Reconcile notification recipients and MFA ownership with the actual live
   Identity Center principal inventory.
 - Create rollback steps for removing each assignment.

@@ -47,8 +47,10 @@ administration, and the first bounded IAM Identity Center read-only and
 administrator paths in `eu-west-2`. The custom least-privilege
 `SecurityToolingAdmin` permission set and parallel group assignment are live;
 the representative GuardDuty write succeeded with unchanged postconditions,
-but its audit evidence and removal of temporary broad access remain open. No
-further live AWS change is authorized by this plan entry.
+and delayed Event History plus the organization-trail object prove its audit
+event. The separately approved removal of the temporary broad Security Tooling
+assignment succeeded, with fresh custom-administrator and auditor sessions
+validated. No further live AWS change is authorized by this plan entry.
 
 1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
    resolved tracker-governance version of `AGENTS.md`.
@@ -87,13 +89,12 @@ further live AWS change is authorized by this plan entry.
    change completed in Security Tooling under separate approval; its evidence
    is in
    `docs/evidence/domain1-governance-identity-center-security-audit-assignment-change-note-20260711.md`.
-   The bounded Security Tooling workforce administrator path is live through a
-   dedicated group and the existing one-hour `AdministratorAccess` permission
-   set. Its least-privilege `SecurityToolingAdmin` replacement is prepared as a
-   validated design and policy example. Stage 1 is live in parallel with broad
-   access; the selected representative write succeeded, but stage 2 remains
-   gated on its audit evidence and separate approval to remove only the broad
-   Security Tooling assignment.
+   The bounded Security Tooling workforce administrator path is now the
+   least-privilege one-hour `SecurityToolingAdmin` permission set through its
+   dedicated group. The selected representative write and matching Event
+   History plus organization-trail object evidence are complete; the separately
+   approved `AdministratorAccess` assignment removal also succeeded, with the
+   custom administrator and auditor paths verified afterward.
 8. Keep AWS Organizations, SCP, Identity Center, AWS Config, GuardDuty,
    CloudTrail, and account-boundary changes out of ordinary lakehouse Terraform
    unless a future task explicitly approves that live-change boundary. The

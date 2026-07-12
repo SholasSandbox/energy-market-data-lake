@@ -4,24 +4,23 @@
 
 ## Status
 
-Accepted design with migration stage 1 implemented on 2026-07-12.
+Accepted design with both migration stages implemented on 2026-07-12.
 `SecurityToolingAdmin` and its Security Tooling group assignment are live, and
-the read-only entitlement path is proven. The representative write test and
-removal of temporary broad `AdministratorAccess` remain open. Implementation
-evidence is recorded in
+the read-only entitlement and representative GuardDuty write paths are proven.
+Implementation evidence is recorded in
 `docs/evidence/domain1-governance-identity-center-security-tooling-admin-staged-assignment-change-note-20260712.md`.
 
 The GuardDuty representative write call subsequently succeeded with unchanged
-postconditions, but its immediate CloudTrail Event History evidence is still
-missing. The audit portion of the gate and broad-role removal therefore remain
-open; see
-`docs/evidence/domain1-governance-identity-center-security-tooling-admin-guardduty-write-test-20260712.md`.
+postconditions. Delayed CloudTrail Event History and the organization-trail
+object path both confirm the same custom-role event. The separately approved
+removal of the temporary broad assignment then succeeded; see
+`docs/evidence/domain1-governance-identity-center-security-tooling-admin-broad-assignment-removal-change-note-20260712.md`.
 
 ## Decision
 
-Use `SecurityToolingAdmin` as the eventual replacement
-for the temporary broad `AdministratorAccess` assignment in `Security Tooling`
-account `668848431187`.
+Use `SecurityToolingAdmin` as the routine administrator path in `Security
+Tooling` account `668848431187`, replacing the temporary broad
+`AdministratorAccess` assignment.
 
 | Item | Design |
 |---|---|
@@ -31,14 +30,13 @@ account `668848431187`.
 | Target | `Security Tooling` (`668848431187`) only |
 | Policy | `docs/policies/iam-identity-center-security-tooling-admin.inline-policy.example.json` only |
 | Region | `eu-west-2` for Config, GuardDuty, and CloudTrail operations |
-| Assignment strategy | Add and prove before removing broad `AdministratorAccess` |
+| Assignment strategy | Add, prove, and remove the broad Security Tooling assignment |
 
 The mature portal model is:
 
 - choose `SecurityAudit` for inspection and evidence collection;
 - choose `SecurityToolingAdmin` for approved Config or GuardDuty changes;
-- use the temporary broad `AdministratorAccess` path only until the custom
-  path is proven and removed;
+- do not use `AdministratorAccess` for routine Security Tooling work; and
 - keep `BreakGlassAdmin` separate and management-account-only.
 
 ## Allowed Operating Boundary
@@ -136,8 +134,8 @@ changing AWS resources:
   unapproved role, and passing the approved role to GuardDuty.
 
 Simulation evaluates the policy document, not live service prerequisites or
-request payloads. The dependent-action caveat and approved live proof therefore
-remain mandatory before replacement.
+request payloads. The dependent-action caveat and approved live proof were
+therefore required before the broad assignment was removed.
 
 ## Migration And Rollback
 
@@ -145,21 +143,22 @@ Use two separately reviewable stages:
 
 1. Create `SecurityToolingAdmin` with `PT1H` and only the prepared inline
    policy, assign the existing `security-tooling-admins` group to Security
-   Tooling, and leave broad `AdministratorAccess` unchanged.
+   Tooling, and leave broad `AdministratorAccess` unchanged during validation.
 2. After portal, simulation, CloudTrail, Config, and GuardDuty validation,
    remove only the Security Tooling `AdministratorAccess` group assignment.
 
-Stage 1 is complete. Portal assumption and read-only Config, GuardDuty, IAM,
-CloudTrail, and Organizations checks passed. The write proof and stage 2 broad
-assignment removal remain separately gated. The selected idempotent GuardDuty
-write succeeded and preserved all observed postconditions, but the audit-event
-evidence must be collected before considering stage 2.
+Both stages are complete. Portal assumption and read-only Config, GuardDuty,
+IAM, CloudTrail, and Organizations checks passed. The selected idempotent
+GuardDuty write preserved all observed postconditions, and both Event History
+and the organization-trail object prove that audit event. After separate
+explicit approval, the broad Security Tooling assignment was deleted and the
+remaining custom administrator and auditor roles obtained fresh sessions.
 
-Rollback before broad-role removal is deletion of only the new
-`SecurityToolingAdmin` account assignment. Rollback after broad-role removal is
-temporary restoration of the previous account assignment under explicit
-approval, followed by correction of the custom policy. Do not change the
-auditor or break-glass paths.
+Rollback before broad-role removal was deletion of only the new
+`SecurityToolingAdmin` account assignment. The approved rollback after broad
+role removal is temporary restoration of the previous account assignment if the
+custom or auditor paths fail validation. Validation passed, so no rollback was
+needed. Do not change the auditor or break-glass paths.
 
 ## Cost And Audit Impact
 

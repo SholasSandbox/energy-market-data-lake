@@ -5,12 +5,14 @@
 ## Status
 
 The representative custom-role write request succeeded and its GuardDuty
-postconditions match the immediately preceding baseline. The CloudTrail
-Event History evidence requirement remains open: the idempotent write event was
-not present during the immediate refreshes.
+postconditions match the immediately preceding baseline. Delayed CloudTrail
+Event History and organization-trail object evidence now both confirm the
+idempotent write.
 
-This result does not authorize removal of the temporary broad
-`AdministratorAccess` assignment.
+This result alone did not authorize removal of the temporary broad
+`AdministratorAccess` assignment. That later, separately approved action is
+recorded in
+`docs/evidence/domain1-governance-identity-center-security-tooling-admin-broad-assignment-removal-change-note-20260712.md`.
 
 ## Approved Test Boundary
 
@@ -60,27 +62,50 @@ Immediately after the call:
 The custom permission set therefore proved a representative live write path
 without changing the observed GuardDuty posture or expanding cost scope.
 
-## Audit Evidence Caveat
+## Audit Evidence
 
-Security Tooling CloudTrail Event History recorded subsequent GuardDuty and
-Config read calls from the custom role, but did not return an
-`UpdateOrganizationConfiguration` event during the immediate Event History
-refreshes. Management-account Event History also did not return that event.
+The initial Security Tooling and management-account Event History refreshes did
+not return `UpdateOrganizationConfiguration`. After the SSO session was
+refreshed, a delayed Security Tooling Event History query returned the intended
+event with these sanitized fields:
 
-Do not infer that the organization trail failed from this result. The successful
-API call and postcondition checks prove the service action; the organization
-trail/object-path evidence or a later Event History appearance is still needed
-before treating the audit portion of the gate as complete.
+- `eventTime`: `2026-07-12T11:30:05Z`;
+- `eventSource`: `guardduty.amazonaws.com`;
+- `eventName`: `UpdateOrganizationConfiguration`;
+- `awsRegion`: `eu-west-2`;
+- `recipientAccountId`: `668848431187`;
+- `readOnly`: `false`;
+- `requestParameters.autoEnableOrganizationMembers`: `NONE`;
+- `errorCode`: `null`; and
+- caller: the `AWSReservedSSO_SecurityToolingAdmin_*` assumed role in Security
+  Tooling.
 
-## Next Gate
+The management-account Event History remained empty for this member-account
+action, which is expected and is not evidence of a trail failure.
 
-Collect the missing audit evidence, then obtain separate approval to delete
-only the Security Tooling `AdministratorAccess` group assignment. Keep
-`SecurityToolingAdmin`, `SecurityAudit`, and `BreakGlassAdmin` unchanged.
+The management-owned `organization-management-events` trail was active in
+`eu-west-2`, had log-file validation enabled, and reported no delivery error.
+The current trail points to
+`shola-cloudtrail-log-archive-955659429518-eu-west-2`. Its Security Tooling
+organization path contained the 11:35Z delivery object
+`AWSLogs/o-hmvgqmav88/668848431187/CloudTrail/eu-west-2/2026/07/12/668848431187_CloudTrail_eu-west-2_20260712T1135Z_qEprkILGQ8ZCKM8N.json.gz`.
+Reading that object through the Security Log Archive account returned the same
+sanitized event fields above.
+
+Earlier 2026-06 storage evidence uses a different bucket name. It remains
+historical evidence for that change; the current trail configuration and this
+object-path check are the authoritative evidence for the live archive location.
+
+## Completed Next Gate
+
+Separate explicit approval was obtained to delete only the Security Tooling
+`AdministratorAccess` group assignment. The deletion succeeded, while
+`SecurityToolingAdmin`, `SecurityAudit`, and the management-only
+`BreakGlassAdmin` path remained unchanged.
 
 ## SAP-C02 Relevance
 
 This demonstrates a controlled least-privilege rollout: validate a custom
-federated role with a minimal idempotent write, verify service postconditions,
-preserve rollback access, and refuse to reduce fallback access before audit
-evidence is complete.
+federated role with a minimal idempotent write, verify service and audit
+postconditions, preserve rollback access, and require a separately approved
+privilege reduction.

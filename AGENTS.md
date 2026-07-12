@@ -42,6 +42,36 @@ When resolving a Git or patch conflict in `AGENTS.md`, preserve the tracker-read
 
 For every task, Codex must summarize how the completed work maps back to the tracker, including the relevant SAP-C02 domain, lakehouse/governance checklist item, milestone, or evidence artifact. If the work does not change code, the summary must still identify the tracker rule or deliverable it supports.
 
+## Session continuity and handover
+
+At the end of each coherent action, Codex must state the next item in the
+tracker-ordered priority list. It must also identify whether a state transition
+is pending, has occurred, or requires a short plan before work can safely
+continue. These updates must continue to follow the tracker and governance
+documents; they do not authorize work outside those controls.
+
+Codex must recommend a fresh session when the current milestone is complete and
+the next task is materially different, the context is substantially consumed
+while meaningful work remains, extensive command output or discarded approaches
+are accumulating, constraints are being rediscovered, unrelated workstreams are
+mixing, a major architecture or implementation boundary is reached, or a clean
+restart would materially improve diagnosis after repeated failures. Do not
+recommend a new session merely because work is difficult or a small amount of
+context has accumulated.
+
+When a fresh session is appropriate, Codex must finish the current coherent unit
+where practical, run relevant validation, report Git status, and update
+`handover.md`. The handover must record the objective, current state, material
+changes, decisions and rationale, validation, Git state, known risks, the next
+recommended step, constraints, and a suggested new-session prompt. It must
+distinguish completed from proposed work and identify uncommitted changes.
+
+Codex must not commit, push, discard, reset, or begin a materially new
+workstream as part of preparing a handover unless the user explicitly authorizes
+that action. Once the handover is ready, Codex must tell the user to start a new
+session and read `AGENTS.md`, `handover.md`, and the tracker before making
+changes.
+
 ## AWS safety
 
 Do not deploy to AWS, modify AWS resources, or run commands that create, update, or delete cloud infrastructure unless the user explicitly requests that action for the current task. Prefer documentation, local validation, and dry-run style checks when possible.

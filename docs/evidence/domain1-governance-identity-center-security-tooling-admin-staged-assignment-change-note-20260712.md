@@ -11,9 +11,10 @@ The one-hour `SecurityToolingAdmin` permission set is live with only the
 validated custom inline policy. The existing `security-tooling-admins` group is
 assigned to it in `Security Tooling` account `668848431187` only.
 
-The temporary broad `AdministratorAccess` assignment remains in place. No
-Config, GuardDuty, IAM role, Organizations, SCP, Security Hub, OAM, archive
-storage, account, or workload resource was changed.
+At the stage-1 point, the temporary broad `AdministratorAccess` assignment
+remained in place. It was later removed under separate explicit approval after
+the custom role passed representative-write and audit validation; see
+`docs/evidence/domain1-governance-identity-center-security-tooling-admin-broad-assignment-removal-change-note-20260712.md`.
 
 ## Immediate Precheck
 
@@ -68,16 +69,16 @@ wait for asynchronous deletion to succeed. Confirm the custom role disappears
 from the portal. Leave the temporary broad, auditor, and break-glass paths
 unchanged. Permission-set deletion is a separate cleanup decision.
 
-## Remaining Gate
+## Completed Follow-On Gate
 
-Before removing broad `AdministratorAccess`:
+The follow-on gate was completed under separate explicit approval:
 
-1. approve one reversible representative Config or GuardDuty write test;
-2. verify the result and CloudTrail event through `SecurityToolingAdmin`;
-3. confirm the documented dependent-action caveat does not require widening
-   the routine policy; and
-4. separately approve deletion of only the broad Security Tooling account
-   assignment.
+1. the approved idempotent GuardDuty write completed with unchanged
+   postconditions;
+2. delayed Event History and the organization-trail object confirmed that
+   custom-role action; and
+3. only the broad Security Tooling assignment was deleted, with the custom and
+   audit paths validated afterward.
 
 ## SAP-C02 Relevance
 
