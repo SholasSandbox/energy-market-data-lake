@@ -32,7 +32,7 @@ Related design:
 | `management-account-alias` | Organizations management account | `OrganizationAdmin`, `BillingAdmin`, and `SecurityAudit` only. |
 | `lakehouse-workload-account` | Energy Data Lakehouse workload account | `LakehouseOperator`, `LakehouseReadOnly`, and `SecurityAudit`. |
 | `containers-lab.com` | Sandbox/container lab account | Future `SandboxOperator` or `SecurityAudit`; not lakehouse evidence. |
-| `Security Tooling` | Config and GuardDuty delegated-administrator account | `SecurityAudit` plus a bounded, temporary `AdministratorAccess` path through `security-tooling-admins`. |
+| `Security Tooling` | Config and GuardDuty delegated-administrator account | Live `SecurityAudit` and staged `SecurityToolingAdmin`, plus a bounded temporary `AdministratorAccess` path through `security-tooling-admins`. |
 | `Security Log Archive` | Storage-only central logging boundary | `SecurityAudit`, limited log administration, and emergency access only. |
 
 ## Permission-Set Matrix
@@ -43,6 +43,7 @@ Related design:
 | `BillingAdmin` | Cost/governance operator | `management-account-alias` | Billing administration | Billing views, budgets, cost allocation tags, Cost Explorer. | Organizations account movement, SCP changes, workload administration. |
 | `SecurityAudit` | Security reviewer | Management, workload, sandbox, future security account | Read-only | IAM, CloudTrail, Config, GuardDuty, Security Hub, S3 posture, logs, and evidence review. | Mutating resources, disabling controls, changing policies. |
 | `AdministratorAccess` | Security Tooling administrator | `Security Tooling` only | Full account administrator | Bounded administration of delegated Config, GuardDuty, and supporting account resources. | Management-account Organizations/SCP work, other accounts, routine read-only review. |
+| `SecurityToolingAdmin` | Security Tooling administrator | `Security Tooling` only | Least-privilege delegated-security operator | Existing Config aggregation/recording and GuardDuty organization/member operations in `eu-west-2`. | Control-plane delegation, IAM lifecycle, security-baseline teardown, archive storage, other accounts/Regions. |
 | `LakehouseOperator` | Lakehouse maintainer | `lakehouse-workload-account` | Workload operator | Lambda, Glue, Athena, S3 lakehouse prefixes, EventBridge, Step Functions, SQS/DynamoDB if used by the lakehouse. | Organizations, SCPs, billing, account-level IAM administration. |
 | `LakehouseReadOnly` | Reviewer/interviewer/demo user | `lakehouse-workload-account` | Read-only | Runtime posture, CloudWatch logs, Athena metadata, S3 inventory-style review, evidence checks. | Data mutation, IAM mutation, deployment, schedule changes. |
 | `BreakGlassAdmin` | Emergency owner | As required | Emergency administrator | Account recovery only when normal Identity Center or delegated admin paths fail. | Routine use, convenience operations, long-running project work. |
@@ -131,6 +132,19 @@ not the final least-privilege design. Precheck, assignment, portal-session,
 read-only service validation, and rollback evidence are recorded in
 `docs/evidence/domain1-governance-identity-center-security-tooling-admin-assignment-change-note-20260712.md`.
 
+The least-privilege replacement design is recorded in
+`docs/planning/domain-1-identity-center-security-tooling-admin-permission-set-design-20260712.md`,
+with its proposed inline policy in
+`docs/policies/iam-identity-center-security-tooling-admin.inline-policy.example.json`.
+Stage 1 is live through the existing `security-tooling-admins` group, with
+portal and read-only service validation recorded in
+`docs/evidence/domain1-governance-identity-center-security-tooling-admin-staged-assignment-change-note-20260712.md`.
+The temporary broad path remains until a representative write test and separate
+removal approval are complete. The GuardDuty write call and unchanged
+postcondition evidence are recorded in
+`docs/evidence/domain1-governance-identity-center-security-tooling-admin-guardduty-write-test-20260712.md`;
+its missing immediate audit-event evidence keeps the broad path in place.
+
 ## Assignment Rules
 
 - Assign management-account administration only from the management account.
@@ -148,9 +162,9 @@ read-only service validation, and rollback evidence are recorded in
   from a direct user assignment to a single-purpose emergency group.
 - Write custom permission-set policy documents where broad AWS-managed policies
   are too permissive.
-- Replace the bounded Security Tooling `AdministratorAccess` path with a custom
-  least-privilege administrator permission set after the required Config,
-  GuardDuty, and supporting-account actions are proven.
+- Validate and, under separate approval, stage the prepared
+  `SecurityToolingAdmin` permission set before removing the bounded Security
+  Tooling `AdministratorAccess` path.
 - Reconcile notification recipients and MFA ownership with the actual live
   Identity Center principal inventory.
 - Create rollback steps for removing each assignment.

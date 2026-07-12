@@ -1,0 +1,201 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadOrganizationContext",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "organizations:ListAccounts",
+        "organizations:ListAWSServiceAccessForOrganization",
+        "organizations:ListDelegatedAdministrators",
+        "organizations:ListDelegatedServicesForAccount"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ReadConfigPostureInHomeRegion",
+      "Effect": "Allow",
+      "Action": [
+        "config:BatchGetAggregateResourceConfig",
+        "config:DescribeAggregateComplianceByConfigRules",
+        "config:DescribeComplianceByConfigRule",
+        "config:DescribeConfigurationAggregatorSourcesStatus",
+        "config:DescribeConfigurationAggregators",
+        "config:DescribeConfigurationRecorderStatus",
+        "config:DescribeConfigurationRecorders",
+        "config:DescribeDeliveryChannelStatus",
+        "config:DescribeDeliveryChannels",
+        "config:DescribeOrganizationConfigRuleStatuses",
+        "config:DescribeOrganizationConfigRules",
+        "config:GetAggregateComplianceDetailsByConfigRule",
+        "config:GetAggregateConfigRuleComplianceSummary",
+        "config:GetAggregateDiscoveredResourceCounts",
+        "config:GetAggregateResourceConfig",
+        "config:GetOrganizationConfigRuleDetailedStatus",
+        "config:ListAggregateDiscoveredResources",
+        "config:ListTagsForResource",
+        "config:SelectAggregateResourceConfig"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-west-2"
+        }
+      }
+    },
+    {
+      "Sid": "OperateNamedConfigResourceClassesInHomeRegion",
+      "Effect": "Allow",
+      "Action": [
+        "config:PutConfigurationAggregator",
+        "config:PutConfigurationRecorder",
+        "config:PutOrganizationConfigRule",
+        "config:StartConfigurationRecorder",
+        "config:TagResource",
+        "config:UntagResource"
+      ],
+      "Resource": [
+        "arn:aws:config:eu-west-2:668848431187:config-aggregator/*",
+        "arn:aws:config:eu-west-2:668848431187:configuration-recorder/*",
+        "arn:aws:config:eu-west-2:668848431187:organization-config-rule/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-west-2"
+        }
+      }
+    },
+    {
+      "Sid": "OperateUnscopedConfigDeliveryActionsInHomeRegion",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeliverConfigSnapshot",
+        "config:PutDeliveryChannel"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-west-2"
+        }
+      }
+    },
+    {
+      "Sid": "PassOnlyExistingConfigRolesToConfig",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": [
+        "arn:aws:iam::668848431187:role/aws-config-organization-aggregator-role",
+        "arn:aws:iam::668848431187:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "config.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "ReadExistingConfigRoleMetadata",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:GetRole",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListRolePolicies"
+      ],
+      "Resource": [
+        "arn:aws:iam::668848431187:role/aws-config-organization-aggregator-role",
+        "arn:aws:iam::668848431187:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig",
+        "arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations"
+      ]
+    },
+    {
+      "Sid": "OperateGuardDutyDelegatedAdministrationInHomeRegion",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:ArchiveFindings",
+        "guardduty:CreateMembers",
+        "guardduty:DescribeOrganizationConfiguration",
+        "guardduty:GetDetector",
+        "guardduty:GetFindings",
+        "guardduty:GetMemberDetectors",
+        "guardduty:GetMembers",
+        "guardduty:GetOrganizationStatistics",
+        "guardduty:GetUsageStatistics",
+        "guardduty:ListCoverage",
+        "guardduty:ListDetectors",
+        "guardduty:ListFindings",
+        "guardduty:ListMembers",
+        "guardduty:ListOrganizationAdminAccounts",
+        "guardduty:ListTagsForResource",
+        "guardduty:UnarchiveFindings",
+        "guardduty:UpdateFindingsFeedback",
+        "guardduty:UpdateMemberDetectors",
+        "guardduty:UpdateOrganizationConfiguration"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-west-2"
+        }
+      }
+    },
+    {
+      "Sid": "ReadSecurityToolingAuditHistory",
+      "Effect": "Allow",
+      "Action": [
+        "cloudtrail:DescribeTrails",
+        "cloudtrail:GetTrailStatus",
+        "cloudtrail:ListTrails",
+        "cloudtrail:LookupEvents"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-west-2"
+        }
+      }
+    },
+    {
+      "Sid": "DenyControlPlaneAndSecurityBaselineTeardown",
+      "Effect": "Deny",
+      "Action": [
+        "config:Delete*",
+        "config:StopConfigurationRecorder",
+        "guardduty:Delete*",
+        "guardduty:DisableOrganizationAdminAccount",
+        "guardduty:DisassociateFromAdministratorAccount",
+        "guardduty:DisassociateMembers",
+        "guardduty:EnableOrganizationAdminAccount",
+        "guardduty:StopMonitoringMembers",
+        "guardduty:UpdateDetector",
+        "iam:Attach*",
+        "iam:Create*",
+        "iam:Delete*",
+        "iam:Detach*",
+        "iam:Put*",
+        "iam:SetDefaultPolicyVersion",
+        "iam:Update*",
+        "organizations:AttachPolicy",
+        "organizations:CloseAccount",
+        "organizations:CreateAccount",
+        "organizations:CreateOrganizationalUnit",
+        "organizations:CreatePolicy",
+        "organizations:DeleteOrganizationalUnit",
+        "organizations:DeletePolicy",
+        "organizations:DeregisterDelegatedAdministrator",
+        "organizations:DetachPolicy",
+        "organizations:DisableAWSServiceAccess",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:MoveAccount",
+        "organizations:RegisterDelegatedAdministrator",
+        "organizations:UpdateOrganizationalUnit",
+        "organizations:UpdatePolicy",
+        "oam:*",
+        "securityhub:*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

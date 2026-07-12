@@ -40,13 +40,15 @@ Historical planning references:
 
 ## Active SAP-C02 Delivery Sequence
 
-Status as of 2026-07-09: lakehouse closure remains complete, Domain 1 live
+Status as of 2026-07-12: lakehouse closure remains complete, Domain 1 live
 governance has progressed through Security Tooling account placement, AWS
-Config migration/recorder onboarding, and foundational GuardDuty delegated
-administration in `eu-west-2`, and the current repo-local hardening slice is
-focused on Terraform governance safety plus validation coverage. Evidence:
-`docs/evidence/repository-validation-hardening-20260709.md`. No live AWS change
-is authorized by this plan entry.
+Config migration/recorder onboarding, foundational GuardDuty delegated
+administration, and the first bounded IAM Identity Center read-only and
+administrator paths in `eu-west-2`. The custom least-privilege
+`SecurityToolingAdmin` permission set and parallel group assignment are live;
+the representative GuardDuty write succeeded with unchanged postconditions,
+but its audit evidence and removal of temporary broad access remain open. No
+further live AWS change is authorized by this plan entry.
 
 1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
    resolved tracker-governance version of `AGENTS.md`.
@@ -85,6 +87,13 @@ is authorized by this plan entry.
    change completed in Security Tooling under separate approval; its evidence
    is in
    `docs/evidence/domain1-governance-identity-center-security-audit-assignment-change-note-20260711.md`.
+   The bounded Security Tooling workforce administrator path is live through a
+   dedicated group and the existing one-hour `AdministratorAccess` permission
+   set. Its least-privilege `SecurityToolingAdmin` replacement is prepared as a
+   validated design and policy example. Stage 1 is live in parallel with broad
+   access; the selected representative write succeeded, but stage 2 remains
+   gated on its audit evidence and separate approval to remove only the broad
+   Security Tooling assignment.
 8. Keep AWS Organizations, SCP, Identity Center, AWS Config, GuardDuty,
    CloudTrail, and account-boundary changes out of ordinary lakehouse Terraform
    unless a future task explicitly approves that live-change boundary. The
