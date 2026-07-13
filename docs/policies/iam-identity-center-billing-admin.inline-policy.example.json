@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadCostAndUsage",
+      "Effect": "Allow",
+      "Action": [
+        "billing:GetBillingData",
+        "billing:GetBillingDetails",
+        "billing:GetBillingViewData",
+        "billing:GetBillingNotifications",
+        "billing:GetBillingPreferences",
+        "ce:GetCostAndUsage",
+        "ce:GetCostForecast",
+        "ce:GetDimensionValues",
+        "ce:GetTags",
+        "ce:GetUsageForecast"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ViewAndUpdateApprovedBudgetsOnly",
+      "Effect": "Allow",
+      "Action": [
+        "budgets:ViewBudget",
+        "budgets:ModifyBudget"
+      ],
+      "Resource": "arn:aws:budgets::349687196588:budget/BillingAdmin-*",
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/GovernanceControl": "BillingAdmin"
+        }
+      }
+    },
+    {
+      "Sid": "DenyBudgetCreationDeletionAndTagAdministration",
+      "Effect": "Deny",
+      "Action": [
+        "budgets:CreateBudgetAction",
+        "budgets:DeleteBudgetAction",
+        "budgets:ExecuteBudgetAction",
+        "budgets:TagResource",
+        "budgets:UntagResource",
+        "budgets:UpdateBudgetAction",
+        "ce:UpdateCostAllocationTagsStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyAccountOrganizationAndPaymentAdministration",
+      "Effect": "Deny",
+      "Action": [
+        "account:*",
+        "aws-portal:ModifyAccount",
+        "aws-portal:ModifyBilling",
+        "iam:*",
+        "organizations:*",
+        "payments:*",
+        "tax:*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

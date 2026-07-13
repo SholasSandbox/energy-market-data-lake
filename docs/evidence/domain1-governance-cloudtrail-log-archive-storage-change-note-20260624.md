@@ -177,8 +177,10 @@ Intentionally deferred:
 - S3 Bucket Keys, because they add extra KMS policy considerations during the
   first bring-up step;
 - S3 Object Lock, because immutability is stronger but operationally heavier;
-- lifecycle transitions, because the log volume and retention window are not
-  yet proven;
+- lifecycle transitions, because the log volume and retention window were not
+  yet proven at initial archive creation; this deferral was later resolved by
+  the bounded 2026-07-13 lifecycle change recorded in
+  `docs/evidence/domain1-governance-log-archive-lifecycle-change-note-20260713.md`;
 - data events, Insights, and CloudTrail Lake, because the baseline target is
   management-event coverage with low noise.
 

@@ -1,0 +1,29 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadArchiveLifecycleConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetLifecycleConfiguration",
+        "s3:GetBucketLocation",
+        "s3:GetBucketVersioning",
+        "s3:GetEncryptionConfiguration",
+        "s3:GetBucketPublicAccessBlock"
+      ],
+      "Resource": [
+        "arn:aws:s3:::shola-cloudtrail-log-archive-955659429518-eu-west-2",
+        "arn:aws:s3:::shola-aws-config-log-archive-955659429518-eu-west-2"
+      ]
+    },
+    {
+      "Sid": "UpdateArchiveLifecycleConfiguration",
+      "Effect": "Allow",
+      "Action": "s3:PutLifecycleConfiguration",
+      "Resource": [
+        "arn:aws:s3:::shola-cloudtrail-log-archive-955659429518-eu-west-2",
+        "arn:aws:s3:::shola-aws-config-log-archive-955659429518-eu-west-2"
+      ]
+    }
+  ]
+}

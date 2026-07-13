@@ -40,7 +40,7 @@ inside the allowed boundary.
 | --- | --- | --- |
 | `deny-disable-cloudtrail.example.json` | Protect audit trail operation. | Organization trail design and break-glass path exist. |
 | `deny-delete-log-archive-buckets.example.json` | Protect central log buckets from deletion or policy weakening. | Log archive account, bucket names, KMS posture, and retention are finalized. |
-| `deny-public-s3-exposure.example.json` | Reduce accidental public S3 exposure. | Approved public dashboard exception model is tested. |
+| `deny-public-s3-exposure.example.json` | Deny public ACLs and changes to S3 public-access-block settings. It does not inspect bucket-policy content. | Every affected bucket's baseline and approved dashboard exceptions are reviewed. |
 | `deny-unapproved-regions.example.json` | Limit cost and data sprawl outside approved Regions. | Global-service exceptions and required Regions are confirmed. |
 | `deny-root-user-actions.example.json` | Reduce root-user blast radius. | Live for `Lakehouse Workloads OU` after emergency root-use process was documented/tested and the live attach was separately approved. |
 | `require-encryption-where-supported.example.json` | Encourage encryption baseline for services with stable condition keys. | Service support and exception list are reviewed. |

@@ -430,5 +430,12 @@ variable "athena_query_role_name" {
 variable "tags" {
   description = "Tags applied to supported resources."
   type        = map(string)
-  default     = {}
+  default = {
+    Workload = "energy-market-data-lake"
+  }
+
+  validation {
+    condition     = try(var.tags.Workload, "energy-market-data-lake") == "energy-market-data-lake"
+    error_message = "The lakehouse Terraform root requires Workload=energy-market-data-lake for supported resources."
+  }
 }

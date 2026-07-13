@@ -2,11 +2,10 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "DenyPublicS3BucketPoliciesAndAcls",
+      "Sid": "DenyPublicS3Acls",
       "Effect": "Deny",
       "Action": [
         "s3:PutBucketAcl",
-        "s3:PutBucketPolicy",
         "s3:PutObjectAcl"
       ],
       "Resource": "*",
@@ -21,21 +20,13 @@
       }
     },
     {
-      "Sid": "DenyDisablingBucketPublicAccessBlock",
+      "Sid": "DenyChangingS3PublicAccessBlock",
       "Effect": "Deny",
       "Action": [
         "s3:PutAccountPublicAccessBlock",
         "s3:PutBucketPublicAccessBlock"
       ],
-      "Resource": "*",
-      "Condition": {
-        "BoolIfExists": {
-          "s3:PublicAccessBlockConfiguration/BlockPublicAcls": "false",
-          "s3:PublicAccessBlockConfiguration/BlockPublicPolicy": "false",
-          "s3:PublicAccessBlockConfiguration/IgnorePublicAcls": "false",
-          "s3:PublicAccessBlockConfiguration/RestrictPublicBuckets": "false"
-        }
-      }
+      "Resource": "*"
     }
   ]
 }
