@@ -1,0 +1,49 @@
+flowchart TB
+    internet[Internet]
+    igw[Internet gateway]
+    s3[Amazon S3]
+    s3ep[S3 gateway endpoint]
+
+    subgraph vpc[VPC: conceptual study topology]
+        local[VPC local route]
+
+        subgraph aza[Availability Zone A]
+            puba[Public subnet A]
+            priva[Private application subnet A]
+            nata[NAT Gateway A: optional, only if justified]
+            rta[Private route table A]
+        end
+
+        subgraph azb[Availability Zone B]
+            pubb[Public subnet B]
+            privb[Private application subnet B]
+            natb[NAT Gateway B: optional, only if justified]
+            rtb[Private route table B]
+        end
+
+        publicrt[Public route table]
+
+        puba -->|associated| publicrt
+        pubb -->|associated| publicrt
+        priva -->|associated| rta
+        privb -->|associated| rtb
+
+        publicrt -->|VPC CIDR| local
+        publicrt -->|0.0.0.0/0| igw
+
+        rta -->|VPC CIDR| local
+        rtb -->|VPC CIDR| local
+        rta -->|S3 prefix list| s3ep
+        rtb -->|S3 prefix list| s3ep
+        rta -. optional 0.0.0.0/0 .-> nata
+        rtb -. optional 0.0.0.0/0 .-> natb
+
+        nata -. outbound only .-> igw
+        natb -. outbound only .-> igw
+    end
+
+    internet <--> igw
+    s3ep --> s3
+
+    note[Routes select a path; they do not authorize traffic.\nCheck security groups, network ACLs, endpoint policies, and return routing.]
+    local --- note

@@ -9,7 +9,7 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-07-14
+**Last repository reconciliation:** 2026-07-15
 **Last practice evidence update:** 2026-07-09
 **Last tutorial evidence update:** 2026-07-01
 **Last governance study evidence update:** 2026-07-12
@@ -485,7 +485,7 @@ The live attachment is recorded in
 
 | Topic | Current confidence | Required by exam? | Evidence required |
 |---|---:|---|---|
-| VPC fundamentals | Medium | Yes | VPC/subnet/route table diagram |
+| VPC fundamentals | Medium | Yes | VPC/subnet/route-table diagram recorded in `diagrams/vpc-subnet-route-table-study.mmd` with reading guide in `docs/planning/domain-2-vpc-subnet-route-table-diagram-20260715.md` |
 | Security groups vs NACLs | Medium | Yes | Comparison note |
 | VPC peering | Low | Yes | Use-case and limitation note; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | Transit Gateway | Low | Yes | Hub-and-spoke diagram; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
@@ -501,7 +501,7 @@ The live attachment is recorded in
 
 | Deliverable | Due | Status |
 |---|---|---|
-| VPC connectivity comparison matrix | 2026-08-31 | In progress: the decision-level matrix in `docs/planning/domain-2-network-access-patterns-20260621.md` passed the source-backed review in `docs/exam-prep/networking-scenario-drill-review-20260715.md`; a dedicated VPC/subnet/route-table diagram and endpoint diagram or bounded lab remain open |
+| VPC connectivity comparison matrix | 2026-08-31 | In progress: the decision-level matrix passed source-backed review and the VPC/subnet/route-table diagram is recorded in `diagrams/vpc-subnet-route-table-study.mmd`; a VPC endpoint diagram or bounded lab remains open |
 | Transit Gateway hub-and-spoke diagram | 2026-09-07 | Verified: conceptual route-domain and inspection-symmetry diagram in `diagrams/tgw-hub-and-spoke-study.mmd` passed the source-backed scenario review; no AWS implementation is required by this artifact |
 | PrivateLink vs peering vs TGW decision table | 2026-09-07 | Verified: decision table and Lakehouse promotion triggers in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md` passed the source-backed scenario review |
 | Direct Connect vs VPN decision table | 2026-09-14 | Verified: hybrid transport decision table and Lakehouse promotion triggers in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md` passed the source-backed scenario review |

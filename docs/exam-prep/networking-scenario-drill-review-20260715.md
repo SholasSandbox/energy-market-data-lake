@@ -182,9 +182,12 @@ All twelve scenarios map each selected service to an explicit functional,
 routing, DNS, resilience, or cost requirement. The review found no conflict
 among the current Networking artifacts.
 
-The remaining matrix gaps are not these reviewed decisions: a dedicated
-VPC/subnet/route-table diagram and a VPC endpoint diagram or bounded lab remain
-open. Learner recall also remains unscored.
+The source-backed review originally identified two remaining matrix gaps. The
+dedicated VPC/subnet/route-table diagram was subsequently recorded in
+`diagrams/vpc-subnet-route-table-study.mmd` and
+`docs/planning/domain-2-vpc-subnet-route-table-diagram-20260715.md`. A VPC
+endpoint diagram or bounded lab remains open. Learner recall also remains
+unscored.
 
 ## References
 
