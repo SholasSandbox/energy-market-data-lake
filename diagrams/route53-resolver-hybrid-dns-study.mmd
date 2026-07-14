@@ -1,0 +1,28 @@
+flowchart LR
+    subgraph aws[AWS VPC]
+        workload[AWS workload]
+        vpcresolver[Route 53 VPC Resolver]
+        outbound[Outbound Resolver endpoint]
+        inbound[Inbound Resolver endpoint]
+        phz[AWS private hosted zone or VPC DNS namespace]
+    end
+
+    subgraph onprem[On-premises network]
+        client[On-premises client]
+        dns[On-premises DNS resolver]
+        auth[On-premises authoritative DNS]
+    end
+
+    transport[Existing private transport: Site-to-Site VPN or Direct Connect]
+
+    workload -->|query on-premises private suffix| vpcresolver
+    vpcresolver -->|Resolver forwarding rule| outbound
+    outbound --> transport --> dns
+    dns -->|query and answer| auth
+
+    client -->|query AWS private suffix| dns
+    dns -->|conditional forwarder| transport
+    transport --> inbound --> vpcresolver --> phz
+
+    note[Conceptual study diagram only\nOutbound: AWS asks on-premises\nInbound: on-premises asks AWS\nTransport carries DNS packets but does not configure DNS forwarding]
+    vpcresolver --- note
