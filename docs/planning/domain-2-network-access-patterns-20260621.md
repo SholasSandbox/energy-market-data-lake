@@ -46,16 +46,31 @@ does not.
 | More consistent hybrid connectivity with lower latency and higher bandwidth expectations | AWS Direct Connect | Dedicated connectivity is more stable than internet-based VPN |
 | Hybrid name resolution between AWS and on-premises | Route 53 Resolver inbound/outbound endpoints plus forwarding rules | DNS forwarding is a separate problem from transport |
 
-## Comparison Matrix
+## VPC Connectivity Comparison Matrix (Early Study Slice)
 
-| Pattern | Use when | Avoid when | Key trade-off | SAP-C02 trap |
+This expands the compact carry-forward aid into the first bounded matrix slice.
+It improves decision quality, but does not complete the later diagrams or
+authorize a network build.
+
+| Pattern | Connectivity scope and routing | Use when | Do not choose when | Key trade-off and exam trap |
 |---|---|---|---|---|
-| VPC endpoints / AWS PrivateLink | A workload in a VPC needs private access to S3, DynamoDB, AWS APIs, partner services, or a specific producer service without broad network trust | The real need is any-to-any IP routing across whole CIDR ranges | Gives private service consumption rather than general network connectivity | Picking peering or TGW when only one service needs private access |
-| VPC peering | Two VPCs need direct private IP connectivity and the topology is small and controlled | You need transitive routing, central hub routing, or overlapping CIDRs | Simple and direct, but scales poorly as connections grow | Treating peering like a transit hub or assuming it solves hybrid transit |
-| AWS Transit Gateway | Many VPCs, shared services, or on-premises networks need hub-and-spoke connectivity | Only two VPCs need simple communication | Easier operational scaling, but adds central routing design and attachment cost | Using TGW too early for a tiny topology |
-| AWS Site-to-Site VPN | Hybrid connectivity is needed quickly, at lower commitment, or as a backup path | The requirement is stable high-throughput, lower-latency dedicated connectivity | Faster to start, but less consistent than dedicated private connectivity | Assuming VPN and Direct Connect are interchangeable for performance-sensitive designs |
-| AWS Direct Connect | A workload needs dedicated private connectivity with more consistent latency and higher bandwidth expectations | The need is temporary, low-volume, or early-stage enough that VPN is sufficient | Stronger operational experience, but more setup and commitment | Choosing DX when the scenario actually prioritizes speed of deployment or lower complexity |
-| Route 53 Resolver | AWS and on-premises systems must resolve each other's private DNS names | The problem is only IP transport, not DNS | Solves hybrid DNS with inbound/outbound endpoints and forwarding rules | Choosing AWS Config, TGW, or DX alone for a DNS resolution problem |
+| VPC fundamentals | Subnets use route tables; a route's target determines where traffic can go. Security groups and network ACLs are separate control layers. | Explaining the baseline before selecting a connectivity service. | Treating a subnet, route table, or security group as a connectivity service. | A route is necessary but does not itself grant traffic permission. |
+| Security groups vs network ACLs | Security groups are stateful and apply to ENIs; network ACLs are stateless and apply at the subnet boundary. | Controlling workload-to-workload access or an explicit subnet-level allow/deny boundary. | Using a network ACL as though return traffic is automatically allowed. | Security groups do not need an ephemeral-return rule; network ACLs do. |
+| Gateway and interface VPC endpoints | Gateway endpoints add route-table entries for S3/DynamoDB; interface endpoints use private ENIs for supported services and PrivateLink-based service access. Neither provides general VPC-to-VPC routing. | A VPC needs private, least-broad access to an AWS service or a published service. | The requirement is broad IP connectivity among CIDRs. | Choosing peering or TGW when only a service, not a network, must be reached. |
+| VPC peering | Direct private IP routes between two non-overlapping VPC CIDRs; no transitive routing. | Two VPCs need a small, explicit relationship with no shared transit requirement. | CIDRs overlap or the topology needs hub-and-spoke, inspection, or transit. | Peering does not make a third VPC or on-premises network reachable through either peer. |
+| AWS Transit Gateway | Central route tables connect VPC, VPN, and Direct Connect attachments in a hub-and-spoke topology. | Several VPCs, shared services, inspection paths, or hybrid attachments need managed transit. | Only one simple VPC-to-VPC path is required. | It reduces mesh complexity but introduces attachment, routing, and data-processing cost. |
+| Centralized inspection VPC | Traffic is steered through a dedicated inspection path, commonly with Transit Gateway route domains and firewall or Gateway Load Balancer endpoints; symmetric routing matters. | A multi-VPC estate needs consistent egress or east-west inspection. | A single small VPC has no stated centralized-control requirement. | Sending traffic to an appliance without designing return-path symmetry causes asymmetric flows. |
+| NAT Gateway | Private-subnet workloads use a route to NAT for outbound IPv4 internet or public-service access; NAT is placed per Availability Zone for resilient zonal egress. | Private workloads need outbound access and no inbound internet initiation. | Private AWS-service access can use a VPC endpoint, or an IPv6-only design can use an egress-only internet gateway. | NAT is not a private-service endpoint and cross-AZ routing can add cost and resilience risk. |
+| Site-to-Site VPN | Encrypted IPsec transport over the internet, normally using two tunnels, attaches to a virtual private gateway or Transit Gateway. | Hybrid access is needed quickly, with lower commitment, or as a backup path. | The requirement prioritizes consistently high bandwidth or predictable latency. | VPN solves transport, not hybrid DNS by itself. |
+| Direct Connect | Dedicated private hybrid transport; a VPN overlay can add encryption or backup where the scenario requires it. | Long-lived hybrid connectivity needs more consistent performance and higher bandwidth potential. | The need is temporary, low-volume, or urgently needs the quickest setup. | Direct Connect is not automatically encrypted and does not replace Route 53 Resolver for DNS forwarding. |
+| Route 53 Resolver | Inbound endpoints answer on-premises queries for AWS private names; outbound endpoints forward AWS queries for on-premises domains. Transport still needs VPN, Direct Connect, or another path. | Hybrid systems must resolve each other's private DNS names. | The requirement is only packet transport or only public DNS resolution. | Do not answer a DNS problem with Transit Gateway, Direct Connect, or AWS Config alone. |
+
+### Matrix Acceptance Boundary
+
+This slice covers every current tracker topic at decision level and records the
+major routing, DNS, cost, and scope traps. The VPC connectivity comparison
+matrix remains **in progress** until its follow-on decision tables and diagrams
+are completed and reviewed against the tracker deliverable dates.
 
 ## Focus Comparison: PrivateLink vs Peering vs Transit Gateway
 

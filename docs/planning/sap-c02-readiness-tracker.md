@@ -9,7 +9,7 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-07-12
+**Last repository reconciliation:** 2026-07-14
 **Last practice evidence update:** 2026-07-09
 **Last tutorial evidence update:** 2026-07-01
 **Last governance study evidence update:** 2026-07-12
@@ -501,7 +501,7 @@ The live attachment is recorded in
 
 | Deliverable | Due | Status |
 |---|---|---|
-| VPC connectivity comparison matrix | 2026-08-31 | Partial: compact carry-forward note recorded in `docs/planning/domain-2-network-access-patterns-20260621.md`; full milestone matrix remains open |
+| VPC connectivity comparison matrix | 2026-08-31 | In progress: the early decision-level matrix now covers every tracker topic in `docs/planning/domain-2-network-access-patterns-20260621.md`; follow-on decision tables and diagrams remain open |
 | Transit Gateway hub-and-spoke diagram | 2026-09-07 | Not started |
 | PrivateLink vs peering vs TGW decision table | 2026-09-07 | Not started |
 | Direct Connect vs VPN decision table | 2026-09-14 | Not started |
@@ -988,6 +988,12 @@ phase plans from drifting apart again.
   attach it only to `Lakehouse Workloads OU`, and record prechange,
   postchange, and rollback evidence:
   `docs/evidence/domain1-governance-deny-root-user-actions-attach-success-change-note-20260703.md`.
+- [x] Under a separately authorized billing-recovery exception, temporarily
+  detach `DenyRootUserActions-LakehouseWorkloads` only from `Lakehouse
+  Workloads OU`, restore it immediately after owner-confirmed payment, verify
+  the protected OU attachment set, and reconcile the delayed Organizations
+  CloudTrail `DetachPolicy` and `AttachPolicy` events:
+  `docs/evidence/domain1-governance-workload-billing-root-recovery-20260713.md`.
 - [x] Draft the bounded `Security Tooling` account design-to-implementation
   note, preserving the split between write-mostly `Security Log Archive` and
   active delegated security tooling:
