@@ -506,7 +506,7 @@ The live attachment is recorded in
 | PrivateLink vs peering vs TGW decision table | 2026-09-07 | Partial: decision table and Lakehouse promotion triggers recorded in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md`; scenario-drill review remains open |
 | Direct Connect vs VPN decision table | 2026-09-14 | Partial: hybrid transport decision table and Lakehouse promotion triggers recorded in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md`; scenario-drill review remains open |
 | Route 53 Resolver hybrid DNS diagram | 2026-09-14 | Partial: directional hybrid-DNS diagram and reading guide recorded in `diagrams/route53-resolver-hybrid-dns-study.mmd` and `docs/planning/domain-2-route53-resolver-hybrid-dns-20260715.md`; scenario-drill review remains open |
-| NAT Gateway cost warning note | 2026-09-14 | Not started |
+| NAT Gateway cost warning note | 2026-09-14 | Partial: endpoint-first cost hierarchy, comparison formulas, and 7-to-14-day/30-day evidence gates recorded in `docs/planning/domain-2-nat-gateway-cost-warning-20260715.md`; scenario-drill review remains open |
 
 ---
 
