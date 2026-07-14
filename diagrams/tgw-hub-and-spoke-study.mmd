@@ -1,0 +1,30 @@
+flowchart TB
+    onprem[On-premises networks]
+    dxvpn[Direct Connect gateway or Site-to-Site VPN]
+    tgw[AWS Transit Gateway]
+
+    subgraph workloads[Workload route domain]
+        appa[Workload VPC A]
+        appb[Workload VPC B]
+    end
+
+    subgraph shared[Shared-services route domain]
+        svc[Shared-services VPC]
+    end
+
+    subgraph inspection[Inspection route domain]
+        inspect[Inspection VPC: firewall or GWLB endpoints]
+    end
+
+    onprem --> dxvpn --> tgw
+    appa <--> tgw
+    appb <--> tgw
+    svc <--> tgw
+    inspect <--> tgw
+
+    appa -. selected egress or east-west flows .-> inspect
+    appb -. selected egress or east-west flows .-> inspect
+    inspect -. symmetric return path required .-> tgw
+
+    note[Conceptual study diagram only\nEach attachment is associated with one TGW route table.\nVPC route tables, security controls, and DNS design remain separate.]
+    tgw --- note

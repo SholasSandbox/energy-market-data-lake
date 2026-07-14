@@ -502,8 +502,8 @@ The live attachment is recorded in
 | Deliverable | Due | Status |
 |---|---|---|
 | VPC connectivity comparison matrix | 2026-08-31 | In progress: the early decision-level matrix now covers every tracker topic in `docs/planning/domain-2-network-access-patterns-20260621.md`; follow-on decision tables and diagrams remain open |
-| Transit Gateway hub-and-spoke diagram | 2026-09-07 | Not started |
-| PrivateLink vs peering vs TGW decision table | 2026-09-07 | Not started |
+| Transit Gateway hub-and-spoke diagram | 2026-09-07 | Partial: conceptual route-domain and inspection-symmetry diagram recorded in `diagrams/tgw-hub-and-spoke-study.mmd`; no AWS implementation or scenario-drill review yet |
+| PrivateLink vs peering vs TGW decision table | 2026-09-07 | Partial: decision table and Lakehouse promotion triggers recorded in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md`; scenario-drill review remains open |
 | Direct Connect vs VPN decision table | 2026-09-14 | Not started |
 | Route 53 Resolver hybrid DNS diagram | 2026-09-14 | Not started |
 | NAT Gateway cost warning note | 2026-09-14 | Not started |
