@@ -501,12 +501,17 @@ The live attachment is recorded in
 
 | Deliverable | Due | Status |
 |---|---|---|
-| VPC connectivity comparison matrix | 2026-08-31 | In progress: the early decision-level matrix now covers every tracker topic in `docs/planning/domain-2-network-access-patterns-20260621.md`; follow-on decision tables and diagrams remain open |
-| Transit Gateway hub-and-spoke diagram | 2026-09-07 | Partial: conceptual route-domain and inspection-symmetry diagram recorded in `diagrams/tgw-hub-and-spoke-study.mmd`; no AWS implementation or scenario-drill review yet |
-| PrivateLink vs peering vs TGW decision table | 2026-09-07 | Partial: decision table and Lakehouse promotion triggers recorded in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md`; scenario-drill review remains open |
-| Direct Connect vs VPN decision table | 2026-09-14 | Partial: hybrid transport decision table and Lakehouse promotion triggers recorded in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md`; scenario-drill review remains open |
-| Route 53 Resolver hybrid DNS diagram | 2026-09-14 | Partial: directional hybrid-DNS diagram and reading guide recorded in `diagrams/route53-resolver-hybrid-dns-study.mmd` and `docs/planning/domain-2-route53-resolver-hybrid-dns-20260715.md`; scenario-drill review remains open |
-| NAT Gateway cost warning note | 2026-09-14 | Partial: endpoint-first cost hierarchy, comparison formulas, and 7-to-14-day/30-day evidence gates recorded in `docs/planning/domain-2-nat-gateway-cost-warning-20260715.md`; scenario-drill review remains open |
+| VPC connectivity comparison matrix | 2026-08-31 | In progress: the decision-level matrix in `docs/planning/domain-2-network-access-patterns-20260621.md` passed the source-backed review in `docs/exam-prep/networking-scenario-drill-review-20260715.md`; a dedicated VPC/subnet/route-table diagram and endpoint diagram or bounded lab remain open |
+| Transit Gateway hub-and-spoke diagram | 2026-09-07 | Verified: conceptual route-domain and inspection-symmetry diagram in `diagrams/tgw-hub-and-spoke-study.mmd` passed the source-backed scenario review; no AWS implementation is required by this artifact |
+| PrivateLink vs peering vs TGW decision table | 2026-09-07 | Verified: decision table and Lakehouse promotion triggers in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md` passed the source-backed scenario review |
+| Direct Connect vs VPN decision table | 2026-09-14 | Verified: hybrid transport decision table and Lakehouse promotion triggers in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md` passed the source-backed scenario review |
+| Route 53 Resolver hybrid DNS diagram | 2026-09-14 | Verified: directional hybrid-DNS diagram and reading guide in `diagrams/route53-resolver-hybrid-dns-study.mmd` and `docs/planning/domain-2-route53-resolver-hybrid-dns-20260715.md` passed the source-backed scenario review |
+| NAT Gateway cost warning note | 2026-09-14 | Verified: endpoint-first cost hierarchy and evidence gates in `docs/planning/domain-2-nat-gateway-cost-warning-20260715.md` passed the source-backed scenario review |
+
+The source-backed review is recorded in
+`docs/exam-prep/networking-scenario-drill-review-20260715.md`. It is unscored
+and does not change learner confidence, practice scores, wrong-answer review
+cycles, or booking evidence until a blind recall attempt is completed.
 
 ---
 
