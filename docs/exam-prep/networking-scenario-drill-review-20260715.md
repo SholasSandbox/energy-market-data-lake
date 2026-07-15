@@ -9,11 +9,12 @@ Networking artifacts. It closes the documentation-review gate for the Transit
 Gateway, PrivateLink/peering/TGW, Direct Connect/VPN, Route 53 Resolver, and NAT
 Gateway deliverables.
 
-The answer key is evidence that the scenarios were reviewed against the
-documented service boundaries. It is **not** a learner score, timed-practice
-result, confidence increase, or completed wrong-answer review cycle. Complete
-the questions without the answer key in a later session before recording recall
-evidence.
+The answer key alone is evidence that the scenarios were reviewed against the
+documented service boundaries; it is not learner-recall evidence. A separate
+focused blind attempt was subsequently completed and explicitly submitted in
+`docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md`, scoring
+8/8. That result remains untimed and does not count as a full Networking-domain
+assessment, completed wrong-answer review cycle, or booking criterion.
 
 ## Blind Questions
 
@@ -183,11 +184,18 @@ routing, DNS, resilience, or cost requirement. The review found no conflict
 among the current Networking artifacts.
 
 The source-backed review originally identified two remaining matrix gaps. The
-dedicated VPC/subnet/route-table diagram was subsequently recorded in
-`diagrams/vpc-subnet-route-table-study.mmd` and
-`docs/planning/domain-2-vpc-subnet-route-table-diagram-20260715.md`. A VPC
-endpoint diagram or bounded lab remains open. Learner recall also remains
-unscored.
+VPC/subnet/route-table diagram and the gateway-versus-interface VPC endpoint
+diagram were subsequently recorded in
+`diagrams/vpc-subnet-route-table-study.mmd`,
+`docs/planning/domain-2-vpc-subnet-route-table-diagram-20260715.md`,
+`diagrams/vpc-endpoint-study.mmd`, and
+`docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`. The tracker now
+treats the VPC connectivity comparison matrix as verified.
+
+The separate eight-question blind attempt scored 8/8 and provides focused VPC
+endpoint and NAT Gateway recall evidence. It produced no wrong-answer entry and
+does not close the broader Networking unknowns, timed-practice requirement, or
+the first and second wrong-answer review cycles.
 
 ## References
 

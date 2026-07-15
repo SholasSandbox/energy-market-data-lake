@@ -1,0 +1,49 @@
+flowchart TB
+    subgraph vpc[Consumer VPC: conceptual only]
+        subgraph aza[Availability Zone A]
+            appa[Private workload A]
+            rta[Associated route table A]
+            enia[Interface endpoint ENI A]
+        end
+
+        subgraph azb[Availability Zone B]
+            appb[Private workload B]
+            rtb[Associated route table B]
+            enib[Interface endpoint ENI B]
+        end
+
+        gateway[Gateway endpoint: S3 or DynamoDB\nroute target for AWS-managed prefix list]
+        epSG[Interface-endpoint security group\nallow required listener traffic from workload security group]
+        dns[VPC DNS\nprivate DNS only where the selected interface service supports it]
+        policy[Endpoint policy, if supported\nadditional endpoint-use guardrail]
+    end
+
+    s3[S3 or DynamoDB\nsame-Region service]
+    supported[Supported AWS service or\npublished endpoint service]
+    nat[NAT Gateway\nonly for required unsupported IPv4 egress]
+
+    appa --> rta
+    appb --> rtb
+    rta -->|S3/DynamoDB prefix-list route| gateway
+    rtb -->|S3/DynamoDB prefix-list route| gateway
+    gateway -->|same-Region VPC traffic| s3
+
+    appa -->|service DNS query| dns
+    appb -->|service DNS query| dns
+    dns -->|private endpoint IPs or endpoint-specific name| enia
+    dns -->|private endpoint IPs or endpoint-specific name| enib
+    enia --> epSG
+    enib --> epSG
+    epSG -->|PrivateLink traffic| supported
+    policy --- supported
+
+    rta -. only when a narrower path cannot serve the destination .-> nat
+    rtb -. only when a narrower path cannot serve the destination .-> nat
+
+    costs[Cost comparison, not a price quote\nGateway: no additional endpoint charge\nInterface: endpoint type x selected AZ hours + GB processed\nNAT: NAT-AZ hours + GB processed + applicable transfer]
+    gateway --- costs
+    enia --- costs
+    nat --- costs
+
+    boundary[Gateway: S3/DynamoDB only; route-table association; no on-premises, TGW, or peered-VPC extension\nInterface: one ENI per selected AZ; service support, DNS, security group, and endpoint-policy behavior vary by service\nRoutes choose a path; IAM and service resource policies must also allow access]
+    policy --- boundary

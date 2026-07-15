@@ -67,10 +67,12 @@ authorize a network build.
 
 ### Matrix Acceptance Boundary
 
-This slice covers every current tracker topic at decision level and records the
-major routing, DNS, cost, and scope traps. The VPC connectivity comparison
-matrix remains **in progress** until its follow-on decision tables and diagrams
-are completed and reviewed against the tracker deliverable dates.
+The decision-level matrix and its required diagrams/tables are now complete:
+the VPC endpoint comparison is recorded in
+`docs/planning/domain-2-vpc-endpoint-diagram-20260715.md` and
+`diagrams/vpc-endpoint-study.mmd`. The matrix remains a documentation-only
+study aid; it does not prove a live network implementation or score learner
+recall.
 
 ## Focus Comparison: PrivateLink vs Peering vs Transit Gateway
 

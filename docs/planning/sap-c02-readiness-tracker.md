@@ -10,7 +10,7 @@
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
 **Last repository reconciliation:** 2026-07-15
-**Last practice evidence update:** 2026-07-09
+**Last practice evidence update:** 2026-07-15
 **Last tutorial evidence update:** 2026-07-01
 **Last governance study evidence update:** 2026-07-12
 
@@ -208,7 +208,7 @@ the current week and leave future planned weeks blank.
 | 2026-06-22 | 10–12 | 18 | 9 | 4 | 5 | Tutorial hardening evidence now includes Lesson 28 boundary isolation and the Ruff formatting baseline in `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; lakehouse IAM hardening |
 | 2026-06-29 | 10–12 | 20 | 10 | 4 | 6 | Governance study evidence now includes SAP-C02 mental-model diagrams, OAM vs CloudTrail log archive vs AWS Config aggregator comparison, and local practice blocks 003-006 in `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance`; Serverless Architecture evidence now includes Lessons 29-33 and 217 local tests in `/Users/[redacted-user]/Kiro-Workspace/handlers`; no new lakehouse implementation evidence |
 | 2026-07-06 | 10–12 | 20 | 12 | 4 | 4 | Tutorial evidence + lakehouse Domain 2 closure review |
-| 2026-07-13 | 10–12 |  |  |  |  | IAM foundation in progress: `BillingAdmin` now has a design-only `billing-admins` group, `PT1H` session, and update-only policy; private primary/backup ownership with an email notification path, finalized monthly dataset, April-June cost history, separate pending IAM/budget change notes, and a lakehouse Workload-tag precheck are recorded. Fourteen core lakehouse resources are tagged and Terraform protects the future default. A 2026-07-13 read-only refresh attributes the previously untagged June Lakehouse spend and its EBS driver at account/service level. The missing finalized history is a non-blocking gate only for new thresholds or live BillingAdmin update access; no numeric threshold, assignment, or AWS change is authorized yet. |
+| 2026-07-13 | 10–12 |  |  |  |  | IAM foundation in progress: `BillingAdmin` now has a design-only `billing-admins` group, `PT1H` session, and update-only policy; private primary/backup ownership with an email notification path, finalized monthly dataset, April-June cost history, separate pending IAM/budget change notes, and a lakehouse Workload-tag precheck are recorded. Fourteen core lakehouse resources are tagged and Terraform protects the future default. A 2026-07-13 read-only refresh attributes the previously untagged June Lakehouse spend and its EBS driver at account/service level. The missing finalized history is a non-blocking gate only for new thresholds or live BillingAdmin update access; no numeric threshold, assignment, or AWS change is authorized yet. Early Networking study also produced the verified VPC connectivity matrix and an untimed focused blind attempt scoring 8/8; no study/practice hours are inferred. |
 | 2026-07-20 | 10–12 |  |  |  |  | Organizations/SCP design started early under direct instruction: fresh read-only state confirms two narrow Lakehouse-OU guardrails and no Security-OU custom SCP. The next design candidate is Lakehouse-OU CloudTrail protection; public-S3 and root-user example-policy issues were corrected locally, with all attachments still requiring separate approval. |
 | 2026-07-27 | 10–12 |  |  |  |  | Logging/governance started early under direct instruction: 2026-07-13 read-only review verifies organization-trail log/digest delivery, Lakehouse continuous Config recording, Security Tooling delegated-administration boundary, and GuardDuty foundations. A separate approved lifecycle access and S3 change now moves archive objects over 128 KiB to Standard-IA after 30 days and Glacier Flexible Retrieval after 90 days, without expiry. Security Hub, OAM, optional GuardDuty sources, and additional Config rules remain deliberate non-blocking deferrals. The week also retains the non-blocking cost-threshold evidence review. |
 | 2026-08-03 | 10–12 |  |  |  |  | Governance hardening started early under direct instruction: Security Tooling retains a healthy Config aggregator and GuardDuty foundation; Security Hub and OAM are explicitly deferred, not drift. A narrowly scoped future Config-rule read-only permission addition is documented but remains pending separate approval. |
@@ -490,8 +490,8 @@ The live attachment is recorded in
 | VPC peering | Low | Yes | Use-case and limitation note; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | Transit Gateway | Low | Yes | Hub-and-spoke diagram; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | PrivateLink | Low | Yes | Comparison with peering/TGW; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| VPC endpoints | Medium | Yes | S3/DynamoDB endpoint lab or diagram |
-| NAT Gateway | Medium | Yes | Cost and routing note |
+| VPC endpoints | High: 8/8 focused blind drill | Yes | S3/DynamoDB gateway-versus-interface endpoint diagram and reading guide in `diagrams/vpc-endpoint-study.mmd` and `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`; blind evidence in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
+| NAT Gateway | High: correct in 8/8 focused blind drill | Yes | Cost and routing note plus blind evidence in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
 | Direct Connect | Low | Yes | Hybrid connectivity decision table; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | Site-to-Site VPN | Low | Yes | DX vs VPN comparison; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | Route 53 Resolver | Low: missed in exercise 002 | Yes | Hybrid DNS diagram; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
@@ -501,7 +501,7 @@ The live attachment is recorded in
 
 | Deliverable | Due | Status |
 |---|---|---|
-| VPC connectivity comparison matrix | 2026-08-31 | In progress: the decision-level matrix passed source-backed review and the VPC/subnet/route-table diagram is recorded in `diagrams/vpc-subnet-route-table-study.mmd`; a VPC endpoint diagram or bounded lab remains open |
+| VPC connectivity comparison matrix | 2026-08-31 | Verified: the decision-level matrix, source-backed review, VPC/subnet/route-table diagram, and S3/DynamoDB gateway-versus-interface endpoint diagram are recorded in `docs/planning/domain-2-network-access-patterns-20260621.md`, `diagrams/vpc-subnet-route-table-study.mmd`, `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`, and `diagrams/vpc-endpoint-study.mmd`; no AWS implementation is required by these study artifacts |
 | Transit Gateway hub-and-spoke diagram | 2026-09-07 | Verified: conceptual route-domain and inspection-symmetry diagram in `diagrams/tgw-hub-and-spoke-study.mmd` passed the source-backed scenario review; no AWS implementation is required by this artifact |
 | PrivateLink vs peering vs TGW decision table | 2026-09-07 | Verified: decision table and Lakehouse promotion triggers in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md` passed the source-backed scenario review |
 | Direct Connect vs VPN decision table | 2026-09-14 | Verified: hybrid transport decision table and Lakehouse promotion triggers in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md` passed the source-backed scenario review |
@@ -509,9 +509,13 @@ The live attachment is recorded in
 | NAT Gateway cost warning note | 2026-09-14 | Verified: endpoint-first cost hierarchy and evidence gates in `docs/planning/domain-2-nat-gateway-cost-warning-20260715.md` passed the source-backed scenario review |
 
 The source-backed review is recorded in
-`docs/exam-prep/networking-scenario-drill-review-20260715.md`. It is unscored
-and does not change learner confidence, practice scores, wrong-answer review
-cycles, or booking evidence until a blind recall attempt is completed.
+`docs/exam-prep/networking-scenario-drill-review-20260715.md`. The separate
+focused blind attempt in
+`docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` was
+explicitly submitted and scored 8/8 on 2026-07-15. It supports the VPC endpoint
+and NAT Gateway confidence updates above, but it is untimed and does not count
+as a full Networking-domain assessment, wrong-answer review cycle, or booking
+evidence.
 
 ---
 
@@ -559,6 +563,7 @@ Start with small question blocks immediately. Full timed exams begin in late Oct
 | 2026-07-01 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-block-005-review.md` | Untimed 25 questions | 25/25 | None identified | Clean pass; no-heading format improved scenario parsing |
 | 2026-07-01 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-block-006-review.md` | Untimed 25 questions | 24/25 | Kinesis Data Streams vs SQS FIFO; block quality caveat | Wrong answer logged; drill event-streaming vs queueing decision patterns; treat the score as useful learning evidence but not fully exam-quality because the block had a flawed single-answer distribution |
 | 2026-07-07 | `docs/exam-prep/wrong-answers.md` | Untimed 25 questions | 25/25 | None identified | Block 007 clean pass; stronger coverage of Domain 2 and Domain 3 topics |
+| 2026-07-15 | `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` | Untimed blind 8 questions | 8/8 | None in focused VPC endpoint/NAT scope | Clean pass; no wrong-answer entry required; narrow recall evidence only, not a timed exam or full Networking-domain assessment |
 |  |  | Timed 30 questions |  |  |  |
 |  |  | Full timed exam |  |  |  |
 |  |  | Full timed exam |  |  |  |
@@ -616,7 +621,7 @@ Action:
 |---|---|
 | Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met: five additional untimed 25-question blocks now show 96%, 100%, 100%, 96%, and 100%, but Block 006 has an answer-distribution quality caveat and full timed practice evidence has not started |
 | Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, org inventory evidence, parent mapping, OU/account-placement decision, first approved live OU creation, approved lakehouse account move, SCP examples, first bounded OU-targeted SCP attempt and rollback evidence, root `SERVICE_CONTROL_POLICY` enablement evidence, first and second successful OU-targeted SCP attachment evidence, permission-set matrix, break-glass procedure, logging/security-service design notes, Security Tooling vs Log Archive split, Security Tooling AWS Config migration/recorder evidence, GuardDuty delegated-admin evidence, `so-aws-admin` retirement checks, final closure package, account-closure evidence, and a governance live-readiness runbook are documented; Security Hub/OAM, broader Identity Center, budget thresholds, and networking remain open |
-| Networking comparison matrix complete | Not met |
+| Networking comparison matrix complete | Met: verified decision matrix, source-backed review, VPC/subnet/route-table diagram, and gateway-versus-interface VPC endpoint diagram are recorded; the separate focused blind attempt scored 8/8 |
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
 | IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; root `SERVICE_CONTROL_POLICY` is enabled, `DenyLeavingOrganization` and `DenyRootUserActions-LakehouseWorkloads` are live for `Lakehouse Workloads OU`, but exception tests, assignment decisions, broader rollback planning, and additional implementation evidence remain open |
