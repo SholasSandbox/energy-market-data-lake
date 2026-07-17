@@ -29,6 +29,40 @@ the separate focused blind attempt, scoring 8/8. This is valid VPC endpoint and
 NAT Gateway recall evidence, but it is not a timed exam, full Networking-domain
 assessment, wrong-answer review cycle, or booking evidence.
 
+The learner has now also completed recall-based wrong-answer Review Cycle 1,
+answering all four free-response drills correctly from memory. The 4/4 result is
+recorded in `docs/exam-prep/wrong-answers.md`. A source-backed Route 53 SAP-C02
+lesson now consolidates authoritative DNS, routing policies, health checks,
+Resolver endpoints and rules, private hosted zones, DNS Firewall, and DNSSEC.
+These changes are currently local documentation changes and are not published.
+
+Because Review Cycle 2 requires a suitable spacing interval, the next
+immediately actionable Networking gap was completed without weakening that
+recall boundary: the source-backed security-groups-versus-network-ACL
+comparison note now covers state, scope, rule evaluation, return traffic,
+ephemeral ports, defaults, troubleshooting, and exam traps.
+
+The centralized-inspection VPC architecture gap is now also closed locally.
+The new Mermaid sketch and reading guide show separate uninspected and inspected
+Transit Gateway route domains, the two-pass stateful firewall path, appliance
+mode, Availability Zone symmetry, bypass prevention, and the distinct
+east-west, hybrid, ingress, egress, and private-service decisions.
+
+The Route 53 lesson now has a complementary, source-backed Networking lesson
+in `docs/exam-prep/aws-networking-sap-c02-key-lessons-20260717.md`. The pair is
+organized by available revision time and scenario cue. The new companion adds
+the material not taught in depth by the current exam-prep folder: route
+precedence, IPv6 and NAT64/DNS64, deeper Direct Connect/VPN decisions,
+ALB/NLB/GWLB, global ingress and WAN choices, inspection controls, and network
+operations. It does not change learner-recall or booking evidence.
+
+The new `docs/exam-prep/README.md` is now the folder's revision hub. It labels
+each artifact as lesson, blind attempt, answer-bearing review, or evidence
+log/manifest; provides 15-, 45-, and 60–90-minute study paths; maps topics to
+documents; and places a strong guard between active blind recall and answer
+material. Every Markdown document in the folder and its artifact subfolder now
+links back to the hub without changing submitted answers or recorded scores.
+
 ## Material Changes and Decisions
 
 - `2ab8abf` reconciled and published the workload billing-recovery evidence,
@@ -46,6 +80,21 @@ assessment, wrong-answer review cycle, or booking evidence.
 - The learner's blind-attempt record captures the explicitly submitted 8/8
   result; the tracker and source-backed review are reconciled without creating
   a wrong-answer entry because there were no misses.
+- The learner's four Review Cycle 1 answers were assessed as correct. The
+  replayable-ingestion answer retains a precision note that Kinesis ordering is
+  per partition key.
+- The new Route 53 lesson is a study artifact only and does not claim a live
+  Lakehouse DNS requirement or implementation.
+- The security-groups-versus-network-ACL comparison closes the named note gap
+  in the Networking weak-area matrix without changing AWS.
+- The centralized-inspection VPC sketch closes the remaining architecture-sketch
+  gap in the Networking weak-area matrix without claiming live implementation.
+- The paired Route 53 and broader Networking lessons are navigation-aligned:
+  each starts with time-boxed revision routes, scenario-cue links, and a clear
+  boundary between explanatory study and blind recall.
+- The exam-prep folder now has one revision hub and consistent document-role
+  banners, reducing the risk of opening answer-bearing material during a blind
+  attempt.
 
 The accepted Networking decisions are:
 
@@ -95,14 +144,47 @@ For the VPC endpoint publication package:
 - `git diff --check` passed; and
 - `scripts/check_public_evidence_redaction.sh` passed.
 
-The Mermaid CLI renderer is not installed locally. The `.mmd` sources are the
-durable repository artifacts and have not been rendered to SVG in this slice.
+For the current Review Cycle 1 and Networking study package:
+
+- the four free-response answers were checked against the durable decision
+  rules and official AWS documentation, and all four were correct;
+- the Route 53 lesson was reconciled against official AWS documentation for
+  routing policies, alias records, health checks, hosted zones, Resolver,
+  DNS Firewall, and DNSSEC;
+- the broader Networking companion was reconciled against official AWS
+  documentation for VPC route priority, IPv4/IPv6 egress, endpoints, hybrid
+  connectivity, load balancers, global networking, inspection controls, and
+  network-analysis tools;
+- both revision lessons were checked for valid local links, time-boxed study
+  routes, scenario-cue navigation, and separation of explanatory content from
+  blind recall;
+- the revision hub and every exam-prep Markdown document were checked for
+  consistent role/status labels and local navigation links;
+- the security-groups-versus-network-ACL note was reconciled against official
+  AWS documentation for statefulness, rule actions and ordering, associations,
+  defaults, and ephemeral return traffic;
+- the centralized-inspection sketch and reading guide were reconciled against
+  official AWS guidance for Transit Gateway route tables, appliance mode,
+  Network Firewall symmetry, Availability Zone design, and inspection options;
+- Mermaid CLI 11.16.0 rendered the centralized-inspection, Route 53 Resolver,
+  Transit Gateway, VPC endpoint, and VPC/subnet/route-table sources to SVG;
+- temporary PNG previews of all five rendered diagrams were visually checked
+  for expected nodes, flows, labels, and route-domain structure;
+- `git diff --check` passed; and
+- `scripts/check_public_evidence_redaction.sh` passed.
+
+The `.mmd` files remain the editable diagram sources and matching `.svg` files
+are now available for the five Networking study diagrams. Mermaid 11.16.0
+required a syntax-only update to the optional default-IPv4-route edge labels in
+`diagrams/vpc-subnet-route-table-study.mmd`; the routing meaning did not change.
 No AWS networking resources were created, modified, or deleted.
 
 ## Git State
 
 - Repository: Energy Data Lakehouse.
 - Branch: `main`.
+- Current `HEAD` and `origin/main` both resolve to `dc184f2`; the branch is not
+  ahead of or behind the remote.
 - Before publication, `main` equalled `origin/main` at `7a30905` and nothing was
   staged.
 - Publication of exactly seven Networking and handover files was explicitly
@@ -111,6 +193,11 @@ No AWS networking resources were created, modified, or deleted.
 - The publication commit contains this handover refresh, the comparison matrix
   and tracker reconciliation, the source-backed and blind-attempt records, and
   the new VPC endpoint Mermaid source and reading guide.
+- Current uncommitted documentation changes record Review Cycle 1, add the
+  Route 53 and broader Networking lessons, security-controls comparison, and
+  centralized-inspection sketch/guide, add five rendered Networking SVGs,
+  reconcile the tracker, and refresh this handover. No commit or push has been
+  authorized for them.
 
 ## Known Risks and Constraints
 
@@ -129,18 +216,24 @@ No AWS networking resources were created, modified, or deleted.
 The transition from Domain 1 governance into an early bounded Networking study
 slice **has occurred**. The Networking comparison matrix is `Verified`, and
 the learner-recall transition from unscored to a focused 8/8 result has also
-occurred. The commit containing this handover completes the authorized
-publication transition. No transition to live network implementation is
-pending or authorized.
+occurred. Wrong-answer Review Cycle 1 has now also transitioned to complete at
+4/4. The security-controls comparison and centralized-inspection architecture
+transitions have also occurred locally, closing the immediately actionable
+Networking documentation gaps. The transition to an organized, folder-wide
+revision system has also occurred locally. Review Cycle 2 remains pending. A
+transition into resilience/DR or migration requires a short bounded plan; no
+transition to live network implementation is pending or authorized.
 
 ## Next Recommended Step
 
-Keep the focused learner-recall result separate from booking evidence. No
-wrong-answer remediation is required for this clean pass. The next open
-practice priority is recall-based Review Cycle 1 in
-`docs/exam-prep/wrong-answers.md`; its hybrid DNS, urgent migration, private
-hybrid network, and replayable-ingestion drills remain pending and should be
-completed blind.
+Keep both focused learner-recall results separate from booking evidence. No new
+wrong-answer remediation is required for either clean pass. The next open
+practice priority is a spaced recall-based Review Cycle 2 in
+`docs/exam-prep/wrong-answers.md`. The immediately actionable Networking
+documentation and revision-organization gaps are now closed. Use
+`docs/exam-prep/README.md` as the front door. A transition into resilience/DR or
+migration would be a materially new tracker workstream and requires a short
+plan before continuing; the formal migration matrix remains not started.
 
 ## Suggested New-Session Prompt
 
@@ -148,7 +241,13 @@ completed blind.
 Read AGENTS.md, handover.md, and
 docs/planning/sap-c02-readiness-tracker.md. Confirm current Git state without
 changing it. The documentation-only Networking comparison matrix and focused
-8/8 blind attempt are complete and published. Conduct the four pending Review
-Cycle 1 drills in `docs/exam-prep/wrong-answers.md` as blind recall. Keep
-timed-exam and booking evidence separate. Do not make AWS changes.
+8/8 blind attempt are complete and published. Review Cycle 1 is complete at
+4/4, and the paired Route 53 and broader Networking SAP-C02 revision lessons
+exist locally. Validate the local documentation package, then conduct Review
+Cycle 2 after a suitable spacing interval. The
+security-groups-versus-network-ACL comparison and centralized-inspection VPC
+architecture sketch are complete locally. Do not begin resilience/DR or
+migration without first reconciling the tracker and writing a short bounded
+plan. Keep timed-exam and booking evidence separate. Do not make AWS changes or
+publish local changes without explicit approval.
 ```

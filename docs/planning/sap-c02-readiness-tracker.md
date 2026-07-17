@@ -9,7 +9,7 @@
 **Booking decision date:** 2026-11-15  
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-07-15
+**Last repository reconciliation:** 2026-07-17
 **Last practice evidence update:** 2026-07-15
 **Last tutorial evidence update:** 2026-07-01
 **Last governance study evidence update:** 2026-07-12
@@ -485,28 +485,29 @@ The live attachment is recorded in
 
 | Topic | Current confidence | Required by exam? | Evidence required |
 |---|---:|---|---|
-| VPC fundamentals | Medium | Yes | VPC/subnet/route-table diagram recorded in `diagrams/vpc-subnet-route-table-study.mmd` with reading guide in `docs/planning/domain-2-vpc-subnet-route-table-diagram-20260715.md` |
-| Security groups vs NACLs | Medium | Yes | Comparison note |
+| VPC fundamentals | Medium | Yes | VPC/subnet/route-table diagram recorded in `diagrams/vpc-subnet-route-table-study.mmd` and rendered as `diagrams/vpc-subnet-route-table-study.svg`, with reading guide in `docs/planning/domain-2-vpc-subnet-route-table-diagram-20260715.md` |
+| Security groups vs NACLs | Medium: source-backed comparison recorded | Yes | Comparison note in `docs/planning/domain-2-security-groups-network-acls-comparison-20260715.md` |
 | VPC peering | Low | Yes | Use-case and limitation note; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | Transit Gateway | Low | Yes | Hub-and-spoke diagram; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | PrivateLink | Low | Yes | Comparison with peering/TGW; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| VPC endpoints | High: 8/8 focused blind drill | Yes | S3/DynamoDB gateway-versus-interface endpoint diagram and reading guide in `diagrams/vpc-endpoint-study.mmd` and `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`; blind evidence in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
+| VPC endpoints | High: 8/8 focused blind drill | Yes | S3/DynamoDB gateway-versus-interface endpoint diagram in `diagrams/vpc-endpoint-study.mmd`, rendered as `diagrams/vpc-endpoint-study.svg`, with reading guide in `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`; blind evidence in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
 | NAT Gateway | High: correct in 8/8 focused blind drill | Yes | Cost and routing note plus blind evidence in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
 | Direct Connect | Low | Yes | Hybrid connectivity decision table; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
 | Site-to-Site VPN | Low | Yes | DX vs VPN comparison; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| Route 53 Resolver | Low: missed in exercise 002 | Yes | Hybrid DNS diagram; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| Centralized inspection VPC | Low | Yes | Architecture sketch |
+| Route 53 Resolver | Improving: Review Cycle 1 correct at 4/4 overall after the exercise 002 miss | Yes | Hybrid DNS diagram in `diagrams/route53-resolver-hybrid-dns-study.mmd`, rendered as `diagrams/route53-resolver-hybrid-dns-study.svg`, with reading guide in `docs/planning/domain-2-route53-resolver-hybrid-dns-20260715.md` and consolidation lesson in `docs/exam-prep/route-53-sap-c02-key-lessons-20260715.md` |
+| Centralized inspection VPC | Improving: source-backed architecture sketch recorded | Yes | Two-pass route-domain and symmetric-path sketch in `diagrams/centralized-inspection-vpc-study.mmd`, rendered as `diagrams/centralized-inspection-vpc-study.svg`, with reading guide in `docs/planning/domain-2-centralized-inspection-vpc-architecture-20260715.md` |
 
 ### Networking deliverables
 
 | Deliverable | Due | Status |
 |---|---|---|
 | VPC connectivity comparison matrix | 2026-08-31 | Verified: the decision-level matrix, source-backed review, VPC/subnet/route-table diagram, and S3/DynamoDB gateway-versus-interface endpoint diagram are recorded in `docs/planning/domain-2-network-access-patterns-20260621.md`, `diagrams/vpc-subnet-route-table-study.mmd`, `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`, and `diagrams/vpc-endpoint-study.mmd`; no AWS implementation is required by these study artifacts |
-| Transit Gateway hub-and-spoke diagram | 2026-09-07 | Verified: conceptual route-domain and inspection-symmetry diagram in `diagrams/tgw-hub-and-spoke-study.mmd` passed the source-backed scenario review; no AWS implementation is required by this artifact |
+| Transit Gateway hub-and-spoke diagram | 2026-09-07 | Verified: conceptual route-domain and inspection-symmetry diagram in `diagrams/tgw-hub-and-spoke-study.mmd`, rendered as `diagrams/tgw-hub-and-spoke-study.svg`, passed the source-backed scenario review; no AWS implementation is required by this artifact |
 | PrivateLink vs peering vs TGW decision table | 2026-09-07 | Verified: decision table and Lakehouse promotion triggers in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md` passed the source-backed scenario review |
 | Direct Connect vs VPN decision table | 2026-09-14 | Verified: hybrid transport decision table and Lakehouse promotion triggers in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md` passed the source-backed scenario review |
-| Route 53 Resolver hybrid DNS diagram | 2026-09-14 | Verified: directional hybrid-DNS diagram and reading guide in `diagrams/route53-resolver-hybrid-dns-study.mmd` and `docs/planning/domain-2-route53-resolver-hybrid-dns-20260715.md` passed the source-backed scenario review |
+| Route 53 Resolver hybrid DNS diagram | 2026-09-14 | Verified: directional hybrid-DNS diagram in `diagrams/route53-resolver-hybrid-dns-study.mmd`, rendered as `diagrams/route53-resolver-hybrid-dns-study.svg`, and reading guide in `docs/planning/domain-2-route53-resolver-hybrid-dns-20260715.md` passed the source-backed scenario review |
 | NAT Gateway cost warning note | 2026-09-14 | Verified: endpoint-first cost hierarchy and evidence gates in `docs/planning/domain-2-nat-gateway-cost-warning-20260715.md` passed the source-backed scenario review |
+| Centralized inspection VPC architecture sketch | 2026-09-14 | Verified as a documentation-only artifact: `diagrams/centralized-inspection-vpc-study.mmd`, rendered as `diagrams/centralized-inspection-vpc-study.svg`, and `docs/planning/domain-2-centralized-inspection-vpc-architecture-20260715.md` record the two-pass route domains, appliance-mode symmetry, Availability Zone, bypass-prevention, security, logging, and cost checks; no AWS implementation is required |
 
 The source-backed review is recorded in
 `docs/exam-prep/networking-scenario-drill-review-20260715.md`. The separate
@@ -516,6 +517,17 @@ explicitly submitted and scored 8/8 on 2026-07-15. It supports the VPC endpoint
 and NAT Gateway confidence updates above, but it is untimed and does not count
 as a full Networking-domain assessment, wrong-answer review cycle, or booking
 evidence.
+
+The revision hub in `docs/exam-prep/README.md` organizes the paired lessons in
+`docs/exam-prep/route-53-sap-c02-key-lessons-20260715.md` and
+`docs/exam-prep/aws-networking-sap-c02-key-lessons-20260717.md` and labels every
+exam-prep artifact as lesson, blind attempt, answer-bearing review, or evidence
+log/manifest. It provides time-boxed and scenario-indexed review paths across
+Route 53 and the Networking areas not taught in depth by the existing folder
+artifacts: IPv6/NAT64, Direct Connect virtual interfaces and gateway roles,
+ALB/NLB/GWLB selection, global ingress and WAN choices, inspection-control
+boundaries, and network troubleshooting tools. This is study evidence, not
+additional learner-recall, timed-practice, or booking evidence.
 
 ---
 
@@ -564,6 +576,7 @@ Start with small question blocks immediately. Full timed exams begin in late Oct
 | 2026-07-01 | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-block-006-review.md` | Untimed 25 questions | 24/25 | Kinesis Data Streams vs SQS FIFO; block quality caveat | Wrong answer logged; drill event-streaming vs queueing decision patterns; treat the score as useful learning evidence but not fully exam-quality because the block had a flawed single-answer distribution |
 | 2026-07-07 | `docs/exam-prep/wrong-answers.md` | Untimed 25 questions | 25/25 | None identified | Block 007 clean pass; stronger coverage of Domain 2 and Domain 3 topics |
 | 2026-07-15 | `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` | Untimed blind 8 questions | 8/8 | None in focused VPC endpoint/NAT scope | Clean pass; no wrong-answer entry required; narrow recall evidence only, not a timed exam or full Networking-domain assessment |
+| 2026-07-15 | `docs/exam-prep/wrong-answers.md` | Untimed blind Review Cycle 1 | 4/4 | Four prior weak areas recalled correctly | First recall cycle complete; retain per-partition-key precision for Kinesis; second review cycle and timed evidence remain open |
 |  |  | Timed 30 questions |  |  |  |
 |  |  | Full timed exam |  |  |  |
 |  |  | Full timed exam |  |  |  |
@@ -625,7 +638,7 @@ Action:
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
 | IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; root `SERVICE_CONTROL_POLICY` is enabled, `DenyLeavingOrganization` and `DenyRootUserActions-LakehouseWorkloads` are live for `Lakehouse Workloads OU`, but exception tests, assignment decisions, broader rollback planning, and additional implementation evidence remain open |
-| Wrong-answer log reviewed twice | Not met: the 2026-07-09 source-backed carry-forward review confirms durable decision rules and later milestones, but the recall-based first and second review cycles are not yet evidenced in `docs/exam-prep/wrong-answers.md` |
+| Wrong-answer log reviewed twice | Partially met: Review Cycle 1 was completed blind at 4/4 on 2026-07-15 and is evidenced in `docs/exam-prep/wrong-answers.md`; Review Cycle 2 remains open |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
 ### Final booking decision

@@ -4,6 +4,11 @@
 
 ## Purpose and Boundary
 
+**Document role:** completed learner submission. For the current revision
+sequence, return to the [Exam-Prep Revision Hub](README.md). Do not open the
+answer-bearing [scenario review](networking-scenario-drill-review-20260715.md)
+when reusing these questions for blind recall.
+
 This is a blind SAP-C02 Networking recall attempt for the tracker-ordered
 follow-up to the completed VPC connectivity comparison matrix. It is
 documentation-only and does not authorize any AWS action.

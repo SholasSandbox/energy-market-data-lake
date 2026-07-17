@@ -4,6 +4,10 @@
 
 ## Scope and Evidence Boundary
 
+**Document role:** answer-bearing review. Start at the
+[Exam-Prep Revision Hub](README.md). Open this document only after freezing and
+submitting the related blind answers.
+
 This source-backed review tests the decision rules in the repository's
 Networking artifacts. It closes the documentation-review gate for the Transit
 Gateway, PrivateLink/peering/TGW, Direct Connect/VPN, Route 53 Resolver, and NAT
@@ -148,6 +152,10 @@ Availability Zones. Which cost conclusion is valid before deployment?
 - D. Private connectivity has no hourly cost
 
 ## Answer Key and Review
+
+For a fast review, cover the Answer column and retrieve each choice before
+reading its decision rule. For deeper remediation, explain why every distractor
+fails the stated requirement before moving to the next row.
 
 | Question | Answer | Decision rule | Main trap |
 |---:|:---:|---|---|

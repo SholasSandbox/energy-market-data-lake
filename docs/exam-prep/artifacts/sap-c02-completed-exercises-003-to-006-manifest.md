@@ -2,6 +2,10 @@
 
 Recorded: 2026-07-07
 
+**Document role:** evidence-provenance manifest, not a revision lesson or blind
+attempt. Use the [Exam-Prep Revision Hub](../README.md) for the active study
+sequence.
+
 ## Artifact
 
 | Field | Value |
