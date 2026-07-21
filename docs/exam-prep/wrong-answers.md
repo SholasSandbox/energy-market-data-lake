@@ -1,5 +1,7 @@
 # SAP-C02 Wrong-Answer Log
 
+<!-- markdownlint-disable MD013 MD060 -->
+
 This log is the durable exam-prep companion to the tracker wrong-answer table.
 It is seeded from the Lakehouse repository tracker and is not Lakehouse
 implementation evidence from any external tutorial workspace.
@@ -18,8 +20,10 @@ this log while completing a blind review cycle.
 5. Keep untimed recall separate from timed-practice and booking evidence.
 
 For the active folder sequence and document status, start at the
-[Exam-Prep Revision Hub](README.md). Review Cycle 2 uses the separate
-[blind-attempt document](wrong-answer-review-cycle-2-blind-attempt-20260715.md).
+[Exam-Prep Revision Hub](README.md). Review Cycle 2 is preserved in the
+[four-question retention test](wrong-answer-review-cycle-2-blind-attempt-20260715.md),
+including its initial drafts, corrected final submission, and assessment. The
+clean 25-question mixed Block 2 remains separate practice evidence.
 
 ## Quick Remediation Index
 
@@ -29,15 +33,16 @@ For the active folder sequence and document status, start at the
 | Urgent data-centre exit | [Urgent Data-Centre Exit](#2026-06-19-urgent-data-centre-exit) |
 | Private multi-VPC hybrid architecture | [Private Hybrid Network Architecture](#2026-07-01-private-hybrid-network-architecture) |
 | Replayable ordered event ingestion | [Replayable Ordered Event Ingestion](#2026-07-01-replayable-ordered-event-ingestion) |
+| ECS blue/green deployment and rollback | [ECS Blue/Green Deployment Versus Patch Manager](#2026-07-21-ecs-bluegreen-deployment-versus-patch-manager) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | 007 |
-| Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and Review Cycle 2 remains open |
+| Current through practice block | Timed 30-question mixed diagnostic submitted 2026-07-21 at 29/30 in 67 minutes |
+| Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
-| Second review cycle evidenced | Not yet |
+| Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
 | Controlling tracker reference | `docs/planning/sap-c02-readiness-tracker.md` |
 
 ## Practice Score Summary
@@ -50,12 +55,15 @@ For the active folder sequence and document status, start at the
 | Block 005 | 25 / 25 | 100% | Clean pass. Strong multi-select discipline. |
 | Block 006 | 24 / 25 | 96% | Missed Kinesis vs SQS FIFO streaming distinction. |
 | Block 007 | 25 / 25 | 100% | Clean pass. Stronger coverage of Domain 2 and Domain 3 topics. |
+| Mixed practice Block 2 | 25 / 25 | 100% | Explicitly submitted 2026-07-18; all 10 multi-select questions correct; timing and question text not supplied; separate from Review Cycle 2. |
+| Timed mixed diagnostic - 30 questions | 29 / 30 | 96.7% | Explicitly submitted 2026-07-21 in 67/72 minutes; all 12 multiple-response questions correct; missed ECS blue/green deployment versus Patch Manager. |
 
 ## Artifact Evidence
 
 | Artifact | Scope | Repository Handling |
 |---|---|---|
 | `sap-c02-completed-exercises-003-to-006.zip` | Completed review logs for Blocks 003 through 006 | Binary archive retained outside the public repo; sanitized manifest recorded at `docs/exam-prep/artifacts/sap-c02-completed-exercises-003-to-006-manifest.md`. |
+| `sap-c02-mixed-diagnostic-30q-20260720.md` and `sap-c02-mixed-diagnostic-30q-review-20260721.md` | Timed 30-question submission and answer-bearing assessment | Retained separately so the frozen learner answers precede the review; 29/30 in 67 minutes. |
 
 ## Review Cycle 1 Checklist
 
@@ -84,9 +92,41 @@ the prompt. Result: **4/4 correct**.
 | Replayable event ingestion | Selected Kinesis Data Streams for replay, high throughput, and multiple independent consumers while preserving ordered stream processing. | Correct; retain the more precise exam wording that ordering is per partition key. |
 
 This completes recall-based Review Cycle 1 only. It is untimed, does not count
-as a practice exam, and does not complete the required second review cycle.
+as a practice exam, and did not by itself complete the required second review
+cycle.
 The broader Route 53 consolidation lesson is recorded in
 `docs/exam-prep/route-53-sap-c02-key-lessons-20260715.md`.
+
+## Mixed Practice Block 2 Evidence - 2026-07-18
+
+The learner explicitly submitted a separate 25-question mixed practice block.
+The supplied marking result was **25/25 (100%)**, including 15/15 single-choice
+and 10/10 multi-select questions. The exact submitted choices, reported
+coverage, and evidence limitations are preserved in
+`docs/exam-prep/sap-c02-mixed-practice-block-2-submission-20260718.md`.
+
+The result is not timed evidence because timing was not supplied, and it cannot
+be independently re-marked because the question text and answer key are not in
+the repository. It creates no new wrong-answer entries. It did not complete or
+supersede the targeted four-question Review Cycle 2 test.
+
+## Review Cycle 2 Evidence - 2026-07-18
+
+The learner explicitly submitted revised final answers to the four-question
+retention test. The final answers scored **4/4 (100%)** and correctly state the
+durable decision rules for hybrid DNS, rehost/MGN, private multi-VPC hybrid
+routing, and replayable ordered ingestion.
+
+The file also preserves earlier saved draft answers. Those drafts contained
+material gaps: an incomplete DNS-versus-transport explanation, an MGN service
+name conflation, PrivateLink selected for hybrid transport, and imprecise
+partition/shard plus SQS-throughput reasoning. Because the explicit final
+answers materially correct those drafts, this is recorded as a completed
+review-and-correction cycle, not an unchanged clean blind pass.
+
+No new wrong-answer themes are added; the corrections reinforce the existing
+four entries. The result is untimed and does not count as full-exam or booking
+evidence.
 
 ## Carry-Forward Review - 2026-07-09
 
@@ -103,7 +143,9 @@ recall-based Review Cycle 1 checklist; those four drills remain pending.
 
 The carry-forward review confirms that the identified weak areas have durable
 decision rules and a later milestone. It does not change the booking criterion:
-two recall-based review cycles and timed-practice evidence are still required.
+the second review cycle and timed-practice evidence were still required at that
+point. The mixed Block 2 clean pass and corrected Review Cycle 2 were later
+recorded on 2026-07-18; timed-practice evidence remains required.
 
 ## Decision Rules To Drill
 
@@ -113,6 +155,7 @@ two recall-based review cycles and timed-practice evidence are still required.
 | Urgent data-centre exit with minimal change | Rehost first with AWS Application Migration Service, then optimize. |
 | Private multi-VPC hybrid connectivity | Use Direct Connect Gateway, Transit Gateway, and Route 53 Resolver when private routing and hybrid DNS are stated. |
 | Replayable high-throughput event ingestion with multiple consumers | Use Kinesis Data Streams with partition keys and independent consumers; use SQS FIFO for ordered queueing, not stream replay. |
+| ECS application revision with ALB traffic shifting and rollback | Use an ECS blue/green deployment strategy with health/metric validation and rollback; Patch Manager patches managed nodes rather than deploying container application revisions. |
 
 ## Entries
 
@@ -128,7 +171,7 @@ Why my answer was wrong: AWS Config aggregates resource configuration and compli
 Exam trap: A governance or inventory service appears plausible because the scenario says multi-account or hybrid, but the functional requirement is DNS resolution.
 Service comparison: Route 53 Resolver vs AWS Config.
 Action: Drill hybrid DNS scenarios until the resolver-endpoint wording is automatic.
-Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 remains open.
+Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial draft gap preserved.
 ```
 
 ### 2026-06-19: Urgent Data-Centre Exit
@@ -143,7 +186,7 @@ Why my answer was wrong: Refactoring may be the better target architecture later
 Exam trap: Prefer the most modern architecture instead of the answer that satisfies the stated constraint first.
 Service comparison: AWS Application Migration Service rehost vs refactor/replatform options.
 Action: For migration questions, identify time pressure, change tolerance, and cutover risk before choosing the pattern.
-Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 remains open.
+Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial service-name and sequencing gaps preserved.
 ```
 
 ### 2026-07-01: Private Hybrid Network Architecture
@@ -158,7 +201,7 @@ Why my answer was wrong: Internet Gateway supports public internet routing and w
 Exam trap: Adding a familiar network component that is not mapped to a stated requirement.
 Service comparison: Internet Gateway vs Direct Connect Gateway / Transit Gateway / Route 53 Resolver.
 Action: For multi-select networking questions, require every selected service to map to an explicit requirement.
-Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 remains open.
+Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial PrivateLink transport error preserved.
 ```
 
 ### 2026-07-01: Replayable Ordered Event Ingestion
@@ -173,5 +216,20 @@ Why my answer was wrong: SQS FIFO is an ordered queueing and deduplication patte
 Exam trap: Latching onto "ordering" and ignoring replay plus multiple-consumer requirements.
 Service comparison: Kinesis Data Streams vs SQS FIFO.
 Action: Split event questions into ordering, replay, throughput, and consumer model before selecting the service.
-Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 remains open.
+Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial partition/shard and SQS reasoning gaps preserved.
+```
+
+### 2026-07-21: ECS Blue/Green Deployment Versus Patch Manager
+
+```text
+Question theme: ECS application deployment with side-by-side validation, ALB traffic shifting, and automatic rollback
+SAP-C02 domain: Domain 2 / deployment strategy
+My answer pattern: Selected AWS Systems Manager Patch Manager.
+Correct answer pattern: Use an ECS blue/green deployment strategy with test and production listeners plus health or metric alarms that can trigger rollback.
+Why correct: Blue/green deployment keeps the original task set available while the replacement is validated, shifts load-balancer traffic deliberately, and can restore traffic to the original revision after failure or an alarm.
+Why my answer was wrong: Patch Manager automates operating-system and supported application patching on managed nodes; it does not own ECS task-set replacement, ALB traffic shifting, application rollout validation, or revision rollback.
+Exam trap: Selecting a general operations tool because the scenario says update, while ignoring that the decisive requirements are application-version traffic shifting and rollback.
+Service comparison: ECS blue/green deployment / CodeDeploy versus AWS Systems Manager Patch Manager.
+Action: Complete one spaced free-response deployment-strategy retest after 2026-07-28 without opening this log first.
+Review status: New miss from the 2026-07-21 timed 30-question diagnostic; remediation recorded, spaced recall pending.
 ```

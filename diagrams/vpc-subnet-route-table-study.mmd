@@ -35,8 +35,8 @@ flowchart TB
         rtb -->|VPC CIDR| local
         rta -->|S3 prefix list| s3ep
         rtb -->|S3 prefix list| s3ep
-        rta -. optional 0.0.0.0/0 .-> nata
-        rtb -. optional 0.0.0.0/0 .-> natb
+        rta -.->|optional default IPv4 route| nata
+        rtb -.->|optional default IPv4 route| natb
 
         nata -. outbound only .-> igw
         natb -. outbound only .-> igw

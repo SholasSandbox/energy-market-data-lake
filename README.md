@@ -720,28 +720,24 @@ These are historical references, not the current delivery path.
    portfolio polish unless the tracker explicitly approves the work.
 5. Produce weekly study/build artifacts, practice-question results, and
    wrong-answer entries alongside tracker updates and repository changes.
-6. Treat the first June-July exit items beyond repository implementation as
-   complete: two 20-question practice blocks, wrong-answer logging, and
-   separate Python/serverless tutorial evidence through Lesson 33 are recorded.
-   Use the remaining
-   window for practice review and carry-forward Domain 2 notes, including
-   `docs/planning/domain-2-network-access-patterns-20260621.md`.
-7. Begin live IAM, Organizations, SCP, and central-governance implementation
-   only after the tracker explicitly opens that phase or a smaller live change
-   is explicitly approved.
-8. Repo-only governance prep may continue earlier once the prior state is
-   complete and no architectural, design, structural, or sequencing blocker
-   remains, and no explicit approval dependency is still open for a design
-   decision that cannot be responsibly assumed or has not yet been recorded in
-   an ADR or equivalent design artifact with explicit trade-offs. Use
-   `docs/planning/domain-1-governance-preflight-20260618.md` as
-   the repo-only bridge into Domain 1 governance. It documents the current
-   account structure, target OU shape, permission-set candidates, SCP
-   catalogue, and logging/security-service outline without authorizing live AWS
-   changes. Use `docs/adr/0005-aws-organizations-governance-design.md` as the
-   accepted Organizations governance design and
-   `docs/runbooks/domain-1-governance-live-readiness-runbook.md` as the
-   implementation-readiness bridge; neither authorizes live AWS changes.
+6. Treat the bounded Domain 1 governance baseline and the Networking comparison
+   package as complete. Preserve their deliberate deferrals and local-versus-
+   published evidence boundaries rather than reopening them as active backlogs.
+7. Continue the active Resilience/DR sequence. The pattern matrix, RTO/RPO
+   decision table, Lakehouse recovery mapping, and source-backed scenario review
+   are complete repository artifacts. A focused submission scored 12/12 with untimed and
+   answer-bearing-source isolation caveats; the next Resilience/DR gate is a
+   fresh question-only spaced retest no earlier than 2026-07-27. A separate
+   timed 30-question mixed diagnostic scored 29/30 in 67 minutes; the ECS
+   blue/green deployment versus Patch Manager miss is recorded for spaced
+   remediation.
+8. Begin migration decision artifacts only after the Resilience/DR evidence
+   gates permit the transition, and complete them by 2026-08-10. Complete full
+   timed exams in the weeks of 2026-08-17 and 2026-08-24, hold the formal
+   readiness and booking review on Monday, 2026-09-07, and attempt SAP-C02 no
+   later than 2026-09-30. Do not make live IAM, Organizations, SCP, backup,
+   replication, networking, or multi-Region changes without explicit
+   task-specific approval.
 
 ## Historical Phase 17 Operating Constraints
 

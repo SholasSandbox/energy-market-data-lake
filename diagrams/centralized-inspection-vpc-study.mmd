@@ -1,0 +1,53 @@
+flowchart LR
+    subgraph source[Source attachment domain]
+        appa[Workload VPC A]
+        aroute[VPC A route table\nselected remote prefixes to TGW]
+        appa --> aroute
+    end
+
+    subgraph firstpass[Transit Gateway first pass]
+        tgw1[Same AWS Transit Gateway\nfirst pass]
+        uninspected[Spoke TGW route table\nassociate source attachments\nselected prefixes to inspection attachment]
+        tgw1 --> uninspected
+    end
+
+    subgraph inspection[Dedicated inspection VPC]
+        attachin[Inspection VPC attachment subnets\nappliance mode enabled]
+
+        subgraph aza[Availability Zone A]
+            fwa[Stateful firewall endpoint A\nAWS Network Firewall or GWLBe]
+        end
+
+        subgraph azb[Availability Zone B]
+            fwb[Stateful firewall endpoint B\nAWS Network Firewall or GWLBe]
+        end
+
+        attachout[Return to the same TGW attachment\nAZ-consistent for the flow]
+        attachin --> fwa --> attachout
+        attachin --> fwb --> attachout
+    end
+
+    subgraph secondpass[Transit Gateway second pass]
+        tgw2[Same AWS Transit Gateway\nsecond pass]
+        inspected[Inspection TGW route table\nassociate inspection attachment\napproved destination routes to attachments]
+        tgw2 --> inspected
+    end
+
+    subgraph destination[Destination attachment domains]
+        broute[VPC B route table\nsource prefixes to TGW]
+        appb[Workload VPC B]
+        hybrid[VPN or Direct Connect gateway attachment\nfor approved on-premises prefixes]
+        broute --> appb
+    end
+
+    aroute --> tgw1
+    uninspected --> attachin
+    attachout --> tgw2
+    inspected --> broute
+    inspected --> hybrid
+
+    appb -. response follows the reverse inspected path .-> broute
+    hybrid -. response follows the reverse inspected path .-> inspected
+
+    guardrail[No direct spoke-to-spoke propagation in the spoke route table\nBoth directions must traverse the same stateful endpoint\nRoutes, firewall policy, SGs, NACLs, DNS, HA, logs, and cost remain separate checks]
+    inspection --- guardrail

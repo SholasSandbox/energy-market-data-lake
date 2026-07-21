@@ -1,18 +1,18 @@
-<!-- markdownlint-disable MD060 -->
+<!-- markdownlint-disable MD013 MD060 -->
 
 # SAP-C02 Readiness Tracker
 
 **Owner:** [redacted-owner]  
 **Created:** 2026-06-12  
 **Target exam:** AWS Certified Solutions Architect – Professional, SAP-C02  
-**Target attempt window:** Late November to mid-December 2026  
-**Booking decision date:** 2026-11-15  
+**Target attempt window:** September 2026; no later than 2026-09-30
+**Booking decision and formal readiness review:** Monday, 2026-09-07
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-07-17
-**Last practice evidence update:** 2026-07-15
+**Last repository reconciliation:** 2026-07-21
+**Last practice evidence update:** 2026-07-21
 **Last tutorial evidence update:** 2026-07-01
-**Last governance study evidence update:** 2026-07-12
+**Last governance study evidence reconciliation:** 2026-07-19 (published evidence through 2026-07-13; later legend edits remain local)
 
 ---
 
@@ -166,20 +166,33 @@ sequence. Before promoting a tutorial pattern into the lakehouse:
 
 | Item | Target |
 |---|---|
-| Internal readiness decision | 2026-11-15 |
-| Earliest exam attempt | 2026-11-25 |
-| Preferred exam window | 2026-11-25 to 2026-12-15 |
-| Latest practical exam attempt | 2026-12-20 |
+| Internal readiness and booking review | Monday, 2026-09-07 |
+| Earliest exam attempt | 2026-09-14 |
+| Preferred exam window | 2026-09-21 to 2026-09-30 |
+| Latest practical exam attempt | 2026-09-30 |
 | Exam booking rule | Book only after two timed practice exams at 80%+ or one 80%+ plus narrow, well-understood weak areas |
 
 ### Booking decision criteria
 
-| Practice score by 2026-11-15 | Decision |
+| Practice score by 2026-09-07 | Decision |
 |---:|---|
-| 80%+ twice timed | Book late November / early December |
-| 75–79% timed | Book December only if weak areas are narrow and fixable |
-| 65–74% timed | High-risk attempt; decide based on finances and confidence |
+| 80%+ twice timed | Book the September attempt |
+| 75–79% timed | Book September only if weak areas are narrow and can be remediated before the selected date |
+| 65–74% timed | High-risk attempt; use the September 7 review to decide whether to accept the risk or intensify remediation |
 | Below 65% timed | Do not book unless accepting likely failure |
+
+### Formal review point: Monday, 2026-09-07
+
+The review must produce a recorded booking decision and a bounded plan through
+the selected September exam date. Review:
+
+1. both full timed-exam scores, durations, and domain breakdowns;
+2. unresolved wrong-answer themes and whether each is narrow and remediable;
+3. completion of the Resilience/DR, migration, and cost decision artifacts;
+4. the remaining booking criteria in Section 10;
+5. exam availability and booking status for a date no later than 2026-09-30;
+   and
+6. the final remediation schedule between the review and exam attempt.
 
 ---
 
@@ -208,29 +221,18 @@ the current week and leave future planned weeks blank.
 | 2026-06-22 | 10–12 | 18 | 9 | 4 | 5 | Tutorial hardening evidence now includes Lesson 28 boundary isolation and the Ruff formatting baseline in `/Users/[redacted-user]/Kiro-Workspace/handlers/LEARNING-PLAN.md` and `learning-summary.md`; lakehouse IAM hardening |
 | 2026-06-29 | 10–12 | 20 | 10 | 4 | 6 | Governance study evidence now includes SAP-C02 mental-model diagrams, OAM vs CloudTrail log archive vs AWS Config aggregator comparison, and local practice blocks 003-006 in `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance`; Serverless Architecture evidence now includes Lessons 29-33 and 217 local tests in `/Users/[redacted-user]/Kiro-Workspace/handlers`; no new lakehouse implementation evidence |
 | 2026-07-06 | 10–12 | 20 | 12 | 4 | 4 | Tutorial evidence + lakehouse Domain 2 closure review |
-| 2026-07-13 | 10–12 |  |  |  |  | IAM foundation in progress: `BillingAdmin` now has a design-only `billing-admins` group, `PT1H` session, and update-only policy; private primary/backup ownership with an email notification path, finalized monthly dataset, April-June cost history, separate pending IAM/budget change notes, and a lakehouse Workload-tag precheck are recorded. Fourteen core lakehouse resources are tagged and Terraform protects the future default. A 2026-07-13 read-only refresh attributes the previously untagged June Lakehouse spend and its EBS driver at account/service level. The missing finalized history is a non-blocking gate only for new thresholds or live BillingAdmin update access; no numeric threshold, assignment, or AWS change is authorized yet. Early Networking study also produced the verified VPC connectivity matrix and an untimed focused blind attempt scoring 8/8; no study/practice hours are inferred. |
-| 2026-07-20 | 10–12 |  |  |  |  | Organizations/SCP design started early under direct instruction: fresh read-only state confirms two narrow Lakehouse-OU guardrails and no Security-OU custom SCP. The next design candidate is Lakehouse-OU CloudTrail protection; public-S3 and root-user example-policy issues were corrected locally, with all attachments still requiring separate approval. |
-| 2026-07-27 | 10–12 |  |  |  |  | Logging/governance started early under direct instruction: 2026-07-13 read-only review verifies organization-trail log/digest delivery, Lakehouse continuous Config recording, Security Tooling delegated-administration boundary, and GuardDuty foundations. A separate approved lifecycle access and S3 change now moves archive objects over 128 KiB to Standard-IA after 30 days and Glacier Flexible Retrieval after 90 days, without expiry. Security Hub, OAM, optional GuardDuty sources, and additional Config rules remain deliberate non-blocking deferrals. The week also retains the non-blocking cost-threshold evidence review. |
-| 2026-08-03 | 10–12 |  |  |  |  | Governance hardening started early under direct instruction: Security Tooling retains a healthy Config aggregator and GuardDuty foundation; Security Hub and OAM are explicitly deferred, not drift. A narrowly scoped future Config-rule read-only permission addition is documented but remains pending separate approval. |
-| 2026-08-10 | 10–12 |  |  |  |  | Governance review started early under direct instruction: the validated Domain 1 baseline is sufficient for the active low-volume platform. Remaining Security Hub/OAM, broader SCP and Identity Center, optional GuardDuty/Config, and budget-threshold work is intentionally deferred or evidence-gated rather than an immediate platform blocker. |
-| 2026-08-17 | 10–12 |  |  |  |  | Networking start |
-| 2026-08-24 | 10–12 |  |  |  |  | VPC/TGW/PrivateLink |
-| 2026-08-31 | 10–12 |  |  |  |  | Hybrid connectivity |
-| 2026-09-07 | 10–12 |  |  |  |  | Resilience/DR |
-| 2026-09-14 | 10–12 |  |  |  |  | DR + backup |
-| 2026-09-21 | 10–12 |  |  |  |  | Migration services |
-| 2026-09-28 | 10–12 |  |  |  |  | Migration decision matrix |
-| 2026-10-05 | 10–12 |  |  |  |  | Cost optimization |
-| 2026-10-12 | 10–12 |  |  |  |  | Migration/cost consolidation; containers parked |
-| 2026-10-19 | 10–12 |  |  |  |  | First full timed exam |
-| 2026-10-26 | 10–12 |  |  |  |  | Remediation |
-| 2026-11-02 | 10–12 |  |  |  |  | Full timed exam |
-| 2026-11-09 | 10–12 |  |  |  |  | Final readiness review |
-| 2026-11-16 | 10–12 |  |  |  |  | Booking/exam prep |
-| 2026-11-23 | 10–12 |  |  |  |  | Exam window |
-| 2026-11-30 | 10–12 |  |  |  |  | Exam window |
-| 2026-12-07 | 10–12 |  |  |  |  | Exam window |
-| 2026-12-14 | 10–12 |  |  |  |  | Final exam window |
+| 2026-07-13 | 10–12 | 13 | 3 | 6 | 4 | IAM foundation in progress: `BillingAdmin` now has a design-only `billing-admins` group, `PT1H` session, and update-only policy; private primary/backup ownership with an email notification path, finalized monthly dataset, April-June cost history, separate pending IAM/budget change notes, and a lakehouse Workload-tag precheck are recorded. Fourteen core lakehouse resources are tagged and Terraform protects the future default. A 2026-07-13 read-only refresh attributes the previously untagged June Lakehouse spend and its EBS driver at account/service level. The missing finalized history is a non-blocking gate only for new thresholds or live BillingAdmin update access; no numeric threshold, assignment, or AWS change is authorized yet. Early Networking study also produced the verified VPC connectivity matrix and an untimed focused blind attempt scoring 8/8; no study/practice hours are inferred. |
+| 2026-07-20 | 10–12 | 1:07 | 0 | 0 | 1:07 | The timed 30-question mixed diagnostic was completed from 00:00 to 01:07 on 2026-07-21: 29/30 in 67 minutes, with all 12 multiple-response questions correct. The single miss was ECS blue/green deployment and rollback versus Systems Manager Patch Manager; remediation is logged. No other week-to-date hours are inferred. |
+| 2026-07-27 | 10–12 |  |  |  |  | Fresh, separate question-only Resilience/DR spaced retest, followed by 6 Rs and Application Migration Service foundations; score only after explicit submission and record genuine misses. |
+| 2026-08-03 | 10–12 |  |  |  |  | Complete the 6 Rs matrix and data-migration service comparison. |
+| 2026-08-10 | 10–12 |  |  |  |  | Complete the database-migration decision table and cost-optimization foundations. |
+| 2026-08-17 | 10–12 |  |  |  |  | First full 75-question timed exam, followed by evidence-led remediation. |
+| 2026-08-24 | 10–12 |  |  |  |  | Second full 75-question timed exam, followed by narrow weak-area remediation. |
+| 2026-08-31 | 10–12 |  |  |  |  | Final cross-domain consolidation and prepare the September 7 readiness-review evidence pack. |
+| 2026-09-07 | 10–12 |  |  |  |  | **Formal SAP-C02 readiness and booking review:** assess timed scores, remaining domain gaps, booking status, and whether the September exam window remains credible. |
+| 2026-09-14 | 10–12 |  |  |  |  | Targeted remediation and earliest SAP-C02 exam-attempt window. |
+| 2026-09-21 | 10–12 |  |  |  |  | Preferred SAP-C02 exam window; use remaining study only for narrow remediation. |
+| 2026-09-28 | 10–12 |  |  |  |  | Final SAP-C02 exam window; attempt no later than Wednesday, 2026-09-30. |
 
 ### External tutorial evidence register
 
@@ -250,9 +252,13 @@ the current week and leave future planned weeks blank.
 
 | Date | Governance study artifact | Status | SAP-C02 mapping | Evidence and boundary |
 |---|---|---|---|---|
+| 2026-06-26 | Organizations, Identity Center, IAM, and multi-account Networking study guides | Committed to governance repo | Domain 1 governance and networking; Domain 2 solution design | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Organizations_IdentityCenter_IAM.md` and `SAP-C02_MultiAccount_Networking.md`; committed in governance repo `7eb4026`; external revision evidence, not lakehouse implementation evidence |
 | 2026-06-27 | SAP-C02 mental-model reference diagrams | Committed to governance repo | Domains 1-4 mental-model consolidation | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Mental_Model_Reference_Diagrams.md`; committed in governance repo `d068a65`; external revision evidence, not lakehouse implementation evidence |
 | 2026-06-28 | OAM vs CloudTrail log archive vs AWS Config aggregator comparison | Committed to governance repo | Domain 1 governance; Domain 3 observability and improvement | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Security_Observability_Comparison.md`; committed in governance repo `d068a65`; supports the Security Tooling vs Log Archive split recorded in ADR 0005 |
 | 2026-07-01 | SAP-C02 practice review blocks 003-006 | Committed and pushed to governance repo | Domains 1-4 practice remediation | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/exercises/sap-c02-exercise-block-003-review.md` through `sap-c02-exercise-block-006-review.md`; committed and pushed in governance repo `5f6158e`; updated notes include Block 006's answer-distribution quality caveat |
+| 2026-07-02 | Governance structure mental model | Committed to governance repo | Domain 1 account, OU, SCP, identity, and emergency-access relationships | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Governance_Structure_Mental_Model.md`; committed in governance repo `16c6a69`; external revision evidence, not lakehouse implementation evidence |
+| 2026-07-13 | Mental-model reference refinement | Committed and pushed to governance repo | Domains 1-4 mental-model consolidation | `/Users/[redacted-user]/Kiro-Workspace/aws-sap-c02-governance/SAP-C02_Mental_Model_Reference_Diagrams.md`; governance repo `HEAD` and `origin/main` are `035857b`; external revision evidence, not lakehouse implementation evidence |
+| 2026-07-19 | Acronym and term legend improvements across governance study guides | Completed locally; unpublished | Domains 1-4 revision usability | Five modified Markdown files remain uncommitted in the governance workspace; this is local study evidence only and must not be described as published until committed and pushed |
 
 ---
 
@@ -263,7 +269,7 @@ Official SAP-C02 domains:
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
 | Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, selected Cost Allocation Tag activation, governance preflight evidence, Security Tooling vs Log Archive separation, external governance study diagrams, the first two Lakehouse Workloads OU SCP guardrails, live Security Tooling account placement, Security Tooling alternate-contact readiness, AWS Config delegated-admin migration, Security Tooling AWS Config recorder onboarding, the `so-aws-admin` decommission-path decision, final closure package, and account-closure evidence, GuardDuty delegated-admin planning, GuardDuty live-readiness evidence, and live GuardDuty delegated administration with foundational coverage in `eu-west-2` exist; Security Hub/OAM adoption, broader Identity Center model, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, two 20-question practice blocks, separate tutorial evidence through Lesson 33, and later practice blocks 003-006 are complete locally; practice review and later networking/DR decisions remain open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, two 20-question practice blocks, separate tutorial evidence through Lesson 33, later practice blocks 003-006, the Networking comparison package, the DR pattern matrix, the RTO/RPO decision table, the Lakehouse recovery mapping, the source-backed DR scenario review, a focused 12/12 Resilience/DR submission, and a 29/30 timed mixed diagnostic are complete repository evidence; ECS blue/green deployment remediation, a fresh structurally isolated DR retest, and later migration decisions remain open |
 | Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, cost guardrails, separate Lessons 26-33 tutorial hardening evidence, the 217-test tutorial baseline, and OAM vs CloudTrail vs Config study evidence exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Partial | Exercise 002 exposed a rehost-vs-refactor/MGN weak area; later practice blocks show stronger mixed-domain performance but Kinesis/SQS distinction and migration playbook artifacts remain open |
 
@@ -272,11 +278,12 @@ Official SAP-C02 domains:
 | Period | Primary domain focus | Secondary focus |
 |---|---|---|
 | 2026-06-15 to 2026-07-12 | Domain 2 | Domain 3 |
-| 2026-07-13 to 2026-08-09 | Domain 1 | Domain 3 |
-| 2026-08-10 to 2026-09-13 | Domain 1 | Domain 2 |
-| 2026-09-14 to 2026-10-04 | Domain 4 | Domain 3 |
-| 2026-10-05 to 2026-10-18 | Domain 3 | Domain 2 |
-| 2026-10-19 onward | All domains | Practice exam remediation |
+| 2026-07-13 to 2026-07-18 | Domain 1 | Domain 2 Networking |
+| 2026-07-19 to 2026-07-26 | Domain 2 Resilience/DR | Domain 3 recovery validation |
+| 2026-07-27 to 2026-08-16 | Domain 4 Migration | Domain 2 Resilience/DR retention and Domain 3 cost foundations |
+| 2026-08-17 to 2026-09-06 | All domains | Full timed exams and evidence-led remediation |
+| 2026-09-07 | All domains | Formal readiness and booking review |
+| 2026-09-08 to 2026-09-30 | Narrow confirmed weak areas | SAP-C02 exam attempt |
 
 ---
 
@@ -485,29 +492,29 @@ The live attachment is recorded in
 
 | Topic | Current confidence | Required by exam? | Evidence required |
 |---|---:|---|---|
-| VPC fundamentals | Medium | Yes | VPC/subnet/route-table diagram recorded in `diagrams/vpc-subnet-route-table-study.mmd` and rendered as `diagrams/vpc-subnet-route-table-study.svg`, with reading guide in `docs/planning/domain-2-vpc-subnet-route-table-diagram-20260715.md` |
+| VPC fundamentals | Medium | Yes | VPC/subnet/route-table source and reading guide are tracked in `diagrams/vpc-subnet-route-table-study.mmd` and `docs/planning/domain-2-vpc-subnet-route-table-diagram-20260715.md`; the source includes a syntax-only Mermaid correction and the rendered SVG is tracked |
 | Security groups vs NACLs | Medium: source-backed comparison recorded | Yes | Comparison note in `docs/planning/domain-2-security-groups-network-acls-comparison-20260715.md` |
-| VPC peering | Low | Yes | Use-case and limitation note; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| Transit Gateway | Low | Yes | Hub-and-spoke diagram; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| PrivateLink | Low | Yes | Comparison with peering/TGW; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| VPC endpoints | High: 8/8 focused blind drill | Yes | S3/DynamoDB gateway-versus-interface endpoint diagram in `diagrams/vpc-endpoint-study.mmd`, rendered as `diagrams/vpc-endpoint-study.svg`, with reading guide in `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`; blind evidence in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
+| VPC peering | Improving: source-backed decision rule recorded | Yes | Use cases, non-transitivity, routing, cost, and scale limits are recorded in `docs/planning/domain-2-network-access-patterns-20260621.md` and the broader Networking revision lesson; no full-domain recall assessment exists |
+| Transit Gateway | Improving: source-backed artifact and reviewed decision rule recorded | Yes | Tracked hub-and-spoke source, rendered SVG, and decision guidance exist; Review Cycle 2 corrected the hybrid-transport reasoning, but no full-domain recall assessment exists |
+| PrivateLink | Improving: source-backed decision rule recorded | Yes | Comparison with peering and TGW plus service-provider/consumer cues is recorded in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md`; no full-domain recall assessment exists |
+| VPC endpoints | High: 8/8 focused blind drill | Yes | Tracked source, rendered SVG, and reading guide exist in `diagrams/vpc-endpoint-study.mmd` and `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`; blind evidence is in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
 | NAT Gateway | High: correct in 8/8 focused blind drill | Yes | Cost and routing note plus blind evidence in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
-| Direct Connect | Low | Yes | Hybrid connectivity decision table; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| Site-to-Site VPN | Low | Yes | DX vs VPN comparison; compact comparison started in `docs/planning/domain-2-network-access-patterns-20260621.md` |
-| Route 53 Resolver | Improving: Review Cycle 1 correct at 4/4 overall after the exercise 002 miss | Yes | Hybrid DNS diagram in `diagrams/route53-resolver-hybrid-dns-study.mmd`, rendered as `diagrams/route53-resolver-hybrid-dns-study.svg`, with reading guide in `docs/planning/domain-2-route53-resolver-hybrid-dns-20260715.md` and consolidation lesson in `docs/exam-prep/route-53-sap-c02-key-lessons-20260715.md` |
-| Centralized inspection VPC | Improving: source-backed architecture sketch recorded | Yes | Two-pass route-domain and symmetric-path sketch in `diagrams/centralized-inspection-vpc-study.mmd`, rendered as `diagrams/centralized-inspection-vpc-study.svg`, with reading guide in `docs/planning/domain-2-centralized-inspection-vpc-architecture-20260715.md` |
+| Direct Connect | Improving: source-backed artifact and corrected review reasoning recorded | Yes | Hybrid transport table and promotion triggers are recorded in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md`; Review Cycle 2 final reasoning correctly combines DX with VPN resilience, but no full-domain recall assessment exists |
+| Site-to-Site VPN | Improving: source-backed artifact and corrected review reasoning recorded | Yes | DX-versus-VPN comparison and promotion triggers are recorded in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md`; Review Cycle 2 final reasoning correctly combines DX with VPN resilience, but no full-domain recall assessment exists |
+| Route 53 Resolver | Improving: Review Cycle 1 correct at 4/4 overall after the exercise 002 miss | Yes | Tracked hybrid-DNS source, rendered SVG, reading guide, and consolidation lesson exist |
+| Centralized inspection VPC | Improving: source-backed architecture sketch recorded | Yes | The two-pass route-domain source, rendered SVG, and reading guide are tracked in the repository |
 
 ### Networking deliverables
 
 | Deliverable | Due | Status |
 |---|---|---|
-| VPC connectivity comparison matrix | 2026-08-31 | Verified: the decision-level matrix, source-backed review, VPC/subnet/route-table diagram, and S3/DynamoDB gateway-versus-interface endpoint diagram are recorded in `docs/planning/domain-2-network-access-patterns-20260621.md`, `diagrams/vpc-subnet-route-table-study.mmd`, `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`, and `diagrams/vpc-endpoint-study.mmd`; no AWS implementation is required by these study artifacts |
-| Transit Gateway hub-and-spoke diagram | 2026-09-07 | Verified: conceptual route-domain and inspection-symmetry diagram in `diagrams/tgw-hub-and-spoke-study.mmd`, rendered as `diagrams/tgw-hub-and-spoke-study.svg`, passed the source-backed scenario review; no AWS implementation is required by this artifact |
+| VPC connectivity comparison matrix | 2026-08-31 | Verified: the decision matrix, source-backed review, Mermaid sources, and rendered SVGs are tracked; the VPC/subnet source includes a syntax-only Mermaid correction; no AWS implementation is required |
+| Transit Gateway hub-and-spoke diagram | 2026-09-07 | Verified: the tracked conceptual Mermaid source and rendered SVG passed the source-backed review; no AWS implementation is required |
 | PrivateLink vs peering vs TGW decision table | 2026-09-07 | Verified: decision table and Lakehouse promotion triggers in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md` passed the source-backed scenario review |
 | Direct Connect vs VPN decision table | 2026-09-14 | Verified: hybrid transport decision table and Lakehouse promotion triggers in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md` passed the source-backed scenario review |
-| Route 53 Resolver hybrid DNS diagram | 2026-09-14 | Verified: directional hybrid-DNS diagram in `diagrams/route53-resolver-hybrid-dns-study.mmd`, rendered as `diagrams/route53-resolver-hybrid-dns-study.svg`, and reading guide in `docs/planning/domain-2-route53-resolver-hybrid-dns-20260715.md` passed the source-backed scenario review |
+| Route 53 Resolver hybrid DNS diagram | 2026-09-14 | Verified: the tracked directional hybrid-DNS source, rendered SVG, and reading guide passed the source-backed review |
 | NAT Gateway cost warning note | 2026-09-14 | Verified: endpoint-first cost hierarchy and evidence gates in `docs/planning/domain-2-nat-gateway-cost-warning-20260715.md` passed the source-backed scenario review |
-| Centralized inspection VPC architecture sketch | 2026-09-14 | Verified as a documentation-only artifact: `diagrams/centralized-inspection-vpc-study.mmd`, rendered as `diagrams/centralized-inspection-vpc-study.svg`, and `docs/planning/domain-2-centralized-inspection-vpc-architecture-20260715.md` record the two-pass route domains, appliance-mode symmetry, Availability Zone, bypass-prevention, security, logging, and cost checks; no AWS implementation is required |
+| Centralized inspection VPC architecture sketch | 2026-09-14 | Verified as a documentation-only artifact: the tracked reading guide, Mermaid source, and rendered SVG record the two-pass route domains, appliance-mode symmetry, Availability Zone, bypass-prevention, security, logging, and cost checks; no AWS implementation is required |
 
 The source-backed review is recorded in
 `docs/exam-prep/networking-scenario-drill-review-20260715.md`. The separate
@@ -531,7 +538,42 @@ additional learner-recall, timed-practice, or booking evidence.
 
 ---
 
-## 7. Migration Weak Areas
+## 7. Resilience, DR, and Migration Weak Areas
+
+### Resilience and DR services and concepts
+
+| Service / concept | Current confidence | Evidence required |
+|---|---:|---|
+| RTO and RPO | Improving: source-backed decision table recorded | Business-led decision table in `docs/planning/domain-2-rto-rpo-decision-table-20260718.md`; objectives remain distinct from designed and tested capability |
+| Backup and restore / pilot light / warm standby / active-active | Improving: source-backed matrix recorded | DR pattern matrix in `docs/exam-prep/aws-resilience-dr-sap-c02-key-lessons-20260718.md` |
+| AWS Backup | Improving: source-backed scenarios and focused recall evidence recorded | `docs/exam-prep/resilience-dr-scenario-drill-submission-20260720.md`; 12/12 focused submission, learner-attested no-key first attempt, answer-bearing-source isolation caveat, and no live Lakehouse backup/restore evidence |
+| AWS Elastic Disaster Recovery | Improving: server-recovery boundary and focused recall evidence recorded | `docs/exam-prep/resilience-dr-scenario-drill-submission-20260720.md`; 12/12 focused submission with the same isolation caveat and no live DRS implementation |
+| S3 versioning, backup, and cross-Region replication | Improving: Lakehouse recovery boundary and promotion triggers mapped | `docs/planning/domain-2-lakehouse-recovery-mapping-20260719.md`; no independent backup, cross-account copy, cross-Region copy, or tested restore is proved |
+| Multi-AZ versus multi-Region recovery | Improving: failure-scope rules recorded | Apply the RTO/RPO failure-scope table in source-backed scenarios |
+
+### Resilience and DR deliverables
+
+| Deliverable | Due | Status |
+|---|---|---|
+| Bounded resilience/DR transition plan | 2026-07-20 | Complete repository artifact: `docs/planning/domain-2-resilience-dr-study-plan-20260718.md` records scope, evidence boundary, ordered artifacts, and quality gates; no AWS change |
+| DR pattern matrix | 2026-07-20 | Complete source-backed repository artifact: `docs/exam-prep/aws-resilience-dr-sap-c02-key-lessons-20260718.md` compares backup/restore, pilot light, warm standby, and multi-site active/active and separates HA, backup, replication, and DR |
+| RTO/RPO decision table | 2026-07-20 | Complete repository artifact: `docs/planning/domain-2-rto-rpo-decision-table-20260718.md` separates business objectives, designed capability, and tested results; records dependency and failure-scope constraints; and leaves all Lakehouse objectives unset pending an accountable owner |
+| Lakehouse recovery mapping | 2026-07-20 | Complete repository artifact: `docs/planning/domain-2-lakehouse-recovery-mapping-20260719.md` maps S3, Glue, Athena, IAM, infrastructure definitions, operational dependencies, failure-scope limits, candidate validation, and promotion triggers without setting RTO/RPO or claiming tested recovery |
+| Source-backed resilience/DR scenario review | 2026-07-20 | Complete repository artifact: `docs/exam-prep/resilience-dr-scenario-drill-review-20260719.md` applies current official AWS guidance across 12 answer-bearing scenarios; the later learner submission is recorded separately |
+| Resilience/DR recall submission | 2026-07-20 | Submitted at 12/12 in `docs/exam-prep/resilience-dr-scenario-drill-submission-20260720.md`; the learner explicitly attests to a first attempt without viewing the key, but the source file was answer-bearing, no duration was supplied, and structural isolation is not claimed |
+| Fresh question-only Resilience/DR spaced retest | 2026-07-27 | Next Resilience/DR evidence gate; use a new question-only set and score only after explicit learner submission |
+
+The documentation transition into resilience/DR has occurred, and the DR
+pattern matrix, RTO/RPO decision table, Lakehouse recovery mapping, and
+source-backed scenario review are complete repository artifacts. The learner's explicit
+12/12 focused submission is also recorded, with its untimed and
+answer-bearing-source isolation caveats. The next Resilience/DR evidence gate
+is a fresh question-only spaced retest no earlier than 2026-07-27. This does not
+prove a live backup, restore, replication, failover, or failback path. No AWS
+Backup, DRS, S3 replication, or multi-Region resource is authorized by these
+artifacts.
+
+### Migration services
 
 ### Required services
 
@@ -544,19 +586,15 @@ additional learner-recall, timed-practice, or booking evidence.
 | Snow Family | Low | Offline transfer decision note |
 | Storage Gateway | Low | Hybrid storage use-case note |
 | Migration Hub | Low | Migration tracking note |
-| AWS Backup | Low | Lakehouse backup strategy |
-| Elastic Disaster Recovery | Low | DR use-case note |
 | RDS/Aurora migration paths | Medium | DMS/RDS/Aurora comparison |
 
 ### Migration deliverables
 
 | Deliverable | Due | Status |
 |---|---|---|
-| 6 Rs migration matrix | 2026-09-21 | Not started |
-| Data migration service comparison | 2026-09-28 | Not started |
-| Database migration decision table | 2026-09-28 | Not started |
-| DR pattern matrix | 2026-10-05 | Not started |
-| RTO/RPO decision table | 2026-10-05 | Not started |
+| 6 Rs migration matrix | 2026-08-03 | Not started |
+| Data migration service comparison | 2026-08-03 | Not started |
+| Database migration decision table | 2026-08-10 | Not started |
 
 ---
 
@@ -564,7 +602,9 @@ additional learner-recall, timed-practice, or booking evidence.
 
 ### Rule
 
-Start with small question blocks immediately. Full timed exams begin in late October.
+Continue small question blocks immediately. Complete full timed exams on the
+weeks of 2026-08-17 and 2026-08-24 so their results are available for the
+formal 2026-09-07 readiness review.
 
 | Date | Source | Mode | Score | Domain weakness | Action |
 |---|---|---|---:|---|---|
@@ -577,7 +617,10 @@ Start with small question blocks immediately. Full timed exams begin in late Oct
 | 2026-07-07 | `docs/exam-prep/wrong-answers.md` | Untimed 25 questions | 25/25 | None identified | Block 007 clean pass; stronger coverage of Domain 2 and Domain 3 topics |
 | 2026-07-15 | `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` | Untimed blind 8 questions | 8/8 | None in focused VPC endpoint/NAT scope | Clean pass; no wrong-answer entry required; narrow recall evidence only, not a timed exam or full Networking-domain assessment |
 | 2026-07-15 | `docs/exam-prep/wrong-answers.md` | Untimed blind Review Cycle 1 | 4/4 | Four prior weak areas recalled correctly | First recall cycle complete; retain per-partition-key precision for Kinesis; second review cycle and timed evidence remain open |
-|  |  | Timed 30 questions |  |  |  |
+| 2026-07-18 | `docs/exam-prep/sap-c02-mixed-practice-block-2-submission-20260718.md` | Mixed practice Block 2; timing not supplied | 25/25 | None reported | Explicitly submitted clean pass: 15/15 single-choice and 10/10 multi-select; question text and answer key are unavailable for independent re-marking; separate from Review Cycle 2 and not timed/full-simulation evidence |
+| 2026-07-18 | `docs/exam-prep/wrong-answer-review-cycle-2-blind-attempt-20260715.md` | Untimed Review Cycle 2; corrected final submission | 4/4 final | Initial drafts had material precision gaps in service naming, hybrid transport, and Kinesis/SQS reasoning | Review-and-correction cycle complete; final answers correct, but not an unchanged clean blind pass; no new wrong-answer theme or timed evidence |
+| 2026-07-20 | `docs/exam-prep/resilience-dr-scenario-drill-submission-20260720.md` | Focused Resilience/DR recall; timing not supplied | 12/12 | None in the tested scenario scope | Explicit learner submission; learner attests first attempt without viewing the key, but the source was answer-bearing rather than structurally isolated; fresh question-only spaced retest planned no earlier than 2026-07-27 |
+| 2026-07-21 | `docs/exam-prep/sap-c02-mixed-diagnostic-30q-20260720.md` | Timed 30-question mixed diagnostic; 67 of 72 minutes | 29/30 | ECS blue/green deployment and rollback versus Systems Manager Patch Manager | Explicit submission: 17/18 single-choice and 12/12 multiple-response; answer-bearing assessment in `docs/exam-prep/sap-c02-mixed-diagnostic-30q-review-20260721.md`; new miss logged for spaced remediation; not a full 75-question simulation |
 |  |  | Full timed exam |  |  |  |
 |  |  | Full timed exam |  |  |  |
 
@@ -591,7 +634,7 @@ Artifact manifest for completed exercise archive Blocks 003 through 006:
 | <60% | Knowledge gap, not exam-ready |
 | 60–69% | Some foundations, but weak professional judgement |
 | 70–74% | Nearing readiness, but risky |
-| 75–79% | Potential December attempt if weak areas are narrow |
+| 75–79% | Potential September attempt if weak areas are narrow and fixable before the selected date |
 | 80%+ | Bookable if repeated under timed conditions |
 
 ---
@@ -632,20 +675,20 @@ Action:
 
 | Criterion | Status |
 |---|---|
-| Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met: five additional untimed 25-question blocks now show 96%, 100%, 100%, 96%, and 100%, but Block 006 has an answer-distribution quality caveat and full timed practice evidence has not started |
-| Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, org inventory evidence, parent mapping, OU/account-placement decision, first approved live OU creation, approved lakehouse account move, SCP examples, first bounded OU-targeted SCP attempt and rollback evidence, root `SERVICE_CONTROL_POLICY` enablement evidence, first and second successful OU-targeted SCP attachment evidence, permission-set matrix, break-glass procedure, logging/security-service design notes, Security Tooling vs Log Archive split, Security Tooling AWS Config migration/recorder evidence, GuardDuty delegated-admin evidence, `so-aws-admin` retirement checks, final closure package, account-closure evidence, and a governance live-readiness runbook are documented; Security Hub/OAM, broader Identity Center, budget thresholds, and networking remain open |
+| Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Not met: the 30-question mixed diagnostic scored 29/30 in 67 minutes, but it is not a full 75-question simulation; six prior 25-question blocks show 96%, 100%, 100%, 96%, 100%, and a learner-supplied 100%, with quality/timing caveats; the two required full timed exams have not started |
+| Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, org inventory evidence, parent mapping, OU/account-placement decision, first approved live OU creation, approved lakehouse account move, SCP examples, first bounded OU-targeted SCP attempt and rollback evidence, root `SERVICE_CONTROL_POLICY` enablement evidence, first and second successful OU-targeted SCP attachment evidence, permission-set matrix, break-glass procedure, logging/security-service design notes, Security Tooling vs Log Archive split, Security Tooling AWS Config migration/recorder evidence, GuardDuty delegated-admin evidence, `so-aws-admin` retirement checks, final closure package, account-closure evidence, and a governance live-readiness runbook are documented; Security Hub/OAM, broader Identity Center, budget thresholds, and enterprise-networking implementation remain deliberate gaps rather than completed evidence |
 | Networking comparison matrix complete | Met: verified decision matrix, source-backed review, VPC/subnet/route-table diagram, and gateway-versus-interface VPC endpoint diagram are recorded; the separate focused blind attempt scored 8/8 |
 | Migration matrix complete | Not met |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, bucket tags, Billing Cost Allocation Tag activation, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete |
 | IAM/Organizations/SCP design complete | Partially met: target Organizations, OU, Identity Center, SCP catalogue, SCP examples, and break-glass procedure are documented; root `SERVICE_CONTROL_POLICY` is enabled, `DenyLeavingOrganization` and `DenyRootUserActions-LakehouseWorkloads` are live for `Lakehouse Workloads OU`, but exception tests, assignment decisions, broader rollback planning, and additional implementation evidence remain open |
-| Wrong-answer log reviewed twice | Partially met: Review Cycle 1 was completed blind at 4/4 on 2026-07-15 and is evidenced in `docs/exam-prep/wrong-answers.md`; Review Cycle 2 remains open |
+| Wrong-answer log reviewed twice | Met with evidence caveat: Review Cycle 1 was completed blind at 4/4 on 2026-07-15; Review Cycle 2 was explicitly submitted on 2026-07-18 with corrected final answers scoring 4/4, while the preserved initial drafts show material gaps, so Cycle 2 is a completed review-and-correction cycle rather than an unchanged clean blind pass |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
 ### Final booking decision
 
 | Date | Decision | Reason |
 |---|---|---|
-| 2026-11-15 | Pending |  |
+| 2026-09-07 | Pending | Formal readiness and booking review on the first Monday of September |
 
 ---
 
@@ -674,12 +717,10 @@ Action:
 
 | Month | Main objective | Exit criteria |
 |---|---|---|
-| June–July | Python/serverless tutorial hardening + lakehouse readiness closure | Closeout complete: lakehouse code, documentation, diagrams, and evidence now agree with two 20-question practice blocks, wrong-answer logging, and separate tutorial evidence through Lesson 33; remaining pre-governance work is carry-forward review |
-| August | IAM, Organizations, SCPs, logging, governance | OU/SCP/logging/IAM design complete |
-| September | Networking, hybrid connectivity, resilience | TGW/PrivateLink/DX/VPN/DR comparison artifacts complete |
-| October | Migration, modernization, and cost optimization | Migration and cost artifacts complete; first full practice exam; containers remain parked unless readiness is already on track and a short exception is approved |
-| November | Practice exams and remediation | Booking decision based on timed scores |
-| December | Exam attempt | Attempt only if readiness criteria are met |
+| June–July | Lakehouse closure, governance evidence, Networking, and Resilience/DR transition | Lakehouse closure and bounded Domain 1 governance are evidenced; Networking package is complete; DR pattern, RTO/RPO, Lakehouse recovery-mapping, source-review, and focused 12/12 submission artifacts are complete repository evidence, with the recall-isolation caveat preserved |
+| August | Resilience/DR closure, migration/cost decisions, and timed practice | Fresh DR retest complete; migration and cost decision artifacts complete; two full timed practice exams and their remediation evidence recorded |
+| September | Formal readiness review and SAP-C02 attempt | Review and booking decision completed Monday, 2026-09-07; targeted remediation follows; exam attempted no later than 2026-09-30 |
+| Post-exam | Resume or re-plan deferred portfolio work | Begin only after the SAP-C02 attempt and a tracker/handover state transition |
 
 ---
 
@@ -702,7 +743,7 @@ Use this to capture attractive distractions without acting on them.
 Use this checklist to prevent the tracker, platform documentation, and old
 phase plans from drifting apart again.
 
-### Immediate repository reset
+### Historical repository reset completed in June 2026
 
 - [x] Merge the completed Phase 17AU evidence branch.
 - [x] Synchronize local `main` with `origin/main`, including the resolved
@@ -1111,27 +1152,26 @@ phase plans from drifting apart again.
 
 | Acronym | Meaning |
 |---|---|
+| ADR | Architecture Decision Record |
+| ALB | Application Load Balancer |
 | AWS | Amazon Web Services |
-| SAP-C02 | AWS Certified Solutions Architect – Professional exam version |
-| IAM | Identity and Access Management |
-| SCP | Service Control Policy |
-| OU | Organizational Unit |
-| S3 | Simple Storage Service |
-| KMS | Key Management Service |
-| VPC | Virtual Private Cloud |
-| TGW | Transit Gateway |
-| DX | Direct Connect |
-| VPN | Virtual Private Network |
 | DNS | Domain Name System |
 | DR | Disaster Recovery |
-| RTO | Recovery Time Objective |
-| RPO | Recovery Point Objective |
-| ECS | Elastic Container Service |
 | ECR | Elastic Container Registry |
+| ECS | Elastic Container Service |
 | EKS | Elastic Kubernetes Service |
-| ALB | Application Load Balancer |
-| ADR | Architecture Decision Record |
+| IAM | Identity and Access Management |
+| KMS | Key Management Service |
+| OU | Organizational Unit |
 | REMIT | Regulation on Wholesale Energy Market Integrity and Transparency |
+| RPO | Recovery Point Objective |
+| RTO | Recovery Time Objective |
+| S3 | Simple Storage Service |
+| SAP-C02 | AWS Certified Solutions Architect – Professional exam version |
+| SCP | Service Control Policy |
+| TGW | Transit Gateway |
+| VPC | Virtual Private Cloud |
+| VPN | Virtual Private Network |
 
 Documentation note: write `AWS Well-Architected Framework` in full. Avoid using
 `WAF` for the framework because `AWS WAF` commonly means the AWS Web Application

@@ -40,69 +40,49 @@ Historical planning references:
 
 ## Active SAP-C02 Delivery Sequence
 
-Status as of 2026-07-12: lakehouse closure remains complete, Domain 1 live
-governance has progressed through Security Tooling account placement, AWS
-Config migration/recorder onboarding, foundational GuardDuty delegated
-administration, and the first bounded IAM Identity Center read-only and
-administrator paths in `eu-west-2`. The custom least-privilege
-`SecurityToolingAdmin` permission set and parallel group assignment are live;
-the representative GuardDuty write succeeded with unchanged postconditions,
-and delayed Event History plus the organization-trail object prove its audit
-event. The separately approved removal of the temporary broad Security Tooling
-assignment succeeded, with fresh custom-administrator and auditor sessions
-validated. No further live AWS change is authorized by this plan entry.
+Status as of 2026-07-21: lakehouse closure and the bounded Domain 1 governance
+baseline are complete. The Networking comparison and revision package was
+completed ahead of its former August/September schedule. The active workstream
+is now Resilience/DR: the pattern matrix, RTO/RPO decision table, Lakehouse
+recovery mapping, and answer-bearing source-backed scenario review are complete
+locally. A focused learner submission now scores 12/12; it is untimed and
+learner-attested as a first attempt without viewing the key, but its source was
+answer-bearing, so structural isolation is not claimed. A separate timed
+30-question mixed diagnostic scored 29/30 in 67 minutes, with one ECS
+blue/green-deployment miss recorded for remediation. No full timed exam or
+tested Lakehouse recovery exists, and no further live AWS change is authorized
+by this plan entry. The tracker now targets the SAP-C02 attempt in September
+2026, with a formal readiness and booking review on Monday, 2026-09-07 and an
+attempt no later than 2026-09-30.
 
-1. Close repository state: merge Phase 17AU, synchronize `main`, and retain the
-   resolved tracker-governance version of `AGENTS.md`.
-2. Reconcile the lakehouse baseline rather than rebuilding it. Raw and curated
-   S3 zones, Glue Catalog/ETL, Parquet, Athena, logging, diagrams, tags, and a
-   managed-workflow budget already have implementation or live evidence.
-3. The S3-zone ADR, live posture verification, encryption decision, versioning,
-   lifecycle protection, bucket tags, Billing Cost Allocation Tag activation,
-   Glue/Athena IAM closure, current end-to-end evidence chain, and Phase 1
-   reconciliation are complete. SSE-KMS implementation remains conditional on a
-   documented promotion trigger and explicit approval.
-4. Freeze new AI orchestration and dashboard feature work. Preserve the proven
-   scheduled workflow and hosted demo through maintenance, observation, cost
-   control, and explicit rollback decisions only.
-5. Continue the tracker operating cadence: weekly hours, ongoing study/practice
-   logging, wrong-answer review, and evidence-backed tracker updates.
-6. The June-July lakehouse exit items beyond repository implementation are
-   complete: practice blocks, wrong-answer logging, and separate
-   Python/serverless tutorial evidence through Lesson 33 are recorded. Keep
-   using `docs/planning/domain-2-network-access-patterns-20260621.md` as the
-   Domain 2 carry-forward note until the later networking milestone.
-7. Domain 1 governance implementation remains split into bounded, explicitly
-   approved change units. Initial management-visible `so-aws-admin` dependency
-   evidence, the existing-profile direct-access check, and the approved
-   temporary direct read-only inventory run are recorded; the target-account
-   assignment was removed and verified, and the temporary permission set was
-   deleted under separate explicit approval. The residual `BreakGlassAdminRole`
-   decision is now recorded as retain-only-until-closure/recovery; CloudTrail
-   Lake, budget, root, and service-linked-role closure-blocker evidence is now
-   recorded; the final closure package is recorded in
-   `docs/evidence/domain1-governance-so-aws-admin-final-closure-package-20260709.md`;
-   and `so-aws-admin` was closed under separate explicit approval via
-   `docs/evidence/domain1-governance-so-aws-admin-account-closure-20260709.md`.
-   GuardDuty cost observation is recorded; Security Hub/OAM adoption and
-   networking remain open. The first bounded Identity Center direct-access
-   change completed in Security Tooling under separate approval; its evidence
-   is in
-   `docs/evidence/domain1-governance-identity-center-security-audit-assignment-change-note-20260711.md`.
-   The bounded Security Tooling workforce administrator path is now the
-   least-privilege one-hour `SecurityToolingAdmin` permission set through its
-   dedicated group. The selected representative write and matching Event
-   History plus organization-trail object evidence are complete; the separately
-   approved `AdministratorAccess` assignment removal also succeeded, with the
-   custom administrator and auditor paths verified afterward.
-8. Keep AWS Organizations, SCP, Identity Center, AWS Config, GuardDuty,
-   CloudTrail, and account-boundary changes out of ordinary lakehouse Terraform
-   unless a future task explicitly approves that live-change boundary. The
-   lakehouse Terraform root may record non-mutating governance inventory and
-   manage workload-local IAM, but live organization guardrails remain governed
-   by `docs/adr/0005-aws-organizations-governance-design.md`,
-   `docs/runbooks/domain-1-governance-live-readiness-runbook.md`, and the
-   tracker evidence chain.
+1. Retain the ECS blue/green deployment versus Patch Manager correction and
+   schedule its free-response retest after 2026-07-28.
+2. No earlier than 2026-07-27, create a fresh question-only Resilience/DR spaced
+   retest that does not reuse the completed review's scenarios or answer key.
+3. Freeze and explicitly submit the retest answers before scoring, then record
+   genuine misses without converting one focused result into domain confidence.
+4. Complete the tracker-ordered migration artifacts by 2026-08-10: the 6 Rs
+   matrix, data-migration comparison, and database-migration decision table.
+5. Complete full 75-question timed exams in the weeks of 2026-08-17 and
+   2026-08-24, then prepare the evidence pack for the Monday, 2026-09-07 formal
+   readiness and booking review.
+6. Attempt SAP-C02 during September, with 2026-09-30 as the latest practical
+   date in the controlling tracker.
+7. Continue the tracker operating cadence: record confirmed weekly hours,
+   practice results, wrong-answer remediation, and evidence-backed status
+   updates without inferring time or confidence from artifact timestamps.
+8. Treat the Lakehouse, governance, and Networking baselines as complete
+   evidence packages. Preserve deliberate Security Hub/OAM, broader governance,
+   budget-threshold, and enterprise-networking gaps as deferred or
+   evidence-gated rather than reopening them as immediate work.
+9. Freeze new AI orchestration, dashboard, DNS/ACM, container, and unrelated
+   portfolio expansion. Maintain the already-proven workflow and hosted demo
+   only where the tracker requires observation, cost control, validation, or
+   rollback evidence.
+10. Keep Organizations, SCP, Identity Center, AWS Config, GuardDuty, CloudTrail,
+   and account-boundary changes out of ordinary Lakehouse Terraform. Any future
+   live change requires an explicit task-specific approval, prechange evidence,
+   validation, cost, blast-radius, and rollback boundary.
 
 The detailed Phase 1-17 material below is a historical delivery record and
 implementation reference. It no longer authorizes continuation of deferred AI
