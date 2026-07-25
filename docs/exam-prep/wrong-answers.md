@@ -2,6 +2,8 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
+**Last revised:** 2026-07-25
+
 This log is the durable exam-prep companion to the tracker wrong-answer table.
 It is seeded from the Lakehouse repository tracker and is not Lakehouse
 implementation evidence from any external tutorial workspace.
@@ -23,7 +25,8 @@ For the active folder sequence and document status, start at the
 [Exam-Prep Revision Hub](README.md). Review Cycle 2 is preserved in the
 [four-question retention test](wrong-answer-review-cycle-2-blind-attempt-20260715.md),
 including its initial drafts, corrected final submission, and assessment. The
-clean 25-question mixed Block 2 remains separate practice evidence.
+clean 25-question mixed Block 2 remains separate practice evidence. Full mock
+001 and its two new narrow traps are recorded below.
 
 ## Quick Remediation Index
 
@@ -34,12 +37,16 @@ clean 25-question mixed Block 2 remains separate practice evidence.
 | Private multi-VPC hybrid architecture | [Private Hybrid Network Architecture](#2026-07-01-private-hybrid-network-architecture) |
 | Replayable ordered event ingestion | [Replayable Ordered Event Ingestion](#2026-07-01-replayable-ordered-event-ingestion) |
 | ECS blue/green deployment and rollback | [ECS Blue/Green Deployment Versus Patch Manager](#2026-07-21-ecs-bluegreen-deployment-versus-patch-manager) |
+| SCP scope versus permissions boundary | [SCP Versus IAM Permissions Boundary](#2026-07-23-scp-versus-iam-permissions-boundary) |
+| DynamoDB write sharding and read fan-out | [DynamoDB Write Sharding and Read Fan-Out](#2026-07-23-dynamodb-write-sharding-and-read-fan-out) |
+| DynamoDB lifecycle, change processing, and recovery | [DynamoDB Lifecycle and Recovery Feature Mapping](#2026-07-25-dynamodb-lifecycle-and-recovery-feature-mapping) |
+| Time-series history versus latest state | [Time-Series History Versus Latest-State Lookup](#2026-07-25-time-series-history-versus-latest-state-lookup) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | Timed 30-question mixed diagnostic submitted 2026-07-21 at 29/30 in 67 minutes |
+| Current through practice block | Non-relational database diagnostic submitted 2026-07-25 at 15/18 in 40 minutes; full mock 001 remains the latest full simulation |
 | Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
 | Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
@@ -57,6 +64,9 @@ clean 25-question mixed Block 2 remains separate practice evidence.
 | Block 007 | 25 / 25 | 100% | Clean pass. Stronger coverage of Domain 2 and Domain 3 topics. |
 | Mixed practice Block 2 | 25 / 25 | 100% | Explicitly submitted 2026-07-18; all 10 multi-select questions correct; timing and question text not supplied; separate from Review Cycle 2. |
 | Timed mixed diagnostic - 30 questions | 29 / 30 | 96.7% | Explicitly submitted 2026-07-21 in 67/72 minutes; all 12 multiple-response questions correct; missed ECS blue/green deployment versus Patch Manager. |
+| Full mock 001 - 75 questions | 73 / 75 | 97.3% | Completed 2026-07-23 in 133/180 minutes; 48/48 single choice and 25/27 multiple response; missed SCP scope versus permissions boundaries and DynamoDB write-sharding read fan-out. |
+| SCP versus permissions boundary retest | 6 / 6 | 100% | Completed 2026-07-24 in 18 minutes; all three uncertain responses were correct and the original trap did not recur; attempted before the preferred spacing date, so treat as immediate remediation rather than spaced-recall proof. |
+| Non-relational database diagnostic | 15 / 18 | 83.3% | Completed 2026-07-25 in 40 minutes; 9/9 single-choice and 6/9 multiple-response; misses on questions 4, 8, and 17; six-question spaced retest due no earlier than 2026-07-28. |
 
 ## Artifact Evidence
 
@@ -64,6 +74,7 @@ clean 25-question mixed Block 2 remains separate practice evidence.
 |---|---|---|
 | `sap-c02-completed-exercises-003-to-006.zip` | Completed review logs for Blocks 003 through 006 | Binary archive retained outside the public repo; sanitized manifest recorded at `docs/exam-prep/artifacts/sap-c02-completed-exercises-003-to-006-manifest.md`. |
 | `sap-c02-mixed-diagnostic-30q-20260720.md` and `sap-c02-mixed-diagnostic-30q-review-20260721.md` | Timed 30-question submission and answer-bearing assessment | Retained separately so the frozen learner answers precede the review; 29/30 in 67 minutes. |
+| `sap-c02-non-relational-databases-diagnostic-18q-20260724.md` and `sap-c02-non-relational-databases-diagnostic-review-20260725.md` | Closed-book database submission and answer-bearing assessment | Frozen answers retained separately from the review; 15/18 in 40 minutes; exact-match misses limited to questions 4, 8, and 17. |
 
 ## Review Cycle 1 Checklist
 
@@ -156,6 +167,10 @@ recorded on 2026-07-18; timed-practice evidence remains required.
 | Private multi-VPC hybrid connectivity | Use Direct Connect Gateway, Transit Gateway, and Route 53 Resolver when private routing and hybrid DNS are stated. |
 | Replayable high-throughput event ingestion with multiple consumers | Use Kinesis Data Streams with partition keys and independent consumers; use SQS FIFO for ordered queueing, not stream replay. |
 | ECS application revision with ALB traffic shifting and rollback | Use an ECS blue/green deployment strategy with health/metric validation and rollback; Patch Manager patches managed nodes rather than deploying container application revisions. |
+| Organization-wide preventive restriction with account-class exceptions | Apply an SCP at the appropriate OU; place differently governed security accounts in a separate OU. Use a permissions boundary only to cap permissions for a specific IAM identity. |
+| Concentrated DynamoDB writes on a few entity keys | Add calculated shard suffixes to distribute writes; query all relevant shards in parallel and merge/order the results on read. Capacity mode does not repair a poor key distribution. |
+| DynamoDB expiry, change processing, and recovery | TTL ages items out; Streams emits item-change records; PITR restores earlier table state; a GSI only supplies another query access path. |
+| Time-series history plus latest keyed state | Use Timestream for timestamp-centred history and time-window analysis; use DynamoDB for known-key, millisecond latest-state lookup. |
 
 ## Entries
 
@@ -232,4 +247,80 @@ Exam trap: Selecting a general operations tool because the scenario says update,
 Service comparison: ECS blue/green deployment / CodeDeploy versus AWS Systems Manager Patch Manager.
 Action: Complete one spaced free-response deployment-strategy retest after 2026-07-28 without opening this log first.
 Review status: New miss from the 2026-07-21 timed 30-question diagnostic; remediation recorded, spaced recall pending.
+```
+
+### 2026-07-23: SCP Versus IAM Permissions Boundary
+
+```text
+Question theme: Organization-wide Region restriction for workload accounts with different requirements for security accounts
+SAP-C02 domain: Domain 1 - Design Solutions for Organizational Complexity
+Question number: 1
+My answer: B, C
+Correct answer: C, D
+My answer pattern: Used an IAM identity-level control where the scenario required an organization-wide preventive restriction.
+Correct answer pattern: Apply a Region-restriction SCP to the workload OU and keep security accounts in a separate OU that does not inherit that restriction.
+Why correct: An SCP defines the maximum permissions available in affected member accounts and can enforce the restriction across an OU. Separate OU placement preserves a different policy-inheritance boundary for security accounts.
+Why my answer was wrong: An IAM permissions boundary limits one IAM user or role; it does not impose the required account-wide or OU-wide preventive control.
+Exam trap: Selecting an identity-scoped maximum-permissions control for an organization-scoped requirement.
+Service comparison: AWS Organizations SCP versus IAM permissions boundary.
+Error category: Scope or policy-evaluation error; multi-select exact-match error.
+Action: Continue recurrence monitoring in independent full mocks; retain the role-ARN versus role-session-ARN resource-policy boundary distinction.
+Review status: Focused remediation passed 6/6 on 2026-07-24 in 18 minutes, with all three learner-marked uncertain items correct. The attempt preceded the preferred spacing date, so independent-mock transfer evidence remains required.
+```
+
+### 2026-07-23: DynamoDB Write Sharding and Read Fan-Out
+
+```text
+Question theme: Concentrated writes on a small number of very high-volume DynamoDB partition keys
+SAP-C02 domain: Domain 3 - Continuous Improvement for Existing Solutions
+Question number: 13
+My answer: B, D
+Correct answer: A, D
+My answer pattern: Treated capacity mode as the repair for poor key distribution and omitted the read consequence of write sharding.
+Correct answer pattern: Add a calculated shard suffix to distribute writes across partition keys, then query every relevant shard in parallel and merge and order the results.
+Why correct: Shard suffixes spread concentrated writes across partitions, but the original entity's records then span several partition keys and require fan-out reads.
+Why my answer was wrong: Changing capacity mode can alter capacity management, but it does not repair a hot-key access pattern or remove the need to distribute writes.
+Exam trap: Focusing on provisioned versus on-demand capacity while ignoring partition-key distribution and the resulting read-path trade-off.
+Service comparison: DynamoDB key-design write sharding versus capacity-mode selection.
+Error category: Missed architectural consequence; multi-select exact-match error.
+Action: Reconstruct the complete read path—query every relevant shard, merge the results, then establish cross-shard order—and retain that GSI reads are eventually consistent only; complete the spaced exact-match retest no earlier than 2026-07-28.
+Review status: Partial recurrence on diagnostic question 4 on 2026-07-25. The learner selected fan-out query/merge but selected a strongly consistent GSI instead of explicit cross-shard ordering. Spaced retest and independent-mock transfer remain pending.
+```
+
+### 2026-07-25: DynamoDB Lifecycle and Recovery Feature Mapping
+
+```text
+Question theme: Automatic expiry, asynchronous item-change processing, and restoration after accidental writes
+SAP-C02 domain: Domain 2 / Domain 3
+Question number: 8
+My answer: A, C, D
+Correct answer: A, B, C
+My answer pattern: Correctly chose TTL and PITR but selected a GSI rather than DynamoDB Streams for reacting to item changes.
+Correct answer pattern: Use TTL for asynchronous expiry, DynamoDB Streams for item-change events, and PITR for restoration to an earlier table state.
+Why correct: Each capability maps independently to one requirement: data ageing, change capture, and recovery.
+Why my answer was wrong: A GSI creates another query access path; it does not publish insert, update, or delete events to a consumer.
+Exam trap: Treating every DynamoDB auxiliary feature as an indexing option instead of mapping the requested function precisely.
+Service comparison: DynamoDB TTL versus Streams versus PITR versus GSI.
+Error category: Feature-mapping knowledge gap; multiple-response requirement-decomposition error.
+Action: Reproduce the four-part mapping from memory and complete the six-question spaced retest no earlier than 2026-07-28.
+Review status: New gap demonstrated by the 2026-07-25 closed-book diagnostic; learner marked the question uncertain; spaced recall pending.
+```
+
+### 2026-07-25: Time-Series History Versus Latest-State Lookup
+
+```text
+Question theme: Historical time-window telemetry analysis plus millisecond latest-state lookup by known device ID
+SAP-C02 domain: Domain 2 / Domain 3
+Question number: 17
+My answer: A
+Correct answer: A, B
+My answer pattern: Correctly selected Timestream for historical analysis but omitted DynamoDB for the separately stated latest-state access pattern.
+Correct answer pattern: Use Timestream for timestamp-centred history and time-window queries, and DynamoDB for known-key latest-state retrieval.
+Why correct: The two stores serve distinct access patterns rather than forcing operational and analytical requests into one model.
+Why my answer was wrong: The answer satisfied only the historical-analysis clause; a Choose TWO response also required a service for the operational latest-state clause.
+Exam trap: Stopping after finding one valid service in a multi-requirement, multiple-response question.
+Service comparison: Amazon Timestream versus DynamoDB in a purpose-built multi-store design.
+Error category: Scenario-decomposition and answer-completeness error; exact-match multiple-response error.
+Action: Count required selections and map one selected component to every explicit requirement before submission; complete the spaced retest no earlier than 2026-07-28.
+Review status: New gap demonstrated by the 2026-07-25 closed-book diagnostic; not marked uncertain; spaced recall pending.
 ```
