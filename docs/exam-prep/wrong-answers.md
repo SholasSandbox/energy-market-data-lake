@@ -28,30 +28,34 @@ including its initial drafts, corrected final submission, and assessment. The
 clean 25-question mixed Block 2 remains separate practice evidence. Full mocks
 001 and 002 and their narrow traps are recorded below.
 
-## Quick Remediation Index
+## Quick Remediation and Reference Index
 
-| Weak area | Durable entry |
-|---|---|
-| Hybrid private DNS | [Hybrid DNS Private Resolution](#2026-06-19-hybrid-dns-private-resolution) |
-| Urgent data-centre exit | [Urgent Data-Centre Exit](#2026-06-19-urgent-data-centre-exit) |
-| Private multi-VPC hybrid architecture | [Private Hybrid Network Architecture](#2026-07-01-private-hybrid-network-architecture) |
-| Replayable ordered event ingestion | [Replayable Ordered Event Ingestion](#2026-07-01-replayable-ordered-event-ingestion) |
-| ECS blue/green deployment and rollback | [ECS Blue/Green Deployment Versus Patch Manager](#2026-07-21-ecs-bluegreen-deployment-versus-patch-manager) |
-| SCP scope versus permissions boundary | [SCP Versus IAM Permissions Boundary](#2026-07-23-scp-versus-iam-permissions-boundary) |
-| Workforce AWS-account access | [IAM Identity Center Versus Cognito](#2026-07-29-iam-identity-center-versus-cognito) |
-| Migration Hub home Region | [Migration Hub Home Region Versus Data Transfer](#2026-07-29-migration-hub-home-region-versus-data-transfer) |
-| DAX application integration | [DAX Cluster and Client](#2026-07-29-dax-cluster-and-client) |
-| Private on-premises S3 access | [S3 Interface Versus Gateway Endpoint](#2026-07-29-s3-interface-versus-gateway-endpoint) |
-| DynamoDB write sharding and read fan-out | [DynamoDB Write Sharding and Read Fan-Out](#2026-07-23-dynamodb-write-sharding-and-read-fan-out) |
-| DynamoDB lifecycle, change processing, and recovery | [DynamoDB Lifecycle and Recovery Feature Mapping](#2026-07-25-dynamodb-lifecycle-and-recovery-feature-mapping) |
-| Time-series history versus latest state | [Time-Series History Versus Latest-State Lookup](#2026-07-25-time-series-history-versus-latest-state-lookup) |
-| Physical-server dependency discovery | [Application Discovery Agent Versus Agentless Collection](#2026-07-28-application-discovery-agent-versus-agentless-collection) |
+Use the entry for the mistake and remediation status, the local note for the
+exam-oriented mental model, and the AWS source when exact service behaviour or
+scope needs to be rechecked.
+
+| Weak area | Durable entry | Local revision | Official AWS documentation |
+|---|---|---|---|
+| Hybrid private DNS | [Hybrid DNS Private Resolution](#2026-06-19-hybrid-dns-private-resolution) | [Route 53 lesson](route-53-sap-c02-key-lessons-20260715.md) | [Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html) |
+| Urgent data-centre exit | [Urgent Data-Centre Exit](#2026-06-19-urgent-data-centre-exit) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | [Application Migration Service rehost pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-database-rehost-tools/mgn.html) |
+| Private multi-VPC hybrid architecture | [Private Hybrid Network Architecture](#2026-07-01-private-hybrid-network-architecture) | [Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | [Direct Connect gateways](https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways.html) · [Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html) |
+| Replayable ordered event ingestion | [Replayable Ordered Event Ingestion](#2026-07-01-replayable-ordered-event-ingestion) | [Review Cycle 2 explanation](wrong-answer-review-cycle-2-blind-attempt-20260715.md#final-assessment) | [Kinesis concepts](https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html) · [Enhanced fan-out consumers](https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html) |
+| ECS blue/green deployment and rollback | [ECS Blue/Green Deployment Versus Patch Manager](#2026-07-21-ecs-bluegreen-deployment-versus-patch-manager) | [Timed diagnostic review](sap-c02-mixed-diagnostic-30q-review-20260721.md) | [ECS blue/green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-bluegreen.html) · [Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html) |
+| SCP scope versus permissions boundary | [SCP Versus IAM Permissions Boundary](#2026-07-23-scp-versus-iam-permissions-boundary) | [Hidden-gap model](sap-c02-hidden-gap-model-review-20260725.md#model-1---scp-versus-iam-permissions-boundary) · [Retest review](sap-c02-scp-permissions-boundary-closed-book-retest-review-20260724.md) | [Organizations SCPs](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) · [IAM permissions boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html) |
+| DynamoDB write sharding and read fan-out | [DynamoDB Write Sharding and Read Fan-Out](#2026-07-23-dynamodb-write-sharding-and-read-fan-out) | [Hidden-gap model](sap-c02-hidden-gap-model-review-20260725.md#model-2---dynamodb-write-sharding-and-fan-out-reads) | [DynamoDB write sharding](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html) |
+| DynamoDB lifecycle, change processing, and recovery | [DynamoDB Lifecycle and Recovery Feature Mapping](#2026-07-25-dynamodb-lifecycle-and-recovery-feature-mapping) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md) | [TTL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) · [Streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) · [PITR restore](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/pointintimerecovery_restores.html) · [GSIs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html) |
+| Time-series history versus latest state | [Time-Series History Versus Latest-State Lookup](#2026-07-25-time-series-history-versus-latest-state-lookup) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) | [Timestream data modelling](https://docs.aws.amazon.com/timestream/latest/developerguide/data-modeling.html) · [DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) |
+| Physical-server dependency discovery | [Application Discovery Agent Versus Agentless Collection](#2026-07-28-application-discovery-agent-versus-agentless-collection) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | [Discovery Agent](https://docs.aws.amazon.com/application-discovery/latest/userguide/discovery-agent.html) · [Agentless Collector](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector.html) |
+| Workforce AWS-account access | [IAM Identity Center Versus Cognito](#2026-07-29-iam-identity-center-versus-cognito) | [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) | [Identity Center account assignments](https://docs.aws.amazon.com/singlesignon/latest/userguide/assignusers.html) · [Cognito identity pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html) |
+| Migration Hub home Region | [Migration Hub Home Region Versus Data Transfer](#2026-07-29-migration-hub-home-region-versus-data-transfer) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) | [Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) · [What DataSync transfers](https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html) |
+| DAX application integration | [DAX Cluster and Client](#2026-07-29-dax-cluster-and-client) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) | [DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) · [DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
+| Private on-premises S3 access | [S3 Interface Versus Gateway Endpoint](#2026-07-29-s3-interface-versus-gateway-endpoint) | [Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) | [S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | Non-relational database spaced retest completed 2026-07-28 at 6/6 in 15 minutes; full mock 001 remains the latest full simulation |
+| Current through practice block | Full mock 002 completed 2026-07-29 at 71/75 in 139 minutes; its four narrow misses are the newest entries |
 | Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
 | Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
@@ -72,6 +76,9 @@ clean 25-question mixed Block 2 remains separate practice evidence. Full mocks
 | Full mock 001 - 75 questions | 73 / 75 | 97.3% | Completed 2026-07-23 in 133/180 minutes; 48/48 single choice and 25/27 multiple response; missed SCP scope versus permissions boundaries and DynamoDB write-sharding read fan-out. |
 | SCP versus permissions boundary retest | 6 / 6 | 100% | Completed 2026-07-24 in 18 minutes; all three uncertain responses were correct and the original trap did not recur; attempted before the preferred spacing date, so treat as immediate remediation rather than spaced-recall proof. |
 | Non-relational database diagnostic | 15 / 18 | 83.3% | Completed 2026-07-25 in 40 minutes; 9/9 single-choice and 6/9 multiple-response; misses on questions 4, 8, and 17; six-question spaced retest due no earlier than 2026-07-28. |
+| Resilience/DR spaced retest | 12 / 12 | 100% | Completed 2026-07-27 in 16 minutes; all seven exact-match multiple-response questions correct. |
+| Non-relational database spaced retest | 6 / 6 | 100% | Completed 2026-07-28 in 15 minutes; focused remediation closed, independent-mock transfer remains. |
+| Full mock 002 - 75 questions | 71 / 75 | 94.7% | Completed 2026-07-29 in 139/180 minutes; 45/48 single-response and 26/27 exact-match multiple-response; four narrow misses logged below. |
 
 ## Artifact Evidence
 
@@ -80,6 +87,7 @@ clean 25-question mixed Block 2 remains separate practice evidence. Full mocks
 | `sap-c02-completed-exercises-003-to-006.zip` | Completed review logs for Blocks 003 through 006 | Binary archive retained outside the public repo; sanitized manifest recorded at `docs/exam-prep/artifacts/sap-c02-completed-exercises-003-to-006-manifest.md`. |
 | `sap-c02-mixed-diagnostic-30q-20260720.md` and `sap-c02-mixed-diagnostic-30q-review-20260721.md` | Timed 30-question submission and answer-bearing assessment | Retained separately so the frozen learner answers precede the review; 29/30 in 67 minutes. |
 | `sap-c02-non-relational-databases-diagnostic-18q-20260724.md` and `sap-c02-non-relational-databases-diagnostic-review-20260725.md` | Closed-book database submission and answer-bearing assessment | Frozen answers retained separately from the review; 15/18 in 40 minutes; exact-match misses limited to questions 4, 8, and 17. |
+| `sap-c02-full-mock-002-75q-20260728.md` and `sap-c02-full-mock-002-review-20260729.md` | Full timed mock 002 submission and answer-bearing assessment | Frozen answers retained before independent exact-match marking; 71/75 in 139 minutes; four narrow misses logged below. |
 
 ## Review Cycle 1 Checklist
 
@@ -195,6 +203,9 @@ Action: Drill hybrid DNS scenarios until the resolver-endpoint wording is automa
 Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial draft gap preserved.
 ```
 
+References: [local Route 53 lesson](route-53-sap-c02-key-lessons-20260715.md) ·
+[AWS Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html)
+
 ### 2026-06-19: Urgent Data-Centre Exit
 
 ```text
@@ -209,6 +220,9 @@ Service comparison: AWS Application Migration Service rehost vs refactor/replatf
 Action: For migration questions, identify time pressure, change tolerance, and cutover risk before choosing the pattern.
 Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial service-name and sequencing gaps preserved.
 ```
+
+References: [local migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
+[AWS Application Migration Service rehost pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-database-rehost-tools/mgn.html)
 
 ### 2026-07-01: Private Hybrid Network Architecture
 
@@ -225,6 +239,10 @@ Action: For multi-select networking questions, require every selected service to
 Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial PrivateLink transport error preserved.
 ```
 
+References: [local Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) ·
+[AWS Direct Connect gateways](https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways.html) ·
+[AWS Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html)
+
 ### 2026-07-01: Replayable Ordered Event Ingestion
 
 ```text
@@ -240,6 +258,10 @@ Action: Split event questions into ordering, replay, throughput, and consumer mo
 Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial partition/shard and SQS reasoning gaps preserved.
 ```
 
+References: [local Review Cycle 2 explanation](wrong-answer-review-cycle-2-blind-attempt-20260715.md#final-assessment) ·
+[AWS Kinesis concepts](https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html) ·
+[AWS enhanced fan-out consumers](https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html)
+
 ### 2026-07-21: ECS Blue/Green Deployment Versus Patch Manager
 
 ```text
@@ -254,6 +276,10 @@ Service comparison: ECS blue/green deployment / CodeDeploy versus AWS Systems Ma
 Action: Complete one spaced free-response deployment-strategy retest after 2026-07-28 without opening this log first.
 Review status: New miss from the 2026-07-21 timed 30-question diagnostic; remediation recorded, spaced recall pending.
 ```
+
+References: [local diagnostic review](sap-c02-mixed-diagnostic-30q-review-20260721.md) ·
+[AWS ECS blue/green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-bluegreen.html) ·
+[AWS Systems Manager Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html)
 
 ### 2026-07-23: SCP Versus IAM Permissions Boundary
 
@@ -274,6 +300,11 @@ Action: Continue recurrence monitoring in independent full mocks; retain the rol
 Review status: Focused remediation passed 6/6 on 2026-07-24 in 18 minutes, with all three learner-marked uncertain items correct. The attempt preceded the preferred spacing date, so independent-mock transfer evidence remains required.
 ```
 
+References: [local SCP/boundary model](sap-c02-hidden-gap-model-review-20260725.md#model-1---scp-versus-iam-permissions-boundary) ·
+[local retest review](sap-c02-scp-permissions-boundary-closed-book-retest-review-20260724.md) ·
+[AWS Organizations SCPs](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) ·
+[AWS IAM permissions boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
+
 ### 2026-07-23: DynamoDB Write Sharding and Read Fan-Out
 
 ```text
@@ -292,6 +323,9 @@ Error category: Missed architectural consequence; multi-select exact-match error
 Action: Reconstruct the complete read path—query every relevant shard, merge the results, then establish cross-shard order—and retain that GSI reads are eventually consistent only.
 Review status: Focused spaced retest passed 6/6 on 2026-07-28 in 15 minutes. Questions 1 and 2 correctly recalled fan-out, merge, cross-shard ordering, and GSI consistency despite learner-marked uncertainty. Focused remediation is complete; independent-mock transfer remains pending.
 ```
+
+References: [local write-sharding model](sap-c02-hidden-gap-model-review-20260725.md#model-2---dynamodb-write-sharding-and-fan-out-reads) ·
+[AWS DynamoDB write sharding](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html)
 
 ### 2026-07-25: DynamoDB Lifecycle and Recovery Feature Mapping
 
@@ -312,6 +346,13 @@ Action: Reproduce the four-part mapping from memory and monitor recurrence in in
 Review status: Focused spaced retest questions 3, 4, and 6 were correct on 2026-07-28. The TTL, Streams, PITR, GSI, and primary-key roles were separated correctly; focused remediation is complete.
 ```
 
+References: [local database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
+[local diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md) ·
+[AWS DynamoDB TTL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) ·
+[AWS DynamoDB Streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) ·
+[AWS PITR restore](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/pointintimerecovery_restores.html) ·
+[AWS global secondary indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html)
+
 ### 2026-07-25: Time-Series History Versus Latest-State Lookup
 
 ```text
@@ -331,6 +372,11 @@ Action: Count required selections and map one selected component to every explic
 Review status: Focused spaced retest questions 5 and 6 were correct on 2026-07-28. The learner mapped both history and latest-state clauses and selected the required number of options; focused remediation is complete.
 ```
 
+References: [local database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
+[local diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) ·
+[AWS Timestream data modelling](https://docs.aws.amazon.com/timestream/latest/developerguide/data-modeling.html) ·
+[AWS DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
+
 ### 2026-07-28: Application Discovery Agent Versus Agentless Collection
 
 ```text
@@ -346,6 +392,11 @@ Precision caveat: Current Agentless Collector includes a Network Data Collection
 Action: During the Domain 4 migration matrix, compare physical versus VMware scope, process/TCP detail, deployment overhead, and Migration Hub's role. Validate transfer in the normal full-mock cadence; create a focused retest only if the distinction recurs.
 Review status: New external-assessment miss supplied 2026-07-28. No complete question set, timing, or score was provided; this entry records only the demonstrated decision gap.
 ```
+
+References: [local migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
+[AWS Discovery Agent](https://docs.aws.amazon.com/application-discovery/latest/userguide/discovery-agent.html) ·
+[AWS Agentless Collector](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector.html) ·
+[AWS Agentless network module](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector-gs-network-data-collection.html)
 
 ### 2026-07-29: IAM Identity Center Versus Cognito
 
@@ -366,6 +417,11 @@ Action: Reproduce the workforce-versus-customer identity rule from memory and in
 Review status: Open; first recurrence test pending.
 ```
 
+References: [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
+[AWS Identity Center account assignments](https://docs.aws.amazon.com/singlesignon/latest/userguide/assignusers.html) ·
+[AWS Identity Center permission sets](https://docs.aws.amazon.com/singlesignon/latest/userguide/permissionsets.html) ·
+[AWS Cognito identity pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html)
+
 ### 2026-07-29: Migration Hub Home Region Versus Data Transfer
 
 ```text
@@ -384,6 +440,11 @@ Error category: Service-boundary and Region-scope gap.
 Action: Reproduce home Region, tracking role, and data-movement boundary from memory and include it in the post-2026-07-31 spaced retest.
 Review status: Open; first recurrence test pending.
 ```
+
+References: [local migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
+[local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
+[AWS Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) ·
+[AWS DataSync scope](https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html)
 
 ### 2026-07-29: DAX Cluster and Client
 
@@ -404,6 +465,11 @@ Action: State both halves—cluster and client—then include the pattern in the
 Review status: Open; first recurrence test pending.
 ```
 
+References: [local database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
+[local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
+[AWS DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) ·
+[AWS DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html)
+
 ### 2026-07-29: S3 Interface Versus Gateway Endpoint
 
 ```text
@@ -422,3 +488,7 @@ Error category: Hybrid-connectivity scope error.
 Action: Reproduce VPC-origin versus on-premises-origin endpoint selection from memory and include it in the post-2026-07-31 spaced retest.
 Review status: Open; first recurrence test pending.
 ```
+
+References: [local Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) ·
+[local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
+[AWS S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)
