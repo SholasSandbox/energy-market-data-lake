@@ -3,9 +3,9 @@
 <!-- markdownlint-disable MD013 MD060 -->
 
 **Date prepared:** 2026-07-25<br>
-**Last revised:** 2026-07-25<br>
+**Last revised:** 2026-07-28<br>
 **Earliest attempt:** 2026-07-28<br>
-**Status:** Question-only; no answer key, explanations, or hints are included.
+**Status:** Frozen learner submission; answer key and explanations remain isolated in the separate review.
 
 ## Attempt Rules
 
@@ -105,21 +105,22 @@ F. DAX as the durable source of truth.
 ## Frozen Submission
 
 ```text
-Start:
-End:
-Uncertain:
+Start: 11:45AM
+End: 12:00PM
+Uncertain:1,2
 
-1:
-2:
-3:
-4:
-5:
-6:
+1:ABC
+2:AC
+3:ABC
+4:A
+5:AB
+6:ABC
 
-Submission status: FROZEN / NOT FROZEN
+Submission status: FROZEN
 ```
 
 ## Post-Attempt Boundary
 
-After the learner freezes and submits the answers, create the answer-bearing
-review and update the tracker only from demonstrated retest evidence.
+The frozen submission was independently marked in the separate
+[answer-bearing review](sap-c02-non-relational-databases-spaced-retest-review-20260728.md).
+The tracker records only the demonstrated retest evidence.

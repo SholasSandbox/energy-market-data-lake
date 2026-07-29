@@ -230,7 +230,7 @@ known-key latest state -> DynamoDB
 
 The recurring sharding consequence plus two adjacent exact-match gaps warrants
 a short, fresh retest. Use
-[the six-question question-only retest](sap-c02-non-relational-databases-spaced-retest-6q-20260725.md)
+[the six-question question-only retest](sap-c02-non-relational-databases-spaced-retest-6q-20260728.md)
 no earlier than **2026-07-28**. Keep this review closed during that attempt.
 The retest is not a replacement for full mock 002.
 

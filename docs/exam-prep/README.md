@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-07-25
+**Last revised:** 2026-07-29
 
 ## Start Here
 
@@ -18,15 +18,32 @@ just by topic:
 
 ## Current Immediately Actionable Priority
 
+Full Mock 002 was frozen on 2026-07-29 and independently scored
+**71/75 (94.7%) in 139 of 180 minutes**. The result includes 45/48
+single-response and 26/27 exact-match multiple-response answers, 41 minutes
+remaining, and every domain floor above 93%. The
+[answer-bearing review](sap-c02-full-mock-002-review-20260729.md) records the
+complete key, score breakdown, uncertainty analysis, and four genuine misses:
+IAM Identity Center versus Cognito, Migration Hub home Region, DAX cluster plus
+client integration, and S3 interface versus gateway endpoints for on-premises
+access. Complete only bounded remediation, then use a fresh spaced retest no
+earlier than 2026-07-31. Do not let it replace either weekly full mock; full
+mock 003 remains the next broad transfer check.
+
 The bounded non-relational database gap-closing diagnostic was frozen on
-2026-07-25 and scored **15/18 (83.3%)** in 40 minutes: 9/9 single-choice and
-6/9 multiple-response. Use the
-[answer-bearing diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md)
-for questions 4, 8, and 17 only. The demonstrated gaps are random write-shard
-read ordering/GSI consistency, DynamoDB lifecycle and recovery feature mapping,
-and separating time-series history from latest-state lookup. Complete the
-[six-question spaced retest](sap-c02-non-relational-databases-spaced-retest-6q-20260725.md)
-no earlier than 2026-07-28; it remains question-only.
+2026-07-25 and scored **15/18 (83.3%)** in 40 minutes. Its three demonstrated
+gaps were retested on 2026-07-28 using the fresh
+[six-question spaced retest](sap-c02-non-relational-databases-spaced-retest-6q-20260728.md).
+The frozen submission scored **6/6 (100%) in 15 minutes**, including 5/5
+exact-match multiple-response questions. Questions 1 and 2 were marked
+uncertain and both were correct. The
+[answer-bearing retest review](sap-c02-non-relational-databases-spaced-retest-review-20260728.md)
+closes the focused remediation gate; monitor transfer in full mock 002 rather
+than adding another immediate database drill.
+The
+[Full Mock 002 submission](sap-c02-full-mock-002-75q-20260728.md) now contains
+the canonical frozen timing, uncertainty list, and all 75 submitted responses.
+Its answer key remains isolated in the review document.
 The source-backed lesson was expanded on 2026-07-25 with physical-partition
 limits, capacity arithmetic, GSI backpressure diagnosis, DAX cache mechanics,
 concurrency controls, and current MREC/MRSC Streams behaviour. Outdated claims
@@ -53,9 +70,14 @@ are complete in the repository. The learner explicitly submitted all 12 scenario
 on 2026-07-20 and scored 12/12, self-attesting that the first attempt was made
 without viewing the key. The
 [submission record](resilience-dr-scenario-drill-submission-20260720.md)
-preserves the untimed and answer-bearing-source isolation caveats. The next
-Resilience/DR gate is a fresh question-only spaced retest no earlier than
-2026-07-27. Following the 2026-07-23 baseline, the learner plans two independent
+preserves the untimed and answer-bearing-source isolation caveats. The
+[fresh 12-question Resilience/DR spaced retest](sap-c02-resilience-dr-spaced-retest-12q-20260726.md)
+was completed closed-book on 2026-07-27 and scored **12/12 in 16 minutes**:
+5/5 single-response and 7/7 exact-match multiple-response. Questions 2 and 4
+were marked uncertain and both were correct. The
+[answer-bearing assessment](sap-c02-resilience-dr-spaced-retest-review-20260727.md)
+records the source-verified key and evidence boundary. Following the
+2026-07-23 baseline, the learner plans two independent
 75-question simulated exams per week over four weeks, ahead of the formal
 readiness and booking review on Monday, 2026-09-07. The target is to attempt
 SAP-C02 no later than 2026-09-30.
@@ -66,9 +88,9 @@ was explicitly submitted on 2026-07-21 at 29/30 in 67 of 72 minutes. All 12
 multiple-response questions were correct. The single miss was ECS blue/green
 deployment and rollback versus Systems Manager Patch Manager; use the
 [answer-bearing review](sap-c02-mixed-diagnostic-30q-review-20260721.md) only
-for remediation. The fresh Resilience/DR spaced retest remains scheduled for
-2026-07-27, and the deployment-strategy miss receives its own later spaced
-free-response retest.
+for remediation. The fresh Resilience/DR spaced retest is now complete at
+12/12; the deployment-strategy miss receives its own later spaced free-response
+retest.
 
 ## Recommended Revision Routes
 
@@ -112,12 +134,14 @@ free-response retest.
 | SG, NACL, WAF, Shield, Network Firewall | [Broader Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | [Scenario review](networking-scenario-drill-review-20260715.md) |
 | Flow Logs, Reachability Analyzer, Traffic Mirroring | [Broader Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | Recall Check in the same lesson; use a separate answer sheet |
 | RTO/RPO, dependency constraints, and objective worksheet | [RTO/RPO decision table](../planning/domain-2-rto-rpo-decision-table-20260718.md) | Apply the reusable record without assigning unapproved Lakehouse targets |
-| Backup/restore, pilot light, warm standby, active/active | [Resilience and DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md) | [12/12 focused submission](resilience-dr-scenario-drill-submission-20260720.md); fresh isolated spaced retest pending |
+| Backup/restore, pilot light, warm standby, active/active | [Resilience and DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md) | [Fresh isolated spaced retest](sap-c02-resilience-dr-spaced-retest-12q-20260726.md) completed 12/12 in 16 minutes; [assessment](sap-c02-resilience-dr-spaced-retest-review-20260727.md) records exact-match evidence |
 | Lakehouse recovery boundary | [Lakehouse recovery mapping](../planning/domain-2-lakehouse-recovery-mapping-20260719.md) | [Source-backed scenario review](resilience-dr-scenario-drill-review-20260719.md) and [focused submission](resilience-dr-scenario-drill-submission-20260720.md); no live recovery claim |
-| DynamoDB data modelling, indexes, consistency, hot keys, global tables and DAX | [Non-relational databases key lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) and [hidden-gap model review](sap-c02-hidden-gap-model-review-20260725.md) | [Frozen 15/18 diagnostic](sap-c02-non-relational-databases-diagnostic-18q-20260724.md), [review](sap-c02-non-relational-databases-diagnostic-review-20260725.md), and [pending spaced retest](sap-c02-non-relational-databases-spaced-retest-6q-20260725.md) |
+| DynamoDB data modelling, indexes, consistency, hot keys, global tables and DAX | [Non-relational databases key lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) and [hidden-gap model review](sap-c02-hidden-gap-model-review-20260725.md) | [Frozen 15/18 diagnostic](sap-c02-non-relational-databases-diagnostic-18q-20260724.md), [diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md), [6/6 spaced retest](sap-c02-non-relational-databases-spaced-retest-6q-20260728.md), and [retest review](sap-c02-non-relational-databases-spaced-retest-review-20260728.md) |
 | ElastiCache Valkey/Redis OSS versus Memcached | [Non-relational databases key lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Diagnostic questions 11–13 passed 3/3; continue transfer testing in independent mocks |
 | DocumentDB, Keyspaces, Neptune, Timestream and OpenSearch contrast | [Non-relational databases key lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Diagnostic questions 14–18 scored 4/5; [review question 17](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) and complete the spaced retest |
 | Migration rehost decision and Kinesis versus SQS FIFO | [Wrong-answer log](wrong-answers.md) during remediation only | [Review Cycle 2 evidence](wrong-answer-review-cycle-2-blind-attempt-20260715.md#final-assessment) records corrected final answers and initial gaps |
+| Region-SCP exceptions, Direct Connect BGP, ARC DNS behaviour, DynamoDB global-table reads, EBS performance, and migration discovery | [Gemini Flash weak-area review](sap-c02-gemini-flash-weak-area-review-20260728.md) | Source-backed audit of six supplied assessment extracts; no aggregate score or retest evidence inferred |
+| Application Discovery Service, DataSync, and Migration Hub | [Migration discovery, transfer, and tracking lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | Source-backed Domain 4 lesson; corrects the VMware-module versus network-module boundary and compares transfer/tracking roles |
 
 ## Document Catalogue and Status
 
@@ -129,22 +153,29 @@ free-response retest.
 | [RTO/RPO Decision Table](../planning/domain-2-rto-rpo-decision-table-20260718.md) | Business-led planning worksheet and revision aid | Complete; all Lakehouse objectives remain unset pending an owner |
 | [Lakehouse Recovery Mapping](../planning/domain-2-lakehouse-recovery-mapping-20260719.md) | Repository-grounded recovery inventory and gap analysis | Complete; recoverability foundations recorded, tested recovery not proved |
 | [AWS Non-Relational Databases — SAP-C02 Key Lessons](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Source-backed, bounded database gap-closure lesson | Expanded 2026-07-25 with verified DynamoDB physical mechanics, capacity arithmetic, GSI backpressure, DAX internals, concurrency, and current global-table modes; no recall score implied |
+| [SAP-C02 Full Mock 002 - 75 Questions](sap-c02-full-mock-002-75q-20260728.md) | Frozen full-simulation submission | Completed 2026-07-29 at 71/75 (94.7%) in 139 minutes; canonical timing, uncertainty list, and responses preserved; no answer key in the attempt artifact |
+| [SAP-C02 Full Mock 002 Review](sap-c02-full-mock-002-review-20260729.md) | Answer-bearing independent assessment | 45/48 single-response, 26/27 exact-match multiple-response, every domain floor above 93%; four narrow misses documented |
 | [SAP-C02 Closed-Book Hidden-Gap Diagnostic](sap-c02-hidden-gap-diagnostic-15q-20260723.md) | Frozen question-only transfer diagnostic | Learner answer set preserved; answer-bearing remediation remains isolated in the model review |
 | [SAP-C02 Hidden-Gap Model Review](sap-c02-hidden-gap-model-review-20260725.md) | Answer-bearing remediation guide | Covers the recurring SCP/boundary and DynamoDB sharding/fan-out models; not recall evidence |
 | [SCP Versus Permissions Boundary Closed-Book Retest](sap-c02-scp-permissions-boundary-closed-book-retest-6q-20260724.md) | Frozen six-question exact-match retest | Submitted 2026-07-24; 6/6 in 18 minutes; early-spacing caveat retained |
 | [SCP Versus Permissions Boundary Retest Review](sap-c02-scp-permissions-boundary-closed-book-retest-review-20260724.md) | Answer-bearing assessment | Original focused trap did not recur; independent-mock transfer monitoring remains open |
 | [SAP-C02 Non-Relational Databases — Closed-Book Diagnostic](sap-c02-non-relational-databases-diagnostic-18q-20260724.md) | Frozen 18-question transfer diagnostic | Submitted 2026-07-25; 15/18 in 40 minutes; 9/9 single-choice and 6/9 multiple-response |
 | [Non-Relational Databases Diagnostic Review](sap-c02-non-relational-databases-diagnostic-review-20260725.md) | Answer-bearing assessment and remediation | Questions 4, 8, and 17 reviewed; three demonstrated gaps recorded |
-| [Non-Relational Databases Spaced Retest](sap-c02-non-relational-databases-spaced-retest-6q-20260725.md) | Question-only six-question retest | Ready no earlier than 2026-07-28; submission and review pending |
+| [Non-Relational Databases Spaced Retest](sap-c02-non-relational-databases-spaced-retest-6q-20260728.md) | Frozen six-question spaced-recall submission | Completed 2026-07-28 at 6/6 in 15 minutes; 1/1 single-response and 5/5 multiple-response; both uncertain answers correct |
+| [Non-Relational Databases Spaced Retest Review](sap-c02-non-relational-databases-spaced-retest-review-20260728.md) | Answer-bearing exact-match assessment | Focused database remediation gate complete; independent-mock transfer monitoring remains |
 | [Resilience and DR Scenario Drill Review](resilience-dr-scenario-drill-review-20260719.md) | Answer-bearing, source-backed review | Complete; later learner result is recorded separately |
 | [Resilience and DR Scenario Submission](resilience-dr-scenario-drill-submission-20260720.md) | Learner submission and assessment | Explicitly submitted 12/12; untimed, learner-attested no-key first attempt, answer-bearing-source isolation caveat |
+| [Resilience/DR Fresh Spaced Retest](sap-c02-resilience-dr-spaced-retest-12q-20260726.md) | Frozen 12-question closed-book transfer retest | Completed 2026-07-27 at 12/12 in 16 minutes; 5/5 single-response and 7/7 multiple-response |
+| [Resilience/DR Fresh Spaced Retest Review](sap-c02-resilience-dr-spaced-retest-review-20260727.md) | Answer-bearing assessment | Source-verified exact-match review; no miss or immediate remediation required |
 | [SAP-C02 Timed Mixed Diagnostic - 30 Questions](sap-c02-mixed-diagnostic-30q-20260720.md) | Completed timed learner submission | Submitted 2026-07-21; 29/30 in 67/72 minutes; 12/12 multiple-response |
 | [SAP-C02 Timed Mixed Diagnostic Review](sap-c02-mixed-diagnostic-30q-review-20260721.md) | Answer-bearing assessment and remediation | One miss: ECS blue/green deployment and rollback versus Patch Manager |
 | [Networking Scenario Drill — Blind Attempt](networking-scenario-drill-blind-attempt-20260715.md) | Learner submission | Completed 2026-07-15, 8/8; focused and untimed |
 | [Networking Scenario Drill Review](networking-scenario-drill-review-20260715.md) | Answer-bearing review | Use only after a blind attempt |
 | [Mixed Practice Block 2](sap-c02-mixed-practice-block-2-submission-20260718.md) | Learner submission | Explicitly submitted; supplied score 25/25; timing and question text unavailable |
 | [Four-question Review Cycle 2](wrong-answer-review-cycle-2-blind-attempt-20260715.md) | Completed retention review | Corrected final submission 4/4; initial draft gaps preserved; untimed |
-| [Wrong-Answer Log](wrong-answers.md) | Cumulative remediation and status log | Current through the 2026-07-25 non-relational database diagnostic |
+| [Wrong-Answer Log](wrong-answers.md) | Cumulative remediation and status log | Current through full mock 002 on 2026-07-29; four new narrow decision gaps recorded |
+| [Gemini Flash Weak-Area Review](sap-c02-gemini-flash-weak-area-review-20260728.md) | External-assessment audit and bounded remediation | Six supplied extracts reviewed against current AWS documentation; two supplied explanations rejected, one outdated agentless generalization narrowed, and only the physical-server discovery miss added to the wrong-answer log |
+| [AWS Migration Discovery, Data Transfer, and Tracking](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | Source-backed Domain 4 lesson | Application Discovery Agent/Agentless Collector modules, DataSync transfer mechanics, and Migration Hub tracking/home-Region boundaries consolidated; no recall score implied |
 | [Completed Exercises 003–006 Manifest](artifacts/sap-c02-completed-exercises-003-to-006-manifest.md) | Evidence provenance | Audit artifact, not a revision lesson |
 
 ## Revision Discipline

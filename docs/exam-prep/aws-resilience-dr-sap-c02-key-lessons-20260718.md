@@ -2,6 +2,8 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
+**Last revised:** 2026-07-26<br>
+
 ## Purpose and Role
 
 **Document role:** source-backed lesson and required DR pattern matrix. Return
@@ -76,7 +78,7 @@ data consistency, and testing.
 | Backup and restore | Hours of downtime/data loss are acceptable; lowest standing cost is important | Backups, infrastructure definitions, and recovery access; little or no application capacity | Highest RTO and RPO of the four patterns | Lowest standing cost; restore duration and orchestration can be substantial | Restore data, deploy infrastructure, configure dependencies, validate, and redirect traffic | Calling a stored backup a proven recovery without a restore test |
 | Pilot light | Core data/services stay replicated, while most application capacity is off or absent | Minimal critical core plus replicated data | Lower than backup/restore; often tens-of-minutes class in exam comparisons | More cost and synchronization work than backup/restore | Provision/scale application tiers, attach dependencies, validate, and redirect traffic | Confusing a pilot light with a fully running scaled-down stack |
 | Warm standby | A complete but reduced-capacity environment is always running | Full functional stack at smaller scale | Minutes-class cue with lower data-loss tolerance | Higher standing cost; continuous deployment and scaling automation required | Scale up, confirm health/capacity, and redirect traffic | Choosing it when only backups or a data core exist in the DR Region |
-| Multi-site active/active | Near-zero interruption is a justified business requirement; both sites serve traffic | Full production capacity in multiple sites/Regions | Lowest RTO/RPO potential | Highest cost and operational complexity; conflict, consistency, and dependency design are critical | Traffic shifts around failure rather than constructing the environment | Assuming active/active automatically prevents data conflicts or dependency failures |
+| Multi-site active/active | Near-zero interruption is a justified business requirement; both sites serve traffic | Production environments actively serve traffic in multiple sites/Regions; capacity is sized for normal demand and the intended failure scenario | Lowest RTO/RPO potential | Highest cost and operational complexity; conflict, consistency, and dependency design are critical | Traffic shifts around failure rather than constructing the environment | Assuming active/active automatically prevents data conflicts or dependency failures |
 
 ### Pattern Selection Shortcut
 

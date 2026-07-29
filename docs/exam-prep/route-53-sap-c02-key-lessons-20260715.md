@@ -2,6 +2,8 @@
 
 <!-- markdownlint-disable MD013 -->
 
+**Last revised:** 2026-07-28
+
 ## Purpose and Scope
 
 **Document role:** source-backed lesson. Return to the
@@ -50,18 +52,53 @@ sections to review misses.
 Route 53 has several related but distinct jobs:
 
 1. **Domain registration** registers a domain name.
-2. **Authoritative DNS** uses public or private hosted zones and records to
-   answer queries for names that Route 53 hosts.
-3. **Traffic routing** uses a record's routing policy to decide which answer to
-   return.
-4. **Health checking** influences whether Route 53 should return an endpoint.
+2. **Authoritative DNS** uses public or private hosted zones and their records
+   to answer queries for namespaces hosted by Route 53.
+3. **Traffic routing** applies the routing policy configured on Route 53
+   records. When multiple records share the queried name and type, the policy
+   determines which eligible record value or alias target Route 53 returns.
+4. **Health checking** influences whether a record or alias target remains
+   eligible for normal DNS-answer selection.
 5. **VPC Resolver** provides recursive DNS inside VPCs and hybrid DNS through
-   inbound/outbound endpoints and rules.
-6. **Resolver DNS Firewall** filters DNS queries; it is not a network firewall
-   and does not replace DNS resolution.
+   inbound and outbound endpoints and Resolver rules.
+6. **Resolver DNS Firewall** filters DNS queries handled by VPC Resolver; it is
+   not a network firewall and does not replace DNS resolution.
 
-Exam rule: identify which of these jobs the scenario requires before selecting
-a Route 53 feature.
+Routing policy and health are separate but can work together. The routing
+policy selects among candidate records, while health configuration can remove
+unhealthy candidates from normal selection.
+
+Exam rule: first identify which Route 53 job the scenario requires. Then identify
+the queried namespace, the record name and type, the possible answer targets,
+the routing policy, and any health or hybrid-resolution requirements.
+
+### What “record” Means in Route 53
+
+A Route 53 record is a DNS resource record set inside a hosted zone. It
+identifies a DNS name and type and contains either one or more record values or
+an alias target.
+
+Depending on the record, it can also include:
+
+- a TTL;
+- a routing policy;
+- routing-policy-specific attributes, such as weight, Region, failover role,
+  or set identifier; and
+- health-check or target-health configuration.
+
+With non-simple routing policies, multiple record entries can have the same
+name and type but point to different resources. A set identifier distinguishes
+those entries.
+
+For example:
+
+| Name | Type | Target | Policy | Weight |
+|---|---|---|---|---:|
+| `api.example.com` | Alias `A` | London ALB | Weighted | 80 |
+| `api.example.com` | Alias `A` | Frankfurt ALB | Weighted | 20 |
+
+Route 53 matches the queried name and type, evaluates the routing policy and
+health configuration, and returns an eligible DNS answer.
 
 ## DNS Foundations
 
@@ -112,8 +149,9 @@ must still permit the client to reach the returned address.
 - An alias can be used at the zone apex; a CNAME cannot.
 - An alias to an AWS resource uses the resource's TTL rather than a TTL set on
   the alias record.
-- `Evaluate Target Health` lets an alias inherit the health of a supported
-  target or an alias-record branch.
+- `Evaluate Target Health` makes Route 53 evaluate the health of the supported
+  AWS resource or Route 53 record branch referenced by the alias, according to
+  the target type's health-evaluation rules.
 - A CNAME can point to a wider range of DNS names but adds another DNS lookup
   and is not valid at the apex.
 
@@ -124,14 +162,14 @@ private connectivity, or replace a load balancer.
 
 | Policy | Choose it when | Deciding input | Key trap |
 |---|---|---|---|
-| Simple | One resource or a basic unordered set of answers is enough. | No traffic steering rule. | Do not use it when health-aware or deterministic steering is required. |
+| Simple | One resource, or one record containing a basic unordered set of values, is sufficient. | No Route 53 traffic-steering calculation. | Multiple values may be returned without health-aware selection; this is not failover or load balancing. |
 | Weighted | Traffic should be divided by configured proportions. | Relative record weights. | Weights are relative, not percentages; use health checks if unhealthy endpoints must be excluded. |
 | Latency | Users should reach the AWS Region that gives them the best measured latency. | AWS latency measurements between users and Regions. | It does not mean the geographically closest Region. |
 | Failover | Active-passive routing is required. | Primary/secondary role plus health. | DNS failover is affected by caching; it is not an instantaneous connection-level failover mechanism. |
 | Geolocation | Content or endpoints are selected by the user's geographic location. | User location such as continent, country, or US state. | Create a default record for unmatched or unmapped locations. |
-| Geoproximity | Route to the closest resource and optionally shift the geographic catchment area. | User and resource locations plus optional bias. | Bias changes how much traffic a resource attracts; this is different from fixed geolocation rules. |
+| Geoproximity | Route according to geographic distance between users and resources, with optional bias to expand or contract each resource's geographic catchment area. | User and resource locations plus optional bias. | Bias changes how much traffic a resource attracts; this is different from fixed geolocation rules. |
 | IP-based | Known client CIDR ranges should map to chosen endpoints. | Reusable CIDR collections based on source IP. | This is operator-supplied IP knowledge, not Route 53 latency or geography data; it is not supported in private hosted zones. |
-| Multivalue answer | DNS should return up to eight healthy records chosen at random. | Record health and random selection. | It is not a substitute for an Elastic Load Balancing load balancer. |
+| Multivalue answer | Route 53 should return up to eight eligible healthy record values, with the client or resolver subsequently selecting an address to use. | Record health and random selection. | It is not a substitute for an Elastic Load Balancing load balancer. |
 
 ### Routing-Policy Decision Shortcuts
 
@@ -139,7 +177,7 @@ private connectivity, or replace a load balancer.
 - Best measured regional response: **latency**.
 - Primary then disaster-recovery secondary: **failover**.
 - Compliance or localization based on the user's country: **geolocation**.
-- Nearest resource with adjustable traffic-shifting bias: **geoproximity**.
+- Geographic proximity with adjustable traffic-shifting bias: **geoproximity**.
 - Known ISP/client CIDRs must use chosen endpoints: **IP-based**.
 - Several healthy IP answers without a load balancer: **multivalue answer**.
 
@@ -160,9 +198,9 @@ Important behavior:
 - Health checks run periodically; they are not performed when each DNS query
   arrives.
 - Records without health checks are treated as healthy.
-- If all records in a same-name, same-type routing set are unhealthy, Route 53
-  uses a last-resort behavior and considers all records when choosing an
-  answer.
+- If all applicable records are unhealthy, Route 53 uses last-resort behavior
+  and treats the records as eligible rather than returning no answer solely
+  because every health check failed.
 - In a failover pair, Route 53 returns the healthy primary; when the primary is
   unhealthy and the secondary is healthy, it returns the secondary.
 - TTL and client-side caching affect how quickly users observe a changed DNS
@@ -173,6 +211,34 @@ Important behavior:
 
 Exam trap: health checking affects DNS answers. It does not move data,
 replicate state, or prove that the application can safely fail over.
+
+### Amazon Application Recovery Controller Routing Controls
+
+An ARC routing control is a highly available operator-controlled on/off switch,
+not an endpoint monitor. The control is hosted on an ARC cluster. Changing its
+state through one of the cluster's Regional data-plane endpoints changes the
+state of an associated Route 53 health check, which then makes the configured
+DNS record eligible or ineligible.
+
+```text
+operator or automation
+    -> ARC cluster data-plane endpoint
+    -> routing-control state
+    -> Route 53 health-check state
+    -> DNS failover record selection
+    -> new client connections
+```
+
+The highly available ARC data plane makes the **control operation** dependable;
+it does not bypass DNS. Route 53 still returns DNS answers, so resolver and
+client caching, record TTLs, connection reuse, and long-lived connections can
+delay complete traffic movement. For a requirement that truly demands static
+anycast IPs and endpoint failover independent of DNS-cache expiry, compare AWS
+Global Accelerator rather than claiming ARC removes the DNS boundary.
+
+Exam trap: “ARC routing control” correctly identifies the managed failover
+switch, but “without relying on DNS caching expiration” is a false premise for
+ARC routing controls.
 
 ## Route 53 VPC Resolver and Hybrid DNS
 
@@ -195,6 +261,10 @@ Direct Connect. Transit Gateway can provide scalable routing between attached
 networks, but none of these transport services performs DNS forwarding.
 
 ### Resolver Rule Types
+
+VPC Resolver uses four rule types, although customers directly configure only
+forward, system, and delegate rules. Recursive rules are created and managed by
+Resolver.
 
 | Rule type | Purpose |
 |---|---|
@@ -283,6 +353,8 @@ required.
 8. **DNSSEC versus encryption:** DNSSEC authenticates answers; it does not hide
    queries or application data.
 9. **TTL versus instant failover:** cached answers can outlive a routing change.
+10. **ARC versus DNS-cache bypass:** ARC controls Route 53 health-check state;
+    the resulting traffic shift is still DNS-based.
 
 ## Recall Check
 
@@ -298,6 +370,8 @@ Answer these without looking above:
 8. Why is multivalue answer routing not a replacement for a load balancer?
 9. What are the separate jobs of Direct Connect and Route 53 Resolver?
 10. What security property does DNSSEC provide, and what does it not provide?
+11. Why do ARC routing-control cluster endpoints improve control-plane
+    reliability without eliminating DNS TTL and connection-reuse effects?
 
 ## Lakehouse Application Boundary
 
@@ -316,6 +390,8 @@ the tracker authorizes a bounded change.
 - [Route 53 VPC Resolver](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html)
 - [Managing Resolver forwarding rules](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-rules-managing.html)
 - [Route 53 health-check record selection](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-how-route-53-chooses-records.html)
+- [Amazon Application Recovery Controller routing controls](https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html)
+- [ARC routing-control traffic-shift behaviour](https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.about.html)
 - [Resolver DNS Firewall](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-overview.html)
 - [DNSSEC signing](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring-dnssec.html)
 - [DNSSEC validation in VPC Resolver](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dnssec-validation.html)

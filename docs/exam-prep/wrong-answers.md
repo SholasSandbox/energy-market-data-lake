@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-07-25
+**Last revised:** 2026-07-29
 
 This log is the durable exam-prep companion to the tracker wrong-answer table.
 It is seeded from the Lakehouse repository tracker and is not Lakehouse
@@ -25,8 +25,8 @@ For the active folder sequence and document status, start at the
 [Exam-Prep Revision Hub](README.md). Review Cycle 2 is preserved in the
 [four-question retention test](wrong-answer-review-cycle-2-blind-attempt-20260715.md),
 including its initial drafts, corrected final submission, and assessment. The
-clean 25-question mixed Block 2 remains separate practice evidence. Full mock
-001 and its two new narrow traps are recorded below.
+clean 25-question mixed Block 2 remains separate practice evidence. Full mocks
+001 and 002 and their narrow traps are recorded below.
 
 ## Quick Remediation Index
 
@@ -38,15 +38,20 @@ clean 25-question mixed Block 2 remains separate practice evidence. Full mock
 | Replayable ordered event ingestion | [Replayable Ordered Event Ingestion](#2026-07-01-replayable-ordered-event-ingestion) |
 | ECS blue/green deployment and rollback | [ECS Blue/Green Deployment Versus Patch Manager](#2026-07-21-ecs-bluegreen-deployment-versus-patch-manager) |
 | SCP scope versus permissions boundary | [SCP Versus IAM Permissions Boundary](#2026-07-23-scp-versus-iam-permissions-boundary) |
+| Workforce AWS-account access | [IAM Identity Center Versus Cognito](#2026-07-29-iam-identity-center-versus-cognito) |
+| Migration Hub home Region | [Migration Hub Home Region Versus Data Transfer](#2026-07-29-migration-hub-home-region-versus-data-transfer) |
+| DAX application integration | [DAX Cluster and Client](#2026-07-29-dax-cluster-and-client) |
+| Private on-premises S3 access | [S3 Interface Versus Gateway Endpoint](#2026-07-29-s3-interface-versus-gateway-endpoint) |
 | DynamoDB write sharding and read fan-out | [DynamoDB Write Sharding and Read Fan-Out](#2026-07-23-dynamodb-write-sharding-and-read-fan-out) |
 | DynamoDB lifecycle, change processing, and recovery | [DynamoDB Lifecycle and Recovery Feature Mapping](#2026-07-25-dynamodb-lifecycle-and-recovery-feature-mapping) |
 | Time-series history versus latest state | [Time-Series History Versus Latest-State Lookup](#2026-07-25-time-series-history-versus-latest-state-lookup) |
+| Physical-server dependency discovery | [Application Discovery Agent Versus Agentless Collection](#2026-07-28-application-discovery-agent-versus-agentless-collection) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | Non-relational database diagnostic submitted 2026-07-25 at 15/18 in 40 minutes; full mock 001 remains the latest full simulation |
+| Current through practice block | Non-relational database spaced retest completed 2026-07-28 at 6/6 in 15 minutes; full mock 001 remains the latest full simulation |
 | Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
 | Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
@@ -171,6 +176,7 @@ recorded on 2026-07-18; timed-practice evidence remains required.
 | Concentrated DynamoDB writes on a few entity keys | Add calculated shard suffixes to distribute writes; query all relevant shards in parallel and merge/order the results on read. Capacity mode does not repair a poor key distribution. |
 | DynamoDB expiry, change processing, and recovery | TTL ages items out; Streams emits item-change records; PITR restores earlier table state; a GSI only supplies another query access path. |
 | Time-series history plus latest keyed state | Use Timestream for timestamp-centred history and time-window analysis; use DynamoDB for known-key, millisecond latest-state lookup. |
+| Detailed physical-server process and network dependencies | Install Application Discovery Agent on the target hosts; evaluate current Agentless Collector modules separately for supported VMware inventory and agentless network collection. |
 
 ## Entries
 
@@ -283,8 +289,8 @@ Why my answer was wrong: Changing capacity mode can alter capacity management, b
 Exam trap: Focusing on provisioned versus on-demand capacity while ignoring partition-key distribution and the resulting read-path trade-off.
 Service comparison: DynamoDB key-design write sharding versus capacity-mode selection.
 Error category: Missed architectural consequence; multi-select exact-match error.
-Action: Reconstruct the complete read path—query every relevant shard, merge the results, then establish cross-shard order—and retain that GSI reads are eventually consistent only; complete the spaced exact-match retest no earlier than 2026-07-28.
-Review status: Partial recurrence on diagnostic question 4 on 2026-07-25. The learner selected fan-out query/merge but selected a strongly consistent GSI instead of explicit cross-shard ordering. Spaced retest and independent-mock transfer remain pending.
+Action: Reconstruct the complete read path—query every relevant shard, merge the results, then establish cross-shard order—and retain that GSI reads are eventually consistent only.
+Review status: Focused spaced retest passed 6/6 on 2026-07-28 in 15 minutes. Questions 1 and 2 correctly recalled fan-out, merge, cross-shard ordering, and GSI consistency despite learner-marked uncertainty. Focused remediation is complete; independent-mock transfer remains pending.
 ```
 
 ### 2026-07-25: DynamoDB Lifecycle and Recovery Feature Mapping
@@ -302,8 +308,8 @@ Why my answer was wrong: A GSI creates another query access path; it does not pu
 Exam trap: Treating every DynamoDB auxiliary feature as an indexing option instead of mapping the requested function precisely.
 Service comparison: DynamoDB TTL versus Streams versus PITR versus GSI.
 Error category: Feature-mapping knowledge gap; multiple-response requirement-decomposition error.
-Action: Reproduce the four-part mapping from memory and complete the six-question spaced retest no earlier than 2026-07-28.
-Review status: New gap demonstrated by the 2026-07-25 closed-book diagnostic; learner marked the question uncertain; spaced recall pending.
+Action: Reproduce the four-part mapping from memory and monitor recurrence in independent mocks.
+Review status: Focused spaced retest questions 3, 4, and 6 were correct on 2026-07-28. The TTL, Streams, PITR, GSI, and primary-key roles were separated correctly; focused remediation is complete.
 ```
 
 ### 2026-07-25: Time-Series History Versus Latest-State Lookup
@@ -321,6 +327,98 @@ Why my answer was wrong: The answer satisfied only the historical-analysis claus
 Exam trap: Stopping after finding one valid service in a multi-requirement, multiple-response question.
 Service comparison: Amazon Timestream versus DynamoDB in a purpose-built multi-store design.
 Error category: Scenario-decomposition and answer-completeness error; exact-match multiple-response error.
-Action: Count required selections and map one selected component to every explicit requirement before submission; complete the spaced retest no earlier than 2026-07-28.
-Review status: New gap demonstrated by the 2026-07-25 closed-book diagnostic; not marked uncertain; spaced recall pending.
+Action: Count required selections and map one selected component to every explicit requirement before submission; monitor recurrence in independent mocks.
+Review status: Focused spaced retest questions 5 and 6 were correct on 2026-07-28. The learner mapped both history and latest-state clauses and selected the required number of options; focused remediation is complete.
+```
+
+### 2026-07-28: Application Discovery Agent Versus Agentless Collection
+
+```text
+Question theme: Migration-wave planning for hundreds of interconnected on-premises physical servers using network-dependency evidence
+SAP-C02 domain: Domain 4 - Accelerate Workload Migration and Modernization
+My answer: Agentless Discovery Connector
+Correct answer pattern: Install AWS Application Discovery Agent on the physical target servers when detailed process and TCP connection evidence is required.
+Why correct: Discovery Agent supports physical servers and VMs and captures system configuration, performance, running processes, and TCP network connections for dependency analysis.
+Why my answer was wrong: The selected legacy agentless connector wording did not fit detailed host-level evidence across physical servers.
+Exam trap: Choosing lower-administration agentless collection without checking the source environment, collection module, and telemetry depth.
+Service comparison: AWS Application Discovery Agent versus current Application Discovery Service Agentless Collector, with Migration Hub as the organization/tracking surface.
+Precision caveat: Current Agentless Collector includes a Network Data Collection module for supported VMware-discovered servers. The vCenter module supplies inventory; the network module uses WinRM for Windows or SNMP for Linux and therefore still needs credentials and network access. Do not generalize the older answer explanation into “agentless can never map dependencies,” or claim that connection mapping comes from hypervisor APIs alone.
+Action: During the Domain 4 migration matrix, compare physical versus VMware scope, process/TCP detail, deployment overhead, and Migration Hub's role. Validate transfer in the normal full-mock cadence; create a focused retest only if the distinction recurs.
+Review status: New external-assessment miss supplied 2026-07-28. No complete question set, timing, or score was provided; this entry records only the demonstrated decision gap.
+```
+
+### 2026-07-29: IAM Identity Center Versus Cognito
+
+```text
+Question theme: Central workforce access to many AWS accounts through corporate groups
+SAP-C02 domain: Domain 1 - Design Solutions for Organizational Complexity
+Question number: Full mock 002, Question 1
+My answer: C - Amazon Cognito identity pools
+Correct answer: B - IAM Identity Center with permission sets and group-to-account assignments
+My answer pattern: Chose an application-user federation service for a workforce multi-account access requirement.
+Correct answer pattern: Connect the workforce identity source to IAM Identity Center, define permission sets, and assign groups to the required AWS accounts.
+Why correct: IAM Identity Center centrally manages workforce access and provisions the corresponding account roles from permission sets.
+Why my answer was wrong: Cognito identity pools issue temporary AWS credentials to application identities; they are not the standard AWS workforce account-assignment control plane.
+Exam trap: Treating every federated-human identity scenario as Cognito without identifying whether the human is workforce or an application customer.
+Service comparison: IAM Identity Center versus Amazon Cognito.
+Error category: Service-selection and identity-pattern gap.
+Action: Reproduce the workforce-versus-customer identity rule from memory and include it in the post-2026-07-31 spaced retest.
+Review status: Open; first recurrence test pending.
+```
+
+### 2026-07-29: Migration Hub Home Region Versus Data Transfer
+
+```text
+Question theme: Missing migration-discovery and tracking data when viewing the wrong AWS Region
+SAP-C02 domain: Domain 4 - Accelerate Workload Migration and Modernization
+Question number: Full mock 002, Question 28
+My answer: A - copy the discovery database by using AWS DataSync
+Correct answer: B - view and manage the programme in the configured Migration Hub home Region
+My answer pattern: Chose a workload-data transfer tool to repair a service-control-plane Region mismatch.
+Correct answer pattern: Use Migration Hub in its selected home Region and connect discovery and migration tools to that tracking surface.
+Why correct: Migration Hub discovery and tracking data is associated with the home Region; changing it requires recollection because collected data is not migrated.
+Why my answer was wrong: DataSync transfers supported files and objects. It does not copy Migration Hub's service-managed discovery database between Regions.
+Exam trap: Selecting a data mover whenever the wording includes missing data, without checking whether the data belongs to a managed control plane.
+Service comparison: AWS Migration Hub versus AWS DataSync.
+Error category: Service-boundary and Region-scope gap.
+Action: Reproduce home Region, tracking role, and data-movement boundary from memory and include it in the post-2026-07-31 spaced retest.
+Review status: Open; first recurrence test pending.
+```
+
+### 2026-07-29: DAX Cluster and Client
+
+```text
+Question theme: Highly available microsecond DynamoDB read caching with minimal application change
+SAP-C02 domain: Domain 3 - Continuous Improvement for Existing Solutions
+Question number: Full mock 002, Question 47
+My answer: C
+Correct answer: C, D
+My answer pattern: Selected the available DAX cluster but omitted the application request path through the DAX client.
+Correct answer pattern: Deploy a multi-node DAX cluster across Availability Zones and use the DAX client for supported DynamoDB operations.
+Why correct: The cluster supplies cache availability; at runtime the DAX client directs the application's DynamoDB API requests to that cluster.
+Why my answer was wrong: DAX is API-compatible but not transparent. Creating the cluster alone does not redirect application calls.
+Exam trap: Interpreting drop-in compatibility as zero integration and stopping after one valid choice in a Choose TWO item.
+Service comparison: DynamoDB direct SDK path versus DynamoDB Accelerator client path.
+Error category: Integration-boundary and exact-match completeness error.
+Action: State both halves—cluster and client—then include the pattern in the post-2026-07-31 spaced retest.
+Review status: Open; first recurrence test pending.
+```
+
+### 2026-07-29: S3 Interface Versus Gateway Endpoint
+
+```text
+Question theme: Private S3 access from on premises over Direct Connect
+SAP-C02 domain: Domain 2 - Design for New Solutions
+Question number: Full mock 002, Question 73
+My answer: B - S3 gateway endpoint
+Correct answer: D - S3 interface endpoint with private connectivity, DNS, and endpoint-policy configuration
+My answer pattern: Applied the endpoint-first VPC default without checking where the client traffic originates.
+Correct answer pattern: Use an S3 interface endpoint for private-IP access from on premises over Direct Connect or Site-to-Site VPN.
+Why correct: Interface endpoints expose private IP addresses that on-premises clients can reach through the private network path.
+Why my answer was wrong: Gateway endpoint routes apply to traffic originating in associated VPC route tables and cannot be extended through Direct Connect, VPN, transit gateway, or VPC peering.
+Exam trap: Memorizing “S3 equals gateway endpoint” as an absolute rule instead of checking client origin and reachability.
+Service comparison: S3 gateway endpoint versus S3 interface endpoint.
+Error category: Hybrid-connectivity scope error.
+Action: Reproduce VPC-origin versus on-premises-origin endpoint selection from memory and include it in the post-2026-07-31 spaced retest.
+Review status: Open; first recurrence test pending.
 ```

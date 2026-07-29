@@ -3,7 +3,7 @@
 <!-- markdownlint-disable MD013 MD060 -->
 
 **Date:** 2026-07-24<br>
-**Last revised:** 2026-07-25<br>
+**Last revised:** 2026-07-28<br>
 **Purpose:** Close the identified revision gap without restarting database study from first principles.<br>
 **Evidence boundary:** This is a source-backed lesson, not proof of closed-book recall. Complete the separate diagnostic before recording mastery.
 
@@ -276,7 +276,7 @@ DynamoDB global tables now have two consistency modes. Older notes that describe
 | Dimension | Multi-Region eventual consistency (MREC) | Multi-Region strong consistency (MRSC) |
 | --- | --- | --- |
 | Replication | Asynchronous, normally within seconds | Synchronous to another Region before success |
-| Cross-Region read | May briefly return an older value | Can provide the latest committed value |
+| Strong read against a replica | Valid on the replica table, but guarantees only the latest locally committed value; it can still be stale relative to a recent write in another Region | A strong read on any available replica returns the latest committed item across the MRSC global table |
 | Write/read latency | Lower | Higher because of cross-Region coordination |
 | Recovery point potential | Non-zero replication lag is possible | RPO zero is possible for supported designs |
 | Feature constraints | Broader feature compatibility | Has additional topology and feature restrictions |
@@ -299,6 +299,13 @@ transactions are atomic only in the Region where invoked; MRSC does not support
 transaction APIs or TTL. For MRSC, check the current Region, topology, and
 feature restrictions during design. The exam trade remains: stronger cross-
 Region correctness costs latency and flexibility.
+
+Do not memorize that a strong read against an MREC replica fails with
+`ValidationException`. The replica is a table and accepts a strongly consistent
+table read; the limitation is that asynchronous cross-Region replication can
+leave the local replica behind a recent remote write. `ValidationException` is
+the familiar result when strong consistency is requested on an unsupported
+surface such as a GSI—not merely because a table is a global-table replica.
 
 ### DAX: a narrow optimisation
 
@@ -525,6 +532,7 @@ The architecture should state which store owns the truth and how derived stores 
 13. **Any GSI backpressure means add WCU.** Inspect the throttling reason: insufficient provisioned capacity and a hot GSI key require different remedies.
 14. **DAX requires zero application change.** It minimizes query-model change, but the application must use a DAX client and endpoint.
 15. **Every global table requires manually enabled `NEW_AND_OLD_IMAGES` Streams.** MREC manages Streams for replication; MRSC replication does not use Streams.
+16. **A strong read on an MREC secondary replica throws `ValidationException`.** It is a valid local table read, but it cannot make asynchronous cross-Region replication current; GSIs remain eventual-only.
 
 ## Bounded revision route
 

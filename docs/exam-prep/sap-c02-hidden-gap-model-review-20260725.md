@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-07-25
+**Last revised:** 2026-07-28
 
 ## Document Role and Boundary
 
@@ -69,6 +69,23 @@ For a workload Region restriction:
 5. remember that member-account administrator permissions cannot override an
    inherited explicit deny.
 
+`aws:RequestedRegion` evaluates the Region that received the API request. Many
+global services use a single endpoint hosted in one Region—commonly
+`us-east-1`—so they are **not exempt from the condition key by default**. If
+that endpoint Region is outside the allowed list, a deny-outside-approved-
+Regions SCP must explicitly exclude every required global service, normally
+with `NotAction`; alternatively, allowing the endpoint Region prevents that
+specific deny but can also permit Regional services there. In this repository's
+example, the explicit exception list includes `route53:*` as well as `iam:*`,
+`cloudfront:*`, and the other approved global services. Keep the exception list
+narrow: `NotAction` prevents the regional deny from applying; it does not grant
+access.
+
+Exam trap: “global” does not mean “automatically ignored by
+`aws:RequestedRegion`.” Route 53, IAM, and CloudFront requests would be caught
+by a deny that excludes `us-east-1` unless their required actions are explicitly
+excepted.
+
 ### Policy-evaluation checklist
 
 Before choosing an answer, ask:
@@ -92,6 +109,7 @@ boundary.
 
 - [AWS Organizations service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
 - [IAM permissions boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
+- [IAM requested-Region policy example and global-service exceptions](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_deny-requested-region.html)
 
 ## Model 2 - DynamoDB Write Sharding and Fan-Out Reads
 

@@ -335,4 +335,4 @@ Uncertain:1,5
 
 After submission, keep this question document unchanged. Record scoring,
 reasoning, genuine misses, and any question-quality caveat in a separate
-answer-bearing review artifact.
+answer-bearing review artefact.

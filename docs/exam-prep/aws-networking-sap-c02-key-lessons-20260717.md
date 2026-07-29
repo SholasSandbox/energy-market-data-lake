@@ -2,6 +2,8 @@
 
 <!-- markdownlint-disable MD013 -->
 
+**Last revised:** 2026-07-28
+
 ## Purpose and Scope
 
 **Document role:** source-backed lesson. Return to the
@@ -193,6 +195,26 @@ Direct Connect is a dedicated network connection, but it does not automatically
 encrypt traffic. MACsec is available only for supported dedicated connections
 and configurations. An IPsec VPN supplies the usual exam answer when encryption
 must be layered over private Direct Connect connectivity.
+
+### Direct Connect BGP Path Selection
+
+For routes received over private or transit virtual interfaces, evaluate the
+destination prefix before BGP path attributes:
+
+1. **Longest-prefix match wins.** A more-specific advertised prefix is selected
+   before local preference, AS path, or MED is considered.
+2. For equally specific candidates, AWS then evaluates Direct Connect routing
+   attributes in its documented order, including local preference, AS path
+   length, and MED where applicable.
+
+Therefore, to make one Direct Connect path active only for a subset of an
+on-premises network, advertise that subset as a more-specific prefix over the
+preferred BGP session. AS-path prepending cannot defeat a competing route with
+a longer prefix.
+
+Exam trap: route specificity is evaluated before “Direct Connect versus VPN”
+or BGP-path tuning. Compare prefixes first, then compare attributes only among
+equally specific routes.
 
 ### Direct Connect Virtual Interfaces
 
@@ -404,6 +426,7 @@ Lakehouse requirement and tracker-authorized evidence gate justify it.
 - [AWS Cloud WAN](https://docs.aws.amazon.com/network-manager/latest/cloudwan/what-is-cloudwan.html)
 - [Direct Connect virtual interfaces](https://docs.aws.amazon.com/directconnect/latest/UserGuide/WorkingWithVirtualInterfaces.html)
 - [Direct Connect gateways](https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways-intro.html)
+- [Direct Connect routing policies and BGP communities](https://docs.aws.amazon.com/directconnect/latest/UserGuide/routing-and-bgp.html)
 - [AWS Site-to-Site VPN](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
 - [Application Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
 - [Network Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html)
