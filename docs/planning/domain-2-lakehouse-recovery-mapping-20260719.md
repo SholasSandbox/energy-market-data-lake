@@ -48,7 +48,13 @@ evidence, principally:
 - `docs/evidence/phase9-terraform-import-20260511.md` for the imported remote
   Terraform state boundary;
 - `docs/evidence/glue-athena-iam-live-verification-20260615.md` for the latest
-  verified raw-to-curated-to-query chain; and
+  verified raw-to-curated-to-query chain;
+- `athena/query-contracts.json` plus
+  `scripts/validate_athena_query_contracts.py` for the machine-readable,
+  read-only representative-query inventory and local contract checks;
+- `recovery/lakehouse-recovery-preflight.json` plus
+  `scripts/check_lakehouse_recovery_preflight.py` for the local-only,
+  hash-backed reconstruction-artifact inventory; and
 - repository scripts and validation evidence for local build, contract,
   schema, IAM-policy, and dashboard checks.
 
@@ -63,10 +69,10 @@ It does not show that the path can be recovered within an objective.
 | Raw S3 data | Live bucket versioning; noncurrent-version retention; raw lifecycle; private SSE-S3 bucket | A prior object version may support same-bucket logical recovery inside the retained window | No tested object restore, independent backup, cross-account copy, or cross-Region copy |
 | Curated S3 data | Versioning plus reproducible ETL code and retained raw inputs while available | Curated Parquet may be restored from an object version or rebuilt from a valid raw recovery point | No timed full rebuild, integrity reconciliation, or proof that every required raw input remains available |
 | Glue | Terraform definitions, repository ETL script, crawlers, job arguments, and a previously successful run | Jobs and crawlers are reconstruction candidates; catalog metadata can be re-created only after the data, role, and target paths are correct | No clean-environment reconstruction test, catalog snapshot/restore evidence, or schema-drift acceptance test |
-| Athena | Terraform workgroup and bounded query role; named results prefix; successful representative query | Workgroup and access configuration are reconstruction candidates; query results can normally be regenerated from recovered data and catalog metadata | No alternate-scope reconstruction or query-validation test; saved business-query inventory is incomplete |
+| Athena | Terraform workgroup and bounded query role; named results prefix; successful representative query; machine-validated inventory of 13 read-only electricity, gas, cross-market, freshness, and quality queries | Workgroup and access configuration are reconstruction candidates; query results can normally be regenerated from recovered data and catalog metadata; local CI can detect query-contract drift before a recovery exercise | No alternate-scope reconstruction or live replay of the inventory; business criticality and expected result values remain unapproved |
 | IAM | Terraform-managed Lambda, Glue, orchestration, and Athena policies; governance evidence for operator access | Workload roles can be reconstructed from reviewed code when an authorized deployment path exists | No end-to-end recovery-role exercise; emergency access, trust, SCP, and service-role dependencies are not tested together |
 | Infrastructure definitions | Versioned Terraform, application code, build scripts, and remote S3 state | The repository provides a reconstruction basis and the remote state preserves the managed-resource map | No isolated full deployment test; data bucket ownership is split because the current bucket remains externally managed |
-| Operations and validation | Logs, alarms, failure artifacts, runbooks, schema checks, contract checks, and public-evidence checks exist | The repository can validate several individual stages after recovery | No single recovery runbook has exercised declaration, dependency recovery, business validation, failback, and cleanup |
+| Operations and validation | Logs, alarms, failure artifacts, runbooks, schema checks, contract checks, public-evidence checks, and a local preflight inventory exist | The repository can hash 20 reconstruction artifacts, detect missing or empty inputs, record Git-baseline state, and validate the 13-query recovery inventory without contacting AWS | No recovery runbook has exercised declaration, dependency recovery, restored-data validation, failback, or cleanup; a passing local preflight is not restore evidence |
 
 The current posture is therefore **recoverability foundations recorded; tested
 workload recovery not proved**.
@@ -106,7 +112,7 @@ historical point after corruption.
 |---|---|---|---|---|
 | Workgroup | `infra/terraform/lakehouse/athena.tf` | Region/account, result bucket/prefix, and Terraform deployment path | No clean-scope reconstruction is recorded | Confirm enforced configuration, SSE-S3 results, metrics, and output location |
 | Dedicated query role | `infra/terraform/lakehouse/iam.tf` and ADR 0004 | IAM trust, approved assuming principal, Glue Catalog, curated data, and result prefix | Creating the role does not grant an operator or automation permission to assume it | Exercise approved role assumption; prove curated/results access and intended raw-prefix denial |
-| Catalog-backed queries | Validation scripts and recorded representative SQL/evidence | Recovered curated objects, catalog schema/partitions, role, and workgroup | The repository does not inventory every business-critical query or expected result | Run the bounded schema validator and representative gas/electricity queries; compare expected schema and aggregates |
+| Catalog-backed queries | `athena/queries.sql`, the machine-readable `athena/query-contracts.json` inventory, its local validator, and recorded representative SQL/evidence | Recovered curated objects, catalog schema/partitions, role, and workgroup | The 13 saved queries are statically inventoried and checked as read-only, but no business owner has classified criticality or approved expected result values; no recovered environment has replayed the full inventory | Run the local contract validator, then execute the approved representative gas/electricity queries against the recovered scope and compare owner-approved schema, row-count, freshness, and aggregate expectations |
 | Historical result objects | S3 object versions where retained | Result-object retention and classification | Results may be reproducible outputs rather than recovery records, but this is not formally classified | Decide which results, if any, require retention; regenerate the rest from validated data and queries |
 
 ### IAM, Governance, and Emergency Operations
@@ -138,7 +144,7 @@ authorized operator and approved recovery scope
 
 | Dependency | Why it constrains recovery | Current repository evidence | Open recovery question |
 |---|---|---|---|
-| Repository revision and build artifacts | A known-good version must be selected and packages/scripts rebuilt reproducibly | Versioned source, tests, build scripts, validation workflow | Which commit is the approved recovery baseline, and can every required package be rebuilt from it? |
+| Repository revision and build artifacts | A known-good version must be selected and packages/scripts rebuilt reproducibly | Versioned source, tests, build scripts, validation workflow, and a local preflight that hashes the current 20-artifact inventory and reports whether it differs from `HEAD` | Which commit is the approved recovery baseline, and can every required package be rebuilt from it? The preflight records current state but does not approve it. |
 | Terraform backend and variables | State, backend configuration, resource names, feature flags, and sensitive inputs control reconstruction | Remote-backend documentation, example configuration, imported-state evidence | Can authorized operators recover state/configuration without relying on one workstation or unavailable credentials? |
 | External feeds | Missing raw intervals can be recovered only if providers retain/replay them or another copy exists | Ingestion code supports configured lookback behavior; live primary-path evidence exists | What replay window and rate limits apply, and how long does catch-up take? |
 | Region, quotas, and service capacity | Clean reconstruction can fail or exceed RTO if capacity or quotas are unavailable | Region and sizing variables are documented | Which quotas are critical, and is alternate-scope capacity available during the tested scenario? |
@@ -166,8 +172,10 @@ separately approved scope, cost boundary, identities, target names, rollback,
 and cleanup plan.
 
 1. Select one failure scope and obtain an approved RTO/RPO for that scope.
-2. Record the approved repository revision, data interval, expected tables,
-   schemas, partitions, row counts, and representative query results.
+2. Run the local recovery preflight, then record the approved repository
+   revision, artifact hashes, data interval, expected tables, schemas,
+   partitions, row counts, and representative query results. A dirty-tree
+   warning must not be accepted as the recovery baseline.
 3. Confirm recovery authority, emergency access, SCP impact, credentials,
    Region, quotas, and target isolation.
 4. Select and restore a known-good raw recovery point without overwriting the

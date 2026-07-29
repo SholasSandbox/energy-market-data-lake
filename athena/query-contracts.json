@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "database": "energy_market_lake",
+  "query_file": "athena/queries.sql",
+  "business_criticality_status": "not-approved",
+  "queries": [
+    {
+      "id": 1,
+      "name": "daily-demand-totals-uk",
+      "title": "Daily demand totals (UK)",
+      "recovery_use": "representative-business-validation",
+      "tables": ["curated_dataset_electricity"],
+      "expected_output_columns": ["date", "total_demand_mw"]
+    },
+    {
+      "id": 2,
+      "name": "daily-average-imbalance-prices",
+      "title": "Daily average imbalance prices",
+      "recovery_use": "representative-business-validation",
+      "tables": ["curated_dataset_electricity"],
+      "expected_output_columns": [
+        "date",
+        "avg_system_sell_price",
+        "avg_system_buy_price"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "peak-settlement-period-demand-by-day",
+      "title": "Peak settlement period demand by day",
+      "recovery_use": "representative-business-validation",
+      "tables": ["curated_dataset_electricity"],
+      "expected_output_columns": ["date", "peak_demand_mw"]
+    },
+    {
+      "id": 4,
+      "name": "electricity-daily-completeness",
+      "title": "Check data completeness (half-hourly points expected ~48/day)",
+      "recovery_use": "data-quality-validation",
+      "tables": ["curated_dataset_electricity"],
+      "expected_output_columns": ["date", "settlement_rows"]
+    },
+    {
+      "id": 5,
+      "name": "entsoe-day-ahead-prices-by-region",
+      "title": "ENTSO-E day-ahead prices by region",
+      "recovery_use": "representative-business-validation",
+      "tables": ["curated_dataset_electricity"],
+      "expected_output_columns": [
+        "region",
+        "date",
+        "avg_day_ahead_price_eur_mwh"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "entsog-flow-demand-by-point-direction",
+      "title": "ENTSOG gas flow and demand proxy by point direction",
+      "recovery_use": "representative-business-validation",
+      "tables": ["curated_dataset_gas"],
+      "expected_output_columns": [
+        "date",
+        "point_direction",
+        "point_label",
+        "direction_key",
+        "total_flow_kwh_d",
+        "total_demand_kwh_d"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "entsog-freshness-source-coverage",
+      "title": "ENTSOG freshness and source coverage",
+      "recovery_use": "freshness-validation",
+      "tables": ["curated_dataset_gas"],
+      "expected_output_columns": [
+        "source",
+        "region",
+        "latest_date",
+        "row_count"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "gb-electricity-daily-operating-view",
+      "title": "GB electricity daily operating view",
+      "recovery_use": "representative-business-validation",
+      "tables": ["curated_dataset_electricity"],
+      "expected_output_columns": [
+        "date",
+        "region",
+        "settlement_rows",
+        "total_demand_mw",
+        "peak_demand_mw",
+        "avg_system_sell_price",
+        "avg_system_buy_price",
+        "avg_net_imbalance_volume"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "entsoe-day-ahead-price-curve",
+      "title": "ENTSO-E day-ahead electricity price curve by market",
+      "recovery_use": "representative-business-validation",
+      "tables": ["curated_dataset_electricity"],
+      "expected_output_columns": [
+        "date",
+        "region",
+        "avg_day_ahead_price_eur_mwh",
+        "min_day_ahead_price_eur_mwh",
+        "max_day_ahead_price_eur_mwh",
+        "price_periods"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "entsog-daily-network-view",
+      "title": "ENTSOG gas daily network view by point direction",
+      "recovery_use": "representative-business-validation",
+      "tables": ["curated_dataset_gas"],
+      "expected_output_columns": [
+        "date",
+        "point_direction",
+        "point_label",
+        "direction_key",
+        "total_flow_kwh_d",
+        "total_demand_kwh_d",
+        "latest_source_update_utc",
+        "source_rows"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "cross-market-daily-dashboard-feed",
+      "title": "Cross-market daily dashboard feed",
+      "recovery_use": "cross-market-business-validation",
+      "tables": [
+        "curated_dataset_electricity",
+        "curated_dataset_gas"
+      ],
+      "expected_output_columns": [
+        "date",
+        "gb_total_demand_mw",
+        "gb_peak_demand_mw",
+        "gb_avg_system_buy_price",
+        "gb_avg_system_sell_price",
+        "eu_total_flow_kwh_d",
+        "eu_total_demand_kwh_d"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "curated-table-freshness-coverage",
+      "title": "Curated table freshness and coverage",
+      "recovery_use": "freshness-validation",
+      "tables": [
+        "curated_dataset_electricity",
+        "curated_dataset_gas"
+      ],
+      "expected_output_columns": [
+        "table_name",
+        "source",
+        "region",
+        "latest_date",
+        "row_count"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "curated-null-field-quality-check",
+      "title": "Curated null-field quality check",
+      "recovery_use": "data-quality-validation",
+      "tables": [
+        "curated_dataset_electricity",
+        "curated_dataset_gas"
+      ],
+      "expected_output_columns": [
+        "table_name",
+        "source",
+        "region",
+        "row_count",
+        "missing_date_rows",
+        "missing_settlement_period_rows",
+        "missing_market_signal_rows"
+      ]
+    }
+  ]
+}

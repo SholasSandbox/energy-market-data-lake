@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "name": "energy-market-lakehouse-local-recovery-preflight",
+  "claim_boundary": "local-repository-preflight-only",
+  "business_objectives": {
+    "rpo": "not-set",
+    "rto": "not-set"
+  },
+  "query_contract_check": true,
+  "required_artifacts": [
+    {
+      "path": "infra/terraform/lakehouse/versions.tf",
+      "category": "infrastructure",
+      "recovery_role": "Terraform and provider constraints"
+    },
+    {
+      "path": "infra/terraform/lakehouse/variables.tf",
+      "category": "infrastructure",
+      "recovery_role": "Lakehouse reconstruction inputs"
+    },
+    {
+      "path": "infra/terraform/lakehouse/locals.tf",
+      "category": "infrastructure",
+      "recovery_role": "Derived resource names and tags"
+    },
+    {
+      "path": "infra/terraform/lakehouse/s3.tf",
+      "category": "storage",
+      "recovery_role": "Data-zone storage controls"
+    },
+    {
+      "path": "infra/terraform/lakehouse/glue.tf",
+      "category": "processing",
+      "recovery_role": "Glue database, crawler, and job definitions"
+    },
+    {
+      "path": "infra/terraform/lakehouse/athena.tf",
+      "category": "query",
+      "recovery_role": "Athena workgroup definition"
+    },
+    {
+      "path": "infra/terraform/lakehouse/iam.tf",
+      "category": "iam",
+      "recovery_role": "Workload and query-role permissions"
+    },
+    {
+      "path": "infra/terraform/lakehouse/lambda.tf",
+      "category": "ingestion",
+      "recovery_role": "Scheduled ingestion definition"
+    },
+    {
+      "path": "infra/terraform/lakehouse/terraform.tfvars.example",
+      "category": "infrastructure",
+      "recovery_role": "Non-sensitive configuration template"
+    },
+    {
+      "path": "lambda/ingest_elexon.py",
+      "category": "ingestion",
+      "recovery_role": "Primary ingestion implementation"
+    },
+    {
+      "path": "glue/etl_raw_to_parquet.py",
+      "category": "processing",
+      "recovery_role": "Raw-to-curated transformation implementation"
+    },
+    {
+      "path": "athena/queries.sql",
+      "category": "query",
+      "recovery_role": "Representative validation queries"
+    },
+    {
+      "path": "athena/query-contracts.json",
+      "category": "query",
+      "recovery_role": "Machine-readable query inventory"
+    },
+    {
+      "path": "scripts/validate_athena_query_contracts.py",
+      "category": "validation",
+      "recovery_role": "Static query-contract validation"
+    },
+    {
+      "path": "scripts/check_lakehouse_iam_policies.py",
+      "category": "validation",
+      "recovery_role": "IAM boundary validation"
+    },
+    {
+      "path": "scripts/validate_contracts.py",
+      "category": "validation",
+      "recovery_role": "Schema-contract validation"
+    },
+    {
+      "path": "schemas/energy_input_v1.schema.json",
+      "category": "contract",
+      "recovery_role": "Energy input schema"
+    },
+    {
+      "path": "schemas/dashboard_snapshot_v1.schema.json",
+      "category": "contract",
+      "recovery_role": "Published dashboard schema"
+    },
+    {
+      "path": ".github/workflows/validate.yml",
+      "category": "validation",
+      "recovery_role": "Repository validation workflow"
+    },
+    {
+      "path": "docs/planning/domain-2-lakehouse-recovery-mapping-20260719.md",
+      "category": "operations",
+      "recovery_role": "Recovery dependencies and evidence boundary"
+    }
+  ]
+}

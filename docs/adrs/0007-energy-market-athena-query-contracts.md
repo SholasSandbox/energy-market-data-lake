@@ -20,7 +20,8 @@ view dependency, or live deployment step.
 ## Decision
 
 Treat `athena/queries.sql` as the durable query-contract file for demo and
-review queries. Extend it with energy-specific query blocks that:
+review queries. Maintain `athena/query-contracts.json` as the machine-readable
+inventory for those blocks. Extend the pair with energy-specific queries that:
 
 - summarize GB electricity demand, imbalance prices, and settlement-row
   completeness;
@@ -31,6 +32,15 @@ review queries. Extend it with energy-specific query blocks that:
 
 Each block remains standalone Athena SQL that can be copied into the Athena
 console or submitted with `start-query-execution`.
+
+The local validator must keep the numbered SQL blocks and inventory aligned,
+reject mutating SQL, verify declared table dependencies, and check that the
+declared output-column names remain represented in each query. CI runs the
+validator and its unit tests without contacting AWS.
+
+The inventory intentionally records business criticality as `not-approved`.
+It identifies representative recovery-validation queries but does not invent
+business ownership, expected result values, RTO, or RPO.
 
 ## Alternatives Considered
 
@@ -47,10 +57,14 @@ console or submitted with `start-query-execution`.
 - The lakehouse has a clearer public-facing analytics contract for electricity
   and gas.
 - Queries remain manually runnable and do not mutate AWS resources.
+- Query-number, title, dependency, and output-contract drift now fails local
+  validation and CI.
 - Cross-market joins are intentionally daily-level and analytical rather than
   production forecasting models.
 - Future schema changes must update both the ETL output and this query
   contract.
+- Static validation proves repository consistency, not that a recovered Glue
+  catalog or Athena workgroup can execute the queries successfully.
 
 ## SAP-C02 Relevance
 
@@ -61,6 +75,10 @@ including freshness and data-quality checks that help operate the workload.
 ## Implementation Artifacts
 
 - `athena/queries.sql`
+- `athena/query-contracts.json`
+- `scripts/validate_athena_query_contracts.py`
+- `tests/test_validate_athena_query_contracts.py`
+- `.github/workflows/validate.yml`
 - `glue/etl_raw_to_parquet.py`
 - `docs/evidence/athena-gas-query-summary-20260506.md`
 - `docs/evidence/athena-gas-schema-20260506.md`

@@ -27,8 +27,17 @@ jobs:
       - name: Compile Python sources
         run: python -m compileall lambda glue scripts energy_market
 
+      - name: Run Python unit tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+
       - name: Check lakehouse IAM policy boundaries
         run: python scripts/check_lakehouse_iam_policies.py
+
+      - name: Validate Athena query contracts
+        run: python scripts/validate_athena_query_contracts.py
+
+      - name: Build local Lakehouse recovery preflight
+        run: python scripts/check_lakehouse_recovery_preflight.py --output /tmp/lakehouse-recovery-preflight.json
 
       - name: Validate JSON contracts
         run: python scripts/validate_contracts.py --include-evidence --check-failures

@@ -388,7 +388,7 @@ All contracts are valid.
 ## Repository Layout
 
 ```text
-athena/                Athena demo queries
+athena/                Athena queries and machine-readable query contracts
 config/                Sample environment settings
 dashboard-ui/          React + TypeScript dashboard application
 diagrams/              Mermaid, SVG, PNG, and generated architecture diagrams
@@ -403,6 +403,7 @@ docs/evidence/screenshots/
 glue/                  Glue ETL code
 infra/terraform/       Terraform Infrastructure as Code for AWS lakehouse resources
 lambda/                Lambda ingestion code
+recovery/              Local-only recovery artifact inventory and claim boundary
 scripts/               Local/demo helper scripts
 ```
 
@@ -476,6 +477,26 @@ Validate the JSON schema contracts:
 ```bash
 python scripts/validate_contracts.py
 ```
+
+Validate the read-only Athena query inventory and its failure-path tests:
+
+```bash
+python scripts/validate_athena_query_contracts.py
+python -m unittest discover -s tests -p 'test_*.py' -v
+```
+
+Build a machine-readable local recovery-readiness report:
+
+```bash
+python scripts/check_lakehouse_recovery_preflight.py \
+  --output /tmp/lakehouse-recovery-preflight.json
+```
+
+The preflight inventories and hashes the repository artifacts needed to
+reconstruct and validate the core S3, Lambda, Glue, Athena, IAM, and contract
+paths. A dirty working tree is reported as a warning because its hashes do not
+represent an approved recovery baseline. This check does not contact AWS, set
+an RTO/RPO, or prove restore, failover, failback, or business-data integrity.
 
 Run the local news + energy + AI insight pipeline:
 
