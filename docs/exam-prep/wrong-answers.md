@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-07-29
+**Last revised:** 2026-08-03
 
 This log is the durable exam-prep companion to the tracker wrong-answer table.
 It is seeded from the Lakehouse repository tracker and is not Lakehouse
@@ -26,7 +26,8 @@ For the active folder sequence and document status, start at the
 [four-question retention test](wrong-answer-review-cycle-2-blind-attempt-20260715.md),
 including its initial drafts, corrected final submission, and assessment. The
 clean 25-question mixed Block 2 remains separate practice evidence. Full mocks
-001 and 002 and their narrow traps are recorded below.
+001 and 002 and their narrow traps are recorded below; Full Mock 003 produced
+no new miss and is retained as transfer evidence.
 
 ## Quick Remediation and Reference Index
 
@@ -46,16 +47,16 @@ scope needs to be rechecked.
 | DynamoDB lifecycle, change processing, and recovery | [DynamoDB Lifecycle and Recovery Feature Mapping](#2026-07-25-dynamodb-lifecycle-and-recovery-feature-mapping) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md) | [TTL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) · [Streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) · [PITR restore](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/pointintimerecovery_restores.html) · [GSIs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html) |
 | Time-series history versus latest state | [Time-Series History Versus Latest-State Lookup](#2026-07-25-time-series-history-versus-latest-state-lookup) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) | [Timestream data modelling](https://docs.aws.amazon.com/timestream/latest/developerguide/data-modeling.html) · [DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) |
 | Physical-server dependency discovery | [Application Discovery Agent Versus Agentless Collection](#2026-07-28-application-discovery-agent-versus-agentless-collection) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | [Discovery Agent](https://docs.aws.amazon.com/application-discovery/latest/userguide/discovery-agent.html) · [Agentless Collector](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector.html) |
-| Workforce AWS-account access | [IAM Identity Center Versus Cognito](#2026-07-29-iam-identity-center-versus-cognito) | [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) | [Identity Center account assignments](https://docs.aws.amazon.com/singlesignon/latest/userguide/assignusers.html) · [Cognito identity pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html) |
-| Migration Hub home Region | [Migration Hub Home Region Versus Data Transfer](#2026-07-29-migration-hub-home-region-versus-data-transfer) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) | [Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) · [What DataSync transfers](https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html) |
-| DAX application integration | [DAX Cluster and Client](#2026-07-29-dax-cluster-and-client) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) | [DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) · [DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
-| Private on-premises S3 access | [S3 Interface Versus Gateway Endpoint](#2026-07-29-s3-interface-versus-gateway-endpoint) | [Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) | [S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) |
+| Workforce AWS-account access | [IAM Identity Center Versus Cognito](#2026-07-29-iam-identity-center-versus-cognito) | [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [Identity Center account assignments](https://docs.aws.amazon.com/singlesignon/latest/userguide/assignusers.html) · [Cognito identity pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html) |
+| Migration Hub home Region | [Migration Hub Home Region Versus Data Transfer](#2026-07-29-migration-hub-home-region-versus-data-transfer) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) · [What DataSync transfers](https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html) |
+| DAX application integration | [DAX Cluster and Client](#2026-07-29-dax-cluster-and-client) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) · [DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
+| Private on-premises S3 access | [S3 Interface Versus Gateway Endpoint](#2026-07-29-s3-interface-versus-gateway-endpoint) | [Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | Full mock 002 completed 2026-07-29 at 71/75 in 139 minutes; its four narrow misses are the newest entries |
+| Current through practice block | Full Mock 003 completed 2026-08-03 at 75/75 in 106 minutes; all 12 uncertain answers were correct and all four Mock 002 gaps transferred successfully |
 | Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
 | Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
@@ -79,6 +80,8 @@ scope needs to be rechecked.
 | Resilience/DR spaced retest | 12 / 12 | 100% | Completed 2026-07-27 in 16 minutes; all seven exact-match multiple-response questions correct. |
 | Non-relational database spaced retest | 6 / 6 | 100% | Completed 2026-07-28 in 15 minutes; focused remediation closed, independent-mock transfer remains. |
 | Full mock 002 - 75 questions | 71 / 75 | 94.7% | Completed 2026-07-29 in 139/180 minutes; 45/48 single-response and 26/27 exact-match multiple-response; four narrow misses logged below. |
+| Full mock 002 spaced retest | 8 / 8 | 100% | Completed 2026-08-01 in 17 minutes; 4/4 single-response and 4/4 exact-match multiple-response; Questions 4 and 7 uncertain and correct; focused remediation complete. |
+| Full mock 003 - 75 questions | 75 / 75 | 100% | Completed 2026-08-03 in 106/180 minutes; 48/48 single-response, 27/27 exact-match multiple-response, and 12/12 uncertain answers correct; no new wrong-answer entry. |
 
 ## Artifact Evidence
 
@@ -88,6 +91,8 @@ scope needs to be rechecked.
 | `sap-c02-mixed-diagnostic-30q-20260720.md` and `sap-c02-mixed-diagnostic-30q-review-20260721.md` | Timed 30-question submission and answer-bearing assessment | Retained separately so the frozen learner answers precede the review; 29/30 in 67 minutes. |
 | `sap-c02-non-relational-databases-diagnostic-18q-20260724.md` and `sap-c02-non-relational-databases-diagnostic-review-20260725.md` | Closed-book database submission and answer-bearing assessment | Frozen answers retained separately from the review; 15/18 in 40 minutes; exact-match misses limited to questions 4, 8, and 17. |
 | `sap-c02-full-mock-002-75q-20260728.md` and `sap-c02-full-mock-002-review-20260729.md` | Full timed mock 002 submission and answer-bearing assessment | Frozen answers retained before independent exact-match marking; 71/75 in 139 minutes; four narrow misses logged below. |
+| `sap-c02-full-mock-002-spaced-retest-8q-20260801.md` and `sap-c02-full-mock-002-spaced-retest-review-20260801.md` | Fresh focused retest and answer-bearing assessment | Frozen submission scored 8/8 in 17 minutes; all four Mock 002 gaps recalled correctly and subsequently transferred in Full Mock 003. |
+| `sap-c02-full-mock-003-75q-20260801.md` and `sap-c02-full-mock-003-review-20260803.md` | Full timed Mock 003 submission and answer-bearing assessment | Frozen submission scored 75/75 in 106 minutes; all four domains, all 27 exact-match multiple-response items, and all 12 uncertain answers were correct; no new miss. |
 
 ## Review Cycle 1 Checklist
 
@@ -190,6 +195,31 @@ recorded on 2026-07-18; timed-practice evidence remains required.
 
 ### 2026-06-19: Hybrid DNS Private Resolution
 
+#### Reconstructed question — Exercise Block 002, Question 10
+
+**Not exact question — reconstructed from summary.** The original full question
+and distractor set were not retained. This reconstruction preserves the same
+service-selection trap and the known submitted and correct choices.
+
+> A company connects several on-premises data centres to AWS through Direct
+> Connect. Workloads in multiple VPCs must resolve names in the on-premises
+> private DNS namespace. On-premises systems must also resolve records in AWS
+> private hosted zones. A central security account already collects resource
+> configuration data from all AWS accounts.
+>
+> Which solution provides the required bidirectional private DNS resolution?
+>
+> A. Deploy Route 53 Resolver inbound and outbound endpoints and configure the
+> required forwarding rules and on-premises conditional forwarders.<br>
+> B. Associate every VPC with the same private hosted zone and rely on Direct
+> Connect to forward DNS queries automatically.<br>
+> C. Configure an organization AWS Config aggregator in the security account.<br>
+> D. Attach all VPCs to a transit gateway and enable DNS support on the VPC
+> attachments.
+>
+> **Submitted:** C<br>
+> **Correct:** A
+
 ```text
 Question theme: AWS and on-premises private name resolution
 SAP-C02 domain: Domain 1 / networking
@@ -208,6 +238,33 @@ References: [local Route 53 lesson](route-53-sap-c02-key-lessons-20260715.md) ·
 
 ### 2026-06-19: Urgent Data-Centre Exit
 
+#### Reconstructed question — Exercise Block 002, Question 14
+
+**Not exact question — reconstructed from summary.** The original full question
+and distractor set were not retained. This reconstruction preserves the same
+constraint-versus-modernization trap and the known submitted and correct
+choices.
+
+> A company's data-centre contract expires in six months. A legacy application
+> runs on supported Linux and Windows virtual machines. The company must move
+> the application to AWS before the deadline with minimal code and operating
+> system changes. The business accepts modernization after the migration is
+> complete.
+>
+> Which migration strategy and AWS service best meet the immediate requirement?
+>
+> A. Refactor the application into microservices running on Amazon EKS before
+> migrating production traffic.<br>
+> B. Replatform the application onto AWS Lambda and Amazon DynamoDB during the
+> migration.<br>
+> C. Rehost the servers by using AWS Application Migration Service, then
+> optimize the application after cutover.<br>
+> D. Retain the application on premises and expose it to AWS through Direct
+> Connect until a full redesign is complete.
+>
+> **Submitted:** A<br>
+> **Correct:** C
+
 ```text
 Question theme: Migration strategy with urgent exit and minimal application change
 SAP-C02 domain: Domain 4
@@ -225,6 +282,30 @@ References: [local migration lesson](aws-migration-discovery-transfer-tracking-s
 [AWS Application Migration Service rehost pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-database-rehost-tools/mgn.html)
 
 ### 2026-07-01: Private Hybrid Network Architecture
+
+#### Reconstructed question — Exercise Block 003, Question 13
+
+**Not exact question — reconstructed from summary.** The original full question
+was not retained. This reconstruction preserves the same unnecessary-component
+trap and the known submitted and correct answer sets.
+
+> A company has two on-premises data centres connected to AWS by Direct
+> Connect and dozens of VPCs spread across several AWS accounts. The company
+> requires private, centrally managed routing between the data centres and the
+> VPCs. AWS workloads and on-premises applications must also resolve each
+> other's private DNS names. Public internet connectivity is not required.
+>
+> Which THREE components should the company use?
+>
+> A. An AWS Direct Connect gateway<br>
+> B. An AWS Transit Gateway shared with the application accounts<br>
+> C. An internet gateway in each application VPC<br>
+> D. Route 53 Resolver inbound and outbound endpoints with forwarding rules<br>
+> E. AWS PrivateLink endpoints for full IP routing between every VPC and the
+> data centres
+>
+> **Submitted:** A, B, C<br>
+> **Correct:** A, B, D
 
 ```text
 Question theme: Private connectivity, many VPCs, centralized routing, and hybrid DNS
@@ -245,6 +326,33 @@ References: [local Networking lesson](aws-networking-sap-c02-key-lessons-2026071
 
 ### 2026-07-01: Replayable Ordered Event Ingestion
 
+#### Reconstructed question — Exercise Block 006, Question 5
+
+**Not exact question — reconstructed from summary.** The original full question
+was not retained. This reconstruction preserves the same queue-versus-stream
+and absolute-throughput trap and the known submitted and correct answer sets.
+
+> A digital-commerce platform produces millions of clickstream events per
+> hour. Events for the same customer must be processed in order, while events
+> for different customers can be processed in parallel. Fraud detection,
+> personalization, and analytics applications must each consume every event
+> independently. Consumers must be able to replay retained events after an
+> outage.
+>
+> Which THREE design choices meet these requirements?
+>
+> A. Ingest the events into Amazon Kinesis Data Streams.<br>
+> B. Use the customer ID as the Kinesis partition key.<br>
+> C. Put all events on one Amazon SQS FIFO queue because it provides unlimited
+> throughput and allows every consumer to receive every message independently.<br>
+> D. Register independent Kinesis consumers and use enhanced fan-out where
+> dedicated per-consumer throughput is required.<br>
+> E. Send the events directly to one Lambda function that invokes every
+> downstream application synchronously.
+>
+> **Submitted:** A, B, C<br>
+> **Correct:** A, B, D
+
 ```text
 Question theme: High-throughput replayable ingestion with per-customer ordering and multiple consumers
 SAP-C02 domain: Domain 2 / Domain 3
@@ -263,6 +371,23 @@ References: [local Review Cycle 2 explanation](wrong-answer-review-cycle-2-blind
 [AWS enhanced fan-out consumers](https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html)
 
 ### 2026-07-21: ECS Blue/Green Deployment Versus Patch Manager
+
+#### Original question — Timed Mixed Diagnostic, Question 2
+
+> A company runs an Amazon ECS service behind an Application Load Balancer. A
+> new application version must be introduced without interrupting current
+> users. If health checks or business metrics fail, traffic must automatically
+> return to the previous version.
+>
+> Which deployment strategy best meets the requirements?
+>
+> A. Replace every task in place by using an all-at-once deployment.<br>
+> B. Use an AWS CodeDeploy blue/green deployment with test and production
+> listeners plus automatic rollback alarms.<br>
+> C. Create a new ECS cluster manually and change DNS after deleting the old
+> cluster.<br>
+> D. Use AWS Systems Manager Patch Manager to install the application version
+> on the containers.
 
 ```text
 Question theme: ECS application deployment with side-by-side validation, ALB traffic shifting, and automatic rollback
@@ -283,6 +408,29 @@ References: [local diagnostic review](sap-c02-mixed-diagnostic-30q-review-202607
 
 ### 2026-07-23: SCP Versus IAM Permissions Boundary
 
+#### Original question — Full Mock 001, Question 1
+
+> A global manufacturing company has 140 AWS accounts in AWS Organizations.
+> Product teams can deploy workloads only in `eu-west-1` and `eu-central-1`.
+> The security team must retain the ability to use global AWS services and to
+> operate centralized security tooling in any required Region. Developers
+> currently have administrator IAM permissions in their workload accounts.
+>
+> Which TWO actions will meet these requirements with the LEAST ongoing
+> administrative effort?
+>
+> A. Create AWS Config rules in every account to detect resources outside the
+> approved Regions and automatically delete them.<br>
+> B. Attach an IAM permissions boundary to every developer role that denies all
+> actions outside the two approved Regions.<br>
+> C. Attach an SCP to the workload OUs that denies regional service actions
+> outside the approved Regions, using `aws:RequestedRegion`, while excluding
+> required global services.<br>
+> D. Place security tooling accounts in a separate OU that is not subject to
+> the workload Region-restriction SCP.<br>
+> E. Disable all unapproved Regions individually in every member account and in
+> the management account.
+
 ```text
 Question theme: Organization-wide Region restriction for workload accounts with different requirements for security accounts
 SAP-C02 domain: Domain 1 - Design Solutions for Organizational Complexity
@@ -297,7 +445,7 @@ Exam trap: Selecting an identity-scoped maximum-permissions control for an organ
 Service comparison: AWS Organizations SCP versus IAM permissions boundary.
 Error category: Scope or policy-evaluation error; multi-select exact-match error.
 Action: Continue recurrence monitoring in independent full mocks; retain the role-ARN versus role-session-ARN resource-policy boundary distinction.
-Review status: Focused remediation passed 6/6 on 2026-07-24 in 18 minutes, with all three learner-marked uncertain items correct. The attempt preceded the preferred spacing date, so independent-mock transfer evidence remains required.
+Review status: Focused remediation passed 6/6 on 2026-07-24 in 18 minutes, with all three learner-marked uncertain items correct. Full Mock 003 Question 42 correctly retained the SCP guardrail and explicit-deny boundary; continue ordinary recurrence monitoring.
 ```
 
 References: [local SCP/boundary model](sap-c02-hidden-gap-model-review-20260725.md#model-1---scp-versus-iam-permissions-boundary) ·
@@ -306,6 +454,39 @@ References: [local SCP/boundary model](sap-c02-hidden-gap-model-review-20260725.
 [AWS IAM permissions boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
 
 ### 2026-07-23: DynamoDB Write Sharding and Read Fan-Out
+
+#### Original question — Full Mock 001, Question 13
+
+> A company operates a DynamoDB table that stores telemetry by `deviceId` as
+> the partition key. A small number of industrial gateways write 80% of all
+> records, causing throttling even though the table uses on-demand capacity.
+> The application must continue to support efficient retrieval of all telemetry
+> for one gateway and one time range.
+>
+> Which TWO changes would most directly address the issue?
+>
+> A. Query the calculated shards in parallel and merge the time-ordered results
+> in the application.<br>
+> B. Replace on-demand mode with provisioned capacity without changing the key
+> design.<br>
+> C. Enable DynamoDB Streams and archive old records to Amazon S3.<br>
+> D. Add a calculated write-shard suffix to the partition key for high-volume
+> gateways.<br>
+> E. Increase the table's maximum read capacity only.
+
+#### Recurrence question — Non-Relational Database Diagnostic, Question 4
+
+> A team changes a hot key from `market#GB` to `market#GB#0` through
+> `market#GB#15` using a random suffix. The application must return all events
+> for `market#GB` in timestamp order.
+>
+> Which two consequences must the read design handle? Choose TWO.
+>
+> A. Query the relevant shard keys and merge the result sets.<br>
+> B. Use a strongly consistent read against a GSI to reconstruct global order.<br>
+> C. Sort or otherwise reconcile results across shards.<br>
+> D. Replace all queries with one table Scan using a filter expression.<br>
+> E. Expect DAX to identify the correct shard automatically.
 
 ```text
 Question theme: Concentrated writes on a small number of very high-volume DynamoDB partition keys
@@ -321,13 +502,28 @@ Exam trap: Focusing on provisioned versus on-demand capacity while ignoring part
 Service comparison: DynamoDB key-design write sharding versus capacity-mode selection.
 Error category: Missed architectural consequence; multi-select exact-match error.
 Action: Reconstruct the complete read path—query every relevant shard, merge the results, then establish cross-shard order—and retain that GSI reads are eventually consistent only.
-Review status: Focused spaced retest passed 6/6 on 2026-07-28 in 15 minutes. Questions 1 and 2 correctly recalled fan-out, merge, cross-shard ordering, and GSI consistency despite learner-marked uncertainty. Focused remediation is complete; independent-mock transfer remains pending.
+Review status: Focused spaced retest passed 6/6 on 2026-07-28 in 15 minutes. Questions 1 and 2 correctly recalled fan-out, merge, cross-shard ordering, and GSI consistency despite learner-marked uncertainty. Full Mock 003 Questions 41 and 63 correctly diagnosed and repaired a hot GSI key; continue ordinary recurrence monitoring.
 ```
 
 References: [local write-sharding model](sap-c02-hidden-gap-model-review-20260725.md#model-2---dynamodb-write-sharding-and-fan-out-reads) ·
 [AWS DynamoDB write sharding](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html)
 
 ### 2026-07-25: DynamoDB Lifecycle and Recovery Feature Mapping
+
+#### Original question — Non-Relational Database Diagnostic, Question 8
+
+> A compliance team requires old session items to expire automatically, an
+> asynchronous processor to react to item changes, and the ability to restore
+> the table to an earlier point after accidental writes.
+>
+> Which three capabilities address the requirements? Choose THREE.
+>
+> A. Time to Live (TTL)<br>
+> B. DynamoDB Streams<br>
+> C. Point-in-time recovery (PITR)<br>
+> D. A global secondary index<br>
+> E. DynamoDB Accelerator<br>
+> F. A filter expression
 
 ```text
 Question theme: Automatic expiry, asynchronous item-change processing, and restoration after accidental writes
@@ -355,6 +551,21 @@ References: [local database lesson](aws-non-relational-databases-sap-c02-key-les
 
 ### 2026-07-25: Time-Series History Versus Latest-State Lookup
 
+#### Original question — Non-Relational Database Diagnostic, Question 17
+
+> An industrial platform ingests timestamped sensor measurements. It needs
+> high-rate ingestion, queries over time windows, and different handling for
+> recent versus historical measurements. A separate operational service needs
+> millisecond lookup of the latest state by device ID.
+>
+> Which two-service design best separates the access patterns? Choose TWO.
+>
+> A. Use Amazon Timestream for time-window measurement analysis.<br>
+> B. Use DynamoDB for latest-state lookup by device ID.<br>
+> C. Use Amazon Neptune for all measurements because time is a relationship.<br>
+> D. Use ElastiCache as the only durable history store.<br>
+> E. Use DocumentDB only because the readings can be represented as JSON.
+
 ```text
 Question theme: Historical time-window telemetry analysis plus millisecond latest-state lookup by known device ID
 SAP-C02 domain: Domain 2 / Domain 3
@@ -379,6 +590,22 @@ References: [local database lesson](aws-non-relational-databases-sap-c02-key-les
 
 ### 2026-07-28: Application Discovery Agent Versus Agentless Collection
 
+#### Available question excerpt from the supplied external assessment
+
+Only the following question text and two evaluated options were supplied; no
+complete distractor set was retained:
+
+> An enterprise plans to migrate a complex environment containing hundreds of
+> interconnected on-premises physical servers to AWS. The project management
+> team needs to establish a phased migration wave plan based on actual network
+> dependency mapping between applications. Which AWS discovery mechanism
+> provides this visual mapping capability?
+>
+> A. Deploy the AWS Application Discovery Service Agentless Discovery Connector
+> tool.<br>
+> B. Install the agent-based AWS Application Discovery Service on all target
+> servers.
+
 ```text
 Question theme: Migration-wave planning for hundreds of interconnected on-premises physical servers using network-dependency evidence
 SAP-C02 domain: Domain 4 - Accelerate Workload Migration and Modernization
@@ -400,6 +627,25 @@ References: [local migration lesson](aws-migration-discovery-transfer-tracking-s
 
 ### 2026-07-29: IAM Identity Center Versus Cognito
 
+#### Original question — Full Mock 002, Question 1
+
+> A company has 80 AWS accounts in AWS Organizations. Employees authenticate
+> through a corporate identity provider. Platform administrators need to assign
+> different access levels to groups across selected accounts without creating
+> IAM users or maintaining a separate federation role manually in every
+> account.
+>
+> Which solution meets these requirements with the LEAST operational overhead?
+>
+> A. Create IAM users in the management account and allow them to assume roles
+> in each member account.<br>
+> B. Integrate the identity provider with IAM Identity Center, define permission
+> sets, and create group-to-account assignments.<br>
+> C. Create Amazon Cognito identity pools for the employees and map each pool to
+> an IAM role in every account.<br>
+> D. Store corporate credentials in AWS Secrets Manager and rotate them from a
+> central security account.
+
 ```text
 Question theme: Central workforce access to many AWS accounts through corporate groups
 SAP-C02 domain: Domain 1 - Design Solutions for Organizational Complexity
@@ -414,15 +660,31 @@ Exam trap: Treating every federated-human identity scenario as Cognito without i
 Service comparison: IAM Identity Center versus Amazon Cognito.
 Error category: Service-selection and identity-pattern gap.
 Action: Reproduce the workforce-versus-customer identity rule from memory and include it in the post-2026-07-31 spaced retest.
-Review status: Open; first recurrence test pending.
+Review status: Focused spaced retest Questions 1 and 2 were correct on 2026-08-01. Full Mock 003 Question 12 independently retained the workforce permission-set and permissions-boundary pattern; continue ordinary recurrence monitoring.
 ```
 
 References: [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
+[local spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) ·
 [AWS Identity Center account assignments](https://docs.aws.amazon.com/singlesignon/latest/userguide/assignusers.html) ·
 [AWS Identity Center permission sets](https://docs.aws.amazon.com/singlesignon/latest/userguide/permissionsets.html) ·
 [AWS Cognito identity pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html)
 
 ### 2026-07-29: Migration Hub Home Region Versus Data Transfer
+
+#### Original question — Full Mock 002, Question 28
+
+> A migration programme uses several AWS and partner tools. The programme
+> office wants a single view of applications, migration waves, and status.
+> Discovery data was collected in one AWS Region, but the office is viewing
+> Migration Hub in a different Region and cannot see it.
+>
+> What should the team do?
+>
+> A. Copy the discovery database with AWS DataSync to every Region.<br>
+> B. View and manage the migration programme in the configured Migration Hub
+> home Region and connect the migration tools there.<br>
+> C. Reinstall every discovery agent in the Region that hosts the target VPC.<br>
+> D. Use AWS Config aggregators instead of Migration Hub.
 
 ```text
 Question theme: Missing migration-discovery and tracking data when viewing the wrong AWS Region
@@ -438,15 +700,34 @@ Exam trap: Selecting a data mover whenever the wording includes missing data, wi
 Service comparison: AWS Migration Hub versus AWS DataSync.
 Error category: Service-boundary and Region-scope gap.
 Action: Reproduce home Region, tracking role, and data-movement boundary from memory and include it in the post-2026-07-31 spaced retest.
-Review status: Open; first recurrence test pending.
+Review status: Focused spaced retest Questions 3 and 4 were correct on 2026-08-01. Full Mock 003 Questions 8 and 24 independently separated physical-server agents, VMware agentless inventory, MGN, and Migration Hub; continue ordinary recurrence monitoring.
 ```
 
 References: [local migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
 [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
+[local spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) ·
 [AWS Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) ·
 [AWS DataSync scope](https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html)
 
 ### 2026-07-29: DAX Cluster and Client
+
+#### Original question — Full Mock 002, Question 47
+
+> A gaming application reads player-profile items from DynamoDB millions of
+> times per second. Most reads are eventually consistent, the same items are
+> requested repeatedly, and the company needs microsecond read latency with
+> minimal changes to DynamoDB data access. The cache must remain available after
+> one cache node fails.
+>
+> Which TWO actions meet the requirements?
+>
+> A. Request strongly consistent reads through DAX for every request.<br>
+> B. Replace the DynamoDB table with ElastiCache for Memcached as the system of
+> record.<br>
+> C. Deploy a multi-node, Multi-AZ DAX cluster.<br>
+> D. Change the application to use the DAX client for supported DynamoDB read
+> operations.<br>
+> E. Add a local secondary index with the same sort key.
 
 ```text
 Question theme: Highly available microsecond DynamoDB read caching with minimal application change
@@ -462,15 +743,32 @@ Exam trap: Interpreting drop-in compatibility as zero integration and stopping a
 Service comparison: DynamoDB direct SDK path versus DynamoDB Accelerator client path.
 Error category: Integration-boundary and exact-match completeness error.
 Action: State both halves—cluster and client—then include the pattern in the post-2026-07-31 spaced retest.
-Review status: Open; first recurrence test pending.
+Review status: Focused spaced retest Questions 5 and 6 were correct on 2026-08-01. Full Mock 003 Question 45 independently retained the DAX-client write-through request path; continue ordinary recurrence monitoring.
 ```
 
 References: [local database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
 [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
+[local spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) ·
 [AWS DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) ·
 [AWS DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html)
 
 ### 2026-07-29: S3 Interface Versus Gateway Endpoint
+
+#### Original question — Full Mock 002, Question 73
+
+> On-premises applications connected through Direct Connect must access S3
+> over private IP addresses. The company cannot route this traffic through a
+> NAT gateway or the public S3 endpoint. The endpoint must be reachable from
+> the on-premises network.
+>
+> Which solution is MOST appropriate?
+>
+> A. A Route 53 public hosted zone that points to an S3 gateway endpoint<br>
+> B. An S3 gateway endpoint only, because gateway endpoints are directly
+> reachable from on-premises networks<br>
+> C. An internet gateway in the on-premises data centre<br>
+> D. An S3 interface VPC endpoint reachable through the private network path,
+> with the required DNS and endpoint policy configuration
 
 ```text
 Question theme: Private S3 access from on premises over Direct Connect
@@ -486,9 +784,10 @@ Exam trap: Memorizing “S3 equals gateway endpoint” as an absolute rule inste
 Service comparison: S3 gateway endpoint versus S3 interface endpoint.
 Error category: Hybrid-connectivity scope error.
 Action: Reproduce VPC-origin versus on-premises-origin endpoint selection from memory and include it in the post-2026-07-31 spaced retest.
-Review status: Open; first recurrence test pending.
+Review status: Focused spaced retest Questions 7 and 8 were correct on 2026-08-01. Full Mock 003 Question 71 independently separated gateway-endpoint VPC traffic from interface-endpoint on-premises access; continue ordinary recurrence monitoring.
 ```
 
 References: [local Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) ·
 [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
+[local spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) ·
 [AWS S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)
