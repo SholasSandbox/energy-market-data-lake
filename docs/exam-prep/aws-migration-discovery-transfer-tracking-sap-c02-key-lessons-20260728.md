@@ -1,10 +1,10 @@
-# AWS Migration Discovery, Data Transfer, and Tracking - SAP-C02 Key Lessons
+# AWS Migration Discovery, Server Rehosting, Data Transfer, and Tracking - SAP-C02 Key Lessons
 
 <!-- markdownlint-disable MD013 MD060 -->
 
 **Date:** 2026-07-28<br>
-**Last revised:** 2026-07-28<br>
-**Document role:** source-backed Domain 4 lesson covering Application Discovery Service, AWS DataSync, and AWS Migration Hub.<br>
+**Last revised:** 2026-08-05<br>
+**Document role:** source-backed Domain 4 lesson covering Application Discovery Service, AWS Application Migration Service, AWS DataSync, AWS Migration Hub, and AWS Transform.<br>
 **Evidence boundary:** this is revision material, not proof of blind recall, a completed migration wave, or deployed AWS resources.
 
 ## One End-to-End Mental Model
@@ -15,21 +15,25 @@ discover estate and dependencies
 group servers into applications and plan waves
     -> Migration Hub home Region
 move each workload with the appropriate engine
-    -> MGN for servers
+    -> AWS Application Migration Service (AWS MGN) for server rehosting
     -> DMS/SCT for databases
     -> DataSync for files, objects, and directories
 track status across tools
     -> Migration Hub
+accelerate selected migration and modernization paths
+    -> AWS Transform for migrations, mainframe, or .NET
 validate, cut over, and retire source
 ```
 
-The three services in this lesson have different jobs:
+The five service families in this lesson have different jobs:
 
 | Service | Mental shortcut | Does | Does not |
 |---|---|---|---|
 | Application Discovery Service | Learn the source estate | Collects server inventory, configuration, utilization, process, and connection evidence according to the collection method | Move servers or data |
+| AWS Application Migration Service (AWS MGN; current documentation also calls it AWS Transform MGN) | Rehost servers | Continuously replicates supported source-server disks into an AWS staging area, then launches test and cutover EC2 instances | Refactor the application, convert a database schema, or provide ongoing DR by itself |
 | AWS DataSync | Move storage data online | Copies files, objects, directories, metadata, and permitted changes between supported storage locations | Rehost a server or perform database-schema conversion |
 | AWS Migration Hub | Portfolio control tower | Centralizes discovery views, application grouping, planning context, and migration status from connected tools | Perform the underlying server, database, or file transfer by itself |
+| AWS Transform | AI-assisted transformation workspace | Analyses supported source estates or codebases, proposes plans, and orchestrates supported migration or modernization workflows with human review | Make every workload compatible, replace specialist transfer engines, or prove the transformed application is production-ready |
 
 ## 1. AWS Application Discovery Service
 
@@ -101,7 +105,102 @@ Agent and Agentless Collector send discovery data to that home Region, where
 servers can be reviewed and grouped into applications. Migration Hub import is
 the alternative when discovery data already exists.
 
-## 2. AWS DataSync
+## 2. AWS Application Migration Service (AWS MGN)
+
+### Clean Mental Model
+
+AWS Application Migration Service is the server **rehost** engine. AWS commonly
+abbreviates it as **AWS MGN**, and current documentation and console text also
+use **AWS Transform MGN**. For SAP-C02, treat these names as the same underlying
+server-migration capability, not as the whole AWS Transform service.
+
+```text
+physical, virtual, or cloud source server
+    -> continuous block-level replication
+AWS staging area
+    -> replication server and staging EBS volumes
+launch settings
+    -> test EC2 instance
+    -> validate application and dependencies
+    -> mark ready for cutover
+    -> launch cutover EC2 instance
+    -> validate, finalize, and archive
+```
+
+The staging area keeps migration infrastructure separate from the final target
+instance. MGN converts the replicated disks into launchable snapshots and uses
+the configured launch settings to create EC2 test and cutover instances. The
+source can continue running while block changes are replicated, reducing the
+final cutover window.
+
+### Lifecycle and Control Points
+
+```text
+Not ready
+    -> initial sync completes and replication becomes healthy
+Ready for testing
+    -> launch a non-disruptive test instance
+Test in progress
+    -> validate boot, application, networking, security, and dependencies
+Ready for cutover
+    -> confirm replication remains healthy and launch the cutover instance
+Cutover in progress
+    -> validate the target before finalization
+Cutover complete
+    -> replication is stopped; archive the source-server record when appropriate
+```
+
+Testing does not by itself end continuous replication from the source. Mark the
+server ready for cutover only after the test is accepted. Finalize the cutover
+only after the target instance has passed the agreed validation: finalization
+disconnects replication and cleans up the AWS replication resources while
+leaving launched test or cutover instances in place.
+
+Before finalization, MGN can return a server to an earlier testing or cutover
+state when another launch is required. Do not treat finalization as a routine
+button press before rollback and acceptance decisions are complete.
+
+### Replication Settings Versus Launch Settings
+
+| Settings | Control |
+|---|---|
+| Replication settings | Staging-area subnet, replication-server choices, EBS staging volumes, bandwidth and routing/security path used for replication |
+| Launch settings and EC2 launch template | Target subnet, instance type/right-sizing choice, security groups, disks, licensing choices, tags, and related target-instance configuration |
+| Post-launch actions | Optional Systems Manager-based actions and operational steps applied after a test or cutover instance launches |
+
+The migration is not validated merely because an EC2 instance launches. Test
+the application, identity and secrets, DNS, load balancer registration,
+database connectivity, monitoring, backup, performance, and business behavior.
+
+### MGN Decision Boundaries
+
+| Requirement | Choose | Why |
+|---|---|---|
+| Rehost physical, VMware, Hyper-V, or cloud servers on EC2 with minimal application change and a short cutover | AWS MGN | Replicates server disks continuously and provides test/cutover launch workflow |
+| Discover inventory, processes, utilization, and network dependencies | Application Discovery Service | Discovery evidence rather than the rehost engine |
+| Convert database schemas and replicate full load or CDC | AWS SCT or applicable schema-conversion tooling plus AWS DMS | Database-aware conversion and replication |
+| Copy files, objects, and directories without migrating a bootable server | DataSync | Storage-data transfer rather than server rehosting |
+| Track portfolio progress across MGN, DMS, and other connected tools | Migration Hub | Central tracking rather than execution |
+| Analyse an estate, create application groups and waves, translate network configuration, and guide rehosting | AWS Transform for migrations | Broader assisted planning and orchestration that can use MGN for the rehost step |
+| Maintain ongoing recoverability of servers after migration | AWS Elastic Disaster Recovery | DR is a continuing recovery capability; MGN is a migration and cutover service |
+
+### High-Yield Exam Traps
+
+1. **MGN means rehost, not refactor.** It moves the server workload with minimal
+   application change; it does not modernize the code or database architecture.
+2. **Test before cutover.** A healthy initial sync makes the server ready for
+   testing, not automatically production-ready.
+3. **A test launch does not stop source replication.** Continue replicating
+   changes until the controlled cutover is accepted and finalized.
+4. **Launch settings matter.** Replicated disks alone do not select the right
+   VPC, subnet, security groups, instance sizing, or operational controls.
+5. **MGN is not DataSync or DMS.** Choose by the object being moved: server,
+   storage data, or database data/schema.
+6. **MGN is not the default ongoing-DR answer.** Use AWS Elastic Disaster
+   Recovery when the requirement is sustained recovery readiness rather than a
+   finite migration and cutover.
+
+## 3. AWS DataSync
 
 ### What DataSync Moves
 
@@ -190,7 +289,7 @@ that the source/destination pair supports it.
 Direct Connect or VPN can provide the network path, but neither performs the
 copy, metadata handling, scheduling, or verification.
 
-## 3. AWS Migration Hub
+## 4. AWS Migration Hub
 
 ### Core Role
 
@@ -243,6 +342,63 @@ For exam questions, first identify whether the requirement is **discover**,
 **recommend**, **move**, **or track**. “Migration Hub” alone is usually wrong
 when the scenario asks for the actual server, database, or storage transfer.
 
+## 5. AWS Transform
+
+### Clean Mental Model
+
+```text
+source estate or codebase
+    -> discover and analyse
+AWS Transform
+    -> propose grouping, migration, or modernization plan
+human review and approvals
+    -> run supported transformation workflow
+specialist migration/runtime services
+    -> rehost, build, test, and cut over
+```
+
+AWS Transform is a generative-AI-assisted migration and modernization service.
+For SAP-C02, recognize the workload family and the outcome requested; do not
+memorize it as a universal replacement for every migration service.
+
+### Current Workload Families
+
+| Workload family | What AWS Transform contributes | Important boundary |
+|---|---|---|
+| Server-environment migrations, including VMware, Hyper-V, virtual, and bare-metal sources | Discovery-data ingestion, application grouping, migration-wave planning, source-network-to-AWS network mapping, and rehosting to EC2 | The rehost workflow uses AWS Transform MGN capabilities; MGN remains the server replication, test-launch, and cutover engine |
+| Mainframe modernization | Codebase analysis, documentation, business-logic extraction, decomposition, planning, and supported code transformation; current capabilities include refactoring supported COBOL workloads toward cloud-optimized Java | Human review remains part of the process; generated artifacts do not prove semantic equivalence, performance, security, or cutover success |
+| .NET modernization | Analyses dependencies and helps port supported .NET Framework applications to cross-platform .NET for Linux, with build/test feedback and transformation reports | Unsupported dependencies and Windows-specific behaviour can require manual work; review and testing remain mandatory |
+
+### Transform Versus the Neighbouring Services
+
+| Scenario cue | Choose first | Why |
+|---|---|---|
+| Replicate an unchanged physical or virtual server and launch it on EC2 with minimal downtime | AWS Application Migration Service / AWS Transform MGN workflow | Rehost with continuous block-level replication, test launch, and controlled cutover |
+| Analyse a large source estate, translate network configuration, group applications, create waves, and guide rehosting | AWS Transform for migrations | Broader assisted migration workflow that coordinates planning and rehosting capabilities |
+| Collect host inventory, processes, utilization, and connection evidence | Application Discovery Service | Discovery evidence, not transformation |
+| Track progress across connected migration tools | Migration Hub | Portfolio tracking, not the transfer engine |
+| Convert database schema/code and replicate database changes | AWS SCT or applicable schema-conversion tooling plus AWS DMS | Database-aware conversion and full-load/CDC boundary |
+| Copy files, objects, and directories with incremental verification | DataSync | Storage-data transfer boundary |
+| Analyse and modernize supported COBOL or .NET code | AWS Transform for the corresponding workload family | Code and application modernization rather than unchanged rehosting |
+
+### Exam Traps
+
+1. **AWS Transform is not just a renamed MGN.** The migration experience can
+   use MGN capabilities for server rehosting, while Transform adds discovery,
+   planning, network translation, wave orchestration, and review workflows.
+2. **Mainframe transformation is not lift-and-shift.** Analysis,
+   decomposition, business-rule extraction, and code refactoring indicate a
+   modernization path.
+3. **Generated code or infrastructure is not acceptance evidence.** Preserve
+   human approval, testing, security validation, dependency checks, rollback,
+   and cutover controls.
+4. **Choose by workload type.** A database CDC requirement still points to
+   DMS; a NAS copy still points to DataSync; cross-tool status still points to
+   Migration Hub.
+5. **Check current support.** Workload types, source formats, Regions, quotas,
+   and transformation limits can change; use the scenario's stated support
+   constraints rather than assuming universal coverage.
+
 ## High-Value Scenario Matrix
 
 | Scenario cue | Best starting answer |
@@ -251,9 +407,14 @@ when the scenario asks for the actual server, database, or storage transfer.
 | VMware connection dependencies with no installed agents, but approved WinRM/SNMP access | Agentless Collector plus Network Data Collection module |
 | Physical servers with detailed process/TCP dependency evidence | Discovery Agent on each server |
 | Existing CMDB spreadsheet and no collector deployment | Migration Hub import |
+| Physical, virtual, or cloud servers need minimally changed EC2 rehosting with test and controlled cutover | AWS MGN |
+| Ongoing server recovery readiness after migration | AWS Elastic Disaster Recovery |
 | Online NAS migration with incremental copy and verification | DataSync |
 | Central status across MGN and DMS migration waves | Migration Hub with connected/authorized tools |
 | Transformation-path recommendations | Migration Hub Strategy Recommendations |
+| AI-assisted VMware/server discovery, network mapping, wave planning, and EC2 rehosting | AWS Transform for migrations |
+| Supported COBOL estate needs analysis, decomposition, and code modernization | AWS Transform for mainframe |
+| Supported .NET Framework estate must move toward cross-platform .NET on Linux | AWS Transform for .NET |
 
 ## Recall Check
 
@@ -263,12 +424,20 @@ Answer closed book:
 2. Which module provides source/destination IP and port dependencies, and what
    guest access does it use?
 3. When does Discovery Agent beat Agentless Collector?
-4. What are DataSync's agent, location, task, and task-execution roles?
-5. When does DataSync require an agent, and when might it not?
-6. Why are DataSync, DMS, MGN, Snow Family, and Storage Gateway not synonyms?
-7. What does the Migration Hub home Region control?
-8. Why must a migration tool be connected to Migration Hub?
-9. What can Migration Hub track that it cannot itself migrate?
+4. What does MGN replicate, and what does it deliberately not transform?
+5. Walk through the MGN lifecycle from initial sync to cutover complete.
+6. Why are test launch, cutover launch, and finalize cutover separate actions?
+7. When does Elastic Disaster Recovery win over MGN?
+8. What are DataSync's agent, location, task, and task-execution roles?
+9. When does DataSync require an agent, and when might it not?
+10. Why are DataSync, DMS, MGN, Snow Family, and Storage Gateway not synonyms?
+11. What does the Migration Hub home Region control?
+12. Why must a migration tool be connected to Migration Hub?
+13. What can Migration Hub track that it cannot itself migrate?
+14. When does AWS Transform for migrations win over selecting MGN alone?
+15. What does AWS Transform for mainframe do that a rehost tool does not?
+16. Why do Transform output and a successful transformation job not prove a
+    production-ready migration?
 
 ## Official AWS References
 
@@ -277,6 +446,11 @@ Answer closed book:
 - [Agentless Collector Network Data Collection module](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector-gs-network-data-collection.html)
 - [Network Data Collection credentials and protocols](https://docs.aws.amazon.com/application-discovery/latest/userguide/network-data-module-setup.html)
 - [AWS Application Discovery Agent](https://docs.aws.amazon.com/application-discovery/latest/userguide/discovery-agent.html)
+- [Monitor the AWS MGN migration lifecycle](https://docs.aws.amazon.com/mgn/latest/ug/migration-dashboard.html)
+- [Launch an AWS MGN test instance](https://docs.aws.amazon.com/mgn/latest/ug/starting-test.html)
+- [AWS MGN ready-for-cutover indicators](https://docs.aws.amazon.com/mgn/latest/ug/ready-for-cutover.html)
+- [FinalizeCutover API behavior](https://docs.aws.amazon.com/mgn/latest/APIReference/API_FinalizeCutover.html)
+- [Revert or finalize an AWS MGN cutover](https://docs.aws.amazon.com/mgn/latest/ug/revert-finalize-cutover.html)
 - [How AWS DataSync works](https://docs.aws.amazon.com/datasync/latest/userguide/how-datasync-transfer-works.html)
 - [When a DataSync agent is required](https://docs.aws.amazon.com/datasync/latest/userguide/do-i-need-datasync-agent.html)
 - [DataSync supported transfer combinations](https://docs.aws.amazon.com/datasync/latest/userguide/working-with-locations.html)
@@ -284,3 +458,8 @@ Answer closed book:
 - [What is AWS Migration Hub?](https://docs.aws.amazon.com/migrationhub/latest/ug/whatishub.html)
 - [Migration Hub discovery and home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region-with-discovery.html)
 - [Connect migration tools and track status](https://docs.aws.amazon.com/migrationhub/latest/ug/gs-new-user-migration.html)
+- [AWS Transform migrations, including VMware](https://docs.aws.amazon.com/transform/latest/userguide/transform-app-vmware.html)
+- [AWS Transform server migration workflow](https://docs.aws.amazon.com/transform/latest/userguide/transform-vmware-migrate-servers.html)
+- [AWS Transform network migration](https://docs.aws.amazon.com/transform/latest/userguide/transform-vmware-migrate-network.html)
+- [AWS Transform for mainframe](https://docs.aws.amazon.com/transform/latest/userguide/transform-app-mainframe.html)
+- [AWS Transform for .NET](https://docs.aws.amazon.com/transform/latest/userguide/dotnet.html)

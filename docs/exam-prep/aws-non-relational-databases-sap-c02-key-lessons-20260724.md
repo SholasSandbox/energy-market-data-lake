@@ -2,8 +2,9 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
+
 **Date:** 2026-07-24<br>
-**Last revised:** 2026-07-28<br>
+**Last revised:** 2026-08-05<br>
 **Purpose:** Close the identified revision gap without restarting database study from first principles.<br>
 **Evidence boundary:** This is a source-backed lesson, not proof of closed-book recall. Complete the separate diagnostic before recording mastery.
 
@@ -279,6 +280,7 @@ DynamoDB global tables now have two consistency modes. Older notes that describe
 | Strong read against a replica | Valid on the replica table, but guarantees only the latest locally committed value; it can still be stale relative to a recent write in another Region | A strong read on any available replica returns the latest committed item across the MRSC global table |
 | Write/read latency | Lower | Higher because of cross-Region coordination |
 | Recovery point potential | Non-zero replication lag is possible | RPO zero is possible for supported designs |
+| Time to Live | Supported | Not supported; a witness Region does not change this restriction |
 | Feature constraints | Broader feature compatibility | Has additional topology and feature restrictions |
 | Best fit | Active-active applications that tolerate brief convergence | Cross-Region applications whose correctness requires strong consistency |
 
@@ -533,6 +535,7 @@ The architecture should state which store owns the truth and how derived stores 
 14. **DAX requires zero application change.** It minimizes query-model change, but the application must use a DAX client and endpoint.
 15. **Every global table requires manually enabled `NEW_AND_OLD_IMAGES` Streams.** MREC manages Streams for replication; MRSC replication does not use Streams.
 16. **A strong read on an MREC secondary replica throws `ValidationException`.** It is a valid local table read, but it cannot make asynchronous cross-Region replication current; GSIs remain eventual-only.
+17. **Adding an MRSC witness enables TTL.** It does not; TTL remains unsupported for MRSC global tables.
 
 ## Bounded revision route
 
@@ -559,6 +562,7 @@ Before attempting the diagnostic, close this file and answer aloud or on paper:
 - Which DynamoDB read surfaces are eventual-only?
 - What changed in the global-tables model with MRSC?
 - How does Streams behaviour differ between MREC and MRSC?
+- Why does an MRSC session design that depends on DynamoDB TTL need to change?
 - Why does DAX not solve write concentration?
 - Which requirement moves a cache choice from Memcached to Valkey/Redis OSS?
 - Which service is the first choice for MongoDB compatibility? Cassandra/CQL? Graph traversal? Time series?

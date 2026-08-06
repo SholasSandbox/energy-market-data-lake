@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 -->
 
-**Last revised:** 2026-07-28
+**Last revised:** 2026-08-06
 
 ## Purpose and Scope
 
@@ -165,6 +165,73 @@ IPv4 path then reaches the IPv4 destination.
 | Application services and resources need policy-based connectivity across VPCs/accounts | VPC Lattice | Managed application networking with service networks, auth policies, and observability | Do not choose it when the requirement is arbitrary Layer 3 network transit. |
 | Centrally managed global cloud and branch network | AWS Cloud WAN | Policy-defined Regions, segments, and attachments | A regional Transit Gateway remains the simpler fit for a limited regional hub. |
 
+### VPC Lattice: Application Networking, Not a Bigger Router
+
+Transit Gateway answers a network question: **which IP networks can route
+through this hub?** VPC Lattice answers an application question: **which
+clients may call this named service, and how should the request reach a healthy
+target?**
+
+```text
+provider VPC/account
+    application targets: EC2, containers, Lambda, IP addresses, or ALB
+                           ^
+                           | target group
+                     listener and rules
+                           ^
+                           | VPC Lattice service association publishes it
+                           |
+                    service network
+             logical connectivity and policy boundary
+                           |
+                           | VPC association admits clients
+                           v
+consumer VPC/account
+    client -> service DNS name -> VPC Lattice -> selected healthy target
+```
+
+The main components have distinct jobs:
+
+| Component | Mental shortcut | What it does |
+|---|---|---|
+| Service | A callable application endpoint | Defines listeners, routing rules, and target groups for one application capability |
+| Service network | A controlled catalogue of callable services and resources | Groups services/resources with client VPCs; it supplies the connectivity boundary and can supply auth-policy boundaries for services |
+| Service association | Publish this service | Makes a service available through the service network |
+| VPC association | Admit clients from this VPC | Allows workloads in the associated VPC to reach services/resources in the service network when authorization also permits it |
+| Listener and rules | Receive and route requests | Match HTTP, HTTPS, or TLS traffic and forward it to an appropriate target group |
+| Target group | The service back end | Contains the EC2 instances, IP addresses, Lambda functions, ALBs, or supported container targets that serve requests |
+| Resource configuration | Publish a private resource rather than a service | Represents an IP address, domain-name target, RDS database, or resource group reached through a resource gateway; it is not a service target group |
+| Auth policy | Who may call which service? | Applies resource-based authorization at the service-network or service boundary; VPC Lattice auth policies do not apply to resource configurations |
+| AWS RAM share | Cross-account publication | Shares a service network, service, or resource configuration across accounts where supported |
+
+The client uses the service's generated DNS name. VPC Lattice performs service
+discovery and request routing; the client does not need a route to every
+provider VPC CIDR. This is why VPC Lattice can connect application services
+across accounts even when VPC CIDR ranges overlap.
+
+With auth type `AWS_IAM`, access is not granted merely because the VPC and
+service are associated. The caller's identity policy and the applicable VPC
+Lattice auth policies must explicitly allow the request; an explicit deny
+wins. A security group attached to the VPC association remains a separate
+network control, while VPC Lattice access logs and metrics provide application
+request evidence.
+
+#### VPC Lattice Versus Nearby Answers
+
+| Requirement | Better starting point | Why VPC Lattice does or does not fit |
+|---|---|---|
+| Many VPCs need arbitrary bidirectional IP connectivity or transitive hybrid routing | Transit Gateway | TGW routes packets between attached networks; VPC Lattice is limited to published application services/resources and supported listener protocols |
+| Many application teams need service discovery, request routing, IAM authorization, and monitoring across VPCs/accounts | VPC Lattice | These application-layer controls are the service's purpose; no peering mesh or load balancer per consumer is required |
+| One provider exposes one private service to many consumers without broad network reachability | AWS PrivateLink | PrivateLink is the narrower endpoint-based provider/consumer pattern; VPC Lattice becomes stronger when several services need a shared service-network and policy model |
+| A VPC workload needs a private path to an AWS API such as S3 or Systems Manager | VPC endpoint | The endpoint is the direct AWS-service access pattern; VPC Lattice is for application services and supported resources |
+| Branches and VPCs need a centrally governed global WAN | AWS Cloud WAN | Cloud WAN manages the wider network topology; VPC Lattice manages application-service access |
+
+High-value exam cues for VPC Lattice are **service-to-service connectivity**,
+**multiple VPCs or accounts**, **service discovery**, **request routing**,
+**IAM-based authorization**, **observability**, and sometimes **overlapping
+CIDRs**. If the requirement instead says arbitrary Layer 3 connectivity,
+propagated routes, or transitive routing, start with Transit Gateway.
+
 ### Endpoint Shortcut
 
 - **Gateway endpoint:** S3 or DynamoDB; route-table target; no endpoint ENI or
@@ -196,6 +263,35 @@ encrypt traffic. MACsec is available only for supported dedicated connections
 and configurations. An IPsec VPN supplies the usual exam answer when encryption
 must be layered over private Direct Connect connectivity.
 
+### BGP Mental Model for SAP-C02
+
+Border Gateway Protocol exchanges **reachable IP prefixes and path
+attributes** between autonomous systems. In AWS hybrid designs it is the
+dynamic-routing control plane commonly used by Direct Connect virtual
+interfaces and dynamically routed Site-to-Site VPN connections.
+
+```text
+on-premises router
+    -- advertises on-premises prefixes --> AWS
+    <-- receives AWS/VPC prefixes ------- AWS
+
+BGP chooses candidate paths
+    -> route-table and gateway rules still apply
+    -> security and return routing remain separate
+```
+
+Keep direction explicit:
+
+- To influence **AWS-to-on-premises** traffic, change the attributes of the
+  on-premises prefixes advertised to AWS. Direct Connect local-preference
+  communities and AS-path prepending are common controls.
+- To influence **on-premises-to-AWS** traffic, apply routing policy on the
+  customer routers to the prefixes AWS advertises. AWS cannot force the
+  customer's local preference.
+- A healthy BGP session proves route exchange, not application reachability.
+  Route tables, return routes, security controls, MTU, and application health
+  can still fail.
+
 ### Direct Connect BGP Path Selection
 
 For routes received over private or transit virtual interfaces, evaluate the
@@ -215,6 +311,116 @@ a longer prefix.
 Exam trap: route specificity is evaluated before “Direct Connect versus VPN”
 or BGP-path tuning. Compare prefixes first, then compare attributes only among
 equally specific routes.
+
+For private and transit virtual interfaces, use this exam-order model for
+routes AWS receives from on premises:
+
+```text
+1. longest prefix
+2. Direct Connect local preference
+3. shortest AS_PATH
+4. lowest MED, when the preceding attributes tie
+5. ECMP when eligible paths remain equal
+```
+
+AWS recommends local-preference communities rather than MED for deliberate
+active/passive Direct Connect designs. Do not apply this list blindly to every
+AWS route table or gateway: VPC route-table priority, virtual-private-gateway
+priority, Transit Gateway route priority, and tunnel health introduce their
+own rules.
+
+### What the Main Attributes Mean
+
+| Attribute or mechanism | Mental shortcut | Higher-value exam use |
+|---|---|---|
+| Prefix length | Exact destination wins first | A `/24` beats a `/16`, regardless of a more attractive attribute on the `/16` |
+| Local preference | Which path should AWS prefer for the same prefix? | Direct Connect communities `7224:7100` low, `7224:7200` medium, and `7224:7300` high for private/transit VIF advertisements |
+| AS_PATH | How many autonomous-system hops are represented? | With equal prefix and local preference, the shorter path wins; prepend the backup path to make it less attractive |
+| MED | Hint about the preferred entry point | Lower is preferred only after prefix, local preference, and AS_PATH tie; AWS does not recommend it as the primary Direct Connect control |
+| BGP community | Metadata that invokes an AWS routing policy | Use supported communities for Direct Connect preference or public-prefix propagation scope |
+| ECMP | Use multiple equal paths | Requires equivalent prefixes and compatible attributes; design applications and firewalls for asymmetric possibilities |
+
+### Active/Active Versus Active/Passive
+
+| Desired outcome | Advertisement pattern |
+|---|---|
+| Active/active Direct Connect | Advertise the same prefix with equivalent AS_PATH/MED and the same local-preference community on eligible paths so ECMP can apply |
+| Active/passive, same prefix length | Apply a higher local-preference community to the primary and a lower one to the backup; AS-path prepending is a later-order alternative |
+| Prefer one path for only a subnet | Advertise that subnet as a more-specific prefix over the preferred path |
+| VPN resilience | Configure both tunnels; with Transit Gateway, BGP and ECMP can use multiple equal-cost tunnels, whereas a VGW selects one tunnel across its VPN connections |
+
+Never create accidental active/passive behaviour by advertising different
+prefix lengths and then expecting communities or AS-path prepending to
+override longest-prefix match.
+
+### Direct Connect Communities Worth Recognizing
+
+Private and transit VIF local-preference communities affect how AWS sends
+traffic toward customer-advertised prefixes:
+
+| Community | AWS preference |
+|---|---|
+| `7224:7100` | Low |
+| `7224:7200` | Medium |
+| `7224:7300` | High |
+
+Public VIF scope communities control how widely AWS propagates a
+customer-owned public prefix:
+
+| Community | Propagation scope |
+|---|---|
+| `7224:9100` | Local AWS Region |
+| `7224:9200` | AWS Regions in the associated continent |
+| `7224:9300` | All public AWS Regions |
+
+Without a public-VIF scope community, AWS advertises the prefix globally by
+default. AWS-advertised public prefixes carry `NO_EXPORT`; do not treat a
+public VIF as internet transit.
+
+The numbers are recognition-level material. The decision pattern—scope versus
+preference, and the direction of influence—is more important than rote recall.
+
+### Direct Connect, VPN, and Route-Table Boundaries
+
+- Longest-prefix match applies before equal-prefix tie breaking.
+- In a VPC route table, an identical-prefix eligible static route takes
+  priority over a propagated VPN or Direct Connect route.
+- For equal prefixes known by a virtual private gateway, a BGP-propagated
+  Direct Connect route is preferred over a static VPN route, which is preferred
+  over a BGP-propagated VPN route. Tunnel health takes precedence.
+- These VGW rules are not a universal ordering for Transit Gateway. In a TGW
+  route table, static routes take priority over propagated routes for the same
+  destination, and attachment-specific propagation priorities apply.
+- A Direct Connect gateway **allowed prefix** is a filter for what associated
+  resources may advertise; it does not create reachability by itself.
+
+### Prefix Limits and Failure Diagnosis
+
+- A private or transit VIF BGP session accepts up to 100 advertised IPv4 routes
+  and 100 advertised IPv6 routes from on premises by default. Exceeding the
+  limit can put the BGP session into an idle/down state.
+- Prefer route summarization where it preserves the required routing and
+  security boundaries.
+- If the physical Direct Connect connection is up but the VIF is down, check
+  VLAN, BGP peer IPs, ASN, BGP MD5 authentication, and advertised-prefix
+  limits before investigating the application.
+- BFD can accelerate failure detection when configured on the customer router;
+  it does not replace redundant connections and locations.
+
+### Direct Connect SiteLink
+
+SiteLink lets supported private or transit VIFs exchange traffic between
+Direct Connect points of presence over the AWS global network without routing
+the traffic through an AWS Region. It is an on-premises-site connectivity
+pattern, not a replacement for VPC/TGW routing.
+
+Exam boundaries:
+
+- public VIFs do not support SiteLink;
+- a private VIF attached directly to a VGW does not support SiteLink;
+- SiteLink has separate pricing and route-prefix limits; and
+- when SiteLink is enabled, AS-path behaviour can alter location preference,
+  so validate the intended active/active or active/passive advertisements.
 
 ### Direct Connect Virtual Interfaces
 
@@ -368,15 +574,26 @@ processing, and transfer charges. Do not assume that private always means free.
 5. **Two VPN tunnels:** one tunnel is not the intended resilient design.
 6. **Peering:** is not transitive and does not solve overlapping CIDRs.
 7. **PrivateLink:** exposes services, not arbitrary bidirectional VPC routing.
-8. **TGW versus Cloud WAN:** TGW is a regional hub; Cloud WAN adds managed
+8. **VPC Lattice versus TGW:** Lattice publishes and authorizes application
+   services; TGW supplies general Layer 3 routing between attached networks.
+9. **TGW versus Cloud WAN:** TGW is a regional hub; Cloud WAN adds managed
    global policy, segmentation, and automation.
-9. **ALB versus NLB versus GWLB:** application request, transport connection,
+10. **ALB versus NLB versus GWLB:** application request, transport connection,
    and appliance insertion are three different jobs.
-10. **CloudFront versus Global Accelerator:** content caching versus static
+11. **CloudFront versus Global Accelerator:** content caching versus static
     anycast accelerated network entry.
-11. **WAF versus Network Firewall:** web-request control versus routed network
+12. **WAF versus Network Firewall:** web-request control versus routed network
     inspection.
-12. **Reachability Analyzer:** configuration analysis, not a packet test.
+13. **Reachability Analyzer:** configuration analysis, not a packet test.
+14. **BGP attribute order:** a more-specific prefix wins before local
+    preference, AS_PATH, or MED.
+15. **BGP direction:** customer advertisements influence AWS-to-on-premises
+    return routing; customer-router policy influences on-premises-to-AWS
+    routing.
+16. **Active/passive Direct Connect:** use different local-preference
+    communities only when the advertised prefix lengths are the same.
+17. **BGP session up:** proves adjacency and route exchange, not end-to-end
+    reachability or authorization.
 
 ## Recall Check
 
@@ -405,6 +622,21 @@ Answer without looking above:
 14. What is the difference between Flow Logs, Reachability Analyzer, and
     Traffic Mirroring?
 15. Why must DNS, routing, and authorization be tested separately?
+16. In what order does AWS evaluate prefix length, Direct Connect local
+    preference, AS_PATH, and MED for equal candidate classes?
+17. Which direction of traffic is influenced by adding a Direct Connect
+    local-preference community to a prefix advertised from on premises?
+18. How would you advertise the same prefix for active/active versus
+    active/passive Direct Connect?
+19. Why can a more-specific backup advertisement unexpectedly attract traffic
+    even when its AS path is longer?
+20. What does SiteLink connect, and what does it not replace?
+21. What do a VPC Lattice service network, service association, and VPC
+    association each do?
+22. Why does VPC Lattice not replace Transit Gateway, and which requirement
+    makes VPC Lattice the better answer?
+23. With VPC Lattice auth type `AWS_IAM`, which policy layers must allow a
+    request?
 
 ## Lakehouse Application Boundary
 
@@ -423,10 +655,16 @@ Lakehouse requirement and tracker-authorized evidence gate justify it.
 - [AWS PrivateLink concepts](https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html)
 - [AWS Transit Gateway](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html)
 - [Amazon VPC Lattice](https://docs.aws.amazon.com/vpc-lattice/latest/ug/what-is-vpc-lattice.html)
+- [VPC Lattice service network associations](https://docs.aws.amazon.com/vpc-lattice/latest/ug/service-network-associations.html)
+- [VPC Lattice auth policies](https://docs.aws.amazon.com/vpc-lattice/latest/ug/auth-policies.html)
 - [AWS Cloud WAN](https://docs.aws.amazon.com/network-manager/latest/cloudwan/what-is-cloudwan.html)
 - [Direct Connect virtual interfaces](https://docs.aws.amazon.com/directconnect/latest/UserGuide/WorkingWithVirtualInterfaces.html)
 - [Direct Connect gateways](https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways-intro.html)
 - [Direct Connect routing policies and BGP communities](https://docs.aws.amazon.com/directconnect/latest/UserGuide/routing-and-bgp.html)
+- [Direct Connect virtual interfaces and SiteLink](https://docs.aws.amazon.com/directconnect/latest/UserGuide/WorkingWithVirtualInterfaces.html)
+- [Direct Connect quotas](https://docs.aws.amazon.com/directconnect/latest/UserGuide/limits.html)
+- [Site-to-Site VPN route priority](https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-route-priority.html)
+- [Transit Gateway routing behaviour](https://docs.aws.amazon.com/vpc/latest/tgw/how-transit-gateways-work.html)
 - [AWS Site-to-Site VPN](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
 - [Application Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
 - [Network Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html)

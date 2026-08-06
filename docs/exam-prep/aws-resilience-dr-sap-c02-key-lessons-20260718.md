@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-07-26<br>
+**Last revised:** 2026-08-06<br>
 
 ## Purpose and Role
 
@@ -37,6 +37,8 @@ record designed versus tested recovery capability without inventing targets.
 | Hours, tens of minutes, minutes, or near-zero recovery | [DR Pattern Matrix](#dr-pattern-matrix) |
 | Backup, replication, high availability, or disaster recovery | [Recovery Controls Are Different](#recovery-controls-are-different) |
 | AWS Backup, DRS, S3, RDS/Aurora, or DynamoDB | [AWS Service Decision Map](#aws-service-decision-map) |
+| Immutable or isolated backups, Vault Lock, or ransomware recovery | [AWS Backup Isolation and Restore Evidence](#aws-backup-isolation-and-restore-evidence) |
+| CloudFront origin-group failover | [CloudFront Origin-Failover Boundary](#cloudfront-origin-failover-boundary) |
 | Regional outage, deletion, corruption, or ransomware | [Failure-Type Decision Map](#failure-type-decision-map) |
 | Restore testing, failover, or failback | [Recovery Testing and Operations](#recovery-testing-and-operations) |
 
@@ -115,6 +117,7 @@ point-in-time or immutable recovery where the threat model requires it.
 |---|---|---|
 | Centralized policy-based backups across supported AWS resources | AWS Backup plans, vaults, lifecycle, monitoring, and restore testing | Service/feature support varies; a plan is not a successful restore |
 | Separate backups from a compromised workload account | AWS Backup cross-account copy to a destination vault in the same Organization | KMS, vault policy, Organizations, and resource support must align |
+| Store protected copies in an AWS Backup service-owned account with compliance-mode locking and named-account recovery sharing | AWS Backup logically air-gapped vault | The vault supplies isolation and immutability; restoration still needs permissions, supported resources, testing, and application validation |
 | Geographic backup recovery | AWS Backup cross-Region copy or service-native cross-Region backup | Copy frequency and restore time must meet the stated objectives |
 | Recover server workloads with continuous block replication | AWS Elastic Disaster Recovery | Designed for server recovery; it is not the general backup answer for every managed service |
 | Recover deleted or overwritten S3 objects | S3 Versioning plus deliberate recovery permissions and lifecycle | Versioning is same-bucket recovery, not Regional DR |
@@ -135,6 +138,102 @@ Exam shortcut: if the scenario is about recovering whole servers quickly after
 a site/Region failure, assess DRS. If it is about centralized backup policy,
 retention, vault separation, or recovery points across AWS services, assess AWS
 Backup.
+
+### AWS Backup Isolation and Restore Evidence
+
+#### What “logically air-gapped” actually means
+
+A traditional **physical air gap** means the recovery copy is on storage with
+no active network path to the production environment. AWS Backup does not
+unplug a disk or move a tape offline. The word **logically** means that AWS
+creates the separation through service-enforced ownership, access, retention,
+and recovery controls:
+
+```text
+workload account
+    |
+    | AWS Backup creates a recovery point
+    v
+logically air-gapped vault
+    | vault settings and recovery workflow remain visible to you
+    | compliance-mode Vault Lock enforces retention
+    v
+backup data stored in an AWS Backup service-owned account
+    | you do not administer or sign in to this storage account
+    |
+    +-- optional AWS RAM share to a named recovery account
+            |
+            +-- authorized restore operation
+```
+
+The useful mental model is therefore:
+
+> You manage the vault through AWS Backup, but the protected backup data is
+> held outside your customer-account ownership boundary and cannot be made
+> mutable by a workload-account administrator.
+
+That helps when ransomware or a compromised administrator can damage the
+workload account. The vault combines three properties:
+
+1. **Administrative separation:** AWS Backup stores the backup data in an AWS
+   Backup service-owned account rather than another account that the workload
+   administrator controls.
+2. **Immutability:** compliance-mode Vault Lock is included, so the retention
+   controls cannot be removed after they become effective.
+3. **Controlled recovery:** the vault can be shared through AWS RAM with named
+   recovery accounts so an authorized recovery team can restore supported
+   recovery points.
+
+It is **not** a physically offline copy, an automatic cross-Region design, or
+proof that the application can be recovered. You must still design recovery
+permissions, decide whether a separate Region is required, confirm resource
+support, run restore testing, and validate the recovered application.
+
+#### Compare the isolation mechanisms
+
+| Mechanism | Protection supplied | Exam boundary |
+|---|---|---|
+| Standard vault plus Vault Lock governance mode | Restricts changes to identities without the required lock-management permissions | A sufficiently privileged identity can remove governance-mode locking |
+| Standard vault plus Vault Lock compliance mode | Makes the lock and retained recovery points immutable after the grace period | The vault remains inside its owning customer account; configure retention carefully because the lock cannot then be removed |
+| Logically air-gapped vault | Stores backups in an AWS Backup service-owned account, includes compliance-mode Vault Lock, uses an AWS-owned key by default or an optional customer-managed key, and supports sharing to named accounts through AWS RAM | It is not automatically proof of a successful restore or application recovery; resource support and recovery access still matter |
+| Cross-account copy | Places a copy under a separate customer-account administrative boundary | It is not automatically cross-Region or immutable; destination vault, KMS, policy, lock, and Organizations support must align |
+| AWS Backup restore testing | Periodically starts real restore jobs, records duration and result, and can run validation | Restore-job success does not by itself prove application health, dependency readiness, or end-to-end RTO |
+
+For a ransomware scenario, look for all three properties:
+
+```text
+immutability
+    + administrative isolation
+    + demonstrated restore and application validation
+```
+
+Keeping the only recovery point in the workload account's default vault does
+not isolate it from compromise of that account. A successful backup job proves
+neither restorability nor recovery within the business objective.
+
+Exam trigger: choose a **logically air-gapped vault** when the question combines
+AWS Backup service-owned storage, compliance-mode locking, and recovery from a
+named account. Choose a **cross-account copy** when the requirement instead
+calls for a separate customer-owned backup account and its own destination
+vault, policy, KMS, and lock design.
+
+### CloudFront Origin-Failover Boundary
+
+CloudFront origin groups provide built-in origin failover only when the viewer
+request method is `GET`, `HEAD`, or `OPTIONS`. CloudFront does not fail over
+write methods such as `POST`, `PUT`, `PATCH`, or `DELETE` to the secondary
+origin.
+
+```text
+read-style request: GET / HEAD / OPTIONS
+    -> eligible for CloudFront origin-group failover
+
+write request: POST / PUT / PATCH / DELETE
+    -> design application-level routing, retry, idempotency, and data consistency
+```
+
+Lambda@Edge does not remove this built-in method restriction. Do not infer
+multi-Region write failover merely because CloudFront reads can fail over.
 
 ## Failure-Type Decision Map
 
@@ -219,7 +318,12 @@ an accepted live design—and no paid multi-Region resource is authorized.
    rebuild the application.
 8. **Successful backup:** does not prove restore integrity or RTO.
 9. **Cross-Region only:** may not isolate recovery from an account compromise.
-10. **Over-engineering:** the lowest RTO/RPO pattern is not automatically the
+10. **Logically air-gapped vault:** “air-gapped” means service-enforced
+    separation, not offline media; service-owned-account storage and compliance
+    locking still do not replace restore testing or application validation.
+11. **CloudFront origin failover:** applies to eligible `GET`, `HEAD`, and
+    `OPTIONS` requests, not write methods such as `POST`.
+12. **Over-engineering:** the lowest RTO/RPO pattern is not automatically the
     correct answer when cost and business tolerance favor a simpler design.
 
 ## Recall Check
@@ -236,6 +340,9 @@ Answer without looking above:
 8. Why does a successful backup job not prove that RTO can be met?
 9. What additional design work does active/active require for data consistency?
 10. Which Lakehouse facts must be known before selecting a live DR pattern?
+11. What distinguishes governance-mode Vault Lock, compliance-mode Vault Lock,
+    and a logically air-gapped vault?
+12. Why do CloudFront origin groups not supply automatic `POST` failover?
 
 ## Official AWS References
 
@@ -245,7 +352,11 @@ Answer without looking above:
 - [What is AWS Backup?](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html)
 - [Managing AWS Backup across accounts](https://docs.aws.amazon.com/aws-backup/latest/devguide/manage-cross-account.html)
 - [Creating backup copies across accounts](https://docs.aws.amazon.com/aws-backup/latest/devguide/create-cross-account-backup.html)
+- [AWS Backup Vault Lock](https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html)
+- [AWS Backup logically air-gapped vault](https://docs.aws.amazon.com/aws-backup/latest/devguide/logicallyairgappedvault.html)
+- [AWS Backup restore testing](https://docs.aws.amazon.com/aws-backup/latest/devguide/restore-testing.html)
 - [AWS Elastic Disaster Recovery concepts](https://docs.aws.amazon.com/drs/latest/userguide/CloudEndure-Concepts.html)
+- [CloudFront origin failover](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html)
 - [S3 Cross-Region Replication requirements](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-requirements.html)
 - [S3 Replication Time Control](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-time-control.html)
 - [DynamoDB disaster-recovery strategy](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamodbDisasterRecoveryStrategy.html)

@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-08-03
+**Last revised:** 2026-08-05
 
 This log is the durable exam-prep companion to the tracker wrong-answer table.
 It is seeded from the Lakehouse repository tracker and is not Lakehouse
@@ -26,8 +26,10 @@ For the active folder sequence and document status, start at the
 [four-question retention test](wrong-answer-review-cycle-2-blind-attempt-20260715.md),
 including its initial drafts, corrected final submission, and assessment. The
 clean 25-question mixed Block 2 remains separate practice evidence. Full mocks
-001 and 002 and their narrow traps are recorded below; Full Mock 003 produced
-no new miss and is retained as transfer evidence.
+001-004 and their narrow traps are recorded below. Full Mock 003 produced no
+new miss; Full Mock 004 exposed four themes, including two questions testing
+the same backup-isolation model and a recurrence of ECS blue/green exact-match
+incompleteness.
 
 ## Quick Remediation and Reference Index
 
@@ -51,12 +53,15 @@ scope needs to be rechecked.
 | Migration Hub home Region | [Migration Hub Home Region Versus Data Transfer](#2026-07-29-migration-hub-home-region-versus-data-transfer) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) · [What DataSync transfers](https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html) |
 | DAX application integration | [DAX Cluster and Client](#2026-07-29-dax-cluster-and-client) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) · [DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
 | Private on-premises S3 access | [S3 Interface Versus Gateway Endpoint](#2026-07-29-s3-interface-versus-gateway-endpoint) | [Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) |
+| Backup isolation and restore evidence | [Logically Air-Gapped Backup and Restore Evidence](#2026-08-05-logically-air-gapped-backup-and-restore-evidence) | [Resilience/DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md#aws-backup-isolation-and-restore-evidence) · [Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) | [Logically air-gapped vault](https://docs.aws.amazon.com/aws-backup/latest/devguide/logicallyairgappedvault.html) · [Vault Lock](https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html) · [Restore testing](https://docs.aws.amazon.com/aws-backup/latest/devguide/restore-testing.html) |
+| CloudFront origin-failover methods | [CloudFront Origin-Failover Method Boundary](#2026-08-05-cloudfront-origin-failover-method-boundary) | [Resilience/DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md#cloudfront-origin-failover-boundary) · [Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) | [CloudFront origin failover](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html) |
+| DynamoDB MRSC TTL restriction | [DynamoDB MRSC Versus TTL](#2026-08-05-dynamodb-mrsc-versus-ttl) | [Non-relational database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md#global-tables-mrec-versus-mrsc) · [Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) | [DynamoDB global-table security](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-security.html) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | Full Mock 003 completed 2026-08-03 at 75/75 in 106 minutes; all 12 uncertain answers were correct and all four Mock 002 gaps transferred successfully |
+| Current through practice block | Full Mock 004 completed 2026-08-05 at 70/75 in 113 minutes; five misses map to four themes, including an ECS blue/green recurrence; all four Mock 002 gaps remained transferred |
 | Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
 | Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
@@ -82,6 +87,7 @@ scope needs to be rechecked.
 | Full mock 002 - 75 questions | 71 / 75 | 94.7% | Completed 2026-07-29 in 139/180 minutes; 45/48 single-response and 26/27 exact-match multiple-response; four narrow misses logged below. |
 | Full mock 002 spaced retest | 8 / 8 | 100% | Completed 2026-08-01 in 17 minutes; 4/4 single-response and 4/4 exact-match multiple-response; Questions 4 and 7 uncertain and correct; focused remediation complete. |
 | Full mock 003 - 75 questions | 75 / 75 | 100% | Completed 2026-08-03 in 106/180 minutes; 48/48 single-response, 27/27 exact-match multiple-response, and 12/12 uncertain answers correct; no new wrong-answer entry. |
+| Full mock 004 - 75 questions | 70 / 75 | 93.3% | Completed 2026-08-05 in 113/180 minutes; 45/48 single-response, 25/27 exact-match multiple-response, and 13/15 uncertain answers correct; Questions 13, 14, 31, 47, and 75 missed. |
 
 ## Artifact Evidence
 
@@ -93,6 +99,7 @@ scope needs to be rechecked.
 | `sap-c02-full-mock-002-75q-20260728.md` and `sap-c02-full-mock-002-review-20260729.md` | Full timed mock 002 submission and answer-bearing assessment | Frozen answers retained before independent exact-match marking; 71/75 in 139 minutes; four narrow misses logged below. |
 | `sap-c02-full-mock-002-spaced-retest-8q-20260801.md` and `sap-c02-full-mock-002-spaced-retest-review-20260801.md` | Fresh focused retest and answer-bearing assessment | Frozen submission scored 8/8 in 17 minutes; all four Mock 002 gaps recalled correctly and subsequently transferred in Full Mock 003. |
 | `sap-c02-full-mock-003-75q-20260801.md` and `sap-c02-full-mock-003-review-20260803.md` | Full timed Mock 003 submission and answer-bearing assessment | Frozen submission scored 75/75 in 106 minutes; all four domains, all 27 exact-match multiple-response items, and all 12 uncertain answers were correct; no new miss. |
+| `sap-c02-full-mock-004-75q-20260804.md` and `sap-c02-full-mock-004-review-20260805.md` | Full timed Mock 004 submission and answer-bearing assessment | Frozen submission scored 70/75 in 113 minutes; five misses reduced to four themes, including an ECS blue/green recurrence, with source-note remediation and a later short retest required. |
 
 ## Review Cycle 1 Checklist
 
@@ -389,20 +396,34 @@ References: [local Review Cycle 2 explanation](wrong-answer-review-cycle-2-blind
 > D. Use AWS Systems Manager Patch Manager to install the application version
 > on the containers.
 
+#### Original question — Full Mock 004, Question 31
+
+> An ECS service uses an Application Load Balancer. The company wants
+> controlled blue/green releases, a test endpoint for validation, and automatic
+> rollback if the new task set causes an alarm.<br><br>
+> Which TWO components should be used?<br><br>
+> A. AWS CodeDeploy with ECS blue/green deployment<br>
+> B. Systems Manager Patch Manager as the application deployment controller<br>
+> C. An S3 lifecycle rule to shift traffic<br>
+> D. Route 53 multivalue answers without a deployment controller<br>
+> E. Production and test listeners or listener rules associated with the
+> deployment
+
 ```text
 Question theme: ECS application deployment with side-by-side validation, ALB traffic shifting, and automatic rollback
 SAP-C02 domain: Domain 2 / deployment strategy
-My answer pattern: Selected AWS Systems Manager Patch Manager.
+My answer pattern: Initially selected AWS Systems Manager Patch Manager. In Full Mock 004, correctly selected CodeDeploy but omitted the production/test listener component in a Choose TWO response.
 Correct answer pattern: Use an ECS blue/green deployment strategy with test and production listeners plus health or metric alarms that can trigger rollback.
 Why correct: Blue/green deployment keeps the original task set available while the replacement is validated, shifts load-balancer traffic deliberately, and can restore traffic to the original revision after failure or an alarm.
-Why my answer was wrong: Patch Manager automates operating-system and supported application patching on managed nodes; it does not own ECS task-set replacement, ALB traffic shifting, application rollout validation, or revision rollback.
-Exam trap: Selecting a general operations tool because the scenario says update, while ignoring that the decisive requirements are application-version traffic shifting and rollback.
+Why my answer was wrong: Patch Manager does not own ECS task-set replacement, ALB traffic shifting, application rollout validation, or revision rollback. CodeDeploy alone was also an incomplete exact-match answer when the question separately required the listener configuration.
+Exam trap: Selecting the deployment controller but omitting a second required architecture component in a multi-response question.
 Service comparison: ECS blue/green deployment / CodeDeploy versus AWS Systems Manager Patch Manager.
-Action: Complete one spaced free-response deployment-strategy retest after 2026-07-28 without opening this log first.
-Review status: New miss from the 2026-07-21 timed 30-question diagnostic; remediation recorded, spaced recall pending.
+Action: Complete a fresh exact-match retest no earlier than 2026-08-07; state both the deployment controller and the ALB listener/rule configuration.
+Review status: Recurred in Full Mock 004 on 2026-08-05 as exact-match incompleteness; focused spaced recall remains open.
 ```
 
 References: [local diagnostic review](sap-c02-mixed-diagnostic-30q-review-20260721.md) ·
+[local Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) ·
 [AWS ECS blue/green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-bluegreen.html) ·
 [AWS Systems Manager Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html)
 
@@ -791,3 +812,124 @@ References: [local Networking lesson](aws-networking-sap-c02-key-lessons-2026071
 [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
 [local spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) ·
 [AWS S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)
+
+### 2026-08-05: Logically Air-Gapped Backup and Restore Evidence
+
+#### Original question — Full Mock 004, Question 13
+
+> A security team wants backups that are stored in an AWS service-owned account,
+> are protected by Vault Lock in compliance mode, and can be shared to a separate
+> recovery account for restore testing.<br><br>
+> Which AWS Backup feature is designed for this requirement?<br><br>
+> A. A logically air-gapped vault<br>
+> B. A default backup vault with governance-mode Vault Lock<br>
+> C. An EBS Recycle Bin retention rule<br>
+> D. An S3 Glacier vault
+
+#### Original question — Full Mock 004, Question 75
+
+> An enterprise wants stronger ransomware recovery evidence for workloads
+> protected by AWS Backup. Backups must resist administrator deletion, survive a
+> source-account compromise, and be regularly demonstrated as restorable.<br><br>
+> Which THREE actions best meet these requirements?<br><br>
+> A. Store the only recovery point in the workload account's default vault.<br>
+> B. Use AWS Backup Vault Lock in compliance mode for the protected vault.<br>
+> C. Treat successful backup-job status as proof that the workload can be
+> restored within its RTO.<br>
+> D. Maintain supported cross-account or logically air-gapped backup copies with
+> separately controlled recovery access.<br>
+> E. Give workload administrators permission to delete all recovery points
+> during an incident.<br>
+> F. Configure AWS Backup restore testing plans and validate restored resources.
+
+```text
+Question theme: Backup immutability, administrative isolation, and restore evidence
+SAP-C02 domain: Domain 3 - Continuous Improvement for Existing Solutions
+Question numbers: Full Mock 004, Questions 13 and 75
+My answers: Question 13 B; Question 75 A, B, and F
+Correct answers: Question 13 A; Question 75 B, D, and F
+My answer pattern: Recognized Vault Lock and restore testing but did not distinguish governance-mode locking from service-owned-account isolation, and retained the only copy in the compromised workload boundary.
+Correct answer pattern: Use a logically air-gapped vault when the scenario explicitly requires AWS Backup service-owned-account storage, compliance-mode locking, and named-account sharing. For ransomware recovery, combine immutability, separate administrative control, and demonstrated restores.
+Why correct: A logically air-gapped vault has compliance-mode Vault Lock, stores backups in an AWS Backup service-owned account, and can be shared with named accounts through AWS RAM. Restore testing creates periodic restore-job evidence and supports validation.
+Why my answers were wrong: Governance-mode Vault Lock can be removed by a sufficiently privileged identity and does not provide the stated service-owned-account isolation. Keeping the only recovery point in the workload account preserves the compromise blast radius.
+Exam trap: Treating every locked vault as equivalent, or treating successful backup status as proof of recoverability.
+Service comparison: Standard backup vault with governance lock versus compliance lock versus logically air-gapped vault versus cross-account copy.
+Error category: Backup-isolation and control-mode selection error.
+Action: Reproduce the three-part ransomware model and the vault comparison from memory; validate through a fresh exact-match retest no earlier than 2026-08-07.
+Review status: Open; source-note remediation completed 2026-08-05, spaced recall pending.
+```
+
+References: [local Resilience/DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md#aws-backup-isolation-and-restore-evidence) ·
+[local Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) ·
+[AWS logically air-gapped vault](https://docs.aws.amazon.com/aws-backup/latest/devguide/logicallyairgappedvault.html) ·
+[AWS Backup Vault Lock](https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html) ·
+[AWS Backup restore testing](https://docs.aws.amazon.com/aws-backup/latest/devguide/restore-testing.html)
+
+### 2026-08-05: CloudFront Origin-Failover Method Boundary
+
+#### Original question — Full Mock 004, Question 14
+
+> A global application uses CloudFront with an origin group. Reads fail over
+> successfully when the primary origin is unavailable, but `POST` requests do
+> not fail over to the secondary origin.<br><br>
+> What is the correct explanation?<br><br>
+> A. CloudFront origin failover requires Lambda@Edge for every HTTP method.<br>
+> B. CloudFront origin failover applies only to eligible `GET`, `HEAD`, and
+> `OPTIONS` requests, not write methods such as `POST`.<br>
+> C. The secondary origin must be in the same Availability Zone.<br>
+> D. CloudFront can fail over only between two S3 website endpoints.
+
+```text
+Question theme: CloudFront origin-group failover method eligibility
+SAP-C02 domain: Domain 3 - Continuous Improvement for Existing Solutions
+Question number: Full Mock 004, Question 14
+My answer: A - Lambda@Edge is required for every HTTP method
+Correct answer: B - built-in origin failover is limited to eligible GET, HEAD, and OPTIONS requests
+My answer pattern: Looked for an edge-compute prerequisite rather than checking the HTTP-method constraint.
+Correct answer pattern: CloudFront origin groups can fail over GET, HEAD, and OPTIONS; write-method failover needs a separate application architecture.
+Why correct: AWS documents that CloudFront sends requests to the secondary origin only for those three methods.
+Why my answer was wrong: Lambda@Edge is not the absent prerequisite and does not change the built-in origin-group method boundary.
+Exam trap: Extending successful read failover into an unsupported multi-Region write-failover assumption.
+Service comparison: CloudFront origin-group read failover versus application-level write routing, idempotency, and data consistency.
+Error category: Service capability-boundary error.
+Action: Reproduce the three eligible methods and explain why POST requires a separate design; validate no earlier than 2026-08-07.
+Review status: Open; the parked detailed-DR reminder was implemented on 2026-08-05, spaced recall pending.
+```
+
+References: [local Resilience/DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md#cloudfront-origin-failover-boundary) ·
+[local Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) ·
+[AWS CloudFront origin failover](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html)
+
+### 2026-08-05: DynamoDB MRSC Versus TTL
+
+#### Original question — Full Mock 004, Question 47
+
+> A team proposes an MRSC DynamoDB global table for sessions that require
+> strongly consistent reads in multiple Regions. The same table design depends
+> on DynamoDB TTL to expire sessions automatically.<br><br>
+> What should the architect conclude?<br><br>
+> A. The design is valid because MRSC supports TTL in every replica.<br>
+> B. TTL is supported only when the MRSC table has a witness Region.<br>
+> C. The design must change because TTL is not supported for MRSC global tables.<br>
+> D. TTL becomes synchronous when strongly consistent reads are enabled.
+
+```text
+Question theme: DynamoDB MRSC feature restrictions
+SAP-C02 domain: Domain 2 - Design for New Solutions
+Question number: Full Mock 004, Question 47
+My answer: B - a witness Region enables TTL
+Correct answer: C - MRSC global tables do not support TTL
+My answer pattern: Correctly recognized the witness topology but incorrectly treated it as a feature-enablement mechanism.
+Correct answer pattern: MRSC requires an exactly-three-Region topology but remains subject to feature restrictions; TTL is supported only for MREC global tables.
+Why correct: Current DynamoDB documentation explicitly limits TTL support to MREC global tables.
+Why my answer was wrong: A witness participates in MRSC consistency and topology; it does not make TTL available.
+Exam trap: Assuming that a valid MRSC topology removes unrelated MRSC feature restrictions.
+Service comparison: MREC flexibility and asynchronous convergence versus MRSC cross-Region strong consistency, latency, topology, and feature limits.
+Error category: Feature-compatibility retrieval error.
+Action: Reproduce the MREC/MRSC table from memory, including TTL and transaction constraints; validate no earlier than 2026-08-07.
+Review status: Open; the source note already contained the correct rule and was made more prominent on 2026-08-05, spaced recall pending.
+```
+
+References: [local Non-Relational Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md#global-tables-mrec-versus-mrsc) ·
+[local Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) ·
+[AWS DynamoDB global-table security](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-security.html)

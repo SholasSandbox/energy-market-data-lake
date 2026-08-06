@@ -4,14 +4,15 @@
 
 **Owner:** [redacted-owner]  
 **Created:** 2026-06-12  
-**Last revised:** 2026-08-03<br>
+**Last revised:** 2026-08-06<br>
 **Target exam:** AWS Certified Solutions Architect – Professional, SAP-C02  
 **Target attempt window:** September 2026; no later than 2026-09-30
 **Earliest booking decision gate:** after full mock 007; **formal review backstop:** Monday, 2026-09-07
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-07-21
-**Last practice evidence update:** 2026-08-03
+**Last repository reconciliation:** 2026-08-03
+**Last practice evidence update:** 2026-08-05
+**Last readiness-state publication:** 2026-08-03 (`3336578` on `origin/main`)
 **Last tutorial evidence update:** 2026-07-01
 **Last governance study evidence reconciliation:** 2026-07-19 (published evidence through 2026-07-13; later legend edits remain local)
 
@@ -229,8 +230,8 @@ the current week and leave future planned weeks blank.
 | 2026-07-06 | 10–12 | 20 | 12 | 4 | 4 | Tutorial evidence + lakehouse Domain 2 closure review |
 | 2026-07-13 | 10–12 | 13 | 3 | 6 | 4 | IAM foundation in progress: `BillingAdmin` now has a design-only `billing-admins` group, `PT1H` session, and update-only policy; private primary/backup ownership with an email notification path, finalized monthly dataset, April-June cost history, separate pending IAM/budget change notes, and a lakehouse Workload-tag precheck are recorded. Fourteen core lakehouse resources are tagged and Terraform protects the future default. A 2026-07-13 read-only refresh attributes the previously untagged June Lakehouse spend and its EBS driver at account/service level. The missing finalized history is a non-blocking gate only for new thresholds or live BillingAdmin update access; no numeric threshold, assignment, or AWS change is authorized yet. Early Networking study also produced the verified VPC connectivity matrix and an untimed focused blind attempt scoring 8/8; no study/practice hours are inferred. |
 | 2026-07-20 | 10–12 | 14 | 2 | 8 | 4 | The timed 30-question mixed diagnostic was completed from 00:00 to 01:07 on 2026-07-21: 29/30 in 67 minutes, with all 12 multiple-response questions correct. On 2026-07-23, full mock 001 scored 73/75 in 2 hours 13 minutes, with 47 minutes remaining. Its two narrow multiple-response traps are logged. On 2026-07-24, the 18-minute SCP/boundary exact-match retest scored 6/6; its early-spacing caveat is preserved. No other week-to-date hours are inferred. |
-| 2026-07-27 | 10–12 |  |  |  |  | Resilience/DR and non-relational-database spaced retests completed; migration foundations expanded; full mock 002 scored 71/75; its fresh focused retest scored 8/8 in 17 minutes on 2026-08-01. No total hours are inferred from artifact timestamps. Full Mock 003 was the next broad check at week close. |
-| 2026-08-03 | 10–12 |  |  |  |  | Full Mock 003 completed at 75/75 in 106 minutes, including 27/27 exact-match multiple-response and 12/12 uncertain answers correct. Complete Full Mock 004 while continuing the 6 Rs matrix and data-migration service comparison from remaining capacity. No total hours are inferred from artifact timestamps. |
+| 2026-07-27 | 10–12 | 15 | 1 | 6 | 8 | Resilience/DR and non-relational-database spaced retests completed; migration foundations expanded; full mock 002 scored 71/75; its fresh focused retest scored 8/8 in 17 minutes on 2026-08-01. No total hours are inferred from artifact timestamps. Full Mock 003 was the next broad check at week close. |
+| 2026-08-03 | 10–12 |  |  |  |  | Full Mock 003 completed at 75/75 in 106 minutes. Full Mock 004 completed at 70/75 in 113 minutes, including 25/27 exact-match multiple-response and 13/15 uncertain answers correct. Its five misses reduce to four themes, including a recurring ECS blue/green exact-match issue; source-note remediation is complete and a short spaced retest is due no earlier than 2026-08-07. Continue the migration matrix only from remaining capacity. No total hours are inferred from artifact timestamps. |
 | 2026-08-10 | 10–12 |  |  |  |  | Complete the database-migration decision table and cost-optimization foundations while maintaining the two-full-mock weekly cadence. |
 | 2026-08-17 | 10–12 |  |  |  |  | Complete full mock 007 at the latest, then run the first evidence-led booking review; continue mocks if the evidence remains insufficient. |
 | 2026-08-24 | 10–12 |  |  |  |  | Cadence buffer and evidence-led consolidation; close any missed validation-series item without inventing results. |
@@ -279,11 +280,13 @@ Official SAP-C02 domains:
 | Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, cost guardrails, separate tutorial implementation evidence through Lesson 34A with conceptual/design evidence through Lesson 37, the 218-test tutorial baseline, and OAM vs CloudTrail vs Config study evidence exist; systematic improvement notes and remaining hardening are open |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Partial | Exercise 002 exposed a rehost-vs-refactor/MGN weak area; later practice blocks show stronger mixed-domain performance but Kinesis/SQS distinction and migration playbook artifacts remain open |
 
-The 2026-07-23 full-length mock adds timed evidence across all four domains:
-Domain 1 scored 19/20, Domain 2 scored 22/22, Domain 3 scored 17/18, and
-Domain 4 scored 15/15. This is strong cross-domain evidence, but one mock does
-not close the remaining repository artifacts, repeated-validation requirement,
-or booking gate.
+Full Mocks 001-004 now provide repeated timed evidence across all four domains,
+with overall scores of 97.3%, 94.7%, 100%, and 93.3%. Mock 004's lowest domain
+was Domain 3 at 77.8%, still above the 75% floor but requiring bounded review of
+backup isolation, CloudFront method eligibility, and recurring ECS blue/green
+exact-match completeness. Domain 4 scored 15/15 after the MGN and AWS Transform
+lesson expansion. This remains study evidence rather than closure of repository
+artifacts or the post-Mock-007 booking gate.
 
 ### Weekly domain focus
 
@@ -509,9 +512,10 @@ The live attachment is recorded in
 | VPC peering | Improving: source-backed decision rule recorded | Yes | Use cases, non-transitivity, routing, cost, and scale limits are recorded in `docs/planning/domain-2-network-access-patterns-20260621.md` and the broader Networking revision lesson; no full-domain recall assessment exists |
 | Transit Gateway | Improving: source-backed artifact and reviewed decision rule recorded | Yes | Tracked hub-and-spoke source, rendered SVG, and decision guidance exist; Review Cycle 2 corrected the hybrid-transport reasoning, but no full-domain recall assessment exists |
 | PrivateLink | Improving: source-backed decision rule recorded | Yes | Comparison with peering and TGW plus service-provider/consumer cues is recorded in `docs/planning/domain-2-privatelink-peering-tgw-decision-20260714.md`; no full-domain recall assessment exists |
+| VPC Lattice | Improving: one correct but uncertain Mock 004 recognition result plus expanded source note | Yes | `docs/exam-prep/aws-networking-sap-c02-key-lessons-20260717.md` now explains service networks, service and VPC associations, listeners/targets, DNS, IAM auth policies, cross-account sharing, overlapping-CIDR support, and the TGW/PrivateLink boundary; independent transfer evidence remains limited to Mock 004 Question 5 |
 | VPC endpoints | High: 8/8 focused blind drill | Yes | Tracked source, rendered SVG, and reading guide exist in `diagrams/vpc-endpoint-study.mmd` and `docs/planning/domain-2-vpc-endpoint-diagram-20260715.md`; blind evidence is in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
 | NAT Gateway | High: correct in 8/8 focused blind drill | Yes | Cost and routing note plus blind evidence in `docs/exam-prep/networking-scenario-drill-blind-attempt-20260715.md` |
-| Direct Connect | Improving: source-backed artifact and corrected review reasoning recorded | Yes | Hybrid transport table and promotion triggers are recorded in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md`; Review Cycle 2 final reasoning correctly combines DX with VPN resilience, but no full-domain recall assessment exists |
+| Direct Connect | Improving: source-backed artifact, corrected review reasoning, and BGP decision material recorded | Yes | Hybrid transport table and promotion triggers are recorded in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md`; `docs/exam-prep/aws-networking-sap-c02-key-lessons-20260717.md` now covers BGP direction, longest-prefix/local-preference/AS_PATH/MED order, communities, ECMP, VGW/TGW boundaries, prefix limits, and SiteLink; no full-domain recall assessment exists |
 | Site-to-Site VPN | Improving: source-backed artifact and corrected review reasoning recorded | Yes | DX-versus-VPN comparison and promotion triggers are recorded in `docs/planning/domain-2-direct-connect-vpn-decision-20260714.md`; Review Cycle 2 final reasoning correctly combines DX with VPN resilience, but no full-domain recall assessment exists |
 | Route 53 Resolver | Improving: Review Cycle 1 correct at 4/4 overall after the exercise 002 miss | Yes | Tracked hybrid-DNS source, rendered SVG, reading guide, and consolidation lesson exist |
 | Centralized inspection VPC | Improving: source-backed architecture sketch recorded | Yes | The two-pass route-domain source, rendered SVG, and reading guide are tracked in the repository |
@@ -594,13 +598,14 @@ artifacts.
 | Service / concept | Current confidence | Evidence required |
 |---|---:|---|
 | 6 Rs migration strategy | Medium | Decision table |
-| AWS Application Migration Service | Low: missed in exercise 002 | Rehost use-case note |
+| AWS Application Migration Service | Source note expanded; transfer untested | `docs/exam-prep/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md` now introduces AWS MGN, its staging architecture, test-to-cutover lifecycle, finalization boundary, and MGN-versus-DMS/DataSync/DRS/Transform selection; validate in independent mocks |
 | Application Discovery Service Agent versus Agentless Collector | Source note expanded; transfer untested | `docs/exam-prep/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md` distinguishes Agent, VMware inventory module, and WinRM/SNMP-based Network Data Collection module; validate in full mocks |
 | AWS Database Migration Service | Medium | Homogeneous vs heterogeneous examples |
 | AWS DataSync | Medium: correct in the 2026-07-21 mixed diagnostic; source note expanded | Retain agent/location/task/execution, incremental copy, verification, Basic/Enhanced mode, and service-boundary decisions; validate in full mocks |
 | Snow Family | Low | Offline transfer decision note |
 | Storage Gateway | Low | Hybrid storage use-case note |
 | Migration Hub | Source note expanded; transfer untested | Retain home-Region, application grouping, tool authorization, import, and tracking-not-engine boundaries; validate in full mocks |
+| AWS Transform | Source note expanded; transfer untested | Retain migrations-versus-MGN, mainframe, .NET, human-review, and specialist-service boundaries in `docs/exam-prep/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md`; validate in independent mocks |
 | RDS/Aurora migration paths | Medium | DMS/RDS/Aurora comparison |
 
 ### Migration deliverables
@@ -609,7 +614,7 @@ artifacts.
 |---|---|---|
 | 6 Rs migration matrix | 2026-08-03 | Not started |
 | Discovery, transfer, and tracking key lesson | 2026-07-28 | Complete source-backed artifact: `docs/exam-prep/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md`; no blind-recall score or live migration evidence |
-| Data migration service comparison | 2026-08-03 | In progress: Application Discovery Service, DataSync, and Migration Hub boundaries are complete; DMS/SCT, Snow Family, Storage Gateway, and transfer-method consolidation remain |
+| Data migration service comparison | 2026-08-03 | In progress: Application Discovery Service, MGN, DataSync, Migration Hub, and bounded AWS Transform service-selection material are complete; DMS/SCT, Snow Family, Storage Gateway, and transfer-method consolidation remain |
 | Database migration decision table | 2026-08-10 | Not started |
 
 ### External-assessment correction - 2026-07-28
@@ -687,6 +692,7 @@ of unresolved errors remain controlling.
 | 2026-07-29 | `docs/exam-prep/sap-c02-full-mock-002-75q-20260728.md` | Full timed 75-question mock; 139 of 180 minutes | 71/75 (94.7%) | IAM Identity Center versus Cognito; Migration Hub home Region; DAX cluster plus client; S3 interface versus gateway endpoint for on-premises access | Frozen submission independently scored: 45/48 single-response and 26/27 exact-match multiple-response; all four domain floors exceeded 93%; minimum two-qualifying-mock score gate met, but continue the evidence-led repeated-mock programme and bounded remediation |
 | 2026-08-01 | `docs/exam-prep/sap-c02-full-mock-002-spaced-retest-8q-20260801.md` | Fresh closed-book close-distractor retest; 17 minutes | 8/8 (100%) | None in the focused four-gap scope | Frozen submission independently scored: 4/4 single-response and 4/4 exact-match multiple-response; Questions 4 and 7 were uncertain and correct; focused Mock 002 remediation complete, continue transfer monitoring in Mock 003 and later independent mocks |
 | 2026-08-03 | `docs/exam-prep/sap-c02-full-mock-003-75q-20260801.md` | Full timed 75-question mock; 106 of 180 minutes | 75/75 (100%) | None identified | Frozen submission independently scored: 48/48 single-response and 27/27 exact-match multiple-response; all 12 uncertain answers and all four Mock 002 transfer checks were correct; no immediate retest, continue to Full Mock 004 |
+| 2026-08-05 | `docs/exam-prep/sap-c02-full-mock-004-75q-20260804.md` | Full timed 75-question mock; 113 of 180 minutes | 70/75 (93.3%) | Logically air-gapped backup isolation and restore evidence; CloudFront origin-failover methods; ECS blue/green exact-match completeness; DynamoDB MRSC TTL restriction | Frozen submission independently scored: 45/48 single-response, 25/27 exact-match multiple-response, 13/15 uncertain answers, and every domain above 77%; Questions 13 and 75 share one backup-isolation theme; ECS blue/green recurred as an incomplete multi-response answer; complete a short spaced retest no earlier than 2026-08-07 without replacing Mock 005 |
 
 Artifact manifest for completed exercise archive Blocks 003 through 006:
 `docs/exam-prep/artifacts/sap-c02-completed-exercises-003-to-006-manifest.md`.
@@ -739,8 +745,8 @@ set and answer key are not stored in this repository for independent re-marking.
 | Questions | 75 |
 | Start / end | 12:28 / 14:47 |
 | Time allowed / used / remaining | 180 / 139 / 41 minutes |
-| Correct / incorrect / unanswered | 71 / 4 / 0 |
-| Overall score | 94.7% |
+| Correct / incorrect / unanswered | 70 / 5 / 0 |
+| Overall score | 93.3% |
 | Average time per question | Approximately 1 minute 51 seconds |
 
 | Question type | Correct | Total | Score |
@@ -825,9 +831,57 @@ gateway-versus-interface endpoint selection. All held. The answer-bearing
 assessment is
 `docs/exam-prep/sap-c02-full-mock-003-review-20260803.md`.
 
-This clean result strengthens longitudinal evidence but does not complete the
-learner's chosen validation programme. Do not add an immediate focused retest.
-Continue to Full Mock 004 and preserve the post-Mock-007 booking boundary.
+This clean result strengthened longitudinal evidence but did not complete the
+learner's chosen validation programme. Full Mock 004 now supplies the next
+paired result and is recorded below.
+
+### Full mock 004 - 2026-08-05
+
+| Field | Result |
+|---|---|
+| Exam | SAP-C02 full-length simulated certification examination |
+| Source | `docs/exam-prep/sap-c02-full-mock-004-75q-20260804.md` |
+| Questions | 75 |
+| Start / end | 21:25 / 23:18 |
+| Time allowed / used / remaining | 180 / 113 / 67 minutes |
+| Correct / incorrect / unanswered | 70 / 5 / 0 |
+| Overall score | 93.3% |
+| Average time per question | Approximately 1 minute 30 seconds |
+
+| Question type | Correct | Total | Score |
+|---|---:|---:|---:|
+| Single response | 45 | 48 | 93.8% |
+| Multiple response, exact match | 25 | 27 | 92.6% |
+| **Overall** | **70** | **75** | **93.3%** |
+
+| Exam segment | Correct | Total | Score |
+|---|---:|---:|---:|
+| Questions 1-25 | 23 | 25 | 92% |
+| Questions 26-50 | 23 | 25 | 92% |
+| Questions 51-75 | 24 | 25 | 96% |
+
+| SAP-C02 domain | Correct | Total | Score |
+|---|---:|---:|---:|
+| Design Solutions for Organizational Complexity | 20 | 20 | 100% |
+| Design for New Solutions | 21 | 22 | 95.5% |
+| Continuous Improvement for Existing Solutions | 14 | 18 | 77.8% |
+| Accelerate Workload Migration and Modernization | 15 | 15 | 100% |
+| **Overall** | **70** | **75** | **93.3%** |
+
+The learner marked Questions 3, 4, 5, 7, 14, 18, 23, 35, 38, 42, 43, 47,
+52, 58, and 65 uncertain; 13 of 15 were correct. The misses were Questions 13,
+14, 31, 47, and 75. Questions 13 and 75 share the same backup-isolation model,
+so the remediation scope is four themes rather than five unrelated gaps.
+
+All four Mock 002 themes transferred again. MGN test/cutover and BGP
+longest-prefix/local-preference decisions also held after their source-note
+expansion. The answer-bearing assessment is
+`docs/exam-prep/sap-c02-full-mock-004-review-20260805.md`.
+
+This result preserves the high-scoring trend and every domain floor remains
+above target, but the older ECS blue/green gap recurred as an incomplete
+Choose TWO response. Complete a short, fresh exact-match retest no earlier than
+2026-08-07, then continue to Full Mock 005 without reducing the two-mock cadence.
 
 ### Full-mock validation plan to the booking decision point
 
@@ -853,7 +907,7 @@ No checkpoint authorizes an AWS deployment.
 | Period | Planned mocks | Purpose |
 |---|---:|---|
 | 2026-07-24 to 2026-07-30 | 1 complete | Full mock 002 established the second high-scoring baseline |
-| 2026-07-31 to 2026-08-06 | 1 of 2 complete | Full Mock 003 scored 75/75; Full Mock 004 remains the independent paired check |
+| 2026-07-31 to 2026-08-06 | 2 of 2 complete | Full Mock 003 scored 75/75 and Full Mock 004 scored 70/75; remediate Mock 004's four themes, including the recurring ECS blue/green exact-match issue, before or alongside the next scheduled mock block |
 | 2026-08-07 to 2026-08-13 | 2 | Full mocks 005–006: test retention after remediation and deliberately probe hidden weak areas |
 | 2026-08-14 onward | At least 1 | Full mock 007 establishes the earliest booking decision point; continue the two-per-week cadence if the evidence is not decisive |
 | **Further minimum before decision** | **5** | **Mocks 003–007 after full mock 002** |
@@ -893,10 +947,13 @@ error, wording or reading error, and time-pressure error.
 | Explanation quality | Explain why the correct answer wins and each selected distractor loses |
 | Repeat errors | No recurring unresolved trap across multiple mocks |
 
-Full mocks 001-003 all exceed every quantitative threshold. Full Mock 003 adds
-a clean 75/75 result and successful transfer of all four Mock 002 gaps. The
-minimum booking-score gate is met; Mocks 004-007 still control the chosen
-longitudinal validation and booking boundary.
+Full mocks 001-004 all exceed every quantitative threshold. Full Mock 004 adds
+a fourth score above 93%, a 92.6% exact-match multiple-response result, and
+successful transfer of all four Mock 002 gaps plus the newer MGN and BGP
+material. Its four themes, including the recurring ECS blue/green exact-match
+issue, require a short spaced retest. The minimum
+booking-score gate is met; Mocks 005-007 still control the chosen longitudinal
+validation and booking boundary.
 
 ---
 
@@ -937,6 +994,10 @@ Action:
 | 2026-07-29 | Migration Hub home Region versus DataSync | Domain 4 | Treated missing service-control-plane data as a file-transfer problem | View and manage discovery and migration status in the configured Migration Hub home Region; DataSync moves supported workload data, not Migration Hub's managed discovery database |
 | 2026-07-29 | DAX cluster plus client integration | Domain 3 | Selected the highly available DAX cluster but omitted the DAX client in a Choose TWO item | DAX requires both the cluster and an application request path through the DAX client; exact-match grading gives no credit for the incomplete response |
 | 2026-07-29 | S3 interface versus gateway endpoint for on-premises access | Domain 2 | Applied the VPC-origin S3 gateway-endpoint default to traffic arriving over Direct Connect | Use an S3 interface endpoint for private on-premises access; gateway endpoint connectivity cannot be extended through Direct Connect, VPN, transit gateway, or peering |
+| 2026-08-05 | Logically air-gapped backup and restore evidence | Domain 3 | Treated governance-mode locking as equivalent to service-owned-account isolation and kept the only recovery point inside the compromised workload boundary | Use a logically air-gapped vault for the explicit service-owned-account/compliance-lock/share requirement; combine immutability, administrative isolation, and restore validation for ransomware recovery |
+| 2026-08-05 | CloudFront origin-failover method boundary | Domain 3 | Looked for Lambda@Edge rather than the HTTP-method constraint | Built-in origin failover applies to eligible `GET`, `HEAD`, and `OPTIONS` requests, not write methods such as `POST` |
+| 2026-08-05 | ECS blue/green exact-match completeness | Domain 3 | Correctly selected CodeDeploy but omitted the required production/test listener component in a Choose TWO response | Select CodeDeploy plus the ALB production/test listeners or listener rules when controlled validation and rollback are required; treat this as recurrence of the 2026-07-21 deployment theme |
+| 2026-08-05 | DynamoDB MRSC versus TTL | Domain 2 | Treated the witness Region as if it enabled an otherwise unsupported feature | TTL is supported for MREC global tables, not MRSC; a witness changes topology, not feature support |
 
 ### Non-relational database gap closure - 2026-07-24
 
@@ -976,12 +1037,12 @@ one coherent current revision route.
   items correct and both uncertain answers correct. Focused remediation is
   complete; monitor transfer in independent mocks.
 
-**Next tracked priority:** complete Full Mock 004 as the paired broad independent
-check while preserving the two-full-mock weekly cadence. Full Mock 003 scored
-75/75 with all 12 uncertain responses correct and no genuine miss, so do not
-add an immediate focused drill. Continue the migration matrix in remaining
-capacity; it is still the only explicitly incomplete major revision matrix in
-the booking checklist.
+**Next tracked priority:** complete a short fresh exact-match retest of the
+four Full Mock 004 themes no earlier than 2026-08-07, then continue to Full
+Mock 005 while preserving the two-full-mock weekly cadence. The retest cannot
+replace Mock 005. Continue the migration matrix only in remaining capacity; it
+is still the only explicitly incomplete major revision matrix in the booking
+checklist.
 
 ### Parked revision-maintenance reminders
 
@@ -996,9 +1057,9 @@ current official AWS documentation when implementing it.
 |---|---|---|
 | `08-networking-hybrid-private-access.md` | Separate public-subnet classification by Internet Gateway routing from the public IPv4 addressing required for direct IPv4 internet communication. | Recurrence in a mock, or next source-note maintenance pass |
 | `08-networking-hybrid-private-access.md` | Make the Direct Connect paths explicit: transit VIF to Direct Connect gateway to Transit Gateway; private VIF for the virtual-private-gateway path. | Recurrence in a mock, or next source-note maintenance pass |
-| `11-resilience-dr-multiregion.md` | Add that CloudFront origin failover applies to `GET`, `HEAD`, and eligible `OPTIONS` requests, not write methods such as `POST` or `PUT`. | CloudFront/failover miss, or next source-note maintenance pass |
+| `11-resilience-dr-multiregion.md` | Add that CloudFront origin failover applies to `GET`, `HEAD`, and eligible `OPTIONS` requests, not write methods such as `POST` or `PUT`. The repository's detailed DR lesson was updated after the Mock 004 miss; this external-note reminder remains parked. | Next authorized external source-note maintenance pass |
 | `route-53-sap-c02-key-lessons-20260715.md` | State the exact Resolver endpoint minimum: at least two IP addresses in different Availability Zones. | Hybrid-DNS miss, or next source-note maintenance pass |
-| `11-resilience-dr-multiregion.md` and the detailed DR lesson | State that DynamoDB global tables support default multi-Region eventual consistency and optional multi-Region strong consistency; avoid the obsolete absolute rule that every global table is eventually consistent. | DynamoDB consistency miss, or next source-note maintenance pass |
+| `11-resilience-dr-multiregion.md` and the detailed DR lesson | State that DynamoDB global tables support default MREC and optional MRSC and retain MRSC feature restrictions. The detailed database lesson already held the correct rule and made the TTL restriction prominent after Mock 004; this external-note reminder remains parked. | Next authorized external source-note maintenance pass |
 
 ---
 
@@ -1008,7 +1069,7 @@ current official AWS documentation when implementing it.
 
 | Criterion | Status |
 |---|---|
-| Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Met: Full Mock 001 scored 73/75, Full Mock 002 scored 71/75, and Full Mock 003 scored 75/75. Full Mock 003 completed all four domains and all 27 exact-match multiple-response items at 100%. The minimum score gate is exceeded, but no booking decision occurs before Full Mock 007 |
+| Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Met: Full Mocks 001-004 scored 73/75, 71/75, 75/75, and 70/75 respectively. Mock 004 retained every domain above 77% and scored 25/27 on exact-match multiple-response. The minimum score gate is exceeded, but no booking decision occurs before Full Mock 007 |
 | Domain 1 governance notes complete | Partially met: governance preflight, Organizations governance ADR, org inventory evidence, parent mapping, OU/account-placement decision, first approved live OU creation, approved lakehouse account move, SCP examples, first bounded OU-targeted SCP attempt and rollback evidence, root `SERVICE_CONTROL_POLICY` enablement evidence, first and second successful OU-targeted SCP attachment evidence, permission-set matrix, break-glass procedure, logging/security-service design notes, Security Tooling vs Log Archive split, Security Tooling AWS Config migration/recorder evidence, GuardDuty delegated-admin evidence, `so-aws-admin` retirement checks, final closure package, account-closure evidence, and a governance live-readiness runbook are documented; Security Hub/OAM, broader Identity Center, budget thresholds, and enterprise-networking implementation remain deliberate gaps rather than completed evidence |
 | Networking comparison matrix complete | Met: verified decision matrix, source-backed review, VPC/subnet/route-table diagram, and gateway-versus-interface VPC endpoint diagram are recorded; the separate focused blind attempt scored 8/8 |
 | Migration matrix complete | Not met |
@@ -1017,21 +1078,23 @@ current official AWS documentation when implementing it.
 | Wrong-answer log reviewed twice | Met with evidence caveat: Review Cycle 1 was completed blind at 4/4 on 2026-07-15; Review Cycle 2 was explicitly submitted on 2026-07-18 with corrected final answers scoring 4/4, while the preserved initial drafts show material gaps, so Cycle 2 is a completed review-and-correction cycle rather than an unchanged clean blind pass |
 | No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Not met |
 
-### Current readiness assessment - 2026-08-03
+### Current readiness assessment - 2026-08-05
 
 | Item | Status |
 |---|---|
-| Readiness status | Strong and repeatable across three full mocks, including one clean 75/75; still validating through Mock 007 |
+| Readiness status | Strong and repeatable across four full mocks, ranging from 93.3% to 100%; four Mock 004 themes require spaced validation, including one recurring exact-match issue, and the programme continues through Mock 007 |
 | Booking status | Do not book yet |
-| Primary risk | The chosen longitudinal series is incomplete before the post-Mock-007 decision point; migration remains the incomplete major revision matrix |
+| Primary risk | The chosen longitudinal series is incomplete before the post-Mock-007 decision point; Mock 004's backup, CloudFront, ECS blue/green, and MRSC gaps require transfer evidence; migration remains the incomplete major revision matrix |
 
-Full mocks 001-003 demonstrate strong pacing, endurance, broad domain coverage,
-and stable performance above every quantitative threshold. Full Mock 003 adds
-a clean 75/75 result, 27/27 exact-match multiple-response performance, and
-successful transfer of the four Mock 002 gaps. The recommendation remains "do
-not book yet" because the learner explicitly chose the higher post-Mock-007
-evidence boundary. Mocks 004-007 must complete that longitudinal series; the
-still-incomplete migration matrix also remains a booking-checklist gap.
+Full mocks 001-004 demonstrate strong pacing, endurance, broad domain coverage,
+and stable performance above every quantitative threshold. Full Mock 004
+retained 67 minutes, scored 25/27 exact-match multiple-response, and again
+transferred all four Mock 002 gaps. Its five misses reduce to four themes and
+do not imply a broad Domain 3 restart, although the ECS blue/green recurrence
+must be resolved. The recommendation remains
+"do not book yet" because the learner explicitly chose the higher post-Mock-007
+evidence boundary. Mocks 005-007 and the still-incomplete migration matrix
+remain booking-checklist gaps.
 
 ### Final booking decision
 
@@ -1040,6 +1103,8 @@ still-incomplete migration matrix also remains a booking-checklist gap.
 | 2026-07-23 | Do not book yet | One strong full mock is insufficient; continue independent mocks and resolve recurring traps before an evidence-led booking decision |
 | 2026-07-29 | Do not book yet; minimum score gate met | Full mock 002 repeated strong performance at 94.7%, but four narrow gaps require remediation and the learner's broader consistency programme remains active |
 | 2026-08-01 | Do not book yet; focused remediation complete | The four Full Mock 002 gaps passed a fresh 8/8 retest, but Mocks 003–007 and migration-matrix closure remain required evidence |
+| 2026-08-03 | Do not book yet; Mock 003 clean pass | Full Mock 003 scored 75/75 with 27/27 exact-match multiple-response answers and successful transfer of all four Mock 002 gaps; continue through Mocks 004–007 and close the migration matrix before the evidence-led decision |
+| 2026-08-05 | Do not book yet; Mock 004 remains strong | Full Mock 004 scored 70/75 with every domain above 77%, 25/27 exact-match multiple-response, and 67 minutes remaining; resolve its four themes, especially the recurring ECS blue/green exact-match issue, continue through Mocks 005-007, and close the migration matrix |
 | After full mock 007 | Pending | Earliest evidence-led booking decision after at least five further mocks beyond full mock 002 |
 | 2026-09-07 | Pending if required | Formal readiness-review backstop if the post-mock-007 evidence is not decisive |
 
