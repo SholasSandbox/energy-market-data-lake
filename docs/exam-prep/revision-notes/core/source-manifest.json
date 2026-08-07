@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-07-06",
+  "purpose": "SAP-C02 revision notes v2, service-scenario focused",
+  "source_archive": "saa-c03-notes.tar.gz",
+  "generated_files": [
+    "00-exam-scope-and-study-map.md",
+    "01-service-scenario-index.md",
+    "02-kinesis-streaming-analytics.md",
+    "03-load-balancing-dns-edge.md",
+    "04-containers-ecs-fargate-eks.md",
+    "05-serverless-event-driven.md",
+    "06-storage-data-lake-analytics.md",
+    "07-databases-caching-search.md",
+    "08-networking-hybrid-private-access.md",
+    "09-security-identity-governance.md",
+    "10-migration-modernization.md",
+    "11-resilience-dr-multiregion.md",
+    "12-cost-performance-observability.md",
+    "13-decision-matrices.md",
+    "14-exam-traps.md",
+    "15-flashcards-service-scenarios.md",
+    "16-acronym-legend.md",
+    "README.md",
+    "TRANSFORMATION-LOG.md"
+  ],
+  "official_source_urls": {
+    "SAP-C02 exam guide": "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/solutions-architect-professional-02.html",
+    "SAP-C02 in-scope services": "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/sap-02-in-scope-services.html",
+    "SAP-C02 technologies and concepts": "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/sap-technologies-concepts.html",
+    "Kinesis Data Streams introduction": "https://docs.aws.amazon.com/streams/latest/dev/introduction.html",
+    "Kinesis Data Streams quotas": "https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html",
+    "Kinesis enhanced fan-out": "https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html",
+    "ALB target groups": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html",
+    "NLB introduction": "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html",
+    "Route 53 routing policies": "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html",
+    "ECS/Fargate architecture": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html",
+    "SQS queue types": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html",
+    "SQS dead-letter queues": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html",
+    "Lambda event source mappings": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html"
+  },
+  "notes": [
+    "This pack deduplicates and upgrades the uploaded SAA-C03 notes into SAP-C02 service-scenario revision notes.",
+    "AWS service quotas and features change. Validate exact quota limits in AWS docs before relying on them operationally."
+  ]
+}
