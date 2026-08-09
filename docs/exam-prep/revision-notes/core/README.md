@@ -1,6 +1,6 @@
 # SAP-C02 Revision Notes v2
 
-Updated: 2026-08-07
+**Last revised:** 2026-08-08
 
 Purpose: SAP-C02 revision notes rebuilt from the uploaded SAA-C03 notes, with the missing service-scenario depth added. These notes are optimized for **AWS Certified Solutions Architect - Professional (SAP-C02)** style questions, where the answer usually depends on architecture trade-offs rather than service definitions.
 
@@ -19,7 +19,7 @@ The earlier version was too sparse because it compressed the source notes into t
 
 This v2 pack adds service-focused revision chapters for:
 
-- **Kinesis Data Streams / Firehose / Managed Service for Apache Flink**
+- **Kinesis Data Streams / Amazon Data Firehose / Managed Service for Apache Flink**
 - **Application Load Balancer (ALB), Network Load Balancer (NLB), Gateway Load Balancer (GWLB), Route 53, CloudFront, Global Accelerator**
 - **Amazon ECS, AWS Fargate, Amazon EKS, AWS Batch, Amazon ECR**
 - **Lambda, SQS, SNS, EventBridge, Step Functions**
@@ -40,6 +40,7 @@ This v2 pack adds service-focused revision chapters for:
 | 5 | `04-containers-ecs-fargate-eks.md` | Common modern architecture pattern. |
 | 6 | `05-serverless-event-driven.md` | Lambda/SQS/SNS/EventBridge/Step Functions decision making. |
 | 7 | Remaining domain/service files | Fill gaps and reinforce exam traps. |
+| 8 | `17-less-common-service-boundaries.md` | Build recognition and elimination depth for less-frequent services in the current official scope. |
 
 ## How to revise with this pack
 

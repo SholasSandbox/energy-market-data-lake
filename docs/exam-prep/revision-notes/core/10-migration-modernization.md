@@ -1,6 +1,6 @@
 # 10 - Migration and Modernization
 
-**Last revised:** 2026-07-28
+**Last revised:** 2026-08-09
 
 Domain 4 is 20% of SAP-C02 and heavily scenario-based. The exam tests whether you can map workload constraints to the correct migration strategy and tool.
 
@@ -28,9 +28,53 @@ Domain 4 is 20% of SAP-C02 and heavily scenario-based. The exam tests whether yo
 | Large file/object transfer online | DataSync |
 | Offline bulk data transfer | Snow Family |
 | SFTP/FTPS/FTP managed endpoint | Transfer Family |
+| B2B/EDI file exchange using AS2 | Transfer Family AS2 |
 | Hybrid file access to cloud-backed storage | Storage Gateway |
 | Mainframe modernization | AWS Mainframe Modernization and partner tooling |
 | Container modernization | ECS/EKS/App Runner depending requirements |
+
+## Replatform without accidental re-architecture
+
+When the stem says **custom application**, **least development**, and
+**replatform**, preserve the application tiers and change the hosting model
+only where the managed replacement is compatible.
+
+```text
+server-rendered JavaScript UI + Python API
+  -> container images in ECR
+  -> ECS services on Fargate behind an ALB
+
+MySQL data tier
+  -> RDS for MySQL Multi-AZ
+```
+
+Reusable eliminations:
+
+- S3 static website hosting cannot execute server-side JavaScript.
+- Converting framework code to Lambda is a refactor, not the least-change
+  replatform.
+- DynamoDB is not a drop-in relational MySQL target.
+- EKS introduces Kubernetes operations and is unjustified unless Kubernetes is
+  a stated requirement.
+- Aurora can be a compatible MySQL-family target, but do not prefer a larger
+  database change over RDS for MySQL when the question emphasises minimum
+  development and provides no Aurora-specific requirement.
+
+### Turn a procedural runbook into repeatable deployment
+
+When a runbook describes both AWS infrastructure and host/software setup:
+
+```text
+CloudFormation
+  -> VPC, subnets, security groups, EC2, RDS
+EC2 user data or a managed configuration mechanism
+  -> OS packages, web/CMS installation and initial configuration
+```
+
+This is lower overhead and easier to change than custom Python API orchestration
+plus copied shell scripts, or a manual console runbook. Keep long-lived state
+and secrets out of user data, make bootstrap logic idempotent where practical,
+and use stack updates/change sets for future infrastructure changes.
 
 ## Application Discovery Service
 
@@ -104,6 +148,21 @@ Choose Application Migration Service when:
 
 Trap: MGN is not database-specific logical migration. DMS is for data/database migration.
 
+The current service name is **AWS Transform MGN**. It continuously replicates
+physical, virtual or cloud servers at block level and launches test/cutover EC2
+instances. Highly customized, tightly coupled legacy servers that cannot yet be
+modernized are a rehost case; Elastic Beanstalk or containerization changes the
+application/runtime boundary and therefore requires more migration effort.
+
+### Fastest transfer is not always the appliance
+
+Compare elapsed time, not dataset size alone. If the existing network can move
+the full dataset in about five days, S3 Transfer Acceleration can improve the
+long-distance online path and avoids appliance ordering, shipping, ingestion
+and return logistics. Snowball is selected when the network duration or
+reliability is the actual blocker. For low-downtime VM rehosting, combine the
+data-transfer choice with AWS Transform MGN rather than VM Import/Export.
+
 ## DataSync
 
 Choose DataSync when:
@@ -127,6 +186,32 @@ Tasks can schedule incremental transfers, preserve supported metadata, filter pa
 Basic mode supports all DataSync location combinations but has dataset-item quotas and sequential preparation/transfer/verification. Enhanced mode supports a narrower current set, processes phases in parallel, and supports virtually unlimited object counts. Task mode cannot be changed after task creation.
 
 Trap: DataSync is not DMS, MGN, Snow Family, or Storage Gateway. It moves storage data online; it does not convert schemas, rehost bootable servers, solve an inadequate network path, or provide the ongoing hybrid protocol endpoint.
+
+## Transfer Family and AS2
+
+Transfer Family is not limited to SFTP, FTPS, and FTP. Select **Transfer Family
+AS2** when trading partners exchange signed or encrypted business files using
+Applicability Statement 2 (AS2).
+
+The managed pattern includes partner profiles, certificates, agreements for
+inbound exchange, connectors for outbound exchange, Message Disposition
+Notifications (MDNs), S3-backed file storage, and CloudWatch audit records.
+
+```text
+SFTP / FTPS / FTP managed file endpoint -> Transfer Family
+AS2 partner B2B/EDI file exchange       -> Transfer Family AS2
+ActiveMQ or RabbitMQ message broker     -> Amazon MQ
+Online storage copy/synchronization     -> DataSync
+```
+
+Trap: AS2 contains the word “message,” but the AWS answer is not automatically
+Amazon MQ. Match the named partner protocol and file-exchange workflow.
+
+For an SFTP ingestion system that currently combines a file server, five-minute
+transformation cron and messaging server, use Transfer Family backed by S3,
+event-driven Glue transformation, and EventBridge delivery of successful Glue
+job-state events to SQS. This removes polling hosts and retains a durable queue
+for downstream consumers.
 
 ## Snow Family
 
@@ -174,6 +259,29 @@ Choose Storage Gateway when:
 | Kafka dependency | MSK |
 | Clickstream | Kinesis Data Streams/Firehose/Flink |
 
+### Rehost when the migration deadline dominates
+
+Use AWS Transform MGN for a physical or virtual server whose source code is
+missing, OS configuration is hardcoded, dependencies are poorly documented, or
+the application cannot be modernized before a data-center deadline. DataSync
+moves files, not a bootable Windows server.
+
+For a Db2 database, separate server rehosting from database replatforming:
+
+- Rehost the Linux VM with MGN when the engine must remain unchanged, the
+  deadline dominates, or conversion risk has not been accepted.
+- Replatform Db2 data to a supported managed target such as Amazon RDS for
+  MySQL when the question explicitly accepts an engine change: use DMS for the
+  data movement/replication and SCT or the current DMS Schema Conversion path
+  for heterogeneous schema conversion.
+
+Some Skill Builder wording calls an SCT component a “replication agent.” That
+label is imprecise: DMS performs replication, while SCT performs schema
+conversion and has separate extraction-agent concepts. Do not reject an
+otherwise valid **DMS + SCT** heterogeneous migration solely because an answer
+uses that older label. DataSync remains wrong because it moves storage data,
+not relational database schemas and change streams.
+
 ## Exam traps
 
 | Trap | Correction |
@@ -185,3 +293,9 @@ Choose Storage Gateway when:
 | “Refactor during every migration” | Higher risk and time; choose based on business drivers. |
 | “Migration Hub migrates workloads” | It tracks migration progress. |
 | “Agentless discovery can never map network dependencies” | The current Agentless Collector has a network module for supported VMware-discovered servers; use Discovery Agent for detailed host-level process/TCP evidence and physical-server coverage. |
+| “Any web UI can move to an S3 static website” | Server-rendered UI code needs a runtime; containerize it when the goal is a low-change replatform. |
+
+## Additional references
+
+- AWS Fargate for Amazon ECS: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html
+- Amazon RDS Multi-AZ deployments: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html

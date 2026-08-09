@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-- **Last revised:** 2026-08-06
+- **Last revised:** 2026-08-09
 - **Assessment source:**
   [`sap-c02-full-mock-004-75q-20260804.md`](sap-c02-full-mock-004-75q-20260804.md)
 - **Document role:** answer-bearing exact-match assessment; open only after the
@@ -107,7 +107,7 @@ decision.
 - **Plain-language mechanism:** this is not offline tape. You operate the vault
   through AWS Backup, while AWS stores the protected backup data in an AWS
   Backup service-owned account outside the workload administrator's ownership
-  boundary. See the [mechanism-first vault model](aws-resilience-dr-sap-c02-key-lessons-20260718.md#what-logically-air-gapped-actually-means).
+  boundary. See the [mechanism-first vault model](revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md#what-logically-air-gapped-actually-means).
 - **Source:** [AWS Backup logically air-gapped vault](https://docs.aws.amazon.com/aws-backup/latest/devguide/logicallyairgappedvault.html)
 
 ### Question 14 - CloudFront origin-failover methods
@@ -176,7 +176,7 @@ decision.
 |---:|---|---|
 | 3 | Correct | Repurchase rather than moving existing code or servers |
 | 4 | Correct | Organization trail, protected destination, and KMS/S3 delivery policies |
-| 5 | Correct | [VPC Lattice](aws-networking-sap-c02-key-lessons-20260717.md#vpc-lattice-application-networking-not-a-bigger-router): published application services, DNS/request routing, and IAM authorization rather than general Layer 3 transit |
+| 5 | Correct | [VPC Lattice](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md#vpc-lattice-application-networking-not-a-bigger-router): published application services, DNS/request routing, and IAM authorization rather than general Layer 3 transit |
 | 7 | Correct | On-premises S3 access through interface endpoint plus hybrid DNS |
 | 14 | Incorrect | CloudFront origin-failover method eligibility |
 | 18 | Correct | Cross-account EventBridge bus resource policy plus sender permission |
@@ -228,7 +228,7 @@ memory:
 
 Use a short, fresh exact-match retest of all four themes no earlier than
 2026-08-07. It must not replace Full Mock 005 or the two-mock weekly cadence.
-Booking remains deferred until the post-Mock-007 evidence review.
+Booking remains deferred until the post-Mock-008 evidence review.
 
 ## Evidence Boundary
 

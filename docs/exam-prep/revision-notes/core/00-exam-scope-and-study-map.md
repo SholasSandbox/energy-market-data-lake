@@ -1,6 +1,6 @@
 # 00 - SAP-C02 Exam Scope and Study Map
 
-Updated: 2026-07-06
+**Last revised:** 2026-08-08
 
 ## Official domain model
 
@@ -22,6 +22,50 @@ The exam is less about “what is service X?” and more about:
 - Avoiding over-engineering.
 - Designing blast-radius control across accounts, networks, and regions.
 - Combining services into a complete, operable architecture.
+
+## Scenario-depth calibration
+
+AWS Skill Builder-style questions frequently provide three or more individually
+reasonable controls. The winning answer is the combination that satisfies
+**every** stated constraint at the correct enforcement point.
+
+For each option, test four things:
+
+1. **Direction:** which component initiates the action and which component
+   enforces it?
+2. **Mode:** does the named service mode support the required logging,
+   consistency, protocol, target type, or failover behaviour?
+3. **Boundary:** does the control protect the viewer edge, workload origin,
+   identity, account, network, or resource that the question actually names?
+4. **Operating qualifier:** does the answer meet “least operational effort”,
+   “no code changes”, “no public ingress”, “retain existing protocol”, or a
+   similar decisive phrase?
+
+Example composed pattern:
+
+```text
+CloudFront-only application access
+  -> private S3 origin: OAC + bucket policy
+  -> internet-facing ALB origin: CloudFront secret header
+     + origin-side validation
+  -> internal ALB origin: consider a CloudFront VPC origin
+```
+
+Knowing OAC, WAF, CloudFront, and ALB separately is insufficient. The exam can
+test where each control belongs and which direct-access path remains open.
+
+## Current exam-guide boundary
+
+The current exam guide retains four scored domains and also lists emerging
+responsible-AI topics as possible **unscored pretest** content. Keep only a
+recognition-level model before the SAP-C02 attempt:
+
+- Bedrock Guardrails: content filtering and policy controls;
+- AgentCore Identity: access controls for agentic applications; and
+- Step Functions or an equivalent workflow: explicit human approval for
+  consequential AI actions.
+
+Do not let this emerging-topic note displace scored-domain revision.
 
 ## Revision model
 
@@ -110,4 +154,6 @@ A partial answer says “use ALB across multiple AZs.” That solves regional AZ
 
 ## Source references
 
-See `source-manifest.json` for official AWS documentation URLs.
+- Current SAP-C02 exam guide: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/solutions-architect-professional-02.html
+- Current in-scope services: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/sap-02-in-scope-services.html
+- See `source-manifest.json` for additional official AWS documentation URLs.

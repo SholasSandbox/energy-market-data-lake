@@ -1,6 +1,6 @@
 # 03 - Load Balancing, DNS, Edge, and Global Traffic
 
-**Last revised:** 2026-07-28
+**Last revised:** 2026-08-09
 
 This chapter covers **ALB**, **NLB**, **Gateway Load Balancer**, **Route 53**, **CloudFront**, and **AWS Global Accelerator**. SAP-C02 frequently tests these as pairs.
 
@@ -47,6 +47,26 @@ It is **not** in the HTTP request path after DNS resolution. It does not cache w
 - Private hosted zones are for VPC-internal DNS.
 - Alias records are used for AWS resources such as ELB, CloudFront, S3 website endpoints, and API Gateway custom domains.
 
+### Public apex name to multi-Region ALBs
+
+For an internet application reached through the zone apex, use a **public**
+hosted zone and Route 53 **alias A/AAAA records**, not CNAME records. A CNAME
+cannot be created at the zone apex, while an alias can point the apex to an
+AWS load balancer.
+
+For active-active ALBs in multiple Regions:
+
+```text
+public apex alias records
+  + latency routing
+  + Evaluate Target Health = Yes
+  -> lowest-latency healthy Regional ALB
+```
+
+`Evaluate Target Health` derives ALB health from its target groups. A private
+hosted zone is not suitable for public customers, and latency routing without
+health evaluation can keep selecting the closest unhealthy Regional path.
+
 ### Application Recovery Controller routing controls
 
 Amazon Application Recovery Controller (ARC) routing controls are highly available on/off switches hosted on ARC clusters. Updating a routing control changes an associated Route 53 health-check state, which changes the eligible DNS answer for a failover record.
@@ -54,6 +74,18 @@ Amazon Application Recovery Controller (ARC) routing controls are highly availab
 The cluster endpoints make the control action highly available; they do **not** bypass DNS. TTLs, resolver/client caching, connection reuse, and existing long-lived connections can delay complete traffic movement. If the decisive requirement is static anycast IPs and failover that is not driven by DNS-cache expiry, compare Global Accelerator.
 
 Trap: ARC routing controls drive Route 53 DNS failover. They do not make client-side DNS caching irrelevant.
+
+Readiness checks and routing controls have different jobs:
+
+```text
+readiness check  -> assesses whether recovery resources/configuration are ready
+routing control  -> changes the Route 53 health-check state used to move traffic
+```
+
+Readiness checks do not reroute traffic. When several CloudWatch metrics define
+whether a Regional microservice deployment is functional, alarms can invoke a
+Lambda decision path that toggles ARC routing controls. ARC safety rules should
+guard against unsafe combinations such as turning every cell off.
 
 ## Application Load Balancer
 
@@ -191,6 +223,72 @@ CloudFront is a content delivery network (CDN). It caches and accelerates HTTP/H
 - Use Origin Access Control to keep S3 origins private.
 - Use WAF at CloudFront for global edge protection of HTTP apps.
 
+### Device-specific static content at the edge
+
+When static website requests differ by device type and origin servers are
+overloaded, move the static assets to S3, cache them through CloudFront, and use
+an edge request function to select the appropriate object path. Lambda@Edge can
+inspect viewer/device headers and rewrite the request URI so CloudFront returns
+the mobile, tablet, television, or desktop object variant.
+
+Configure the cache key consistently with the device classification. Otherwise
+one device variant can be cached and served to another class of viewer.
+
+Do not select these distractors:
+
+- Route 53 cannot route on `User-Agent`; it receives DNS queries, not HTTP
+  headers.
+- NLB cannot route on `User-Agent`; it is a Layer 4 load balancer.
+- Additional ALBs and Auto Scaling groups keep static delivery on EC2 and do
+  not remove the origin-load problem.
+
+CloudFront Functions can perform lightweight viewer-request header and URI
+logic in modern designs. Lambda@Edge remains the answer when it is the offered
+edge-compute mechanism or the required processing exceeds CloudFront Functions
+capabilities.
+
+### Restrict direct access to CloudFront origins
+
+Different origin types require different controls:
+
+```text
+Viewer
+  -> CloudFront
+       -> OAC-signed request -> private S3 REST origin
+       -> secret header over HTTPS -> public ALB origin
+       -> VPC origin -> internal ALB/NLB/EC2 origin
+```
+
+| Origin | CloudFront-only pattern | Why nearby answers lose |
+|---|---|---|
+| Private S3 bucket | Attach Origin Access Control (OAC); use a bucket policy that allows the CloudFront service principal and scopes `AWS:SourceArn` to the distribution | A bucket ACL is not the modern distribution-scoped authorization mechanism; OAI is legacy |
+| Internet-facing ALB | Configure CloudFront to add a random custom origin header; validate its name and value at the ALB boundary using an ALB listener rule or a regional WAF web ACL associated with the ALB; reject requests without it | A WAF web ACL associated only with CloudFront does not inspect callers that bypass CloudFront and address the ALB directly |
+| Internal ALB/NLB/EC2 origin | Use a CloudFront VPC origin where its supported protocols/features fit | This removes the public origin path rather than authenticating requests to a public endpoint |
+
+For the public-ALB header pattern, require HTTPS from CloudFront to the origin,
+treat the header as a credential, rotate it, and optionally restrict the ALB
+security group to the AWS-managed CloudFront origin-facing prefix list. The
+header is a shared secret, not cryptographic proof of origin.
+
+Exam direction rule:
+
+```text
+CloudFront adds the origin header.
+The ALB boundary validates it.
+```
+
+Do not reverse those actions. CloudFront viewer-facing WAF and ALB
+origin-protection WAF solve different problems.
+
+For multiple private S3 origins, associate OAC with each origin and express the
+different authorization requirements in the bucket policies. The exact OAC
+policy principal is the CloudFront service principal
+`cloudfront.amazonaws.com`, constrained with `AWS:SourceArn` to the distribution
+ARN. OAC itself and the distribution ARN are not IAM principals. A bucket that
+also permits approved AWS roles/resources includes those principals separately;
+a CloudFront-only bucket omits them. The bucket owner retains administrative
+control through account/IAM authority rather than a special OAC exception.
+
 ## AWS Global Accelerator
 
 ### What it does
@@ -211,6 +309,25 @@ Global Accelerator provides static anycast IPs and routes user traffic over the 
 - DNS routing policy alone is enough -> Route 53
 - HTTP path routing is the requirement -> ALB
 - you need API auth/throttling/model validation -> API Gateway
+
+For latency-sensitive global multiplayer traffic, the explicit **UDP** cue
+eliminates CloudFront and Lambda@Edge. Deploy game endpoints in multiple
+Regions and use Global Accelerator to accept UDP on static anycast addresses
+and carry traffic over the AWS global network to a healthy Regional endpoint.
+Route 53 latency routing is DNS-based and does not provide the same request
+path or static anycast entry point.
+
+### Lambda@Edge dynamic origin selection
+
+An origin-request Lambda@Edge function can choose between origins from request
+attributes such as cookies, headers and `CloudFront-Viewer-Country`. This
+supports a single distribution where geography supplies the default website
+version and an allowlisted user/cookie overrides that default.
+
+CloudFront adds its viewer-location headers after the viewer-request stage, so
+country-based origin selection belongs on an **origin-request** trigger. Keep
+the selected origin and cache-key design aligned so that one audience does not
+receive another audience's cached version.
 
 ## Common combined architectures
 
@@ -262,9 +379,15 @@ Consumer VPC
 | “CloudFront is the same as Global Accelerator” | CloudFront caches HTTP content; Global Accelerator accelerates traffic to endpoints without caching. |
 | “Use CloudFront for raw TCP” | Use Global Accelerator/NLB depending scope. |
 | “Use Route 53 for `/api` vs `/static` routing” | Use ALB or CloudFront cache behaviors; DNS does not see URL paths. |
+| “WAF at CloudFront prevents direct ALB access” | Direct ALB requests bypass that web ACL; validate the CloudFront-added secret at the ALB boundary or use a private VPC origin. |
+| “S3 ACL allows only one CloudFront distribution” | Use OAC and a distribution-scoped bucket policy. |
+| “Route 53 or NLB can select content by `User-Agent`” | HTTP-header decisions require an HTTP-aware edge or Layer 7 component; use CloudFront edge logic or ALB according to where the content lives. |
 
 ## Source references
 
 - Route 53 routing policies: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html
 - ALB target groups: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
 - NLB introduction: https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html
+- Restrict CloudFront access to an ALB: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/restrict-access-to-load-balancer.html
+- Restrict CloudFront access to an S3 origin: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html
+- Lambda@Edge usage patterns: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-edge-ways-to-use.html

@@ -2,12 +2,12 @@
 
 <!-- markdownlint-disable MD013 -->
 
-**Last revised:** 2026-07-28
+**Last revised:** 2026-08-08
 
 ## Purpose and Scope
 
 **Document role:** source-backed lesson. Return to the
-[Exam-Prep Revision Hub](README.md) to choose a learn, test, review, or audit
+[Exam-Prep Revision Hub](../README.md) to choose a learn, test, review, or audit
 workflow.
 
 This source-backed lesson consolidates the Amazon Route 53 decisions most
@@ -280,7 +280,9 @@ accounts with AWS Resource Access Manager.
 
 ### Endpoint Design Checks
 
-- Place endpoint IP addresses across Availability Zones for resilience.
+- Configure at least two endpoint IP addresses in different Availability Zones.
+  Each IP is a separate ENI and DNS target; this is the minimum resilient
+  Resolver-endpoint shape, not merely an optional optimisation.
 - Security groups and network controls must permit both UDP and TCP DNS traffic
   on port 53 unless a deliberate alternative port is configured.
 - Size and monitor endpoint query capacity.
@@ -388,6 +390,7 @@ the tracker authorizes a bounded change.
 - [Supported DNS record types](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/ResourceRecordTypes.html)
 - [Working with private hosted zones](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-private.html)
 - [Route 53 VPC Resolver](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html)
+- [Resolver endpoint high availability](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/best-practices-resolver-endpoint-high-availability.html)
 - [Managing Resolver forwarding rules](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-rules-managing.html)
 - [Route 53 health-check record selection](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-how-route-53-chooses-records.html)
 - [Amazon Application Recovery Controller routing controls](https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html)

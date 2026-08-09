@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-08-06
+**Last revised:** 2026-08-09
 
 ## Start Here
 
@@ -15,6 +15,14 @@ just by topic:
 | Blind attempt | Retrieve answers without cues | After spacing and before review material | Learning from an answer key |
 | Review | Check reasoning and study decision rules | Only after submitting the related attempt | A blind attempt |
 | Log or manifest | Preserve scores, misses, status, and evidence provenance | Planning remediation or auditing progress | Last-minute topic teaching |
+
+## Consolidated Revision Library
+
+The [SAP-C02 Revision Notes Library](revision-notes/README.md) is now the
+canonical home for broad revision chapters, governance mental models, and
+domain deep dives that previously lived across separate folders and
+repositories. Trackers, mocks, evidence, runbooks, and tutorial lessons remain
+in their role-specific locations.
 
 ## Current Immediately Actionable Priority
 
@@ -29,11 +37,40 @@ complete key, domain breakdown, exact questions, decision rules, and transfer
 checks. All four Mock 002 gaps, the new MGN material, and the new BGP material
 held in this independent mock.
 
-Complete one short, fresh exact-match retest of the four Mock 004 themes no
-earlier than 2026-08-07; it must not replace Full Mock 005 or reduce the
-two-mock weekly cadence. Use only remaining capacity for the incomplete
-migration matrix. Booking remains deferred until the post-Mock-007 evidence
-review.
+[Full Mock 005](sap-c02-full-mock-005-75q-20260807.md) was frozen on 2026-08-07
+and independently scored **73/75 (97.3%) in 108 of 180 minutes**. The result
+includes 46/48 single-response, **27/27 exact-match multiple-response**, 14/16
+uncertain answers correct, and every domain above 93%. The two narrow misses
+were an ARC single-response over-selection and Transfer Family AS2 versus
+Amazon MQ. The [answer-bearing review](sap-c02-full-mock-005-review-20260807.md)
+records the full key, domain breakdown, transfer evidence, and decision rules.
+The earlier Lambda@Edge/write-continuity gap transferred successfully.
+
+Review the AS2 decision rule and single-response discipline, then continue to
+Full Mock 006 without reducing the two-mock weekly cadence. Use only remaining
+capacity for the incomplete migration matrix. Booking remains deferred until
+the post-Mock-008 evidence review so the Skill Builder additions receive three
+independent transfer opportunities without changing the September exam window.
+
+The [AWS Skill Builder SAP-C02 assessment review](aws-skill-builder-sap-c02-assessment-review-20260809.md)
+records official-practice attempt 2 as a pass at 775 against a 750 threshold.
+The export contains all 75 answer rationales: 45 were keyed correct, 30
+incorrect and none skipped. Its 12-hour-29-minute recorded duration makes it
+calibration evidence, not a timed booking-gate mock. The review also identifies
+two dated keys and corrects earlier independent interpretations without
+displacing Full Mock 006.
+
+The complete answer-bearing assessment workbook is retained locally at
+`docs/exam-prep/aws-skill-builder-sap-c02-assessment-full-answer-set-20260809.xlsx`
+so the original questions, options, selections, answer statuses and AWS
+rationales remain available without searching old threads. It is deliberately
+Git-ignored and must not be published because it contains the proprietary full
+assessment and the learner's displayed name. Keep it closed during blind mocks
+and spaced retests.
+The [answer-difference audit](aws-skill-builder-sap-c02-answer-difference-audit-20260809.md)
+checks all 30 learner-selection versus exported-key differences, summarizes the
+provided rationale, records an independent verdict, and states the reusable
+takeaway for each question.
 
 The bounded non-relational database gap-closing diagnostic was frozen on
 2026-07-25 and scored **15/18 (83.3%)** in 40 minutes. Its three demonstrated
@@ -102,9 +139,9 @@ retest.
 ### 15-Minute Networking Refresh
 
 1. Use the fast route in
-   [AWS Networking Beyond Route 53](aws-networking-sap-c02-key-lessons-20260717.md).
+   [AWS Networking Beyond Route 53](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md).
 2. Use the 10-minute route in
-   [Amazon Route 53 Key Lessons](route-53-sap-c02-key-lessons-20260715.md).
+   [Amazon Route 53 Key Lessons](revision-notes/targeted-lessons/route-53-sap-c02-key-lessons-20260715.md).
 3. Stop reading and write the answers to both Recall Checks from memory.
 
 ### 45-Minute Networking Consolidation
@@ -130,35 +167,36 @@ retest.
 
 | Topic | Learn or refresh | Test or review |
 |---|---|---|
-| VPC routing, IPv4/IPv6, endpoints, NAT | [Broader Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | [Focused blind attempt](networking-scenario-drill-blind-attempt-20260715.md) and [scenario review](networking-scenario-drill-review-20260715.md) |
-| Peering, Transit Gateway, PrivateLink, and VPC Lattice | [Broader Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | [Scenario review](networking-scenario-drill-review-20260715.md); Mock 004 Question 5 supplies one correct but uncertain VPC Lattice recognition result |
-| Direct Connect, VPN, BGP path selection, communities, and hybrid gateway roles | [Broader Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | [Scenario review](networking-scenario-drill-review-20260715.md); Mock 003 and Mock 004 include independent BGP transfer scenarios |
-| Route 53, hosted zones, routing policies, health, DNSSEC | [Route 53 lesson](route-53-sap-c02-key-lessons-20260715.md) | Recall Check in the same lesson; use a separate answer sheet |
-| Resolver inbound/outbound and hybrid DNS | [Route 53 lesson](route-53-sap-c02-key-lessons-20260715.md) | [Review Cycle 2 evidence](wrong-answer-review-cycle-2-blind-attempt-20260715.md#final-assessment) records the corrected final answer and initial gap |
-| ALB, NLB, GWLB, CloudFront, Global Accelerator | [Broader Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | Recall Check in the same lesson; use a separate answer sheet |
-| SG, NACL, WAF, Shield, Network Firewall | [Broader Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | [Scenario review](networking-scenario-drill-review-20260715.md) |
-| Flow Logs, Reachability Analyzer, Traffic Mirroring | [Broader Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | Recall Check in the same lesson; use a separate answer sheet |
+| VPC routing, IPv4/IPv6, endpoints, NAT | [Broader Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) | [Focused blind attempt](networking-scenario-drill-blind-attempt-20260715.md) and [scenario review](networking-scenario-drill-review-20260715.md) |
+| Peering, Transit Gateway, PrivateLink, and VPC Lattice | [Broader Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) | [Scenario review](networking-scenario-drill-review-20260715.md); Mock 004 Question 5 supplies one correct but uncertain VPC Lattice recognition result |
+| Direct Connect, VPN, BGP path selection, communities, and hybrid gateway roles | [Broader Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) | [Scenario review](networking-scenario-drill-review-20260715.md); Mock 003 and Mock 004 include independent BGP transfer scenarios |
+| Route 53, hosted zones, routing policies, health, DNSSEC | [Route 53 lesson](revision-notes/targeted-lessons/route-53-sap-c02-key-lessons-20260715.md) | Recall Check in the same lesson; use a separate answer sheet |
+| Resolver inbound/outbound and hybrid DNS | [Route 53 lesson](revision-notes/targeted-lessons/route-53-sap-c02-key-lessons-20260715.md) | [Review Cycle 2 evidence](wrong-answer-review-cycle-2-blind-attempt-20260715.md#final-assessment) records the corrected final answer and initial gap |
+| ALB, NLB, GWLB, CloudFront, Global Accelerator | [Broader Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) | Recall Check in the same lesson; use a separate answer sheet |
+| SG, NACL, WAF, Shield, Network Firewall | [Broader Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) | [Scenario review](networking-scenario-drill-review-20260715.md) |
+| Flow Logs, Reachability Analyzer, Traffic Mirroring | [Broader Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) | Recall Check in the same lesson; use a separate answer sheet |
 | RTO/RPO, dependency constraints, and objective worksheet | [RTO/RPO decision table](../planning/domain-2-rto-rpo-decision-table-20260718.md) | Apply the reusable record without assigning unapproved Lakehouse targets |
-| Backup/restore, pilot light, warm standby, active/active | [Resilience and DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md) | [Fresh isolated spaced retest](sap-c02-resilience-dr-spaced-retest-12q-20260726.md) completed 12/12 in 16 minutes; [assessment](sap-c02-resilience-dr-spaced-retest-review-20260727.md) records exact-match evidence |
+| Backup/restore, pilot light, warm standby, active/active | [Resilience and DR lesson](revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md) | [Fresh isolated spaced retest](sap-c02-resilience-dr-spaced-retest-12q-20260726.md) completed 12/12 in 16 minutes; [assessment](sap-c02-resilience-dr-spaced-retest-review-20260727.md) records exact-match evidence |
 | Lakehouse recovery boundary | [Lakehouse recovery mapping](../planning/domain-2-lakehouse-recovery-mapping-20260719.md) | [Source-backed scenario review](resilience-dr-scenario-drill-review-20260719.md) and [focused submission](resilience-dr-scenario-drill-submission-20260720.md); no live recovery claim |
-| DynamoDB data modelling, indexes, consistency, hot keys, global tables and DAX | [Non-relational databases key lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) and [hidden-gap model review](sap-c02-hidden-gap-model-review-20260725.md) | [Frozen 15/18 diagnostic](sap-c02-non-relational-databases-diagnostic-18q-20260724.md), [diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md), [6/6 spaced retest](sap-c02-non-relational-databases-spaced-retest-6q-20260728.md), and [retest review](sap-c02-non-relational-databases-spaced-retest-review-20260728.md) |
-| ElastiCache Valkey/Redis OSS versus Memcached | [Non-relational databases key lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Diagnostic questions 11–13 passed 3/3; continue transfer testing in independent mocks |
-| DocumentDB, Keyspaces, Neptune, Timestream and OpenSearch contrast | [Non-relational databases key lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Diagnostic questions 14–18 scored 4/5; [review question 17](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) and complete the spaced retest |
+| DynamoDB data modelling, indexes, consistency, hot keys, global tables and DAX | [Non-relational databases key lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) and [hidden-gap model review](sap-c02-hidden-gap-model-review-20260725.md) | [Frozen 15/18 diagnostic](sap-c02-non-relational-databases-diagnostic-18q-20260724.md), [diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md), [6/6 spaced retest](sap-c02-non-relational-databases-spaced-retest-6q-20260728.md), and [retest review](sap-c02-non-relational-databases-spaced-retest-review-20260728.md) |
+| ElastiCache Valkey/Redis OSS versus Memcached | [Non-relational databases key lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Diagnostic questions 11–13 passed 3/3; continue transfer testing in independent mocks |
+| DocumentDB, Keyspaces, Neptune, Timestream and OpenSearch contrast | [Non-relational databases key lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Diagnostic questions 14–18 scored 4/5; [review question 17](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) and complete the spaced retest |
 | Migration rehost decision and Kinesis versus SQS FIFO | [Wrong-answer log](wrong-answers.md) during remediation only | [Review Cycle 2 evidence](wrong-answer-review-cycle-2-blind-attempt-20260715.md#final-assessment) records corrected final answers and initial gaps |
 | Region-SCP exceptions, Direct Connect BGP, ARC DNS behaviour, DynamoDB global-table reads, EBS performance, and migration discovery | [Gemini Flash weak-area review](sap-c02-gemini-flash-weak-area-review-20260728.md) | Source-backed audit of six supplied assessment extracts; no aggregate score or retest evidence inferred |
-| Application Discovery Service, MGN, DataSync, and Migration Hub | [Migration discovery, rehost, transfer, and tracking lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | Source-backed Domain 4 lesson; introduces the MGN staging and test-to-cutover lifecycle, corrects the VMware-module versus network-module boundary, and compares migration roles |
-| AWS Transform for migrations, mainframe, and .NET | [Migration discovery, transfer, tracking, and Transform lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md#5-aws-transform) | Source-backed recognition and service-boundary material; no transformation job or live migration evidence implied |
+| Application Discovery Service, MGN, DataSync, and Migration Hub | [Migration discovery, rehost, transfer, and tracking lesson](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | Source-backed Domain 4 lesson; introduces the MGN staging and test-to-cutover lifecycle, corrects the VMware-module versus network-module boundary, and compares migration roles |
+| AWS Transform for migrations, mainframe, and .NET | [Migration discovery, transfer, tracking, and Transform lesson](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md#5-aws-transform) | Source-backed recognition and service-boundary material; no transformation job or live migration evidence implied |
 
 ## Document Catalogue and Status
 
 | Document | Role | Status |
 |---|---|---|
-| [AWS Networking Beyond Route 53](aws-networking-sap-c02-key-lessons-20260717.md) | Source-backed lesson | Expanded 2026-08-06 with a mechanism-first VPC Lattice model and TGW/PrivateLink boundaries; no lesson-wide recall score implied |
-| [Amazon Route 53 Key Lessons](route-53-sap-c02-key-lessons-20260715.md) | Source-backed lesson | Ready for revision; no recall score implied |
-| [AWS Resilience and Disaster Recovery](aws-resilience-dr-sap-c02-key-lessons-20260718.md) | Source-backed lesson and DR pattern matrix | Expanded 2026-08-06 with a plain-language logically air-gapped vault mechanism, Vault Lock, restore-testing, and CloudFront method-boundary remediation; companion RTO/RPO table complete |
+| [SAP-C02 Revision Notes Library](revision-notes/README.md) | Canonical revision-note index | Consolidated 2026-08-07 from the standalone core pack, governance study notes, and Domain 3 deep dive; duplicate reading copies removed while role-specific artifacts stayed in place |
+| [AWS Networking Beyond Route 53](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) | Source-backed lesson | Expanded 2026-08-06 with a mechanism-first VPC Lattice model and TGW/PrivateLink boundaries; no lesson-wide recall score implied |
+| [Amazon Route 53 Key Lessons](revision-notes/targeted-lessons/route-53-sap-c02-key-lessons-20260715.md) | Source-backed lesson | Ready for revision; no recall score implied |
+| [AWS Resilience and Disaster Recovery](revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md) | Source-backed lesson and DR pattern matrix | Expanded 2026-08-06 with a plain-language logically air-gapped vault mechanism, Vault Lock, restore-testing, and CloudFront method-boundary remediation; companion RTO/RPO table complete |
 | [RTO/RPO Decision Table](../planning/domain-2-rto-rpo-decision-table-20260718.md) | Business-led planning worksheet and revision aid | Complete; all Lakehouse objectives remain unset pending an owner |
 | [Lakehouse Recovery Mapping](../planning/domain-2-lakehouse-recovery-mapping-20260719.md) | Repository-grounded recovery inventory and gap analysis | Complete; recoverability foundations recorded, tested recovery not proved |
-| [AWS Non-Relational Databases — SAP-C02 Key Lessons](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Source-backed, bounded database gap-closure lesson | Expanded 2026-08-05 with verified DynamoDB mechanics and a prominent MRSC TTL restriction; no recall score implied |
+| [AWS Non-Relational Databases — SAP-C02 Key Lessons](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) | Source-backed, bounded database gap-closure lesson | Expanded 2026-08-05 with verified DynamoDB mechanics and a prominent MRSC TTL restriction; no recall score implied |
 | [SAP-C02 Full Mock 002 - 75 Questions](sap-c02-full-mock-002-75q-20260728.md) | Frozen full-simulation submission | Completed 2026-07-29 at 71/75 (94.7%) in 139 minutes; canonical timing, uncertainty list, and responses preserved; no answer key in the attempt artifact |
 | [SAP-C02 Full Mock 002 Review](sap-c02-full-mock-002-review-20260729.md) | Answer-bearing independent assessment | 45/48 single-response, 26/27 exact-match multiple-response, every domain floor above 93%; four narrow misses documented |
 | [SAP-C02 Full Mock 002 Spaced Retest](sap-c02-full-mock-002-spaced-retest-8q-20260801.md) | Frozen question-only close-distractor retest | Completed 2026-08-01 at 8/8 in 17 minutes; 4/4 single-response and 4/4 exact-match multiple-response; Questions 4 and 7 uncertain and correct |
@@ -167,6 +205,12 @@ retest.
 | [SAP-C02 Full Mock 003 Review](sap-c02-full-mock-003-review-20260803.md) | Answer-bearing independent assessment | Clean 100% result across all four domains; all four Mock 002 gaps transferred successfully; no immediate retest required |
 | [SAP-C02 Full Mock 004 - 75 Questions](sap-c02-full-mock-004-75q-20260804.md) | Frozen full-simulation submission | Completed 2026-08-05 at 70/75 (93.3%) in 113 minutes; 45/48 single-response, 25/27 exact-match multiple-response, and 13/15 uncertain answers correct; answer key remains excluded |
 | [SAP-C02 Full Mock 004 Review](sap-c02-full-mock-004-review-20260805.md) | Answer-bearing independent assessment | Five misses reduce to four themes; every domain remained above 77%, while prior MGN, BGP, and Mock 002 material transferred; ECS blue/green exact-match completeness recurred |
+| [SAP-C02 Full Mock 004 Spaced Retest](sap-c02-full-mock-004-spaced-retest-8q-20260807.md) | Frozen question-only close-distractor retest | Completed 2026-08-07 at 7/8 in 22 minutes; 4/4 single-response, 3/4 exact-match multiple-response, and both uncertain answers correct |
+| [SAP-C02 Full Mock 004 Spaced Retest Review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) | Answer-bearing assessment | Backup, ECS blue/green, and DynamoDB themes passed; the remaining Lambda@Edge/write-continuity distinction subsequently transferred in Full Mock 005 |
+| [SAP-C02 Full Mock 005 - 75 Questions](sap-c02-full-mock-005-75q-20260807.md) | Frozen full-simulation submission | Completed 2026-08-07 at 73/75 (97.3%) in 108 minutes; 46/48 single-response, 27/27 exact-match multiple-response, 14/16 uncertain answers correct, and every domain above 93% |
+| [SAP-C02 Full Mock 005 Review](sap-c02-full-mock-005-review-20260807.md) | Answer-bearing independent assessment | Two narrow misses: ARC single-response over-selection and Transfer Family AS2 versus Amazon MQ; the prior Lambda@Edge gap transferred successfully |
+| [AWS Skill Builder SAP-C02 Assessment Review](aws-skill-builder-sap-c02-assessment-review-20260809.md) | Official-practice export audit and source-backed remediation | Attempt 2 passed at scaled score 775/750 threshold; 45 correct, 30 incorrect, 0 skipped; 12h29 recorded duration means calibration only, not timed booking evidence; dated Object Lock and KMS keys are explicitly corrected |
+| [AWS Skill Builder Answer-Difference Audit](aws-skill-builder-sap-c02-answer-difference-audit-20260809.md) | Answer-bearing mismatch audit | All 30 selection/key differences checked: 28 keys stand, Question 7 is now learner-correct under current AWS behaviour, and Question 10 has a dated key while the learner's policy-edit answer remains wrong |
 | [SAP-C02 Closed-Book Hidden-Gap Diagnostic](sap-c02-hidden-gap-diagnostic-15q-20260723.md) | Frozen question-only transfer diagnostic | Learner answer set preserved; answer-bearing remediation remains isolated in the model review |
 | [SAP-C02 Hidden-Gap Model Review](sap-c02-hidden-gap-model-review-20260725.md) | Answer-bearing remediation guide | Covers the recurring SCP/boundary and DynamoDB sharding/fan-out models; not recall evidence |
 | [SCP Versus Permissions Boundary Closed-Book Retest](sap-c02-scp-permissions-boundary-closed-book-retest-6q-20260724.md) | Frozen six-question exact-match retest | Submitted 2026-07-24; 6/6 in 18 minutes; early-spacing caveat retained |
@@ -185,9 +229,9 @@ retest.
 | [Networking Scenario Drill Review](networking-scenario-drill-review-20260715.md) | Answer-bearing review | Use only after a blind attempt |
 | [Mixed Practice Block 2](sap-c02-mixed-practice-block-2-submission-20260718.md) | Learner submission | Explicitly submitted; supplied score 25/25; timing and question text unavailable |
 | [Four-question Review Cycle 2](wrong-answer-review-cycle-2-blind-attempt-20260715.md) | Completed retention review | Corrected final submission 4/4; initial draft gaps preserved; untimed |
-| [Wrong-Answer Log](wrong-answers.md) | Cumulative remediation and status log | Current through Full Mock 004 on 2026-08-05; four themes remain open for a later short spaced retest, including the recurring ECS blue/green exact-match issue |
+| [Wrong-Answer Log](wrong-answers.md) | Cumulative remediation and status log | Current through Full Mock 005 on 2026-08-07; Lambda@Edge transfer passed, and the two narrow Mock 005 misses are recorded with source-backed remediation |
 | [Gemini Flash Weak-Area Review](sap-c02-gemini-flash-weak-area-review-20260728.md) | External-assessment audit and bounded remediation | Six supplied extracts reviewed against current AWS documentation; two supplied explanations rejected, one outdated agentless generalization narrowed, and only the physical-server discovery miss added to the wrong-answer log |
-| [AWS Migration Discovery, Data Transfer, Tracking, and Transform](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | Source-backed Domain 4 lesson | Application Discovery Agent/Agentless Collector modules, MGN rehost architecture and lifecycle, DataSync transfer mechanics, Migration Hub tracking/home-Region boundaries, and bounded AWS Transform service selection consolidated; no recall score implied |
+| [AWS Migration Discovery, Data Transfer, Tracking, and Transform](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | Source-backed Domain 4 lesson | Application Discovery Agent/Agentless Collector modules, MGN rehost architecture and lifecycle, DataSync transfer mechanics, Migration Hub tracking/home-Region boundaries, and bounded AWS Transform service selection consolidated; no recall score implied |
 | [Completed Exercises 003–006 Manifest](artifacts/sap-c02-completed-exercises-003-to-006-manifest.md) | Evidence provenance | Audit artifact, not a revision lesson |
 
 ## Revision Discipline

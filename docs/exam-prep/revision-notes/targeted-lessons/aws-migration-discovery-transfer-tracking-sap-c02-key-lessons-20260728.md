@@ -3,7 +3,7 @@
 <!-- markdownlint-disable MD013 MD060 -->
 
 **Date:** 2026-07-28<br>
-**Last revised:** 2026-08-05<br>
+**Last revised:** 2026-08-08<br>
 **Document role:** source-backed Domain 4 lesson covering Application Discovery Service, AWS Application Migration Service, AWS DataSync, AWS Migration Hub, and AWS Transform.<br>
 **Evidence boundary:** this is revision material, not proof of blind recall, a completed migration wave, or deployed AWS resources.
 

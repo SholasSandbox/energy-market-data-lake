@@ -6,7 +6,7 @@
 
 **Document role:** business-led decision worksheet and SAP-C02 revision aid.
 Use it with the
-[Resilience and DR key lesson](../exam-prep/aws-resilience-dr-sap-c02-key-lessons-20260718.md),
+[Resilience and DR key lesson](../exam-prep/revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md),
 which contains the companion DR pattern matrix.
 
 This table helps turn business impact into recovery objectives, then checks

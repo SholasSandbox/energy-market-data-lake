@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-- **Last revised:** 2026-08-03
+- **Last revised:** 2026-08-09
 - **Assessment source:**
   [`sap-c02-full-mock-003-75q-20260801.md`](sap-c02-full-mock-003-75q-20260801.md)
 - **Document role:** answer-bearing exact-match assessment; open only after the
@@ -143,4 +143,4 @@ governance implementation.
 Do not create a remediation test for a 75/75 result. Preserve the two-full-mock
 weekly cadence, continue the incomplete migration matrix only from remaining
 capacity, and use Full Mock 004 as the next broad independent check. Booking
-remains deferred until the post-Mock-007 evidence review.
+remains deferred until the post-Mock-008 evidence review.

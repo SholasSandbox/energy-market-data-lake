@@ -2,12 +2,12 @@
 
 <!-- markdownlint-disable MD013 -->
 
-**Last revised:** 2026-08-06
+**Last revised:** 2026-08-08
 
 ## Purpose and Scope
 
 **Document role:** source-backed lesson. Return to the
-[Exam-Prep Revision Hub](README.md) to choose a learn, test, review, or audit
+[Exam-Prep Revision Hub](../README.md) to choose a learn, test, review, or audit
 workflow.
 
 This document is the networking companion to
@@ -35,7 +35,7 @@ Use this order during a full block:
 2. Read the Route 53 lesson and draw the inbound and outbound Resolver flows.
 3. Return here for load balancing, global ingress, security, and operations.
 4. Answer both Recall Checks without notes.
-5. Open the [source-backed scenario review](networking-scenario-drill-review-20260715.md)
+5. Open the [source-backed scenario review](../../networking-scenario-drill-review-20260715.md)
    only after the recall attempt.
 
 ## Topic Navigation
@@ -61,14 +61,14 @@ in enough depth; it does not replace their recall evidence.
 
 | Revision area | Primary document | Supporting practice or design artifact |
 |---|---|---|
-| Route 53 authoritative DNS, routing policies, health checks, hybrid DNS, DNS Firewall, DNSSEC | [Route 53 key lessons](route-53-sap-c02-key-lessons-20260715.md) | [Hybrid-DNS reading guide](../planning/domain-2-route53-resolver-hybrid-dns-20260715.md) |
-| VPC addressing, subnet roles, route selection, IPv4 and IPv6 egress | This companion | [VPC/subnet/route-table reading guide](../planning/domain-2-vpc-subnet-route-table-diagram-20260715.md) |
-| Security groups and network ACLs | This companion provides the decision shortcut | [Security-groups-versus-NACL comparison](../planning/domain-2-security-groups-network-acls-comparison-20260715.md) |
-| Peering, Transit Gateway, PrivateLink, endpoints, and NAT | This companion provides the consolidated selection rules | [Networking scenario review](networking-scenario-drill-review-20260715.md) and [blind attempt](networking-scenario-drill-blind-attempt-20260715.md) |
-| Direct Connect, VPN, virtual interfaces, gateways, and resilience | This companion | [Direct Connect versus VPN decision table](../planning/domain-2-direct-connect-vpn-decision-20260714.md) |
+| Route 53 authoritative DNS, routing policies, health checks, hybrid DNS, DNS Firewall, DNSSEC | [Route 53 key lessons](route-53-sap-c02-key-lessons-20260715.md) | [Hybrid-DNS reading guide](../../../planning/domain-2-route53-resolver-hybrid-dns-20260715.md) |
+| VPC addressing, subnet roles, route selection, IPv4 and IPv6 egress | This companion | [VPC/subnet/route-table reading guide](../../../planning/domain-2-vpc-subnet-route-table-diagram-20260715.md) |
+| Security groups and network ACLs | This companion provides the decision shortcut | [Security-groups-versus-NACL comparison](../../../planning/domain-2-security-groups-network-acls-comparison-20260715.md) |
+| Peering, Transit Gateway, PrivateLink, endpoints, and NAT | This companion provides the consolidated selection rules | [Networking scenario review](../../networking-scenario-drill-review-20260715.md) and [blind attempt](../../networking-scenario-drill-blind-attempt-20260715.md) |
+| Direct Connect, VPN, virtual interfaces, gateways, and resilience | This companion | [Direct Connect versus VPN decision table](../../../planning/domain-2-direct-connect-vpn-decision-20260714.md) |
 | ALB, NLB, and GWLB | This companion | None; this is the primary revision note |
 | CloudFront, Global Accelerator, Cloud WAN, and VPC Lattice | This companion | None; this is the primary revision note |
-| WAF, Shield, Network Firewall, appliance inspection | This companion | [Centralized-inspection reading guide](../planning/domain-2-centralized-inspection-vpc-architecture-20260715.md) |
+| WAF, Shield, Network Firewall, appliance inspection | This companion | [Centralized-inspection reading guide](../../../planning/domain-2-centralized-inspection-vpc-architecture-20260715.md) |
 | Flow Logs, Reachability Analyzer, and Traffic Mirroring | This companion | None; this is the primary revision note |
 
 ## The Networking Decision Sequence

@@ -2,16 +2,17 @@
 
 # SAP-C02 Revision-Note Consolidation Manifest
 
-**Consolidated:** 2026-08-07
+**Consolidated:** 2026-08-08
 **Destination:** `docs/exam-prep/revision-notes/`
 
 ## Moved Canonical Material
 
 | Previous location | New location | Disposition |
 |---|---|---|
-| Standalone `cert-revision/sap-c02-revision-notes-v2` directory | `revision-notes/core/` | Seventeen numbered chapters, pack README, transformation log, and source manifest moved; former source directory removed after it became empty |
+| Standalone `cert-revision/sap-c02-revision-notes-v2` directory | `revision-notes/core/` | Seventeen numbered chapters, pack README, transformation log, and source manifest moved; former source directory removed after it became empty. Chapter 17 was then added in the canonical library during the 2026-08-08 exam-depth calibration, bringing the current total to eighteen. |
 | Separate `aws-sap-c02-governance` repository | `revision-notes/governance/` | Five `SAP-C02_*.md` revision and mental-model notes moved; exercises, repository instructions, assessment material, and runbooks left in place |
 | Downloads `sap-c02-domain-3-deep-dive.md` | `revision-notes/domain-deep-dives/` | Canonical Domain 3 guide moved |
+| Five assessment-led lessons previously in `docs/exam-prep/` | `revision-notes/targeted-lessons/` | Networking, Route 53, resilience/DR, non-relational database, and migration notes moved; practice artifacts stayed in `docs/exam-prep/` |
 
 ## Removed Redundant Copies
 

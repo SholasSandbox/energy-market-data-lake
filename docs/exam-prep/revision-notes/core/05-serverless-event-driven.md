@@ -1,5 +1,7 @@
 # 05 - Serverless and Event-Driven Architecture
 
+**Last revised:** 2026-08-09
+
 This chapter covers Lambda, SQS, SNS, EventBridge, Step Functions, API Gateway, and common failure patterns.
 
 ## Service selection
@@ -14,6 +16,8 @@ This chapter covers Lambda, SQS, SNS, EventBridge, Step Functions, API Gateway, 
 | Public/private API front door | API Gateway |
 | Long-running containerized async worker | ECS/Fargate |
 | Stream processing | Kinesis / Managed Service for Apache Flink |
+| Existing ActiveMQ/RabbitMQ/protocol-compatible broker workload | Amazon MQ |
+| Managed GraphQL API and real-time subscriptions | AWS AppSync |
 
 ## Lambda
 
@@ -148,6 +152,81 @@ EventBridge routes events from AWS services, custom apps, and SaaS sources to ta
 - a simple work queue is enough
 - a multi-step workflow is the core requirement
 
+## Amazon MQ
+
+Choose Amazon MQ when an existing application depends on Apache ActiveMQ
+Classic or RabbitMQ semantics, clients, or protocols such as JMS, AMQP, MQTT,
+OpenWire, or STOMP and the migration should minimize application change.
+
+Do not select it merely because the stem says “messages”. For a new AWS-native
+workload, first compare SQS, SNS and EventBridge because they avoid broker
+topology, sizing and protocol management.
+
+```text
+legacy/protocol contract must remain -> Amazon MQ
+durable cloud-native work queue      -> SQS
+cloud-native pub/sub fanout          -> SNS
+event routing/filtering              -> EventBridge
+```
+
+Migration bundle rule: preserve the existing ActiveMQ contract with Amazon MQ
+when least change is required; moving to SQS is a refactor because clients and
+delivery semantics change. Rehost executable PHP/worker tiers on compute rather
+than placing server-side code in an S3 static website. If the existing data is
+JSON/document-oriented and the offered managed targets are DynamoDB or a
+relational redesign, DynamoDB is normally the lower-model-change target—but the
+processing application must still be modified and its access patterns checked.
+
+### Fast durable HTTP acceptance with asynchronous workers
+
+```text
+unchanged HTTP client
+  -> API Gateway direct AWS service integration
+  -> SQS durable queue
+  -> parallel worker fleet
+  -> durable database
+```
+
+Use this pattern when clients need a quick response but processing takes much
+longer. API Gateway can acknowledge the durable SQS handoff without holding the
+HTTP connection open. Scale EC2/ECS workers from backlog per worker. A
+synchronous Lambda proxy that performs 90-second work does not meet a client
+timeout under 10 seconds, even though the work is below Lambda's maximum
+duration.
+
+### Centralize events, not duplicate handlers
+
+For the same operational event emitted by workloads in many accounts:
+
+```text
+member-account EventBridge rules
+  -> central event bus with a permitting resource policy
+  -> one central Lambda handler
+```
+
+Use this when a central team owns the target data and cleanup logic. For
+Auto Scaling termination events, the event contains the instance identifier,
+which can map to an S3 object prefix. Lambda is lower overhead than maintaining
+EC2 or ECS workers for short, sporadic cleanup that must complete within
+minutes. Separate Lambda functions in every member account duplicate code,
+roles, deployment and monitoring.
+
+For short Java order processing where servers must not be managed, SQS plus
+Lambda is a valid capture/processing layer. Preserve an explicitly required
+Oracle operating model with Multi-AZ RDS for Oracle rather than converting the
+database engine without a modernization requirement.
+
+## AWS AppSync
+
+Choose AppSync when the application needs a managed GraphQL API, resolver-based
+access to data sources, fine-grained API authorization, or GraphQL
+subscriptions for live updates. AppSync manages the WebSocket connections for
+subscriptions.
+
+Do not choose AppSync only because an application needs any WebSocket. API
+Gateway also provides WebSocket APIs; GraphQL schema/resolver/subscription
+semantics are the stronger AppSync cues.
+
 ## Step Functions
 
 ### What it is
@@ -238,3 +317,5 @@ Producer -> Kinesis Data Streams
 - Lambda event source mappings: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
 - SQS queue types: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html
 - SQS dead-letter queues: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+- Amazon MQ overview: https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/welcome.html
+- AppSync subscriptions: https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html

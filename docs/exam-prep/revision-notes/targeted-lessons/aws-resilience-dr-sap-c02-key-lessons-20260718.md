@@ -2,12 +2,12 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-08-06<br>
+**Last revised:** 2026-08-08<br>
 
 ## Purpose and Role
 
 **Document role:** source-backed lesson and required DR pattern matrix. Return
-to the [Exam-Prep Revision Hub](README.md) to choose a learn, test, review, or
+to the [Exam-Prep Revision Hub](../README.md) to choose a learn, test, review, or
 audit workflow.
 
 This lesson follows the completed Networking slice and teaches how to select a
@@ -16,7 +16,7 @@ does not authorize backup, replication, recovery, failover, multi-Region, or
 other AWS changes.
 
 Use the companion
-[RTO/RPO decision table](../planning/domain-2-rto-rpo-decision-table-20260718.md)
+[RTO/RPO decision table](../../../planning/domain-2-rto-rpo-decision-table-20260718.md)
 to turn business impact into objectives, check dependency constraints, and
 record designed versus tested recovery capability without inventing targets.
 
@@ -33,7 +33,7 @@ record designed versus tested recovery capability without inventing targets.
 | If the scenario says... | Go to |
 |---|---|
 | Maximum downtime or data-loss tolerance | [Core Mental Model](#core-mental-model) |
-| Business ownership, dependency alignment, or an objective worksheet | [RTO/RPO decision table](../planning/domain-2-rto-rpo-decision-table-20260718.md) |
+| Business ownership, dependency alignment, or an objective worksheet | [RTO/RPO decision table](../../../planning/domain-2-rto-rpo-decision-table-20260718.md) |
 | Hours, tens of minutes, minutes, or near-zero recovery | [DR Pattern Matrix](#dr-pattern-matrix) |
 | Backup, replication, high availability, or disaster recovery | [Recovery Controls Are Different](#recovery-controls-are-different) |
 | AWS Backup, DRS, S3, RDS/Aurora, or DynamoDB | [AWS Service Decision Map](#aws-service-decision-map) |

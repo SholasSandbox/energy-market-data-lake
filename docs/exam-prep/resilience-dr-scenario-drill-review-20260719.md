@@ -9,7 +9,7 @@
 attempt.
 
 This review applies the decision rules from the
-[Resilience and DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md),
+[Resilience and DR lesson](revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md),
 the
 [RTO/RPO decision table](../planning/domain-2-rto-rpo-decision-table-20260718.md),
 and the

@@ -1,5 +1,7 @@
 # 02 - Kinesis, Streaming, and Real-Time Analytics
 
+**Last revised:** 2026-08-08
+
 This is a priority chapter because a Kinesis stream question was missed in practice. SAP-C02 often tests whether you can distinguish **streaming**, **queuing**, **fanout**, **delivery**, and **analytics**.
 
 ## Core mental model
@@ -7,7 +9,7 @@ This is a priority chapter because a Kinesis stream question was missed in pract
 | Need | Service |
 |---|---|
 | Replayable real-time ordered event stream with custom consumers | **Kinesis Data Streams (KDS)** |
-| Managed delivery of streaming records to destinations such as S3/Redshift/OpenSearch/HTTP endpoints | **Kinesis Data Firehose** |
+| Managed delivery of streaming records to destinations such as S3/Redshift/OpenSearch/HTTP endpoints | **Amazon Data Firehose** (formerly Kinesis Data Firehose) |
 | Stateful stream processing, SQL/windowing/Flink applications | **Amazon Managed Service for Apache Flink**; older notes may say **Kinesis Data Analytics** |
 | Kafka API/ecosystem compatibility | **Amazon MSK** |
 | Work queue with retries/backpressure | **Amazon SQS** |
@@ -151,9 +153,9 @@ Answer: **Kinesis Data Streams**, not Firehose.
 
 > “Streaming application logs should be delivered to S3 with minimal operational overhead.”
 
-Answer: **Kinesis Data Firehose**, not Kinesis Data Streams unless custom replay/consumers are required.
+Answer: **Amazon Data Firehose**, not Kinesis Data Streams unless custom replay/consumers are required.
 
-## Kinesis Data Firehose
+## Amazon Data Firehose
 
 ### What it is
 
@@ -317,7 +319,7 @@ Answer: **Kinesis Data Streams** with multiple consumers. Consider **enhanced fa
 
 A company wants to send application logs to S3 and Redshift with minimal operational overhead. No custom real-time processing is required.
 
-Answer: **Kinesis Data Firehose**.
+Answer: **Amazon Data Firehose**.
 
 ### Scenario 3
 

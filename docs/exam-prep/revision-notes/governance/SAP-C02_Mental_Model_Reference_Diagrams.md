@@ -1,6 +1,6 @@
 # SAP-C02 Mental Model: The Four Reference Diagrams
 
-**Last revised:** 2026-08-07
+**Last revised:** 2026-08-08
 
 *A single-page reference. Every SAP-C02 scenario question lives somewhere inside one of these four diagrams. The point of this document is not to teach the services — the other study guides do that — but to give you four pictures you can hold simultaneously in your head and ask, when reading any scenario, "which piece of which diagram is this?"*
 
@@ -376,7 +376,7 @@ DR TIER SPECTRUM (choose per workload; cost rises and RTO/RPO improve left → r
 - **Configuration flows outward** from the management account (org trail, delegated admin registrations) and from Security Tooling (Security Hub controls, GuardDuty config, Config rules).
 - **The management account stays a control plane.** It owns Organizations, SCP, IAM Identity Center, and delegated-admin registration decisions; it should not host lakehouse runtime workloads or become the normal security-operations workspace.
 - **Break-glass is emergency control-plane access.** It should be a dedicated Identity Center user and permission set with MFA, short session duration, clear evidence, and post-use review, not a routine administrator shortcut.
-- **Immutability is layered when retention requirements call for it.** Object Lock + customer-managed KMS key + bucket policy + SCP form a strong defence-in-depth target pattern. Object Lock must be enabled when the bucket is created; choose it where governance or compliance retention requires immutable storage.
+- **Immutability is layered when retention requirements call for it.** Object Lock + customer-managed KMS key + bucket policy + SCP form a strong defence-in-depth target pattern. Object Lock can be enabled on a new or existing general-purpose bucket, but the bucket must use Versioning. Enabling Object Lock permanently makes the bucket capable of retaining locked object versions; choose it where governance or compliance retention requires immutable storage.
 - **Delegated administration is the modern AWS pattern.** Management account should not be doing day-to-day security operations; delegate to Security Tooling. Older study material that says "run Security Hub in the management account" is out of date.
 - **Useful newer services:**
   - **CloudTrail Lake** — managed audit data lake with SQL queries and configurable retention. Reduces the need to build Athena-on-S3 yourself.
@@ -408,7 +408,7 @@ DR TIER SPECTRUM (choose per workload; cost rises and RTO/RPO improve left → r
 
 **Build-time traps to avoid as you wire this up:**
 - Storing CloudTrail logs in the same account that generated them — an account compromise can erase its own audit trail. **Fix:** logs go to Log Archive in the Security OU.
-- Treating Object Lock as a universal default — it is a bucket-creation decision best justified by an immutable-retention requirement. **Fix:** where required, enable Object Lock at creation and combine it with bucket policy and an SCP where supported.
+- Treating Object Lock as a universal default — it is a consequential retention control, not a generic encryption or backup setting. **Fix:** where immutable retention is required, enable Object Lock on a versioned new or existing general-purpose bucket, choose governance or compliance mode deliberately, and combine it with tightly controlled access and key management.
 - Enabling CloudTrail data events for every S3 bucket — cost explosion that quickly dwarfs the management-event bill. **Fix:** selectively enable data events for sensitive prefixes only (e.g., the gold/serving layer).
 - Mixing security findings and security responses in the same account — blast radius if that account is compromised. **Fix:** findings live in Security Tooling; responses execute via cross-account roles or EventBridge into workload accounts.
 - Treating Macie as a one-shot scan — it's a continuous capability. **Fix:** schedule recurring jobs on the bronze and silver buckets, and trigger Macie via EventBridge when new prefixes appear.

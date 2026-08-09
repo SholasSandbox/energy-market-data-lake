@@ -1,6 +1,6 @@
 # 07 - Databases, Caching, and Search
 
-**Last revised:** 2026-07-28
+**Last revised:** 2026-08-09
 
 SAP-C02 database questions are usually about access pattern, consistency, scaling model, HA/DR, operational burden, and migration risk.
 
@@ -19,7 +19,6 @@ SAP-C02 database questions are usually about access pattern, consistency, scalin
 | Search/log analytics | OpenSearch Service |
 | Graph relationships | Neptune |
 | Time-series | Timestream |
-| Ledger/immutable history | QLDB |
 
 ## RDS
 
@@ -123,7 +122,39 @@ Traps:
 - Distinguish MREC local strong-read semantics from MRSC cross-Region strong consistency; neither is the same as requesting a strong read from a GSI.
 - DAX caches reads but does not fix poor key design.
 
+### DAX cost pattern
+
+Choose DAX when repeated, eventually consistent reads of a limited key set are
+driving DynamoDB read load. It is DynamoDB-aware and requires less custom cache
+management than putting a general ElastiCache tier in front of the table.
+
+For a known recurring load, provisioned capacity with auto scaling can be less
+expensive than on-demand; DAX can offload the repeated reads. Savings Plans are
+compute discounts and do not discount DynamoDB read/write capacity. Do not use
+DAX when strong reads are required or the workload is primarily writes.
+
 ## ElastiCache
+
+### MemoryDB versus ElastiCache Redis OSS
+
+Both provide Redis-compatible, microsecond-read data access, but their primary
+roles differ:
+
+| Requirement | Prefer |
+|---|---|
+| Durable Redis-compatible primary database | Amazon MemoryDB |
+| Cache in front of another durable database | ElastiCache for Redis OSS |
+| Simple disposable distributed object cache | ElastiCache for Memcached |
+
+MemoryDB uses a durable multi-AZ transactional log and can run with replicas
+and automatic failover. It is the stronger answer when migrated Redis data must
+remain the durable system of record rather than merely accelerate another
+database.
+
+For a compatible migration, export an existing Redis `.rdb` snapshot to S3 and
+restore it when creating the MemoryDB cluster. AWS Transform MGN rehosts the
+application servers; it does not logically migrate a Redis dataset into a
+managed MemoryDB service.
 
 ### Redis
 
@@ -142,12 +173,23 @@ Choose Memcached when:
 - object caching is simple
 - no persistence/advanced Redis structures are needed
 
+Memcached clients must distribute keys across all cache nodes. Adding nodes
+does not make a client that still knows only the old endpoints use the new
+capacity. Configure a compatible client for ElastiCache Auto Discovery through
+the cluster configuration endpoint, or explicitly update its endpoint list and
+hash ring. Replacing Memcached with Redis solely to make newly added nodes busy
+is a larger application change.
+
 Traps:
 
 - Cache invalidation is an application design problem.
 - Caching can reduce read load but can introduce stale data.
 - ElastiCache is not a durable system of record.
 - Redis cluster mode, replication, Multi-AZ, and backups matter for resilience.
+- Memcached has no native cross-node replication or Multi-AZ automatic
+  failover. If the stem explicitly requires a fault-tolerant cache with native
+  automatic failover across AZs, choose a Redis OSS replication group with
+  Multi-AZ rather than Memcached.
 
 ## Redshift
 
@@ -160,6 +202,9 @@ Choose Redshift for:
 - integration with S3 via Spectrum
 
 Trap: Do not choose Redshift for OLTP app transactions. Use RDS/Aurora/DynamoDB.
+
+For current non-relational mechanics and service boundaries, use the
+[targeted non-relational database lesson](../targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md).
 
 ## OpenSearch
 

@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-08-05
+**Last revised:** 2026-08-09
 
 This log is the durable exam-prep companion to the tracker wrong-answer table.
 It is seeded from the Lakehouse repository tracker and is not Lakehouse
@@ -26,10 +26,17 @@ For the active folder sequence and document status, start at the
 [four-question retention test](wrong-answer-review-cycle-2-blind-attempt-20260715.md),
 including its initial drafts, corrected final submission, and assessment. The
 clean 25-question mixed Block 2 remains separate practice evidence. Full mocks
-001-004 and their narrow traps are recorded below. Full Mock 003 produced no
-new miss; Full Mock 004 exposed four themes, including two questions testing
-the same backup-isolation model and a recurrence of ECS blue/green exact-match
-incompleteness.
+001-005 and their narrow traps are recorded below. Full Mock 003 produced no
+new miss; Full Mock 004 exposed four themes, and its 2026-08-07 spaced retest
+scored 7/8. Full Mock 005 then scored 73/75: it closed the remaining
+Lambda@Edge transfer gap, produced a single-response ARC over-selection, and
+exposed one genuine new AS2-versus-Amazon-MQ service-selection gap.
+
+The separate [AWS Skill Builder assessment review](aws-skill-builder-sap-c02-assessment-review-20260809.md)
+records official-practice attempt 2, all 30 keyed misses, eleven confident
+misses, and the two dated-key exceptions. It is linked rather than duplicated
+here because it is broad paused-assessment calibration, not a focused blind
+retest or timed mock.
 
 ## Quick Remediation and Reference Index
 
@@ -39,29 +46,31 @@ scope needs to be rechecked.
 
 | Weak area | Durable entry | Local revision | Official AWS documentation |
 |---|---|---|---|
-| Hybrid private DNS | [Hybrid DNS Private Resolution](#2026-06-19-hybrid-dns-private-resolution) | [Route 53 lesson](route-53-sap-c02-key-lessons-20260715.md) | [Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html) |
-| Urgent data-centre exit | [Urgent Data-Centre Exit](#2026-06-19-urgent-data-centre-exit) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | [Application Migration Service rehost pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-database-rehost-tools/mgn.html) |
-| Private multi-VPC hybrid architecture | [Private Hybrid Network Architecture](#2026-07-01-private-hybrid-network-architecture) | [Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) | [Direct Connect gateways](https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways.html) · [Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html) |
+| Hybrid private DNS | [Hybrid DNS Private Resolution](#2026-06-19-hybrid-dns-private-resolution) | [Route 53 lesson](revision-notes/targeted-lessons/route-53-sap-c02-key-lessons-20260715.md) | [Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html) |
+| Urgent data-centre exit | [Urgent Data-Centre Exit](#2026-06-19-urgent-data-centre-exit) | [Migration lesson](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | [Application Migration Service rehost pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-database-rehost-tools/mgn.html) |
+| Private multi-VPC hybrid architecture | [Private Hybrid Network Architecture](#2026-07-01-private-hybrid-network-architecture) | [Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) | [Direct Connect gateways](https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways.html) · [Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html) |
 | Replayable ordered event ingestion | [Replayable Ordered Event Ingestion](#2026-07-01-replayable-ordered-event-ingestion) | [Review Cycle 2 explanation](wrong-answer-review-cycle-2-blind-attempt-20260715.md#final-assessment) | [Kinesis concepts](https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html) · [Enhanced fan-out consumers](https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html) |
-| ECS blue/green deployment and rollback | [ECS Blue/Green Deployment Versus Patch Manager](#2026-07-21-ecs-bluegreen-deployment-versus-patch-manager) | [Timed diagnostic review](sap-c02-mixed-diagnostic-30q-review-20260721.md) | [ECS blue/green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-bluegreen.html) · [Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html) |
+| ECS blue/green deployment and rollback | [ECS Blue/Green Deployment Versus Patch Manager](#2026-07-21-ecs-bluegreen-deployment-versus-patch-manager) | [Timed diagnostic review](sap-c02-mixed-diagnostic-30q-review-20260721.md) · [Mock 004 retest review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) | [ECS blue/green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-bluegreen.html) · [Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html) |
 | SCP scope versus permissions boundary | [SCP Versus IAM Permissions Boundary](#2026-07-23-scp-versus-iam-permissions-boundary) | [Hidden-gap model](sap-c02-hidden-gap-model-review-20260725.md#model-1---scp-versus-iam-permissions-boundary) · [Retest review](sap-c02-scp-permissions-boundary-closed-book-retest-review-20260724.md) | [Organizations SCPs](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) · [IAM permissions boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html) |
 | DynamoDB write sharding and read fan-out | [DynamoDB Write Sharding and Read Fan-Out](#2026-07-23-dynamodb-write-sharding-and-read-fan-out) | [Hidden-gap model](sap-c02-hidden-gap-model-review-20260725.md#model-2---dynamodb-write-sharding-and-fan-out-reads) | [DynamoDB write sharding](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html) |
-| DynamoDB lifecycle, change processing, and recovery | [DynamoDB Lifecycle and Recovery Feature Mapping](#2026-07-25-dynamodb-lifecycle-and-recovery-feature-mapping) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md) | [TTL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) · [Streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) · [PITR restore](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/pointintimerecovery_restores.html) · [GSIs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html) |
-| Time-series history versus latest state | [Time-Series History Versus Latest-State Lookup](#2026-07-25-time-series-history-versus-latest-state-lookup) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) | [Timestream data modelling](https://docs.aws.amazon.com/timestream/latest/developerguide/data-modeling.html) · [DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) |
-| Physical-server dependency discovery | [Application Discovery Agent Versus Agentless Collection](#2026-07-28-application-discovery-agent-versus-agentless-collection) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | [Discovery Agent](https://docs.aws.amazon.com/application-discovery/latest/userguide/discovery-agent.html) · [Agentless Collector](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector.html) |
+| DynamoDB lifecycle, change processing, and recovery | [DynamoDB Lifecycle and Recovery Feature Mapping](#2026-07-25-dynamodb-lifecycle-and-recovery-feature-mapping) | [Database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md) | [TTL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) · [Streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) · [PITR restore](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/pointintimerecovery_restores.html) · [GSIs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html) |
+| Time-series history versus latest state | [Time-Series History Versus Latest-State Lookup](#2026-07-25-time-series-history-versus-latest-state-lookup) | [Database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) | [Timestream data modelling](https://docs.aws.amazon.com/timestream/latest/developerguide/data-modeling.html) · [DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) |
+| Physical-server dependency discovery | [Application Discovery Agent Versus Agentless Collection](#2026-07-28-application-discovery-agent-versus-agentless-collection) | [Migration lesson](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) | [Discovery Agent](https://docs.aws.amazon.com/application-discovery/latest/userguide/discovery-agent.html) · [Agentless Collector](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector.html) |
 | Workforce AWS-account access | [IAM Identity Center Versus Cognito](#2026-07-29-iam-identity-center-versus-cognito) | [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [Identity Center account assignments](https://docs.aws.amazon.com/singlesignon/latest/userguide/assignusers.html) · [Cognito identity pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html) |
-| Migration Hub home Region | [Migration Hub Home Region Versus Data Transfer](#2026-07-29-migration-hub-home-region-versus-data-transfer) | [Migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) · [What DataSync transfers](https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html) |
-| DAX application integration | [DAX Cluster and Client](#2026-07-29-dax-cluster-and-client) | [Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) · [DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
-| Private on-premises S3 access | [S3 Interface Versus Gateway Endpoint](#2026-07-29-s3-interface-versus-gateway-endpoint) | [Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) |
-| Backup isolation and restore evidence | [Logically Air-Gapped Backup and Restore Evidence](#2026-08-05-logically-air-gapped-backup-and-restore-evidence) | [Resilience/DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md#aws-backup-isolation-and-restore-evidence) · [Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) | [Logically air-gapped vault](https://docs.aws.amazon.com/aws-backup/latest/devguide/logicallyairgappedvault.html) · [Vault Lock](https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html) · [Restore testing](https://docs.aws.amazon.com/aws-backup/latest/devguide/restore-testing.html) |
-| CloudFront origin-failover methods | [CloudFront Origin-Failover Method Boundary](#2026-08-05-cloudfront-origin-failover-method-boundary) | [Resilience/DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md#cloudfront-origin-failover-boundary) · [Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) | [CloudFront origin failover](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html) |
-| DynamoDB MRSC TTL restriction | [DynamoDB MRSC Versus TTL](#2026-08-05-dynamodb-mrsc-versus-ttl) | [Non-relational database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md#global-tables-mrec-versus-mrsc) · [Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) | [DynamoDB global-table security](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-security.html) |
+| Migration Hub home Region | [Migration Hub Home Region Versus Data Transfer](#2026-07-29-migration-hub-home-region-versus-data-transfer) | [Migration lesson](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) · [What DataSync transfers](https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html) |
+| DAX application integration | [DAX Cluster and Client](#2026-07-29-dax-cluster-and-client) | [Database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) · [DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
+| Private on-premises S3 access | [S3 Interface Versus Gateway Endpoint](#2026-07-29-s3-interface-versus-gateway-endpoint) | [Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) · [Full mock 002 review](sap-c02-full-mock-002-review-20260729.md) · [8/8 spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) | [S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) |
+| Backup isolation and restore evidence | [Logically Air-Gapped Backup and Restore Evidence](#2026-08-05-logically-air-gapped-backup-and-restore-evidence) | [Resilience/DR lesson](revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md#aws-backup-isolation-and-restore-evidence) · [Mock 004 retest review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) | [Logically air-gapped vault](https://docs.aws.amazon.com/aws-backup/latest/devguide/logicallyairgappedvault.html) · [Vault Lock](https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html) · [Restore testing](https://docs.aws.amazon.com/aws-backup/latest/devguide/restore-testing.html) |
+| CloudFront origin-failover methods and write continuity | [CloudFront Origin-Failover Method Boundary](#2026-08-05-cloudfront-origin-failover-method-boundary) | [Resilience/DR lesson](revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md#cloudfront-origin-failover-boundary) · [Mock 004 retest review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) | [CloudFront origin failover](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html) · [Lambda@Edge events](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html) |
+| DynamoDB MRSC TTL restriction | [DynamoDB MRSC Versus TTL](#2026-08-05-dynamodb-mrsc-versus-ttl) | [Non-relational database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md#global-tables-mrec-versus-mrsc) · [Mock 004 retest review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) | [DynamoDB global-table security](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-security.html) |
+| ARC routing-control single-response discipline | [ARC Routing-Control Over-Selection](#2026-08-07-arc-routing-control-over-selection) | [Core edge and DNS note](revision-notes/core/03-load-balancing-dns-edge.md#application-recovery-controller-routing-controls) · [Mock 005 review](sap-c02-full-mock-005-review-20260807.md) | [ARC routing control](https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html) |
+| AS2 versus managed message brokers | [Transfer Family AS2 Versus Amazon MQ](#2026-08-07-transfer-family-as2-versus-amazon-mq) | [Core migration note](revision-notes/core/10-migration-modernization.md#transfer-family-and-as2) · [Mock 005 review](sap-c02-full-mock-005-review-20260807.md) | [Transfer Family AS2](https://docs.aws.amazon.com/transfer/latest/userguide/send-as2-messages.html) · [Amazon MQ architecture](https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/amazon-mq-broker-architecture.html) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | Full Mock 004 completed 2026-08-05 at 70/75 in 113 minutes; five misses map to four themes, including an ECS blue/green recurrence; all four Mock 002 gaps remained transferred |
+| Current through practice block | Full Mock 005 completed 2026-08-07 at 73/75 in 108 minutes; 27/27 exact-match multiple-response; the prior Lambda@Edge gap transferred, while ARC single-response over-selection and Transfer Family AS2 service selection require narrow review |
 | Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
 | Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
@@ -88,6 +97,8 @@ scope needs to be rechecked.
 | Full mock 002 spaced retest | 8 / 8 | 100% | Completed 2026-08-01 in 17 minutes; 4/4 single-response and 4/4 exact-match multiple-response; Questions 4 and 7 uncertain and correct; focused remediation complete. |
 | Full mock 003 - 75 questions | 75 / 75 | 100% | Completed 2026-08-03 in 106/180 minutes; 48/48 single-response, 27/27 exact-match multiple-response, and 12/12 uncertain answers correct; no new wrong-answer entry. |
 | Full mock 004 - 75 questions | 70 / 75 | 93.3% | Completed 2026-08-05 in 113/180 minutes; 45/48 single-response, 25/27 exact-match multiple-response, and 13/15 uncertain answers correct; Questions 13, 14, 31, 47, and 75 missed. |
+| Full mock 004 spaced retest | 7 / 8 | 87.5% | Completed 2026-08-07 in 22 minutes; 4/4 single-response, 3/4 exact-match multiple-response, and both uncertain answers correct; Question 4 exposed a genuine Lambda@Edge versus separate write-continuity misconception. |
+| Full mock 005 - 75 questions | 73 / 75 | 97.3% | Completed 2026-08-07 in 108/180 minutes; 46/48 single-response, 27/27 exact-match multiple-response, and 14/16 uncertain answers correct; Questions 47 and 56 missed. |
 
 ## Artifact Evidence
 
@@ -100,6 +111,8 @@ scope needs to be rechecked.
 | `sap-c02-full-mock-002-spaced-retest-8q-20260801.md` and `sap-c02-full-mock-002-spaced-retest-review-20260801.md` | Fresh focused retest and answer-bearing assessment | Frozen submission scored 8/8 in 17 minutes; all four Mock 002 gaps recalled correctly and subsequently transferred in Full Mock 003. |
 | `sap-c02-full-mock-003-75q-20260801.md` and `sap-c02-full-mock-003-review-20260803.md` | Full timed Mock 003 submission and answer-bearing assessment | Frozen submission scored 75/75 in 106 minutes; all four domains, all 27 exact-match multiple-response items, and all 12 uncertain answers were correct; no new miss. |
 | `sap-c02-full-mock-004-75q-20260804.md` and `sap-c02-full-mock-004-review-20260805.md` | Full timed Mock 004 submission and answer-bearing assessment | Frozen submission scored 70/75 in 113 minutes; five misses reduced to four themes, including an ECS blue/green recurrence, with source-note remediation and a later short retest required. |
+| `sap-c02-full-mock-004-spaced-retest-8q-20260807.md` and `sap-c02-full-mock-004-spaced-retest-review-20260807.md` | Fresh focused retest and answer-bearing assessment | Frozen submission scored 7/8 in 22 minutes; three themes passed, while the CloudFront/Lambda@Edge write-continuity distinction remains open for independent-mock transfer. |
+| `sap-c02-full-mock-005-75q-20260807.md` and `sap-c02-full-mock-005-review-20260807.md` | Full timed Mock 005 submission and answer-bearing assessment | Frozen submission scored 73/75 in 108 minutes; all 27 multiple-response questions and both Domains 1 and 2 were correct; two narrow single-response misses were recorded. |
 
 ## Review Cycle 1 Checklist
 
@@ -131,7 +144,7 @@ This completes recall-based Review Cycle 1 only. It is untimed, does not count
 as a practice exam, and did not by itself complete the required second review
 cycle.
 The broader Route 53 consolidation lesson is recorded in
-`docs/exam-prep/route-53-sap-c02-key-lessons-20260715.md`.
+`docs/exam-prep/revision-notes/targeted-lessons/route-53-sap-c02-key-lessons-20260715.md`.
 
 ## Mixed Practice Block 2 Evidence - 2026-07-18
 
@@ -240,7 +253,7 @@ Action: Drill hybrid DNS scenarios until the resolver-endpoint wording is automa
 Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial draft gap preserved.
 ```
 
-References: [local Route 53 lesson](route-53-sap-c02-key-lessons-20260715.md) ·
+References: [local Route 53 lesson](revision-notes/targeted-lessons/route-53-sap-c02-key-lessons-20260715.md) ·
 [AWS Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html)
 
 ### 2026-06-19: Urgent Data-Centre Exit
@@ -285,7 +298,7 @@ Action: For migration questions, identify time pressure, change tolerance, and c
 Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial service-name and sequencing gaps preserved.
 ```
 
-References: [local migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
+References: [local migration lesson](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
 [AWS Application Migration Service rehost pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-database-rehost-tools/mgn.html)
 
 ### 2026-07-01: Private Hybrid Network Architecture
@@ -327,7 +340,7 @@ Action: For multi-select networking questions, require every selected service to
 Review status: Review Cycle 1 correct from memory on 2026-07-15; Review Cycle 2 corrected final answer accepted on 2026-07-18, with the initial PrivateLink transport error preserved.
 ```
 
-References: [local Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) ·
+References: [local Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) ·
 [AWS Direct Connect gateways](https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways.html) ·
 [AWS Resolver hybrid forwarding](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html)
 
@@ -419,11 +432,12 @@ Why my answer was wrong: Patch Manager does not own ECS task-set replacement, AL
 Exam trap: Selecting the deployment controller but omitting a second required architecture component in a multi-response question.
 Service comparison: ECS blue/green deployment / CodeDeploy versus AWS Systems Manager Patch Manager.
 Action: Complete a fresh exact-match retest no earlier than 2026-08-07; state both the deployment controller and the ALB listener/rule configuration.
-Review status: Recurred in Full Mock 004 on 2026-08-05 as exact-match incompleteness; focused spaced recall remains open.
+Review status: Focused spaced retest Questions 5 and 6 were correct on 2026-08-07, including the complete three-part configuration response. Focused remediation passed; continue ordinary independent-mock monitoring.
 ```
 
 References: [local diagnostic review](sap-c02-mixed-diagnostic-30q-review-20260721.md) ·
 [local Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) ·
+[local Mock 004 spaced-retest review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) ·
 [AWS ECS blue/green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-bluegreen.html) ·
 [AWS Systems Manager Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html)
 
@@ -563,7 +577,7 @@ Action: Reproduce the four-part mapping from memory and monitor recurrence in in
 Review status: Focused spaced retest questions 3, 4, and 6 were correct on 2026-07-28. The TTL, Streams, PITR, GSI, and primary-key roles were separated correctly; focused remediation is complete.
 ```
 
-References: [local database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
+References: [local database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
 [local diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md) ·
 [AWS DynamoDB TTL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) ·
 [AWS DynamoDB Streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) ·
@@ -604,7 +618,7 @@ Action: Count required selections and map one selected component to every explic
 Review status: Focused spaced retest questions 5 and 6 were correct on 2026-07-28. The learner mapped both history and latest-state clauses and selected the required number of options; focused remediation is complete.
 ```
 
-References: [local database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
+References: [local database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
 [local diagnostic review](sap-c02-non-relational-databases-diagnostic-review-20260725.md#17---time-series-selection) ·
 [AWS Timestream data modelling](https://docs.aws.amazon.com/timestream/latest/developerguide/data-modeling.html) ·
 [AWS DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
@@ -641,7 +655,7 @@ Action: During the Domain 4 migration matrix, compare physical versus VMware sco
 Review status: New external-assessment miss supplied 2026-07-28. No complete question set, timing, or score was provided; this entry records only the demonstrated decision gap.
 ```
 
-References: [local migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
+References: [local migration lesson](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
 [AWS Discovery Agent](https://docs.aws.amazon.com/application-discovery/latest/userguide/discovery-agent.html) ·
 [AWS Agentless Collector](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector.html) ·
 [AWS Agentless network module](https://docs.aws.amazon.com/application-discovery/latest/userguide/agentless-collector-gs-network-data-collection.html)
@@ -724,7 +738,7 @@ Action: Reproduce home Region, tracking role, and data-movement boundary from me
 Review status: Focused spaced retest Questions 3 and 4 were correct on 2026-08-01. Full Mock 003 Questions 8 and 24 independently separated physical-server agents, VMware agentless inventory, MGN, and Migration Hub; continue ordinary recurrence monitoring.
 ```
 
-References: [local migration lesson](aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
+References: [local migration lesson](revision-notes/targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md) ·
 [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
 [local spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) ·
 [AWS Migration Hub home Region](https://docs.aws.amazon.com/migrationhub/latest/ug/home-region.html) ·
@@ -767,7 +781,7 @@ Action: State both halves—cluster and client—then include the pattern in the
 Review status: Focused spaced retest Questions 5 and 6 were correct on 2026-08-01. Full Mock 003 Question 45 independently retained the DAX-client write-through request path; continue ordinary recurrence monitoring.
 ```
 
-References: [local database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
+References: [local database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md) ·
 [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
 [local spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) ·
 [AWS DAX request path](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) ·
@@ -808,7 +822,7 @@ Action: Reproduce VPC-origin versus on-premises-origin endpoint selection from m
 Review status: Focused spaced retest Questions 7 and 8 were correct on 2026-08-01. Full Mock 003 Question 71 independently separated gateway-endpoint VPC traffic from interface-endpoint on-premises access; continue ordinary recurrence monitoring.
 ```
 
-References: [local Networking lesson](aws-networking-sap-c02-key-lessons-20260717.md) ·
+References: [local Networking lesson](revision-notes/targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md) ·
 [local full mock 002 review](sap-c02-full-mock-002-review-20260729.md) ·
 [local spaced-retest assessment](sap-c02-full-mock-002-spaced-retest-review-20260801.md) ·
 [AWS S3 gateway endpoint limits and hybrid interface path](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)
@@ -856,10 +870,10 @@ Exam trap: Treating every locked vault as equivalent, or treating successful bac
 Service comparison: Standard backup vault with governance lock versus compliance lock versus logically air-gapped vault versus cross-account copy.
 Error category: Backup-isolation and control-mode selection error.
 Action: Reproduce the three-part ransomware model and the vault comparison from memory; validate through a fresh exact-match retest no earlier than 2026-08-07.
-Review status: Open; source-note remediation completed 2026-08-05, spaced recall pending.
+Review status: Focused spaced retest Questions 1 and 2 were correct on 2026-08-07; focused remediation passed and both learner-marked uncertain answers were correct.
 ```
 
-References: [local Resilience/DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md#aws-backup-isolation-and-restore-evidence) ·
+References: [local Resilience/DR lesson](revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md#aws-backup-isolation-and-restore-evidence) ·
 [local Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) ·
 [AWS logically air-gapped vault](https://docs.aws.amazon.com/aws-backup/latest/devguide/logicallyairgappedvault.html) ·
 [AWS Backup Vault Lock](https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html) ·
@@ -885,19 +899,20 @@ SAP-C02 domain: Domain 3 - Continuous Improvement for Existing Solutions
 Question number: Full Mock 004, Question 14
 My answer: A - Lambda@Edge is required for every HTTP method
 Correct answer: B - built-in origin failover is limited to eligible GET, HEAD, and OPTIONS requests
-My answer pattern: Looked for an edge-compute prerequisite rather than checking the HTTP-method constraint.
+My answer pattern: Initially looked for an edge-compute prerequisite rather than checking the HTTP-method constraint. In the spaced retest, correctly recalled the GET/HEAD/eligible OPTIONS boundary but genuinely misunderstood Lambda@Edge as able to expand built-in origin failover to write methods.
 Correct answer pattern: CloudFront origin groups can fail over GET, HEAD, and OPTIONS; write-method failover needs a separate application architecture.
 Why correct: AWS documents that CloudFront sends requests to the secondary origin only for those three methods.
 Why my answer was wrong: Lambda@Edge is not the absent prerequisite and does not change the built-in origin-group method boundary.
 Exam trap: Extending successful read failover into an unsupported multi-Region write-failover assumption.
 Service comparison: CloudFront origin-group read failover versus application-level write routing, idempotency, and data consistency.
 Error category: Service capability-boundary error.
-Action: Reproduce the three eligible methods and explain why POST requires a separate design; validate no earlier than 2026-08-07.
-Review status: Open; the parked detailed-DR reminder was implemented on 2026-08-05, spaced recall pending.
+Action: Retain two separate rules: CloudFront origin-group read-method failover, and an independently designed write-continuity path with routing, idempotency, retries, and data consistency. Use Full Mock 005 or a later independent mock as the transfer check.
+Review status: Independent transfer passed in Full Mock 005 Question 5 on 2026-08-07. The learner correctly rejected Lambda@Edge as a method-expansion mechanism and selected a separately engineered write-continuity path; focused remediation is closed.
 ```
 
-References: [local Resilience/DR lesson](aws-resilience-dr-sap-c02-key-lessons-20260718.md#cloudfront-origin-failover-boundary) ·
+References: [local Resilience/DR lesson](revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md#cloudfront-origin-failover-boundary) ·
 [local Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) ·
+[local Mock 004 spaced-retest review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) ·
 [AWS CloudFront origin failover](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html)
 
 ### 2026-08-05: DynamoDB MRSC Versus TTL
@@ -927,9 +942,74 @@ Exam trap: Assuming that a valid MRSC topology removes unrelated MRSC feature re
 Service comparison: MREC flexibility and asynchronous convergence versus MRSC cross-Region strong consistency, latency, topology, and feature limits.
 Error category: Feature-compatibility retrieval error.
 Action: Reproduce the MREC/MRSC table from memory, including TTL and transaction constraints; validate no earlier than 2026-08-07.
-Review status: Open; the source note already contained the correct rule and was made more prominent on 2026-08-05, spaced recall pending.
+Review status: Focused spaced retest Questions 7 and 8 were correct on 2026-08-07; focused remediation passed.
 ```
 
-References: [local Non-Relational Database lesson](aws-non-relational-databases-sap-c02-key-lessons-20260724.md#global-tables-mrec-versus-mrsc) ·
+References: [local Non-Relational Database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md#global-tables-mrec-versus-mrsc) ·
 [local Full Mock 004 review](sap-c02-full-mock-004-review-20260805.md) ·
 [AWS DynamoDB global-table security](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-security.html)
+
+### 2026-08-07: ARC Routing-Control Over-Selection
+
+#### Original question — Full Mock 005, Question 47
+
+> A global active-passive application uses Route 53 Application Recovery
+> Controller routing controls. Operators need a highly available mechanism for
+> changing whether Route 53 records are considered healthy during a Regional
+> failover.<br><br>
+> How do routing controls provide this capability?<br><br>
+> A. They edit every client's DNS cache directly.<br>
+> B. They use ARC cluster endpoints to change routing-control state, which is
+> represented through Route 53 health checks used by the records.<br>
+> C. They replace the Route 53 data plane with an Application Load Balancer.<br>
+> D. They wait for the primary Region's CloudFormation stack to be deleted.
+
+```text
+Question theme: ARC routing-control mechanism and single-response discipline
+SAP-C02 domain: Domain 3 - Continuous Improvement for Existing Solutions
+Question number: Full Mock 005, Question 47
+My answer: B and C
+Correct answer: B
+Why correct: ARC cluster endpoints provide a highly available data-plane path for changing routing-control state. Routing-control health checks expose that state to Route 53 failover records.
+Why my answer was wrong: B already described the correct mechanism. C added a false architecture: ARC does not replace Route 53 with an Application Load Balancer. The item requested one response.
+Exam trap: Adding a second attractive-sounding component to a single-response item after already selecting the complete answer.
+Error category: Single-response over-selection / reading discipline.
+Action: Enforce one option unless the heading explicitly says Choose TWO or Choose THREE; retain the cluster -> routing control -> health check -> Route 53 record chain.
+Review status: Open for ordinary independent-mock transfer; no broad ARC remediation required.
+```
+
+References: [core edge and DNS note](revision-notes/core/03-load-balancing-dns-edge.md#application-recovery-controller-routing-controls) ·
+[local Mock 005 review](sap-c02-full-mock-005-review-20260807.md) ·
+[AWS ARC routing control](https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html)
+
+### 2026-08-07: Transfer Family AS2 Versus Amazon MQ
+
+#### Original question — Full Mock 005, Question 56
+
+> A company must automate structured business-to-business message exchange with
+> partners using the AS2 protocol, with messages stored in S3.<br><br>
+> Which managed service should it use?<br><br>
+> A. AWS Transfer Family AS2<br>
+> B. AWS DataSync<br>
+> C. AWS Application Migration Service<br>
+> D. Amazon MQ for MQTT
+
+```text
+Question theme: Named partner-transfer protocol versus managed message broker
+SAP-C02 domain: Domain 4 - Accelerate Workload Migration and Modernization
+Question number: Full Mock 005, Question 56
+My answer: D - Amazon MQ for MQTT
+Correct answer: A - AWS Transfer Family AS2
+Why correct: Transfer Family supports AS2 partner profiles, certificates, agreements, connectors, signed/encrypted exchange, MDNs, S3-backed files, and CloudWatch audit records.
+Why my answer was wrong: Amazon MQ provides managed ActiveMQ or RabbitMQ brokers. The word message did not override the explicitly named AS2 partner-file protocol.
+Exam trap: Matching on the generic word message instead of the named transfer protocol.
+Service comparison: Transfer Family AS2 versus Amazon MQ versus DataSync.
+Error category: Genuine service-comparison retrieval gap.
+Action: Recall AS2 -> Transfer Family; ActiveMQ/RabbitMQ broker -> Amazon MQ; online storage copy -> DataSync. Validate through a later independent mock or very small spaced check without replacing Mock 006.
+Review status: Source-note remediation completed 2026-08-07; transfer evidence remains open.
+```
+
+References: [core migration note](revision-notes/core/10-migration-modernization.md#transfer-family-and-as2) ·
+[local Mock 005 review](sap-c02-full-mock-005-review-20260807.md) ·
+[AWS Transfer Family AS2](https://docs.aws.amazon.com/transfer/latest/userguide/send-as2-messages.html) ·
+[Amazon MQ architecture](https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/amazon-mq-broker-architecture.html)

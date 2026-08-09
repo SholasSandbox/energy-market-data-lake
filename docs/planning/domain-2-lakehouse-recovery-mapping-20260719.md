@@ -26,7 +26,7 @@ This document does not:
 Use the companion
 [RTO/RPO decision table](domain-2-rto-rpo-decision-table-20260718.md) to define
 objectives and the
-[Resilience and DR lesson](../exam-prep/aws-resilience-dr-sap-c02-key-lessons-20260718.md)
+[Resilience and DR lesson](../exam-prep/revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md)
 to compare candidate patterns. Every Lakehouse objective remains unset until
 an accountable owner approves it.
 

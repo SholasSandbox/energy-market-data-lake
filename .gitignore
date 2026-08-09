@@ -43,6 +43,9 @@ docs/evidence/raw-private/
 *.private.json
 *.private.md
 
+# Local-only proprietary certification assessment exports.
+docs/exam-prep/aws-skill-builder-sap-c02-assessment-full-answer-set-20260809.xlsx
+
 # IDE files
 .idea/
 .vscode/*

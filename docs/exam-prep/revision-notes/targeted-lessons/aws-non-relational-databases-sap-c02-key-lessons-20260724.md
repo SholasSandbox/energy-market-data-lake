@@ -4,7 +4,7 @@
 
 
 **Date:** 2026-07-24<br>
-**Last revised:** 2026-08-05<br>
+**Last revised:** 2026-08-08<br>
 **Purpose:** Close the identified revision gap without restarting database study from first principles.<br>
 **Evidence boundary:** This is a source-backed lesson, not proof of closed-book recall. Complete the separate diagnostic before recording mastery.
 
@@ -237,7 +237,7 @@ meter#GB
 - A calculated suffix, derived from a known attribute, may let a reader identify one shard when that attribute is known.
 - More shards improve write distribution but increase read fan-out and aggregation complexity.
 
-The full write-sharding, fan-out, and hot-GSI model is already captured in [SAP-C02 Hidden-Gap Model Review](sap-c02-hidden-gap-model-review-20260725.md). Reuse that model; do not create a second competing version.
+The full write-sharding, fan-out, and hot-GSI model is already captured in [SAP-C02 Hidden-Gap Model Review](../../sap-c02-hidden-gap-model-review-20260725.md). Reuse that model; do not create a second competing version.
 
 ### Correctness controls
 

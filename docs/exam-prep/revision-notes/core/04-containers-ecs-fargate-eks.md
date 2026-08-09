@@ -1,5 +1,7 @@
 # 04 - Containers: ECS, Fargate, EKS, ECR, and Batch
 
+**Last revised:** 2026-08-09
+
 SAP-C02 often tests container decisions through operational constraints: Kubernetes requirement, host control, cost, scaling, deployment model, private networking, and security role separation.
 
 ## Core choices
@@ -158,6 +160,20 @@ AWS Batch schedules and runs batch computing jobs on managed compute environment
 | Short event-driven function | Lambda |
 | Long-running web service | ECS Service/EKS Deployment |
 
+### Compute-environment boundary
+
+| Requirement | Better fit |
+|---|---|
+| Custom AMI, EC2-specific capability or host customization | Managed EC2 compute environment |
+| No custom host requirement and lowest infrastructure management | Fargate compute environment |
+| Restartable, fault-tolerant batch work | Spot capacity, with interruption-aware jobs |
+| Non-interruptible deadline-critical work | On-Demand capacity |
+
+AWS Batch can manage the EC2 Auto Scaling, Spot Fleet and ECS resources while
+still using a custom AMI. A custom AMI is therefore a decisive constraint
+against a Fargate answer. For a monthly restartable job, managed EC2 plus Spot
+normally meets both the management and cost requirements.
+
 ## ECR
 
 ### What it is
@@ -171,6 +187,63 @@ Elastic Container Registry stores container images.
 - Use image scanning and lifecycle policies.
 - Use immutable tags or digest pinning for production deployment safety.
 - Separate build role from runtime task role.
+
+## Adjacent application-platform choices
+
+Do not force every packaged web application into ECS or EKS.
+
+| Scenario requirement | First service to evaluate | Boundary |
+|---|---|---|
+| Turn source code or a container image directly into a scalable public web service with minimal infrastructure decisions | App Runner | App Runner builds or pulls the image and manages deployment, scaling and load balancing; it provides less infrastructure control than ECS or Elastic Beanstalk |
+| Deploy a conventional web application on a managed platform while retaining access to the EC2, Auto Scaling, load-balancer and environment configuration | Elastic Beanstalk | Beanstalk orchestrates resources in the customer account; it is not serverless compute |
+| Small, simple website or application with predictable bundled pricing and minimal AWS architecture | Lightsail | Simplicity is the reason to choose it; it is not the default for complex enterprise architectures |
+| AWS-managed container orchestration and fine control of services, tasks, IAM roles, networking and deployment | ECS | More architecture control and more configuration than App Runner |
+| Kubernetes compatibility and ecosystem | EKS | Kubernetes is the deciding requirement, not the word “container” |
+| AWS infrastructure physically on premises for local processing, residency or very low on-prem latency | Outposts | Outposts extends selected AWS infrastructure/services on premises; it is not a generic migration service |
+| Mobile/5G application compute close to a carrier network edge | Wavelength | Select only when the telecom-edge latency requirement is explicit |
+
+Exam shortcut:
+
+```text
+least platform decisions for a web service -> App Runner
+managed application environment with EC2-level choices -> Elastic Beanstalk
+AWS-native container orchestration -> ECS
+Kubernetes contract -> EKS
+```
+
+When a developer already knows a conventional LAMP stack, traffic is steady,
+and predictable bundled pricing matters more than enterprise architecture,
+Lightsail with a preconfigured LAMP image and Lightsail object storage can be
+the lowest-learning-effort answer. Elastic Beanstalk, Fargate, Lambda and
+DynamoDB may be stronger scaling platforms, but each introduces unnecessary
+service or data-model learning when the stem explicitly prioritizes simplicity
+and price predictability.
+
+### Replatform a conventional three-tier web application
+
+Preserve the application runtime shape unless the stem authorizes refactoring:
+
+```text
+server-rendered JavaScript UI container
+  + Python web/API container
+  -> ECS services on Fargate behind an ALB
+
+MySQL database
+  -> RDS for MySQL Multi-AZ
+```
+
+This is a replatform with limited application change and reduced host
+operations. A server-rendered UI is not a static website merely because it uses
+JavaScript. Moving it to S3 would require separating client-side assets from
+server execution. Converting business logic to Lambda is a refactor, and EKS is
+not justified without a Kubernetes requirement. Preserve engine compatibility
+when “least development” dominates; do not introduce a different data model
+such as DynamoDB.
+
+The same rule applies to independent, complex Linux applications backed by
+MySQL: containerize the applications on ECS Fargate and move MySQL to RDS when
+the objectives are to eliminate Linux host administration and minimize code
+redesign. ECS on EC2 retains host patching; Lambda/Step Functions is a refactor.
 
 ## Deployment patterns
 
@@ -218,8 +291,11 @@ Minimum telemetry:
 | “EKS Fargate supports all Kubernetes patterns” | Some node-level patterns need EC2 nodes. |
 | “Private subnet task can always pull ECR image” | It needs NAT or VPC endpoints and permissions. |
 | “Desired count equals available capacity” | On EC2-backed ECS/EKS, node capacity still matters. |
+| “App Runner and Elastic Beanstalk are interchangeable” | App Runner is the narrower source/image-to-web-service abstraction; Beanstalk exposes and manages an EC2-based application environment. |
 
 ## Source references
 
 - ECS/Fargate architecture: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html
 - ECS capacity providers for Fargate: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html
+- App Runner source services: https://docs.aws.amazon.com/apprunner/latest/dg/service-source-code.html
+- Elastic Beanstalk overview: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html

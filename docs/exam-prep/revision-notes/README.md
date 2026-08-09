@@ -2,7 +2,7 @@
 
 # SAP-C02 Revision Notes Library
 
-**Last consolidated:** 2026-08-07
+**Last consolidated:** 2026-08-08
 **Canonical location:** `docs/exam-prep/revision-notes/`
 
 ## Purpose
@@ -25,10 +25,10 @@ It does not absorb artifacts whose location expresses their role:
 
 | Area | Use it for | Contents |
 |---|---|---|
-| [Core revision pack](core/README.md) | Broad service selection, scenario cues, decision matrices, traps, and flashcards | Seventeen numbered chapters plus provenance metadata |
+| [Core revision pack](core/README.md) | Broad service selection, scenario cues, decision matrices, traps, flashcards, and long-tail service recognition | Eighteen numbered chapters plus provenance metadata |
 | [Governance and mental models](governance/) | Organizations, IAM Identity Center, IAM, multi-account networking, cross-account observability, and four reference diagrams | Five consolidated study guides |
 | [Domain deep dives](domain-deep-dives/) | Exam-domain synthesis that cuts across individual services | Domain 3 continuous-improvement guide |
-| Targeted lessons in the parent folder | Newer, assessment-led remediation where the broad pack is not deep enough | Networking, Route 53, resilience/DR, non-relational databases, and migration lessons |
+| [Targeted lessons](targeted-lessons/) | Newer, assessment-led remediation where the broad pack is not deep enough | Networking, Route 53, resilience/DR, non-relational databases, and migration lessons |
 
 ## Recommended Route
 
@@ -39,11 +39,11 @@ It does not absorb artifacts whose location expresses their role:
 4. If the topic has a newer targeted lesson, use that for the final decision
    boundaries:
 
-   - [Networking beyond Route 53](../aws-networking-sap-c02-key-lessons-20260717.md)
-   - [Route 53](../route-53-sap-c02-key-lessons-20260715.md)
-   - [Resilience and disaster recovery](../aws-resilience-dr-sap-c02-key-lessons-20260718.md)
-   - [Non-relational databases](../aws-non-relational-databases-sap-c02-key-lessons-20260724.md)
-   - [Migration, discovery, transfer, tracking, and Transform](../aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md)
+   - [Networking beyond Route 53](targeted-lessons/aws-networking-sap-c02-key-lessons-20260717.md)
+   - [Route 53](targeted-lessons/route-53-sap-c02-key-lessons-20260715.md)
+   - [Resilience and disaster recovery](targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md)
+   - [Non-relational databases](targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md)
+   - [Migration, discovery, transfer, tracking, and Transform](targeted-lessons/aws-migration-discovery-transfer-tracking-sap-c02-key-lessons-20260728.md)
 
 5. Close the notes before attempting a question-only mock or retest.
 

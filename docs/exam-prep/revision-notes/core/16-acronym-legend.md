@@ -1,5 +1,7 @@
 # 16 - Acronym Legend
 
+**Last revised:** 2026-08-08
+
 | Acronym | Meaning |
 |---|---|
 | ACM | AWS Certificate Manager |
@@ -24,7 +26,9 @@
 | EKS | Elastic Kubernetes Service |
 | ENI | Elastic Network Interface |
 | EFO | Enhanced Fan-Out |
+| EFA | Elastic Fabric Adapter |
 | ELB | Elastic Load Balancing |
+| ENA | Elastic Network Adapter |
 | ETL | Extract, Transform, Load |
 | FIFO | First-In, First-Out |
 | FSx | Amazon FSx managed file systems |
@@ -50,10 +54,12 @@
 | NLB | Network Load Balancer |
 | OAC | Origin Access Control |
 | OAI | Origin Access Identity |
+| OIDC | OpenID Connect |
 | OLTP | Online Transaction Processing |
 | OU | Organizational Unit |
 | PITR | Point-in-Time Recovery |
 | POSIX | Portable Operating System Interface |
+| PPS | Packets Per Second |
 | RCU | Read Capacity Unit |
 | RDS | Relational Database Service |
 | RPO | Recovery Point Objective |

@@ -1,5 +1,7 @@
 # SAP-C02 Study Guide: Domain 3 — Continuous Improvement for Existing Solutions
 
+**Last revised:** 2026-08-08
+
 ## Series Context & Domain Coverage
 
 **Domain 3 = 25% of scored content.** This guide covers all five task statements:
@@ -63,6 +65,12 @@ Exam scenarios describe manual toil; the answer assigns the right Systems Manage
 
 **Recognition shape:** "no SSH", "no bastion", "no open inbound ports" → Session Manager. It beats hardened bastions and EC2 Instance Connect whenever auditability (session logging to S3/CloudWatch) is mentioned.
 
+Boundary that must remain explicit: Session Manager can log commands and output
+for normal interactive shell sessions. It also supports port forwarding and SSH
+tunnelling, but it cannot log the command/content stream inside those encrypted
+tunnels. A question requiring command logs plus the ability to forward ports is
+therefore describing two available modes, not a simultaneously logged tunnel.
+
 ## 3.1.4 Deployment and change improvement
 
 Existing workload, risky manual deployments → the improvement is a pipeline plus a safe deployment strategy (canary/linear with alarm-triggered rollback — CodeDeploy for EC2/ECS/Lambda). Covered in depth in Domain 2 study; in Domain 3 form, the qualifier is usually *"reduce deployment risk without changing the platform"* — so the answer adds CodeDeploy to the existing compute, rather than moving to a new compute service.
@@ -117,7 +125,7 @@ An existing relational database is struggling. The exam expects you to identify 
 | Read-heavy, reads can tolerate slight staleness, "offload reporting/read traffic" | **Read replicas** (or Aurora replicas) | ElastiCache requires code changes for cache logic; replicas need only a reader endpoint |
 | Repeated identical reads, sub-millisecond latency demanded, session data, leaderboards | **ElastiCache** (Redis/Valkey) | Replicas still cost a query round-trip; caching is the only path below ~1 ms |
 | DynamoDB + microsecond-to-millisecond reads of hot items, read-intensive | **DAX** | ElastiCache in front of DynamoDB is a code-heavy re-implementation of DAX |
-| Failover time itself is the complaint (Multi-AZ failover too slow) | **Aurora** (failover typically <35s) or **RDS Proxy** (masks failover from clients) | Bigger instances don't change failover mechanics |
+| Failover time itself is the complaint (Multi-AZ failover too slow) | **Aurora** (failover typically completes within 30 seconds when a replica can be promoted) or **RDS Proxy** (preserves and redirects application connections) | Bigger instances don't change failover mechanics; Aurora still needs at least one appropriately placed replica for the fast promotion path |
 | Unpredictable/spiky load, "scale database capacity automatically" | **Aurora Serverless v2** | Manual instance resizing has downtime and lag |
 
 **The banked rule from Q16:** *Lambda + relational database + connection errors → RDS Proxy.* It is a connection-string change (satisfies "minimal code changes"), it pools/multiplexes server-side, and it preserves client connections through failover. Reserved concurrency as a "fix" is the **throttle trap** — the option that stops the errors by capping the workload's ability to do its job. Watch for the same trap shape elsewhere: SQS `maxReceiveCount=1`, ASG max=1, API Gateway account-level throttle set low.
@@ -138,6 +146,13 @@ Performance questions often hide "which layer should cache this?":
 - **EBS**: gp2 → **gp3** is simultaneously a performance *and* cost answer (independent IOPS/throughput provisioning, ~20% cheaper). io2 only when >16K IOPS or durability language appears.
 - **S3 request performance**: prefix-level parallelism scales automatically (3,500 PUT / 5,500 GET per prefix per second) — the "add random prefixes" answer is outdated; **multipart upload + byte-range fetches** for large objects; **Transfer Acceleration** only for long-haul client uploads to a bucket (it does not increase your link bandwidth — Paper 01 Q21).
 - **Lambda performance**: cold starts → **provisioned concurrency** (SnapStart for Java); CPU-bound → raise memory (CPU scales with it). Distractor: "increase timeout" — timeouts change failure behaviour, never speed.
+- **Tightly coupled grid/HPC latency**: launch the instances together in a
+  **cluster placement group**. Adding nodes or using EC2 Fleet does not control
+  physical proximity.
+- **ENA versus EFA**: ENA is enhanced conventional IP networking and is already
+  used by Nitro instances. EFA adds an OS-bypass path for compatible
+  MPI/NCCL/NIXL/Libfabric workloads on supported instances; do not select it as
+  a generic fix for an ordinary TCP timeout.
 
 ---
 

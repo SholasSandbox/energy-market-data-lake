@@ -68,7 +68,7 @@ It does not currently prove:
 
 | Order | Deliverable | Completion rule | Status |
 |---:|---|---|---|
-| 1 | DR pattern matrix and key lesson | Compare backup/restore, pilot light, warm standby, and multi-site active/active; distinguish HA, backup, replication, and DR | Completed in `docs/exam-prep/aws-resilience-dr-sap-c02-key-lessons-20260718.md` |
+| 1 | DR pattern matrix and key lesson | Compare backup/restore, pilot light, warm standby, and multi-site active/active; distinguish HA, backup, replication, and DR | Completed in `docs/exam-prep/revision-notes/targeted-lessons/aws-resilience-dr-sap-c02-key-lessons-20260718.md` |
 | 2 | RTO/RPO decision table | Define business-led selection rules, dependency constraints, and qualitative recovery tiers without inventing Lakehouse targets | Completed in `docs/planning/domain-2-rto-rpo-decision-table-20260718.md` |
 | 3 | Lakehouse recovery mapping | Map S3, Glue, Athena, IAM, infrastructure definitions, and operational dependencies to recovery mechanisms and gaps | Completed in `docs/planning/domain-2-lakehouse-recovery-mapping-20260719.md` |
 | 4 | Source-backed scenarios | Test pattern selection, backup/replication boundaries, Regional failure, cyber recovery, and service-specific cues | Completed in `docs/exam-prep/resilience-dr-scenario-drill-review-20260719.md`; answer-bearing review |
