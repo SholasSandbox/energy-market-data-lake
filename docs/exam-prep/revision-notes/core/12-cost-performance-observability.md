@@ -288,8 +288,8 @@ High-yield controls:
 
 ## Additional references
 
-- EC2 placement groups: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html
-- Enhanced networking with ENA: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html
-- Elastic Fabric Adapter: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html
-- EFA with MPI: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa-start.html
-- EC2 CPU options and SMT: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-optimize-cpu.html
+- EC2 placement groups: <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html>
+- Enhanced networking with ENA: <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html>
+- Elastic Fabric Adapter: <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html>
+- EFA with MPI: <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa-start.html>
+- EC2 CPU options and SMT: <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-optimize-cpu.html>

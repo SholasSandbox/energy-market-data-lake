@@ -98,12 +98,12 @@ These rules have been folded into the canonical revision notes. They should be t
 
 ## Current official references used for reconciliation
 
-- S3 Object Lock on existing buckets: https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-configure.html
-- KMS key protection: https://docs.aws.amazon.com/kms/latest/developerguide/data-protection.html
-- Security Hub with Organizations: https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts-orgs.html
-- Security Hub central configuration: https://docs.aws.amazon.com/securityhub/latest/userguide/central-configuration-intro.html
-- Tag policy enforcement: https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_tag-policies-enforcement.html
-- Network Firewall stateless rules: https://docs.aws.amazon.com/network-firewall/latest/developerguide/stateless-rule-groups-standard.html
-- Secrets Manager rotation strategies: https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotation-strategy.html
-- Db2 as an AWS DMS source: https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.DB2.html
-- DMS Schema Conversion: https://docs.aws.amazon.com/dms/latest/userguide/schema-conversion-convert.html
+- S3 Object Lock on existing buckets: <https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-configure.html>
+- KMS key protection: <https://docs.aws.amazon.com/kms/latest/developerguide/data-protection.html>
+- Security Hub with Organizations: <https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts-orgs.html>
+- Security Hub central configuration: <https://docs.aws.amazon.com/securityhub/latest/userguide/central-configuration-intro.html>
+- Tag policy enforcement: <https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_tag-policies-enforcement.html>
+- Network Firewall stateless rules: <https://docs.aws.amazon.com/network-firewall/latest/developerguide/stateless-rule-groups-standard.html>
+- Secrets Manager rotation strategies: <https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotation-strategy.html>
+- Db2 as an AWS DMS source: <https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.DB2.html>
+- DMS Schema Conversion: <https://docs.aws.amazon.com/dms/latest/userguide/schema-conversion-convert.html>

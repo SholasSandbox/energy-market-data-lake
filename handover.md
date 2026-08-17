@@ -1,17 +1,19 @@
 # Energy Market Data Lakehouse Handover
 
-**Prepared:** 2026-08-09<br>
+**Prepared:** 2026-08-17<br>
 **Controlling plan:** `docs/planning/sap-c02-readiness-tracker.md`<br>
-**Transition:** Cross-domain revision-note calibration complete; Full Mock 006 remains next<br>
+**Transition:** Documentation-only Lakehouse IAM revision checklist complete; Full Mock 007 scored 75/75 and Full Mock 008 is next<br>
 **AWS changes:** None<br>
-**Publication status:** Relevant SAP-C02 documentation committed and published to `origin/main` on 2026-08-09; unrelated Mermaid editor instructions excluded
+**Publication status:** Current SAP-C02 readiness and IAM revision documentation published to `origin/main` in the 2026-08-17 transition
 
 ## Objective
 
-Consolidate the canonical SAP-C02 revision notes under
-`docs/exam-prep/revision-notes/`, calibrate their reusable decision rules to
-the current official SAP-C02 guide and representative AWS Skill Builder
-question depth, and preserve the protected two-full-mock cadence.
+Create a documentation-only Energy Lakehouse IAM implementation checklist for
+SAP-C02 revision, then reconcile the submitted Full Mock 007 result without
+changing Terraform or AWS. Apply the code-first teaching pattern from the
+separate persistence-handler IAM checklist to Lakehouse trust, identity,
+Lambda, EventBridge, Step Functions, Glue, Athena, S3, and optional KMS
+boundaries.
 
 Read `AGENTS.md`, this handover, and the controlling tracker before making
 further changes.
@@ -20,7 +22,8 @@ further changes.
 
 ### SAP-C02 readiness
 
-- Full Mocks 001-005 scored 73/75, 71/75, 75/75, 70/75, and 73/75.
+- Full Mocks 001-007 scored 73/75, 71/75, 75/75, 70/75, 73/75, 71/75,
+  and 75/75.
 - Mock 005 scored 73/75 in 108 minutes: 46/48 single-response, 27/27
   exact-match multiple-response, every domain above 93%, and 72 minutes
   remaining.
@@ -32,11 +35,17 @@ further changes.
   timed booking-gate evidence; the export did not contain the four domain-score
   values.
 - The quantitative gate is strongly exceeded, but the learner's evidence gate
-  now prohibits a booking decision before Full Mock 008. The one-mock extension
-  provides a third independent transfer opportunity for the Skill Builder
-  remediation without changing the September exam window.
-- Full Mock 006 is the next independent broad check. The two-mock cadence stays
-  protected; revision-note maintenance must not displace it.
+  now prohibits a booking decision before Full Mock 009. This preserves the
+  learner-selected validation horizon without changing the September exam
+  window.
+- Full Mock 006 scored 71/75 with 47/48 single-response, 24/27 exact-match
+  multiple-response, and 11/11 uncertain answers correct. Its 190-minute wall
+  clock includes approximately 10 minutes of learner-reported interruptions,
+  so pacing evidence is qualified.
+- Full Mock 007 scored 75/75 in 142 minutes: 48/48 single-response, 27/27
+  exact-match multiple-response, 7/7 uncertain answers, and every domain at
+  100%. All four Mock 006 remediation targets transferred, so no immediate
+  retest is required.
 
 ### Revision-note library
 
@@ -54,7 +63,54 @@ Trackers, mock examinations, frozen submissions, reviews, and wrong-answer
 evidence remain in their role-specific locations. No byte-for-byte duplicate
 Markdown file exists inside the revision-note library.
 
+### Markdown lint state
+
+- `markdownlint-cli2` 0.23.2 using `markdownlint` 0.41.1 reports zero issues
+  across all 322 repository Markdown documents, including the two hidden
+  `.github` documents.
+- `.markdownlint-cli2.jsonc` centralizes the repository's established
+  exceptions for long AWS-oriented lines and compact evidence tables, permits
+  the intentional `br`, `details`, `summary`, and `b` elements, and excludes
+  `.venv` plus dependency content.
+- The automated formatter applied 180 safe fixes across 24 documents. The
+  final three study notes received manual heading-hierarchy, diagram-fence,
+  callout, and semantic-subheading fixes.
+- No Python file, AWS resource, deployment, commit, push, reset, or discard was
+  part of the lint action.
+
+### IAM revision checklist
+
+- `docs/governance/iam-framework.md` is now the Energy Lakehouse IAM
+  implementation checklist and is explicitly labeled illustrative and not
+  approved for implementation.
+- It follows the separate tutorial persistence checklist's code-first teaching
+  method without copying tutorial permissions or treating them as Lakehouse
+  evidence.
+- Thirteen parseable JSON examples cover Lambda, Glue, Step Functions, and
+  EventBridge trusts; tightly scoped Athena trust; ingestion, Glue, Athena,
+  caller-side `AssumeRole`, Step Functions, and EventBridge identity policies;
+  a Lambda resource-based invocation policy; and an optional KMS overlay.
+- The checklist distinguishes EventBridge-to-Lambda,
+  EventBridge-to-Step-Functions, and Step-Functions-to-Lambda authorization
+  paths and maps each to observed Lakehouse behavior.
+- README now indexes the checklist under Active Documentation.
+
 ## Completed Material Changes
+
+The 2026-08-13 IAM revision action expanded the prior three-line IAM framework
+into a Lakehouse-specific checklist with policy comparisons, role inventory,
+observed API-to-action mapping, trust and permissions examples, Lambda
+invocation direction, anti-patterns, evidence boundaries, and future approval
+gates. It made no Terraform, Python, tutorial-workspace, or AWS change.
+
+The 2026-08-12 lint action added the central configuration, normalized bare
+URLs and surrounding whitespace, repaired heading/list structure, labeled
+ASCII diagram fences as `text`, and corrected heading hierarchy in the Domain
+3 deep dive and governance study notes. These are formatting and document-
+structure changes; SAP-C02 scores, answers, evidence claims, and architectural
+decisions were preserved.
+
+Earlier published revision-note changes remain summarized below.
 
 - Moved the five targeted Networking, Route 53, Resilience/DR,
   non-relational-database, and migration lessons from the exam-prep root into
@@ -158,7 +214,46 @@ scenario logic and elimination rules.
 
 ## Validation
 
-The following checks passed on 2026-08-09:
+The following checks passed for the 2026-08-17 publication transition:
+
+- repository-wide `markdownlint-cli2`;
+- `git diff --check` plus explicit checks for the relevant untracked files;
+- all 13 illustrative IAM JSON examples via
+  `python3 scripts/check_lakehouse_iam_policies.py`;
+- `scripts/check_public_evidence_redaction.sh`;
+- the revision-note source manifest via `jq empty`; and
+- an independent Mock 007 submission-to-key comparison: 75 responses, 75
+  keyed answers, and zero mismatches.
+
+The exact staged scope was reviewed before commit. Unrelated Mermaid/editor
+and managed-AI implementation changes were excluded; see the publication
+commit in Git history for the immutable file set.
+
+The following checks passed on 2026-08-15:
+
+- independent submission-to-key comparison found 75 responses, 75 keyed
+  answers, and zero mismatches;
+- `npx --yes markdownlint-cli2` reported zero issues across the Mock 007
+  submission, review, exam-prep index, wrong-answer log, tracker, and handover;
+- `git diff --check` plus explicit untracked-file whitespace checks;
+- `scripts/check_public_evidence_redaction.sh`.
+
+The following checks passed on 2026-08-12:
+
+- `npx --yes markdownlint-cli2 "**/*.md" ".github/**/*.md"`: 321 files,
+  zero issues;
+- `git diff --check`.
+
+The following checks passed on 2026-08-13:
+
+- all 13 illustrative JSON blocks parsed with `jq`;
+- `npx --yes markdownlint-cli2 "**/*.md" ".github/**/*.md"`: 322 files,
+  zero issues;
+- `git diff --check`;
+- `python3 scripts/check_lakehouse_iam_policies.py`;
+- `scripts/check_public_evidence_redaction.sh`.
+
+The earlier 2026-08-09 publication also passed:
 
 - `git diff --check`;
 - `jq empty docs/exam-prep/revision-notes/core/source-manifest.json`;
@@ -171,21 +266,34 @@ No AWS API or deployment command was run.
 
 ## Git State
 
-- Branch: `main`; the relevant SAP-C02 documentation set was committed and
-  pushed to `origin/main` in this state transition.
+- Branch: `main`; the current documentation transition was committed and pushed
+  to `origin/main` on 2026-08-17.
+- The published scope includes the Markdown lint configuration and formatting,
+  IAM checklist and README index, Domain 3 diagnostic and review, Full Mocks
+  006 and 007 with their reviews, tracker, wrong-answer log, revision notes,
+  Skill Builder assessment audit, and exam-prep index.
+- Pre-existing managed-AI Python changes remain in
+  `energy_market/managed_ai.py`, `lambda/news_ai_orchestration.py`, and
+  `scripts/check_phase17a_managed_ai_adapter.py`; the lint action did not edit
+  them.
 - The five targeted-note relocations were committed as moves into
   `docs/exam-prep/revision-notes/targeted-lessons/`; they are not lost files.
 - The pre-existing `.github/copilot-instructions.md` and
-  `.github/instructions/mermaid.instructions.md` Mermaid editor changes were
-  deliberately excluded because they are unrelated to SAP-C02 readiness.
+  `.github/instructions/mermaid.instructions.md` Mermaid editor changes, plus
+  `.vscode/settings.json`, were deliberately excluded because they are
+  unrelated to SAP-C02 readiness.
+- A zero-byte untracked duplicate at
+  `docs/exam-prep/aws-non-relational-databases-sap-c02-key-lessons-20260724.md`
+  remains deliberately excluded; the canonical published lesson is under
+  `docs/exam-prep/revision-notes/targeted-lessons/`.
 - The local full-answer workbook remains present but Git-ignored; only its
   paraphrased review and mismatch audit were published.
 - No discard, reset, AWS API call, or AWS infrastructure mutation occurred.
 
 ## Known Risks and Open Items
 
-- Five strong full mocks are persuasive evidence, but the chosen longitudinal
-  gate now requires Mocks 006, 007, and 008 before a booking decision.
+- Seven strong full mocks are persuasive evidence, but the chosen longitudinal
+  gate still requires Mocks 008 and 009 before a booking decision.
 - The current exam guide is non-exhaustive and contains some legacy-listed
   services. Those receive recognition depth, not automatic endorsement for a
   new live architecture.
@@ -194,8 +302,8 @@ No AWS API or deployment command was run.
   decision boundary.
 - The Skill Builder export exposes broad historical misses, including eleven
   confident misses, but the stronger recent full-mock series remains the
-  controlling readiness evidence. Use Mock 006 to test transfer rather than
-  opening another broad content-expansion cycle.
+  controlling readiness evidence. Mock 007 cleanly transferred the Mock 006
+  gaps, so do not open another broad content-expansion cycle.
 - Migration remains the only explicitly incomplete major revision matrix in
   the booking checklist; address it only in capacity left after the mock
   cadence.
@@ -204,16 +312,17 @@ No AWS API or deployment command was run.
 
 ## Next Tracker-Ordered Priority
 
-Review the two narrow Mock 005 misses if that has not already been completed,
-then complete Full Mock 006. Preserve the two-full-mock weekly cadence and use
-only remaining capacity for the migration matrix. Do not make a booking
-decision before Mock 008.
+Complete Full Mock 008 as the next fresh independent check, then Full Mock 009
+and the evidence-led go/no-go booking review. Preserve the two-full-mock weekly
+cadence, use only remaining capacity for the migration matrix, and do not make
+a booking decision before Mock 009.
 
-State transition status: **documentation milestone and publication occurred**.
-The cross-domain revision-note pass, Skill Builder mismatch audit, and Mock 008
-booking-gate extension are published. The exam-readiness programme remains in
-longitudinal validation, with Full Mock 006 next. No booking or AWS state
-transition occurred.
+State transition status: **the documentation publication occurred, and Mock
+006 focused remediation remains closed by independent Mock 007 transfer
+evidence**. The IAM checklist is published for study but is not an
+implementation proposal or live evidence. No booking or AWS state transition
+occurred. The exam-readiness programme remains in longitudinal validation,
+with Mock 008 next.
 
 ## Suggested New-Session Prompt
 
@@ -223,10 +332,13 @@ Work in /Users/[redacted-user]/Workspace/cloud-projects/energy-market-data-lake.
 Read AGENTS.md, handover.md, and
 docs/planning/sap-c02-readiness-tracker.md before changing anything.
 
-Continue the tracker-ordered SAP-C02 programme. Full Mocks 001-005 scored
-73/75, 71/75, 75/75, 70/75, and 73/75. The cross-domain revision-note
-calibration is published. Full Mock 006 is next; preserve the
-two-mock cadence, review genuine misses, and do not make a booking decision
-before Mock 008. Do not deploy or modify AWS, commit, push, discard, or resume
-parked tutorial/container/AI work without explicit authorization.
+Continue the tracker-ordered SAP-C02 programme. Full Mocks 001-007 scored
+73/75, 71/75, 75/75, 70/75, 73/75, 71/75, and 75/75. Mock 007 completed in 142
+minutes with 48/48 single-response, 27/27 exact-match multiple-response, 7/7
+uncertain answers, and clean transfer of all four Mock 006 gaps. Full Mock 008
+is next, followed by Mock 009 and the go/no-go booking review. Preserve the
+two-mock cadence and do not make a booking decision before Mock 009. Keep the
+existing dirty worktree intact. Do not deploy or modify AWS, commit, push,
+discard, or resume parked tutorial/container/AI work without explicit
+authorization.
 ```

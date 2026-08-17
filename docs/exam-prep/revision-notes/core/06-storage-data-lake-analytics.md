@@ -145,10 +145,10 @@ existing-object distinction.
 
 ## Additional S3 references
 
-- S3 Object Lock: https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html
-- Configure Object Lock on existing buckets: https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-configure.html
-- Intelligent-Tiering access tiers: https://docs.aws.amazon.com/AmazonS3/latest/userguide/intelligent-tiering-overview.html
-- Archive retrieval times: https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html
+- S3 Object Lock: <https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html>
+- Configure Object Lock on existing buckets: <https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-configure.html>
+- Intelligent-Tiering access tiers: <https://docs.aws.amazon.com/AmazonS3/latest/userguide/intelligent-tiering-overview.html>
+- Archive retrieval times: <https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html>
 
 ## Amazon EBS SSD decision boundary
 
@@ -395,7 +395,7 @@ files, database rows, streams, or third-party data entitlements first.
 
 ## Additional references
 
-- AppFlow SaaS-to-S3 flow: https://docs.aws.amazon.com/appflow/latest/userguide/flow-tutorial-salesforce-s3.html
-- AWS Data Exchange overview: https://docs.aws.amazon.com/data-exchange/latest/userguide/what-is.html
-- Macie sensitive-data discovery: https://docs.aws.amazon.com/macie/latest/user/data-classification.html
-- S3 Batch Operations: https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops.html
+- AppFlow SaaS-to-S3 flow: <https://docs.aws.amazon.com/appflow/latest/userguide/flow-tutorial-salesforce-s3.html>
+- AWS Data Exchange overview: <https://docs.aws.amazon.com/data-exchange/latest/userguide/what-is.html>
+- Macie sensitive-data discovery: <https://docs.aws.amazon.com/macie/latest/user/data-classification.html>
+- S3 Batch Operations: <https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops.html>

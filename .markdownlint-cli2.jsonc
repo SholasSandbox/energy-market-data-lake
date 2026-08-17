@@ -1,0 +1,21 @@
+{
+  "config": {
+    "MD013": false,
+    "MD024": {
+      "siblings_only": true
+    },
+    "MD033": {
+      "allowed_elements": [
+        "b",
+        "br",
+        "details",
+        "summary"
+      ]
+    },
+    "MD060": false
+  },
+  "ignores": [
+    ".venv/**",
+    "dashboard-ui/node_modules/**"
+  ]
+}

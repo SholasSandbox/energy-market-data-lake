@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-08-09
+**Last revised:** 2026-08-15
 
 This log is the durable exam-prep companion to the tracker wrong-answer table.
 It is seeded from the Lakehouse repository tracker and is not Lakehouse
@@ -26,11 +26,14 @@ For the active folder sequence and document status, start at the
 [four-question retention test](wrong-answer-review-cycle-2-blind-attempt-20260715.md),
 including its initial drafts, corrected final submission, and assessment. The
 clean 25-question mixed Block 2 remains separate practice evidence. Full mocks
-001-005 and their narrow traps are recorded below. Full Mock 003 produced no
+001-007 and their narrow traps are recorded below. Full Mock 003 produced no
 new miss; Full Mock 004 exposed four themes, and its 2026-08-07 spaced retest
 scored 7/8. Full Mock 005 then scored 73/75: it closed the remaining
 Lambda@Edge transfer gap, produced a single-response ARC over-selection, and
-exposed one genuine new AS2-versus-Amazon-MQ service-selection gap.
+exposed one genuine new AS2-versus-Amazon-MQ service-selection gap. Full Mock
+006 scored 71/75 on the complexity-calibrated paper and passed ARC and AS2
+transfer, but exposed four confident solution-composition misses. Full Mock
+007 then scored 75/75 and transferred all four Mock 006 remediation targets.
 
 The separate [AWS Skill Builder assessment review](aws-skill-builder-sap-c02-assessment-review-20260809.md)
 records official-practice attempt 2, all 30 keyed misses, eleven confident
@@ -65,12 +68,16 @@ scope needs to be rechecked.
 | DynamoDB MRSC TTL restriction | [DynamoDB MRSC Versus TTL](#2026-08-05-dynamodb-mrsc-versus-ttl) | [Non-relational database lesson](revision-notes/targeted-lessons/aws-non-relational-databases-sap-c02-key-lessons-20260724.md#global-tables-mrec-versus-mrsc) · [Mock 004 retest review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) | [DynamoDB global-table security](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-security.html) |
 | ARC routing-control single-response discipline | [ARC Routing-Control Over-Selection](#2026-08-07-arc-routing-control-over-selection) | [Core edge and DNS note](revision-notes/core/03-load-balancing-dns-edge.md#application-recovery-controller-routing-controls) · [Mock 005 review](sap-c02-full-mock-005-review-20260807.md) | [ARC routing control](https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html) |
 | AS2 versus managed message brokers | [Transfer Family AS2 Versus Amazon MQ](#2026-08-07-transfer-family-as2-versus-amazon-mq) | [Core migration note](revision-notes/core/10-migration-modernization.md#transfer-family-and-as2) · [Mock 005 review](sap-c02-full-mock-005-review-20260807.md) | [Transfer Family AS2](https://docs.aws.amazon.com/transfer/latest/userguide/send-as2-messages.html) · [Amazon MQ architecture](https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/amazon-mq-broker-architecture.html) |
+| Private CloudFront origin plus dynamic origin selection | [OAC Plus Dynamic Origin Selection](#2026-08-12-oac-plus-dynamic-origin-selection) | [Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-1---question-9-private-origin-plus-dynamic-origin-selection) | [CloudFront OAC](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) · [Lambda@Edge request events](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-edge-event-request-response.html) |
+| Multi-AZ shared NFS semantics | [Regional EFS Versus Periodic EBS Copies](#2026-08-12-regional-efs-versus-periodic-ebs-copies) | [Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-2---question-17-shared-filesystem-versus-periodic-copies) | [EFS features](https://docs.aws.amazon.com/efs/latest/ug/features.html) · [EFS mount targets](https://docs.aws.amazon.com/efs/latest/ug/accessing-fs.html) |
+| Batch custom AMI and Spot composition | [Batch EC2 Custom AMI Plus Spot](#2026-08-12-batch-ec2-custom-ami-plus-spot) | [Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-3---question-29-batch-custom-ami-plus-spot-capacity) | [Batch managed EC2 compute environments](https://docs.aws.amazon.com/batch/latest/userguide/create-compute-environment-managed-ec2.html) · [Batch custom AMIs](https://docs.aws.amazon.com/batch/latest/userguide/create-batch-ami.html) |
+| Regional failover orchestration completeness | [Warm-Standby Routing Completeness](#2026-08-12-warm-standby-routing-completeness) | [Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-4---question-45-warm-standby-failover-completeness) | [Cross-Region failover guidance](https://docs.aws.amazon.com/solutions/cross-region-failover-and-graceful-failback-on-aws/) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | Full Mock 005 completed 2026-08-07 at 73/75 in 108 minutes; 27/27 exact-match multiple-response; the prior Lambda@Edge gap transferred, while ARC single-response over-selection and Transfer Family AS2 service selection require narrow review |
+| Current through practice block | Full Mock 007 completed 2026-08-15 at 75/75 in 142 minutes; 48/48 single-response, 27/27 exact-match multiple-response, and 7/7 uncertain. All four Mock 006 remediation targets transferred; no new wrong-answer entry or focused retest is required. Full Mock 008 is next |
 | Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
 | Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
@@ -99,6 +106,8 @@ scope needs to be rechecked.
 | Full mock 004 - 75 questions | 70 / 75 | 93.3% | Completed 2026-08-05 in 113/180 minutes; 45/48 single-response, 25/27 exact-match multiple-response, and 13/15 uncertain answers correct; Questions 13, 14, 31, 47, and 75 missed. |
 | Full mock 004 spaced retest | 7 / 8 | 87.5% | Completed 2026-08-07 in 22 minutes; 4/4 single-response, 3/4 exact-match multiple-response, and both uncertain answers correct; Question 4 exposed a genuine Lambda@Edge versus separate write-continuity misconception. |
 | Full mock 005 - 75 questions | 73 / 75 | 97.3% | Completed 2026-08-07 in 108/180 minutes; 46/48 single-response, 27/27 exact-match multiple-response, and 14/16 uncertain answers correct; Questions 47 and 56 missed. |
+| Full mock 006 - 75 questions | 71 / 75 | 94.7% | Completed 2026-08-12 in 190 wall-clock minutes with approximately 10 learner-reported interruption minutes near the end; 47/48 single-response, 24/27 exact-match multiple-response, 11/11 uncertain, and every domain above 80%; Questions 9, 17, 29, and 45 missed. |
+| Full mock 007 - 75 questions | 75 / 75 | 100% | Completed 2026-08-15 in 142/180 minutes; 48/48 single-response, 27/27 exact-match multiple-response, 7/7 uncertain, and every domain at 100%; all four Mock 006 remediation targets transferred. |
 
 ## Artifact Evidence
 
@@ -113,6 +122,8 @@ scope needs to be rechecked.
 | `sap-c02-full-mock-004-75q-20260804.md` and `sap-c02-full-mock-004-review-20260805.md` | Full timed Mock 004 submission and answer-bearing assessment | Frozen submission scored 70/75 in 113 minutes; five misses reduced to four themes, including an ECS blue/green recurrence, with source-note remediation and a later short retest required. |
 | `sap-c02-full-mock-004-spaced-retest-8q-20260807.md` and `sap-c02-full-mock-004-spaced-retest-review-20260807.md` | Fresh focused retest and answer-bearing assessment | Frozen submission scored 7/8 in 22 minutes; three themes passed, while the CloudFront/Lambda@Edge write-continuity distinction remains open for independent-mock transfer. |
 | `sap-c02-full-mock-005-75q-20260807.md` and `sap-c02-full-mock-005-review-20260807.md` | Full timed Mock 005 submission and answer-bearing assessment | Frozen submission scored 73/75 in 108 minutes; all 27 multiple-response questions and both Domains 1 and 2 were correct; two narrow single-response misses were recorded. |
+| `sap-c02-full-mock-006-75q-20260812.md` and `sap-c02-full-mock-006-review-20260812.md` | Complexity-calibrated full Mock 006 submission and answer-bearing assessment | Frozen submission scored 71/75; 190 wall-clock minutes included approximately 10 learner-reported interruption minutes, so pacing is qualified; all four misses were confident Domain 2 solution-composition errors. |
+| `sap-c02-full-mock-007-75q-20260815.md` and `sap-c02-full-mock-007-review-20260815.md` | Complexity-calibrated full Mock 007 submission and answer-bearing assessment | Submitted response set scored 75/75 in 142 minutes; all single-response, exact-match multiple-response, uncertain, domain, and Mock 006 transfer checks passed. |
 
 ## Review Cycle 1 Checklist
 
@@ -975,7 +986,7 @@ Why my answer was wrong: B already described the correct mechanism. C added a fa
 Exam trap: Adding a second attractive-sounding component to a single-response item after already selecting the complete answer.
 Error category: Single-response over-selection / reading discipline.
 Action: Enforce one option unless the heading explicitly says Choose TWO or Choose THREE; retain the cluster -> routing control -> health check -> Route 53 record chain.
-Review status: Open for ordinary independent-mock transfer; no broad ARC remediation required.
+Review status: Independent transfer passed in Full Mock 006 Question 32 on 2026-08-12; the learner marked the question uncertain and correctly selected the ARC cluster data-plane endpoint rather than the ordinary Route 53 control-plane API.
 ```
 
 References: [core edge and DNS note](revision-notes/core/03-load-balancing-dns-edge.md#application-recovery-controller-routing-controls) ·
@@ -1006,10 +1017,89 @@ Exam trap: Matching on the generic word message instead of the named transfer pr
 Service comparison: Transfer Family AS2 versus Amazon MQ versus DataSync.
 Error category: Genuine service-comparison retrieval gap.
 Action: Recall AS2 -> Transfer Family; ActiveMQ/RabbitMQ broker -> Amazon MQ; online storage copy -> DataSync. Validate through a later independent mock or very small spaced check without replacing Mock 006.
-Review status: Source-note remediation completed 2026-08-07; transfer evidence remains open.
+Review status: Independent transfer passed twice in Full Mock 006 Questions 11 and 51 on 2026-08-12; both service selection and AS2 profile/agreement composition were correct.
 ```
 
 References: [core migration note](revision-notes/core/10-migration-modernization.md#transfer-family-and-as2) ·
 [local Mock 005 review](sap-c02-full-mock-005-review-20260807.md) ·
 [AWS Transfer Family AS2](https://docs.aws.amazon.com/transfer/latest/userguide/send-as2-messages.html) ·
 [Amazon MQ architecture](https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/amazon-mq-broker-architecture.html)
+
+### 2026-08-12: OAC Plus Dynamic Origin Selection
+
+```text
+Question theme: Private S3 origin and request-dependent CloudFront origin selection
+SAP-C02 domain: Domain 2 - Design for New Solutions
+Question number: Full Mock 006, Question 9
+My answer: C,D - path-only cache behaviors plus Lambda@Edge origin selection
+Correct answer: B,D - Origin Access Control plus Lambda@Edge origin selection
+Why correct: OAC and the bucket policy satisfy the private-origin requirement; origin-request logic handles the country, device, and cookie combination.
+Why my answer was wrong: Path behavior did not satisfy the direct-origin security requirement and could not express the stated combined request attributes.
+Error category: Rushed exact-match requirement-completeness error; not a learner-reported knowledge gap.
+Confidence: Confident miss.
+Action: Map each response to a distinct requirement before final submission; transfer check in Full Mock 007 on 2026-08-15.
+Review status: Independent transfer passed in Full Mock 007 Question 12 on 2026-08-15; both the private-origin and dynamic-selection requirements were selected.
+```
+
+References: [local Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-1---question-9-private-origin-plus-dynamic-origin-selection) ·
+[CloudFront OAC](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) ·
+[Lambda@Edge request events](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-edge-event-request-response.html)
+
+### 2026-08-12: Regional EFS Versus Periodic EBS Copies
+
+```text
+Question theme: Concurrent multi-AZ NFS access to one coherent namespace
+SAP-C02 domain: Domain 2 - Design for New Solutions
+Question number: Full Mock 006, Question 17
+My answer: A - independent EBS volumes synchronized by DataSync
+Correct answer: D - Regional EFS with mount targets in the required zones
+Why correct: Regional EFS supplies shared NFS semantics and stores data redundantly across Availability Zones.
+Why my answer was wrong: Periodic copies do not create a single concurrently writable filesystem or shared locking semantics.
+Error category: Requirement-parsing error around the controlling coherent-POSIX-namespace constraint.
+Confidence: Confident miss.
+Action: Identify the positive access-semantic requirement before using the exclusion constraint; transfer check in Full Mock 007 on 2026-08-15.
+Review status: Independent transfer passed in Full Mock 007 Question 18 on 2026-08-15; the coherent POSIX namespace correctly selected Regional EFS.
+```
+
+References: [local Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-2---question-17-shared-filesystem-versus-periodic-copies) ·
+[EFS features](https://docs.aws.amazon.com/efs/latest/ug/features.html) ·
+[EFS mount targets](https://docs.aws.amazon.com/efs/latest/ug/accessing-fs.html)
+
+### 2026-08-12: Batch EC2 Custom AMI Plus Spot
+
+```text
+Question theme: Managed batch scheduling with a custom host AMI and interruption-tolerant jobs
+SAP-C02 domain: Domain 2 - Design for New Solutions
+Question number: Full Mock 006, Question 29
+My answer: A,B - Batch Fargate plus Batch managed EC2
+Correct answer: B,E - Batch managed EC2 plus diversified Spot capacity
+Why correct: The custom compute-resource AMI requires the EC2 environment, while checkpointed restartable work fits Spot.
+Why my answer was wrong: Fargate does not use the required custom EC2 host AMI, and the answer omitted the stated cost mechanism.
+Error category: Genuine compute-environment service-boundary knowledge gap and exact-match composition error.
+Confidence: Confident miss.
+Action: Recall custom host AMI -> Batch EC2; restartable queue -> Spot; transfer check in Full Mock 007 on 2026-08-15.
+Review status: Independent transfer passed twice in Full Mock 007 Questions 20 and 33 on 2026-08-15; both selected Batch managed EC2 with the custom AMI and diversified Spot.
+```
+
+References: [local Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-3---question-29-batch-custom-ami-plus-spot-capacity) ·
+[Batch managed EC2 compute environments](https://docs.aws.amazon.com/batch/latest/userguide/create-compute-environment-managed-ec2.html) ·
+[Batch custom AMIs](https://docs.aws.amazon.com/batch/latest/userguide/create-batch-ami.html)
+
+### 2026-08-12: Warm-Standby Routing Completeness
+
+```text
+Question theme: End-to-end regional failover orchestration
+SAP-C02 domain: Domain 2 - Design for New Solutions
+Question number: Full Mock 006, Question 45
+My answer: E - automate and test data, application, and capacity recovery
+Correct answer: C,E - add health-based routing or routing controls to the tested recovery automation
+Why correct: A recovery stack is not serving failed-over users until the traffic-movement layer is also configured and exercised.
+Why my answer was wrong: The selected automation omitted the failover-routing component required by the scenario.
+Error category: Rushed exact-match recovery-chain completeness error; not a learner-reported knowledge gap.
+Confidence: Confident miss.
+Action: Check decision -> data -> application/capacity -> traffic -> validate before final submission; transfer check in Full Mock 007 on 2026-08-15.
+Review status: Independent transfer passed in Full Mock 007 Question 24 on 2026-08-15; both traffic movement and dependency-aware recovery orchestration were selected.
+```
+
+References: [local Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-4---question-45-warm-standby-failover-completeness) ·
+[Cross-Region failover guidance](https://docs.aws.amazon.com/solutions/cross-region-failover-and-graceful-failback-on-aws/)

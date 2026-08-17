@@ -48,7 +48,7 @@ managed-service requirement.
   relaunch path.
 - **Takeaway:** distinguish a **capacity problem** from a **node-to-node latency
   problem**. Fleet size solves the former; cluster placement solves the latter.
-- **AWS reference:** https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html
+- **AWS reference:** <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html>
 
 ### Q7 — Five-year S3 write-once retention
 
@@ -65,7 +65,7 @@ managed-service requirement.
 - **Takeaway:** memorize the durable rule—**compliance mode for absolute WORM**—
   but use current AWS behaviour: Object Lock can be enabled on an existing
   bucket.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-configure.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-configure.html>
 
 ### Q8 — Mixed and unknown S3 access patterns
 
@@ -81,7 +81,7 @@ managed-service requirement.
 - **Takeaway:** **unknown or object-specific access pattern** is the strongest
   Intelligent-Tiering cue; verify that the selected archive tier meets the
   restore-time ceiling.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonS3/latest/userguide/intelligent-tiering-overview.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonS3/latest/userguide/intelligent-tiering-overview.html>
 
 ### Q10 — Scheduled availability of Level 3-protected keys
 
@@ -99,7 +99,7 @@ managed-service requirement.
 - **Takeaway:** separate **who may call KMS** from **whether the KMS key is
   enabled**. Use policy for authorization; use key state for scheduled
   cryptographic unavailability.
-- **AWS reference:** https://docs.aws.amazon.com/kms/latest/developerguide/data-protection.html
+- **AWS reference:** <https://docs.aws.amazon.com/kms/latest/developerguide/data-protection.html>
 
 ### Q11 — Tightly coupled HPC networking
 
@@ -116,7 +116,7 @@ managed-service requirement.
 - **Takeaway:** for tightly coupled HPC, think **single AZ + placement-aware
   compute + EFA**, then consider disabling simultaneous multithreading when the
   application benefits.
-- **AWS reference:** https://docs.aws.amazon.com/wellarchitected/latest/high-performance-computing-lens/compute.html
+- **AWS reference:** <https://docs.aws.amazon.com/wellarchitected/latest/high-performance-computing-lens/compute.html>
 
 ### Q12 — Cross-AZ shared files for two application copies
 
@@ -130,7 +130,7 @@ managed-service requirement.
   shared-filesystem solution.
 - **Takeaway:** **multiple hosts concurrently update the same files** points to
   EFS or FSx, not replication between block volumes.
-- **AWS reference:** https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html
+- **AWS reference:** <https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html>
 
 ### Q13 — Cost model for a website and restartable video analysis
 
@@ -146,7 +146,7 @@ managed-service requirement.
 - **Takeaway:** buy commitment for the **steady baseline**, keep unpredictable
   frontend bursts **On-Demand**, and use **Spot for interruptible queued work**;
   choose instance family from the workload bottleneck.
-- **AWS reference:** https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html
+- **AWS reference:** <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html>
 
 ### Q19 — Reusing common SCP restrictions
 
@@ -161,7 +161,7 @@ managed-service requirement.
   governance and re-invitation risk.
 - **Takeaway:** encode **common controls on the parent OU** and **additional
   restrictions on the child OU**; move accounts within the organization.
-- **AWS reference:** https://docs.aws.amazon.com/organizations/latest/userguide/move_account_to_ou.html
+- **AWS reference:** <https://docs.aws.amazon.com/organizations/latest/userguide/move_account_to_ou.html>
 
 ### Q20 — AWS Batch with a required custom AMI
 
@@ -175,7 +175,7 @@ managed-service requirement.
   responsibility, but Batch still manages fleet scaling and scheduling.
 - **Takeaway:** **custom AMI is an EC2 boundary**. “No server management” cannot
   override a technical requirement that Fargate cannot satisfy.
-- **AWS reference:** https://docs.aws.amazon.com/batch/latest/userguide/managed_compute_environments.html
+- **AWS reference:** <https://docs.aws.amazon.com/batch/latest/userguide/managed_compute_environments.html>
 
 ### Q21 — Managed intelligent contact centre
 
@@ -188,7 +188,7 @@ managed-service requirement.
   layer for the call-centre workflow.
 - **Takeaway:** map requirements component by component: **Connect = contact
   centre, Lex = conversational intent, Lambda = backend integration**.
-- **AWS reference:** https://docs.aws.amazon.com/connect/latest/userguide/contactflow.html
+- **AWS reference:** <https://docs.aws.amazon.com/connect/latest/userguide/contactflow.html>
 
 ### Q23 — DynamoDB cost reduction with repeated hot-key reads
 
@@ -203,7 +203,7 @@ managed-service requirement.
 - **Takeaway:** DAX solves **DynamoDB read latency/hot-read load**; capacity mode
   solves **table pricing and throughput**. Do not apply EC2 Savings Plans to
   DynamoDB.
-- **AWS reference:** https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html
+- **AWS reference:** <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html>
 
 ### Q25 — Rotating a shared RDS credential
 
@@ -218,7 +218,7 @@ managed-service requirement.
 - **Takeaway:** default to **single-user rotation for least effort**; choose
   alternating users only when the stem explicitly values rotation availability
   over simplicity.
-- **AWS reference:** https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotation-strategy.html
+- **AWS reference:** <https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotation-strategy.html>
 
 ### Q26 — Auto Scaling when CPU does not track demand
 
@@ -231,7 +231,7 @@ managed-service requirement.
   recurring, forecastable demand, which the stem explicitly denies.
 - **Takeaway:** select a scaling metric that tracks the **actual bottleneck**;
   do not default to CPU or schedules when the evidence contradicts them.
-- **AWS reference:** https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html
+- **AWS reference:** <https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html>
 
 ### Q41 — WorkSpaces with on-premises AD credentials
 
@@ -245,7 +245,7 @@ managed-service requirement.
   subnets, not in the data centre.
 - **Takeaway:** **AD Connector lives in AWS but identity truth remains on
   premises**; ensure resilient DX/VPN reachability and required AD ports.
-- **AWS reference:** https://docs.aws.amazon.com/workspaces/latest/adminguide/manage-workspaces-directory.html
+- **AWS reference:** <https://docs.aws.amazon.com/workspaces/latest/adminguide/manage-workspaces-directory.html>
 
 ### Q43 — Durable Redis-compatible database migration
 
@@ -260,7 +260,7 @@ managed-service requirement.
   single-database restriction during implementation.
 - **Takeaway:** separate **server migration** from **data-engine migration**;
   use MGN for hosts and the target database's native import path for data.
-- **AWS reference:** https://docs.aws.amazon.com/memorydb/latest/devguide/snapshots-restoring.html
+- **AWS reference:** <https://docs.aws.amazon.com/memorydb/latest/devguide/snapshots-restoring.html>
 
 ### Q45 — Standardizing and enforcing organization tags
 
@@ -277,7 +277,7 @@ managed-service requirement.
 - **Takeaway:** **tag policy = vocabulary/compliance; SCP = preventive
   guardrail; Config = detective/remediation**. Check per-service tag-on-create
   support.
-- **AWS reference:** https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_tag-policies-best-practices.html
+- **AWS reference:** <https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_tag-policies-best-practices.html>
 
 ### Q46 — Consolidating security findings
 
@@ -293,7 +293,7 @@ managed-service requirement.
   aggregation.
 - **Takeaway:** **Security Hub = consolidated findings and posture; Audit
   Manager = audit evidence and assessment reports**.
-- **AWS reference:** https://docs.aws.amazon.com/securityhub/latest/userguide/start-central-configuration.html
+- **AWS reference:** <https://docs.aws.amazon.com/securityhub/latest/userguide/start-central-configuration.html>
 
 ### Q47 — Fault-tolerant compute and cache
 
@@ -307,7 +307,7 @@ managed-service requirement.
   explicitly requires fault tolerance and native automated failover.
 - **Takeaway:** when the stem says **automatic cache failover**, choose
   Redis/Valkey replication, not Memcached.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Replication.Redis-RedisCluster.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Replication.Redis-RedisCluster.html>
 
 ### Q48 — Removing a single-AZ egress dependency
 
@@ -321,7 +321,7 @@ managed-service requirement.
   traffic and charges during normal operation.
 - **Takeaway:** **IGW is Regional; NAT gateway is AZ-scoped**. Multi-AZ private
   egress normally uses a NAT gateway in each AZ.
-- **AWS reference:** https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html
+- **AWS reference:** <https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html>
 
 ### Q50 — Low-volume private cross-Region S3 access
 
@@ -336,7 +336,7 @@ managed-service requirement.
 - **Takeaway:** gateway endpoints are VPC/Region-local; **S3 interface endpoints
   extend private access across peering, TGW and hybrid links**. Compare their
   usage cost with replication volume.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html>
 
 ### Q51 — PostgreSQL DR with a managed 30-second RPO
 
@@ -350,7 +350,7 @@ managed-service requirement.
   not offer the stated managed-RPO setting.
 - **Takeaway:** **Multi-AZ is Regional HA; global database/read replica is
   cross-Region DR**. Match the mechanism to the stated RPO control.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-disaster-recovery.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-disaster-recovery.html>
 
 ### Q53 — Automated pilot-light failover
 
@@ -365,7 +365,7 @@ managed-service requirement.
   compute activation and traffic cutover; health detection alone is not enough.
 - **Takeaway:** **pilot light = detect + promote data + scale compute + switch
   routing**. Use failover semantics unless both Regions are already active.
-- **AWS reference:** https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover.html
+- **AWS reference:** <https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover.html>
 
 ### Q54 — Automating a runbook-defined deployment
 
@@ -380,7 +380,7 @@ managed-service requirement.
   exam distinction is automation versus documentation.
 - **Takeaway:** **a runbook is not automation**. Put infrastructure and
   repeatable bootstrap/configuration into executable deployment artifacts.
-- **AWS reference:** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-init.html
+- **AWS reference:** <https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-init.html>
 
 ### Q58 — Aurora Global Database local write forwarding
 
@@ -395,7 +395,7 @@ managed-service requirement.
   consistency mode in a real design; stronger consistency can increase latency.
 - **Takeaway:** **write forwarding simplifies the application path**;
   consistency mode controls how long secondary reads wait for replicated writes.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-write-forwarding-apg.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-write-forwarding-apg.html>
 
 ### Q59 — Organization-wide SSH packet enforcement
 
@@ -412,7 +412,7 @@ managed-service requirement.
   rule with a lower numeric priority is evaluated first.
 - **Takeaway:** distinguish **audit-only policy** from **enforced traffic path**.
   In Network Firewall, lower numeric stateless priority runs first.
-- **AWS reference:** https://docs.aws.amazon.com/network-firewall/latest/developerguide/stateless-rule-groups-standard.html
+- **AWS reference:** <https://docs.aws.amazon.com/network-firewall/latest/developerguide/stateless-rule-groups-standard.html>
 
 ### Q64 — FIFO migration and worker scaling
 
@@ -427,7 +427,7 @@ managed-service requirement.
   for application idempotency in all retry and side-effect scenarios.
 - **Takeaway:** **new FIFO queue + producer/consumer migration**; scale workers
   on **backlog per instance**, not total queue depth alone.
-- **AWS reference:** https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-moving.html
+- **AWS reference:** <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-moving.html>
 
 ### Q67 — Idle nodes after scaling Memcached
 
@@ -442,7 +442,7 @@ managed-service requirement.
   future node changes are learned automatically.
 - **Takeaway:** **Memcached scaling is client-side distribution**. Nodes can be
   healthy and idle when the client still knows only the old endpoint set.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/AutoDiscovery.Benefits.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/AutoDiscovery.Benefits.html>
 
 ### Q72 — Prefix-scoped S3 access at scale
 
@@ -455,7 +455,7 @@ managed-service requirement.
   delegate the intended access-point model.
 - **Takeaway:** **prefixes organize keys; access points organize access**. Use
   access points when many teams need different views of one bucket.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html>
 
 ### Q73 — Fast shutdown and restart with EC2 hibernation
 
@@ -471,7 +471,7 @@ managed-service requirement.
   answer that relaunches correctly with hibernation enabled.
 - **Takeaway:** **hibernation is a launch-time contract**, not a setting that can
   be added to a stopped instance.
-- **AWS reference:** https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html
+- **AWS reference:** <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html>
 
 ### Q75 — Geographic website variants with user exceptions
 
@@ -485,7 +485,7 @@ managed-service requirement.
   arbitrary location-plus-user exception logic.
 - **Takeaway:** use **cache behaviours for static path rules** and
   **Lambda@Edge origin-request logic for dynamic origin selection**.
-- **AWS reference:** https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html
+- **AWS reference:** <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html>
 
 ## What to carry into Mock 006
 

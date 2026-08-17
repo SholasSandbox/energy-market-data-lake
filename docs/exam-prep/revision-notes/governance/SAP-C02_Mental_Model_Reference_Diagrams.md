@@ -2,7 +2,11 @@
 
 **Last revised:** 2026-08-08
 
-*A single-page reference. Every SAP-C02 scenario question lives somewhere inside one of these four diagrams. The point of this document is not to teach the services — the other study guides do that — but to give you four pictures you can hold simultaneously in your head and ask, when reading any scenario, "which piece of which diagram is this?"*
+> A single-page reference. Every SAP-C02 scenario question lives somewhere
+> inside one of these four diagrams. The point of this document is not to teach
+> the services — the other study guides do that — but to give you four pictures
+> you can hold simultaneously in your head and ask, when reading any scenario,
+> "which piece of which diagram is this?"
 
 ---
 
@@ -88,9 +92,10 @@ If you can place every scenario into one of these four frames within five second
 
 ## Diagram 1 — Governance and Identity
 
-*The "who can do what" picture. Reread before any question that mentions accounts, permissions, federation, or compliance boundaries.*
+> The "who can do what" picture. Reread before any question that mentions
+> accounts, permissions, federation, or compliance boundaries.
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    AWS Organization                         │
 │  ┌──────────────────────────────────────────────────────┐   │
@@ -125,6 +130,7 @@ If you can place every scenario into one of these four frames within five second
 ```
 
 ### What to see
+
 - **OUs are the policy attachment surface**, not accounts. If a scenario says "apply to all production accounts, current and future," the answer attaches the policy at the OU.
 - **SCPs cap what principals in target accounts can do; RCPs cap who can access your resources.** Direction matters; RCP coverage is limited to supported services and resource types, so verify that coverage before selecting it.
 - **SCPs do not affect users or roles in the management account.** Tested constantly.
@@ -135,6 +141,7 @@ If you can place every scenario into one of these four frames within five second
 - **Root is last resort, not normal break-glass.** Prefer normal Identity Center access, then a dedicated emergency permission set, then root-user recovery only if the first two paths fail.
 
 ### Recognition shapes
+
 - "Across the org, prevent X" → **SCP** at the OU or root.
 - "Block external principals from accessing our data" → **RCP**.
 - "Federate 25,000 employees from Entra ID across 60 accounts" → **Identity Center + SAML + SCIM**.
@@ -147,9 +154,10 @@ If you can place every scenario into one of these four frames within five second
 
 ## Diagram 2 — Multi-Account Networking
 
-*The "how packets travel" picture. Reread before any question involving VPCs, connectivity, DNS, or hybrid traffic.*
+> The "how packets travel" picture. Reread before any question involving VPCs,
+> connectivity, DNS, or hybrid traffic.
 
-```
+```text
               On-prem DC #1            On-prem DC #2
                   │                         │
               Direct Connect            Direct Connect
@@ -194,6 +202,7 @@ If you can place every scenario into one of these four frames within five second
 ```
 
 ### What to see
+
 - **A centralized Network Services account is a common landing-zone pattern**: shared connectivity is owned centrally and shared *outwards* via AWS RAM. A distributed model can also be valid when isolation, autonomy, or cost requires it.
 - **The TGW is regional**; multi-Region means either TGW peering or Cloud WAN.
 - **DNS, central endpoints, inspection, and egress are separate VPCs** inside the Network Services account, each doing one job. The exam rewards this separation; mixing roles into one VPC is usually a wrong-answer signal.
@@ -201,6 +210,7 @@ If you can place every scenario into one of these four frames within five second
 - **PrivateLink is for service exposure, not network connectivity.** If a scenario says "expose one API to many consumers without joining networks," the answer is PrivateLink endpoint service, not TGW.
 
 ### Recognition shapes
+
 - "12+ VPCs, transitive routing, hybrid" → **TGW** in Network Services account, shared via RAM.
 - "Global, multi-Region, policy-driven WAN" → **Cloud WAN**.
 - "Resolve on-prem names from VPCs and vice versa" → **Resolver outbound + inbound endpoints** in Shared Services VPC, rules shared via RAM.
@@ -212,9 +222,10 @@ If you can place every scenario into one of these four frames within five second
 
 ## Diagram 3 — Multi-Region Resilience and Disaster Recovery
 
-*The "how it survives" picture. Reread before any question that mentions RTO, RPO, Region failure, business continuity, or "the second Region."*
+> The "how it survives" picture. Reread before any question that mentions RTO,
+> RPO, Region failure, business continuity, or "the second Region."
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────────┐
 │                         GLOBAL SERVICES                              │
 │  Route 53 (DNS) ─ IAM ─ Organizations ─ CloudFront ─ Global Accel.   │
@@ -270,6 +281,7 @@ DR TIER SPECTRUM (choose per workload; cost rises and RTO/RPO improve left → r
 ```
 
 ### What to see
+
 - **Global services are not tied to one workload Region.** Route 53, IAM, Organizations, CloudFront, and Global Accelerator can support failover, but their own dependencies, quotas, and recovery procedures still need consideration. Do not make Regional recovery depend on an untested control-plane action.
 - **The DR tier you pick is a cost/recovery trade-off, not a technical decision.** Every scenario tells you the RTO/RPO; that constrains which of the four tiers can possibly be the right answer. Always eliminate tiers that violate the stated RTO/RPO *before* comparing the remaining options.
 - **Data replication has its own latency budget.** Aurora Global Database and DynamoDB Global Tables are asynchronous and typically low-latency, while S3 CRR is asynchronous. Actual RPO depends on observed replication lag and the selected failover path. If RPO is zero, asynchronous replication alone cannot satisfy it.
@@ -278,6 +290,7 @@ DR TIER SPECTRUM (choose per workload; cost rises and RTO/RPO improve left → r
 - **KMS multi-Region keys solve a real problem.** A normal KMS key is regional; data encrypted with it cannot be decrypted in another Region. Related multi-Region keys share key material and key ID, but each key remains regional; replicated ciphertext, grants, and application configuration still need to support the recovery design.
 
 ### Recognition shapes
+
 - "RTO 1 hour, RPO 1 hour, lowest cost" → **Pilot Light**.
 - "RTO 5 minutes, RPO seconds" → **Warm Standby** at minimum, likely **Multi-Site Active/Active**.
 - "RTO 24 hours, RPO 4 hours, minimise spend" → **Backup & Restore**.
@@ -290,9 +303,11 @@ DR TIER SPECTRUM (choose per workload; cost rises and RTO/RPO improve left → r
 
 ## Diagram 4 — Security and Observability
 
-*The "how the system is observed and audited" picture. Reread before any question involving logging, monitoring, threat detection, compliance evidence, incident investigation, or "the security team needs visibility."*
+> The "how the system is observed and audited" picture. Reread before any
+> question involving logging, monitoring, threat detection, compliance
+> evidence, incident investigation, or "the security team needs visibility."
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                          AWS Organization                               │
 │                                                                         │
@@ -371,6 +386,7 @@ DR TIER SPECTRUM (choose per workload; cost rises and RTO/RPO improve left → r
 ```
 
 ### What to see
+
 - **Two security accounts, not one.** Log Archive is *write-mostly* for the org and *read-only* for auditors and forensics. Security Tooling is where humans and automation *work*. Mixing them violates separation of duties and is a frequent exam distractor.
 - **Logs flow inward to Log Archive; findings flow inward to Security Tooling.** Two parallel pipelines with different security postures. Don't confuse the flows.
 - **Configuration flows outward** from the management account (org trail, delegated admin registrations) and from Security Tooling (Security Hub controls, GuardDuty config, Config rules).
@@ -385,6 +401,7 @@ DR TIER SPECTRUM (choose per workload; cost rises and RTO/RPO improve left → r
   - **IAM Access Analyzer Unused Access** — finds unused IAM roles, users, and permissions for least-privilege tightening.
 
 ### Recognition shapes
+
 - "Centralise audit logs across the org with immutable retention" → **CloudTrail org trail → Log Archive S3 with Object Lock**.
 - "Single pane of glass for security findings across many accounts" → **Security Hub with delegated admin in Security Tooling**.
 - "Need to detach or change an SCP during recovery" → **management-account-capable Identity Center or Organizations delegation path**, not a workload-account-only admin.
@@ -407,6 +424,7 @@ DR TIER SPECTRUM (choose per workload; cost rises and RTO/RPO improve left → r
 | **Across all layers** | Security Hub aggregating findings if adopted; optional GuardDuty protection plans based on the threat model and cost; IAM Access Analyzer monitoring for buckets shared outside the org; selected Config rules or conformance packs verifying required encryption controls and exceptions. |
 
 **Build-time traps to avoid as you wire this up:**
+
 - Storing CloudTrail logs in the same account that generated them — an account compromise can erase its own audit trail. **Fix:** logs go to Log Archive in the Security OU.
 - Treating Object Lock as a universal default — it is a consequential retention control, not a generic encryption or backup setting. **Fix:** where immutable retention is required, enable Object Lock on a versioned new or existing general-purpose bucket, choose governance or compliance mode deliberately, and combine it with tightly controlled access and key management.
 - Enabling CloudTrail data events for every S3 bucket — cost explosion that quickly dwarfs the management-event bill. **Fix:** selectively enable data events for sensitive prefixes only (e.g., the gold/serving layer).

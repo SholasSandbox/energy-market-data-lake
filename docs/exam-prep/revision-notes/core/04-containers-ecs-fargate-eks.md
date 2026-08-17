@@ -295,7 +295,7 @@ Minimum telemetry:
 
 ## Source references
 
-- ECS/Fargate architecture: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html
-- ECS capacity providers for Fargate: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html
-- App Runner source services: https://docs.aws.amazon.com/apprunner/latest/dg/service-source-code.html
-- Elastic Beanstalk overview: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html
+- ECS/Fargate architecture: <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html>
+- ECS capacity providers for Fargate: <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html>
+- App Runner source services: <https://docs.aws.amazon.com/apprunner/latest/dg/service-source-code.html>
+- Elastic Beanstalk overview: <https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html>

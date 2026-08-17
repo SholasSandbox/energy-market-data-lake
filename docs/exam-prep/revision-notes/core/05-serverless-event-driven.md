@@ -314,8 +314,8 @@ Producer -> Kinesis Data Streams
 
 ## Source references
 
-- Lambda event source mappings: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
-- SQS queue types: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html
-- SQS dead-letter queues: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
-- Amazon MQ overview: https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/welcome.html
-- AppSync subscriptions: https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html
+- Lambda event source mappings: <https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html>
+- SQS queue types: <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html>
+- SQS dead-letter queues: <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html>
+- Amazon MQ overview: <https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/welcome.html>
+- AppSync subscriptions: <https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html>

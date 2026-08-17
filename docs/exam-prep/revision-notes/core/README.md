@@ -12,7 +12,6 @@ because it duplicated the chapter files and created a second maintenance
 surface. Use the parent [revision-note library](../README.md) to choose between
 the broad core pack and newer targeted lessons.
 
-
 ## What changed from v1
 
 The earlier version was too sparse because it compressed the source notes into the four SAP-C02 domains. That loses the practical exam skill: identifying which AWS service belongs in the scenario.

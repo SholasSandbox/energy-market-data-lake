@@ -516,9 +516,9 @@ explicitly fixes an IAM user as the caller.
 
 ## Additional references
 
-- Firewall Manager overview: https://docs.aws.amazon.com/waf/latest/developerguide/fms-chapter.html
-- Audit Manager and Artifact boundary: https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html
-- Cryptography service decision guide: https://docs.aws.amazon.com/pdfs/decision-guides/latest/cryptography-on-aws-how-to-choose/cryptography-on-aws-how-to-choose.pdf
-- SCP effects and management-account boundary: https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html
-- Enable and disable KMS keys: https://docs.aws.amazon.com/kms/latest/developerguide/enabling-keys.html
-- KMS resilience: https://docs.aws.amazon.com/kms/latest/developerguide/disaster-recovery-resiliency.html
+- Firewall Manager overview: <https://docs.aws.amazon.com/waf/latest/developerguide/fms-chapter.html>
+- Audit Manager and Artifact boundary: <https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html>
+- Cryptography service decision guide: <https://docs.aws.amazon.com/pdfs/decision-guides/latest/cryptography-on-aws-how-to-choose/cryptography-on-aws-how-to-choose.pdf>
+- SCP effects and management-account boundary: <https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html>
+- Enable and disable KMS keys: <https://docs.aws.amazon.com/kms/latest/developerguide/enabling-keys.html>
+- KMS resilience: <https://docs.aws.amazon.com/kms/latest/developerguide/disaster-recovery-resiliency.html>

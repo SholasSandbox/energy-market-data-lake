@@ -154,6 +154,6 @@ A partial answer says “use ALB across multiple AZs.” That solves regional AZ
 
 ## Source references
 
-- Current SAP-C02 exam guide: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/solutions-architect-professional-02.html
-- Current in-scope services: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/sap-02-in-scope-services.html
+- Current SAP-C02 exam guide: <https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/solutions-architect-professional-02.html>
+- Current in-scope services: <https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/sap-02-in-scope-services.html>
 - See `source-manifest.json` for additional official AWS documentation URLs.

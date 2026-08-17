@@ -193,11 +193,11 @@ requirement unaddressed.
 
 ## Official references
 
-- SAP-C02 exam guide: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/solutions-architect-professional-02.html
-- SAP-C02 in-scope services: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/sap-02-in-scope-services.html
-- Amazon MQ: https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/welcome.html
-- AppSync real-time subscriptions: https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html
-- Firewall Manager: https://docs.aws.amazon.com/waf/latest/developerguide/fms-chapter.html
-- Audit Manager and Artifact boundary: https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html
-- AppFlow: https://docs.aws.amazon.com/appflow/latest/userguide/flow-tutorial.html
-- Data Exchange: https://docs.aws.amazon.com/data-exchange/latest/userguide/what-is.html
+- SAP-C02 exam guide: <https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/solutions-architect-professional-02.html>
+- SAP-C02 in-scope services: <https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/sap-02-in-scope-services.html>
+- Amazon MQ: <https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/welcome.html>
+- AppSync real-time subscriptions: <https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html>
+- Firewall Manager: <https://docs.aws.amazon.com/waf/latest/developerguide/fms-chapter.html>
+- Audit Manager and Artifact boundary: <https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html>
+- AppFlow: <https://docs.aws.amazon.com/appflow/latest/userguide/flow-tutorial.html>
+- Data Exchange: <https://docs.aws.amazon.com/data-exchange/latest/userguide/what-is.html>

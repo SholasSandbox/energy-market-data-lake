@@ -2,7 +2,6 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-
 **Date:** 2026-07-24<br>
 **Last revised:** 2026-08-08<br>
 **Purpose:** Close the identified revision gap without restarting database study from first principles.<br>

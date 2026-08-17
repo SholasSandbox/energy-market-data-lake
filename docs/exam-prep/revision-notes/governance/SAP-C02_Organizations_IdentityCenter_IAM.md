@@ -1,12 +1,14 @@
 # SAP-C02 Study Guide: AWS Organizations, IAM Identity Center & IAM
 
-*Prepared for: AWS Infrastructure Solution Architect (Beginner) with 20+ years of IT experience in Financial Services and Energy*
+**Prepared for:** AWS Infrastructure Solution Architect (Beginner) with 20+
+years of IT experience in Financial Services and Energy
 
 ---
 
 ## Legend — Acronyms and Terms Used in This Document
 
 ### Exam and AWS umbrella terms
+
 | Acronym or term | Meaning | Quick context |
 |---|---|---|
 | **AWS** | Amazon Web Services | The cloud provider. |
@@ -17,6 +19,7 @@
 | **SAP-C02** | Solutions Architect Professional, exam code C02 | The current Pro-level architect exam. |
 
 ### Identity, access, and authentication
+
 | Acronym or term | Meaning | Quick context |
 |---|---|---|
 | **ABAC** | Attribute-Based Access Control | Permissions decided by user/resource tags. |
@@ -38,6 +41,7 @@
 | **STS** | Security Token Service | AWS service issuing temporary credentials. |
 
 ### Organizations, governance, and policy
+
 | Acronym or term | Meaning | Quick context |
 |---|---|---|
 | **CfCT** | Customizations for Control Tower | Framework for extending Control Tower with custom IaC. |
@@ -50,6 +54,7 @@
 | **SRA** | (AWS) Security Reference Architecture | AWS's published multi-account security blueprint. |
 
 ### Compute, storage, and other services referenced
+
 | Acronym or term | Meaning | Quick context |
 |---|---|---|
 | **EC2** | Elastic Compute Cloud | AWS virtual machines. |
@@ -64,6 +69,7 @@
 | **VPC** | Virtual Private Cloud | Logically isolated network in AWS. |
 
 ### Policy, code, and operational terms
+
 | Acronym or term | Meaning | Quick context |
 |---|---|---|
 | **ACL** | Access Control List | Legacy permission mechanism (e.g., S3 object ACLs). |
@@ -93,6 +99,7 @@ The SAP-C02 exam has four domains:
 ## 2. AWS Organizations — The Account Container
 
 ### What it is
+
 A management service to centrally govern multiple AWS accounts as a single **organization**, structured as a tree: **Management Account → Root → Organizational Units (OUs) → Accounts**.
 
 ### Core building blocks you must know cold
@@ -133,10 +140,12 @@ A management service to centrally govern multiple AWS accounts as a single **org
 - Up to 5 RCPs per target; up to 1,000 RCPs in an org; 5,120 character limit per policy.
 
 ### Mental model — SCP vs RCP
+>
 > **SCP** = "the security guard watching what *my people* do."
 > **RCP** = "the security guard watching who touches *my stuff*."
 
 ### AWS Control Tower
+
 - A **landing zone orchestrator** built on Organizations + Config + CloudTrail + IAM Identity Center + SSO.
 - Provides pre-built **guardrails** (mandatory, strongly recommended, elective) and an **Account Factory** for vending accounts.
 - **Exam pattern:** "fastest way to stand up a compliant multi-account environment" → Control Tower. "Highly customised landing zone" → Customizations for Control Tower (CfCT) or the Landing Zone Accelerator solution.
@@ -146,9 +155,11 @@ A management service to centrally govern multiple AWS accounts as a single **org
 ## 3. IAM Identity Center (formerly AWS SSO)
 
 ### What it is
+
 The **AWS-recommended workforce identity service** for managing human access across multiple AWS accounts and SAML/OIDC-enabled business applications. It replaces the old pattern of IAM users + cross-account roles for human access.
 
 ### Why it dominates new exam questions
+
 AWS's modern guidance is unambiguous: **use IAM Identity Center for humans; use IAM roles for workloads.** Long-lived IAM user access keys for humans are now an anti-pattern. Expect SAP-C02 questions to reflect this — answers that propose creating IAM users for federated employees are almost always wrong.
 
 ### Key concepts
@@ -228,11 +239,13 @@ normal employee-access design.
 ## 4. IAM — Still the Foundation
 
 ### What it is
+
 The per-account identity and access service. Every AWS API call is authorised through IAM evaluation.
 
 ### What you must know
 
-**Principals**
+#### Principals
+
 - **IAM user** — long-lived identity; use only for narrow legacy or service-specific cases where federation or roles are unsupported. Do not make it the default human-access or break-glass pattern.
 - **IAM role** — temporary credentials via STS; **the default for workloads** (EC2 instance profiles, Lambda execution roles, ECS task roles, EKS IRSA / Pod Identity).
 - **Federated identity** — receives temporary role credentials through a federation flow. Direct federation can use STS `AssumeRoleWithSAML` or `AssumeRoleWithWebIdentity`; Identity Center exposes assigned-role credentials through its access portal and `GetRoleCredentials` flow.
@@ -264,7 +277,8 @@ configuration; the user selects the assigned account and permission set, then
 receives temporary role credentials. In both cases, the runtime identity is a
 role session rather than an IAM user.
 
-**Policy types — this is exam gold**
+#### Policy types — this is exam gold
+
 1. **Identity-based** — attached to users/groups/roles (managed or inline).
 2. **Resource-based** — attached to resources (S3 bucket policy, KMS key policy, Lambda resource policy, SNS, SQS, Secrets Manager). Specify `Principal` explicitly.
 3. **Permission boundary** — caps the maximum permissions an identity-based policy can grant to a user/role. Used to **delegate IAM administration safely**.
@@ -322,17 +336,20 @@ evaluation rules. Resource-based policies and role-session principals have
 advanced exceptions, so use the official evaluation logic when an answer turns
 on those details.
 
-**Cross-account access patterns**
+#### Cross-account access patterns
+
 - **IAM role assumption** with trust policy (most common).
 - **Resource-based policy** granting access to another account's principal (S3, KMS, Lambda, SNS, SQS, Secrets Manager, etc.).
 - **AWS Resource Access Manager (RAM)** — share resources (Transit Gateway, subnets, Route 53 Resolver rules, Aurora clusters, License Manager configs) across accounts in an Org.
 
-**STS essentials**
+#### STS essentials
+
 - Temporary credentials (15 min – 12 hr; default 1 hr).
 - **External ID** in role trust policy — the *confused-deputy* defense for third-party access (consultants, SaaS).
 - **Source identity** — propagates the original human's identity through role chains for CloudTrail attribution.
 
-**IAM Access Analyzer**
+#### IAM Access Analyzer
+
 - **External access analyzer** — finds resources shared outside your account/org (zone of trust).
 - **Unused access analyzer** (2023) — finds unused IAM roles, users, permissions for least-privilege tightening.
 - **Custom policy checks / policy validation** — validate policies pre-deployment in CI/CD.
@@ -416,7 +433,9 @@ RCP                  → supported resources governed by an account or OU hierar
 ## 6. SAP-C02 Examination Patterns
 
 ### How questions are structured
+
 SAP-C02 questions are **long scenarios (often 6–10 lines)** with multiple constraints. You will see:
+
 - Two technically correct answers — choose the **most optimal** given the stated business context (cost, operational overhead, time-to-market, compliance).
 - Distractors that propose **out-of-date patterns** (IAM users for federation, manual role-per-account, AWS SSO old-name).
 - "MOST cost-effective", "LEAST operational overhead", "MOST secure" framing — these qualifiers are decisive.
@@ -436,6 +455,7 @@ SAP-C02 questions are **long scenarios (often 6–10 lines)** with multiple cons
 11. **Cost optimisation across accounts** → consolidated billing + Savings Plans/RIs sharing.
 
 ### Common traps
+
 - "Create IAM users for each employee" — almost always wrong if federation is feasible.
 - "Disable CloudTrail" — never; instead, organisation trail in mgmt account with S3 bucket policy in Security account.
 - Confusing **SCP** (principals) with **RCP** (resources) — read the scenario to determine direction.
@@ -605,6 +625,7 @@ Given your financial services and energy background, lean on these analogies:
 - **IAM Identity Center ≈ corporate SSO portal** with role-based access certifications.
 
 ### Recommended primary sources (current AWS documentation)
+
 1. **AWS Whitepaper:** *Organizing Your AWS Environment Using Multiple Accounts* — the OU structure bible.
 2. **AWS Whitepaper:** *AWS Security Reference Architecture (SRA)* — the canonical multi-account security design.
 3. **AWS Prescriptive Guidance:** *AWS SRA code library* — Terraform/CFN reference.
@@ -613,6 +634,7 @@ Given your financial services and energy background, lean on these analogies:
 6. **AWS Skill Builder:** *Exam Readiness: AWS Certified Solutions Architect – Professional* (free).
 
 ### Hands-on lab ideas
+
 1. Stand up an Organization with 3 OUs and 4 member accounts using Control Tower.
 2. Attach an SCP denying all regions except `eu-west-1` and `eu-west-2`. Verify in a member account.
 3. Configure IAM Identity Center with the built-in directory and assign a permission set to a group across two accounts.

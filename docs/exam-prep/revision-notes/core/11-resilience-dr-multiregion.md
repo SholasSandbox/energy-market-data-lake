@@ -229,5 +229,5 @@ Producer retries with backoff
 
 ## Additional references
 
-- CloudFront origin failover: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html
-- DynamoDB global-table consistency modes: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/V2globaltables_HowItWorks.html
+- CloudFront origin failover: <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html>
+- DynamoDB global-table consistency modes: <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/V2globaltables_HowItWorks.html>

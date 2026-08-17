@@ -297,5 +297,5 @@ not relational database schemas and change streams.
 
 ## Additional references
 
-- AWS Fargate for Amazon ECS: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html
-- Amazon RDS Multi-AZ deployments: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html
+- AWS Fargate for Amazon ECS: <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html>
+- Amazon RDS Multi-AZ deployments: <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html>

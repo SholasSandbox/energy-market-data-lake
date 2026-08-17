@@ -352,7 +352,7 @@ Answer: **Amazon MSK**, not Kinesis.
 
 ## Source references
 
-- Amazon Kinesis Data Streams introduction: https://docs.aws.amazon.com/streams/latest/dev/introduction.html
-- Amazon Kinesis Data Streams quotas and limits: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
-- Enhanced fan-out consumers: https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html
-- Lambda event source mappings: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+- Amazon Kinesis Data Streams introduction: <https://docs.aws.amazon.com/streams/latest/dev/introduction.html>
+- Amazon Kinesis Data Streams quotas and limits: <https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html>
+- Enhanced fan-out consumers: <https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html>
+- Lambda event source mappings: <https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html>

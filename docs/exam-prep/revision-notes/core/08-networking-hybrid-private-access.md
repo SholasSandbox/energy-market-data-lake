@@ -299,7 +299,7 @@ Watch for:
 
 ## Additional references
 
-- Session Manager capabilities: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html
-- Session Manager logging limitations: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-logging.html
-- Direct Connect virtual interfaces: https://docs.aws.amazon.com/directconnect/latest/UserGuide/WorkingWithVirtualInterfaces.html
-- Direct Connect gateways: https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways-intro.html
+- Session Manager capabilities: <https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html>
+- Session Manager logging limitations: <https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-logging.html>
+- Direct Connect virtual interfaces: <https://docs.aws.amazon.com/directconnect/latest/UserGuide/WorkingWithVirtualInterfaces.html>
+- Direct Connect gateways: <https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways-intro.html>

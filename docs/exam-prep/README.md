@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-08-09
+**Last revised:** 2026-08-15
 
 ## Start Here
 
@@ -26,31 +26,23 @@ in their role-specific locations.
 
 ## Current Immediately Actionable Priority
 
-Full Mock 004 was frozen on 2026-08-05 and independently scored **70/75
-(93.3%) in 113 of 180 minutes**. The result includes 45/48 single-response,
-25/27 exact-match multiple-response, 13/15 learner-marked uncertain questions,
-and 67 minutes remaining. The five misses reduce to four themes: backup
-isolation and restore evidence, CloudFront origin-failover method eligibility,
-ECS blue/green exact-match completeness, and the DynamoDB MRSC TTL restriction. The
-[answer-bearing review](sap-c02-full-mock-004-review-20260805.md) records the
-complete key, domain breakdown, exact questions, decision rules, and transfer
-checks. All four Mock 002 gaps, the new MGN material, and the new BGP material
-held in this independent mock.
+[Full Mock 007](sap-c02-full-mock-007-75q-20260815.md) was submitted on
+2026-08-15 and independently scored **75/75 (100%) in 142 of 180 minutes**:
+48/48 single-response, 27/27 exact-match multiple-response, and 7/7
+learner-marked uncertain answers. No interruption was recorded, and all four
+primary domains scored 100%.
 
-[Full Mock 005](sap-c02-full-mock-005-75q-20260807.md) was frozen on 2026-08-07
-and independently scored **73/75 (97.3%) in 108 of 180 minutes**. The result
-includes 46/48 single-response, **27/27 exact-match multiple-response**, 14/16
-uncertain answers correct, and every domain above 93%. The two narrow misses
-were an ARC single-response over-selection and Transfer Family AS2 versus
-Amazon MQ. The [answer-bearing review](sap-c02-full-mock-005-review-20260807.md)
-records the full key, domain breakdown, transfer evidence, and decision rules.
-The earlier Lambda@Edge/write-continuity gap transferred successfully.
+The [answer-bearing review](sap-c02-full-mock-007-review-20260815.md) records
+the complete key and transfer evidence. All four Mock 006 remediation targets
+passed: OAC plus Lambda@Edge dynamic-origin composition, Regional EFS shared
+filesystem semantics, Batch EC2 custom AMI plus Spot, and complete warm-standby
+traffic orchestration. There is no new wrong-answer theme or immediate focused
+retest.
 
-Review the AS2 decision rule and single-response discipline, then continue to
-Full Mock 006 without reducing the two-mock weekly cadence. Use only remaining
-capacity for the incomplete migration matrix. Booking remains deferred until
-the post-Mock-008 evidence review so the Skill Builder additions receive three
-independent transfer opportunities without changing the September exam window.
+Full Mock 008 is the next fresh independent check. Full Mock 009 then completes
+the learner-selected evidence series before the first go/no-go booking review.
+Use only remaining capacity for the incomplete migration matrix; booking stays
+deferred until after Mock 009.
 
 The [AWS Skill Builder SAP-C02 assessment review](aws-skill-builder-sap-c02-assessment-review-20260809.md)
 records official-practice attempt 2 as a pass at 775 against a 750 threshold.
@@ -58,7 +50,7 @@ The export contains all 75 answer rationales: 45 were keyed correct, 30
 incorrect and none skipped. Its 12-hour-29-minute recorded duration makes it
 calibration evidence, not a timed booking-gate mock. The review also identifies
 two dated keys and corrects earlier independent interpretations without
-displacing Full Mock 006.
+displacing the full-mock and focused-remediation cadence.
 
 The complete answer-bearing assessment workbook is retained locally at
 `docs/exam-prep/aws-skill-builder-sap-c02-assessment-full-answer-set-20260809.xlsx`
@@ -209,8 +201,14 @@ retest.
 | [SAP-C02 Full Mock 004 Spaced Retest Review](sap-c02-full-mock-004-spaced-retest-review-20260807.md) | Answer-bearing assessment | Backup, ECS blue/green, and DynamoDB themes passed; the remaining Lambda@Edge/write-continuity distinction subsequently transferred in Full Mock 005 |
 | [SAP-C02 Full Mock 005 - 75 Questions](sap-c02-full-mock-005-75q-20260807.md) | Frozen full-simulation submission | Completed 2026-08-07 at 73/75 (97.3%) in 108 minutes; 46/48 single-response, 27/27 exact-match multiple-response, 14/16 uncertain answers correct, and every domain above 93% |
 | [SAP-C02 Full Mock 005 Review](sap-c02-full-mock-005-review-20260807.md) | Answer-bearing independent assessment | Two narrow misses: ARC single-response over-selection and Transfer Family AS2 versus Amazon MQ; the prior Lambda@Edge gap transferred successfully |
+| [SAP-C02 Full Mock 006 - 75 Questions](sap-c02-full-mock-006-75q-20260812.md) | Frozen complexity-calibrated full-simulation submission | Completed 2026-08-12 at 71/75 (94.7%): 47/48 single-response, 24/27 exact-match multiple-response, 11/11 uncertain, and every domain above 80%; 190 wall-clock minutes included approximately 10 learner-reported interruption minutes near the end |
+| [SAP-C02 Full Mock 006 Review](sap-c02-full-mock-006-review-20260812.md) | Answer-bearing independent assessment | Four frozen Domain 2 misses; causal review completed 2026-08-14: one genuine service-boundary knowledge gap, one requirement-parsing error, and two rushed completeness errors; ARC and AS2 transfer passed |
+| [SAP-C02 Full Mock 007 - 75 Questions](sap-c02-full-mock-007-75q-20260815.md) | Submitted complexity-calibrated full simulation | Completed 2026-08-15 at 75/75 in 142 minutes; 48/48 single-response, 27/27 exact-match multiple-response, 7/7 uncertain, and every domain at 100%; no answer key in the attempt artifact |
+| [SAP-C02 Full Mock 007 Review](sap-c02-full-mock-007-review-20260815.md) | Answer-bearing independent assessment | Clean 100% result; all four Mock 006 remediation targets transferred; no new wrong-answer entry or focused retest required |
 | [AWS Skill Builder SAP-C02 Assessment Review](aws-skill-builder-sap-c02-assessment-review-20260809.md) | Official-practice export audit and source-backed remediation | Attempt 2 passed at scaled score 775/750 threshold; 45 correct, 30 incorrect, 0 skipped; 12h29 recorded duration means calibration only, not timed booking evidence; dated Object Lock and KMS keys are explicitly corrected |
 | [AWS Skill Builder Answer-Difference Audit](aws-skill-builder-sap-c02-answer-difference-audit-20260809.md) | Answer-bearing mismatch audit | All 30 selection/key differences checked: 28 keys stand, Question 7 is now learner-correct under current AWS behaviour, and Question 10 has a dated key while the learner's policy-edit answer remains wrong |
+| [SAP-C02 Domain 3 Mental-Model Diagnostic](sap-c02-domain-3-mental-model-diagnostic-25q-20260812.md) | Frozen timed focused diagnostic | Completed 2026-08-12 at 25/25 in 47 of 60 minutes; 20/20 Domain 3, 5/5 cross-domain controls, 16/16 single-response, 9/9 exact-match multiple-response, and no uncertainty recorded |
+| [SAP-C02 Domain 3 Mental-Model Diagnostic Review](sap-c02-domain-3-mental-model-diagnostic-review-20260812.md) | Answer-bearing focused assessment | All five Domain 3 task areas scored 4/4; no demonstrated gap or immediate retest required; transfer subsequently passed at 18/18 in Full Mock 006 |
 | [SAP-C02 Closed-Book Hidden-Gap Diagnostic](sap-c02-hidden-gap-diagnostic-15q-20260723.md) | Frozen question-only transfer diagnostic | Learner answer set preserved; answer-bearing remediation remains isolated in the model review |
 | [SAP-C02 Hidden-Gap Model Review](sap-c02-hidden-gap-model-review-20260725.md) | Answer-bearing remediation guide | Covers the recurring SCP/boundary and DynamoDB sharding/fan-out models; not recall evidence |
 | [SCP Versus Permissions Boundary Closed-Book Retest](sap-c02-scp-permissions-boundary-closed-book-retest-6q-20260724.md) | Frozen six-question exact-match retest | Submitted 2026-07-24; 6/6 in 18 minutes; early-spacing caveat retained |

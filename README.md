@@ -629,6 +629,9 @@ python3 scripts/validate_athena_schema.py \
 - `docs/phase-1-stabilize-ingestion-lakehouse.md`: reconciled historical Phase 1 checklist.
 - `docs/entsoe-operationalization-checklist.md`: ENTSO-E reliability checklist.
 - `docs/gas-implementation-checklist.md`: ENTSOG gas implementation checklist.
+- `docs/governance/iam-framework.md`: documentation-only Energy Lakehouse IAM
+  implementation checklist with illustrative trust, identity, Lambda
+  execution-role, and Lambda resource-policy examples for SAP-C02 revision.
 - `docs/entsog-gas-build-plan.md`: time-budgeted ENTSOG gas build tracker.
 - `infra/terraform/lakehouse/README.md`: Terraform rebuild path with S3 remote backend and optional data bucket creation.
 - `docs/dashboard-ia-spec.md`: React dashboard redesign direction.

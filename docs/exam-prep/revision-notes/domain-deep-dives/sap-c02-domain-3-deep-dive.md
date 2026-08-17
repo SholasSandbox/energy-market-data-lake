@@ -24,9 +24,9 @@ This guide's structure: concept deep-dives per task → the three discriminator 
 
 ---
 
-# Task 3.1 — Improve Operational Excellence
+## Task 3.1 — Improve Operational Excellence
 
-## 3.1.1 The telemetry service boundary problem
+### 3.1.1 The telemetry service boundary problem
 
 The Q17 miss was a **control-plane vs data-plane conflation**, and it is one of the most reused traps on the exam. Commit this boundary to memory:
 
@@ -40,7 +40,7 @@ The Q17 miss was a **control-plane vs data-plane conflation**, and it is one of 
 
 **The test to apply:** if the question says *"trace a user request as it flows across services"* → X-Ray/ADOT, full stop. CloudTrail Lake appearing in the options is bait — it queries *audit events*, and audit events do not carry trace context. Conversely, *"determine who modified the resource"* → CloudTrail; X-Ray in the options is the mirror-image bait.
 
-## 3.1.2 Cross-account observability (the "single pane of glass" pattern)
+### 3.1.2 Cross-account observability (the "single pane of glass" pattern)
 
 For "N accounts, one view, least custom development":
 
@@ -49,7 +49,7 @@ For "N accounts, one view, least custom development":
 - Legacy patterns that appear as distractors: metric streams to a central account via Firehose, log subscription filters to a central Kinesis stream, self-managed Grafana/Prometheus/Jaeger on EC2. All *work*; all lose to the managed feature on "least development/overhead".
 - **Amazon Managed Grafana / Managed Service for Prometheus** are correct only when the question names Prometheus/Grafana ecosystems explicitly (usually EKS-heavy scenarios).
 
-## 3.1.3 Operations automation ladder
+### 3.1.3 Operations automation ladder
 
 Exam scenarios describe manual toil; the answer assigns the right Systems Manager (SSM) capability or event-driven pattern:
 
@@ -71,15 +71,15 @@ tunnelling, but it cannot log the command/content stream inside those encrypted
 tunnels. A question requiring command logs plus the ability to forward ports is
 therefore describing two available modes, not a simultaneously logged tunnel.
 
-## 3.1.4 Deployment and change improvement
+### 3.1.4 Deployment and change improvement
 
 Existing workload, risky manual deployments → the improvement is a pipeline plus a safe deployment strategy (canary/linear with alarm-triggered rollback — CodeDeploy for EC2/ECS/Lambda). Covered in depth in Domain 2 study; in Domain 3 form, the qualifier is usually *"reduce deployment risk without changing the platform"* — so the answer adds CodeDeploy to the existing compute, rather than moving to a new compute service.
 
 ---
 
-# Task 3.2 — Improve Security
+## Task 3.2 — Improve Security
 
-## 3.2.1 The credential remediation ladder
+### 3.2.1 The credential remediation ladder
 
 Paper 01 Q18 (which you got right — this consolidates it):
 
@@ -89,7 +89,7 @@ Paper 01 Q18 (which you got right — this consolidates it):
 
 **The Secrets Manager vs Parameter Store discriminator:** the word **"rotation"** (or "automatically rotate") in the stem selects Secrets Manager. No rotation requirement + "lowest cost" selects Parameter Store SecureString. A `String` (not SecureString) parameter for a secret is always wrong — plaintext at rest.
 
-## 3.2.2 The detection service discriminator table
+### 3.2.2 The detection service discriminator table
 
 The second-highest-yield table in Domain 3. These five are deliberately confusable:
 
@@ -105,7 +105,7 @@ The second-highest-yield table in Domain 3. These five are deliberately confusab
 
 **The preventative-vs-detective trap:** if the stem says access/behaviour "must be **blocked**" or "**prevented**", every detection service above is a distractor — the answer is a policy control (SCP, RCP, endpoint policy, bucket policy, permission boundary — Domain 1 territory deliberately cross-wired into Domain 3 stems). If the stem says "detect", "alert", "identify" — now the table applies.
 
-## 3.2.3 Least privilege and exposure reduction on existing workloads
+### 3.2.3 Least privilege and exposure reduction on existing workloads
 
 - **IAM Access Analyzer**: identifies resources shared outside your zone of trust (external access findings) and generates least-privilege policies *from CloudTrail activity* ("right-size this over-permissive role based on what it actually uses" → Access Analyzer policy generation).
 - **IMDSv2 enforcement** (`HttpTokens=required`): the answer to SSRF-style credential theft from EC2 metadata. Stem trigger: "application vulnerability allowed retrieval of instance credentials".
@@ -113,9 +113,9 @@ The second-highest-yield table in Domain 3. These five are deliberately confusab
 
 ---
 
-# Task 3.3 — Improve Performance
+## Task 3.3 — Improve Performance
 
-## 3.3.1 The database performance decision tree (contains the Q16 fix)
+### 3.3.1 The database performance decision tree (contains the Q16 fix)
 
 An existing relational database is struggling. The exam expects you to identify *which* struggle, because each maps to exactly one managed remediation:
 
@@ -130,7 +130,7 @@ An existing relational database is struggling. The exam expects you to identify 
 
 **The banked rule from Q16:** *Lambda + relational database + connection errors → RDS Proxy.* It is a connection-string change (satisfies "minimal code changes"), it pools/multiplexes server-side, and it preserves client connections through failover. Reserved concurrency as a "fix" is the **throttle trap** — the option that stops the errors by capping the workload's ability to do its job. Watch for the same trap shape elsewhere: SQS `maxReceiveCount=1`, ASG max=1, API Gateway account-level throttle set low.
 
-## 3.3.2 The caching layer stack
+### 3.3.2 The caching layer stack
 
 Performance questions often hide "which layer should cache this?":
 
@@ -140,7 +140,7 @@ Performance questions often hide "which layer should cache this?":
 - **DAX** — DynamoDB-specific, API-compatible (minimal code change), read-through/write-through.
 - **RDS Proxy is not a cache** — a distractor sometimes implies it accelerates reads; it pools connections, nothing more.
 
-## 3.3.3 Compute and storage performance remediation
+### 3.3.3 Compute and storage performance remediation
 
 - **Compute rightsizing evidence** → **AWS Compute Optimizer** (ML-based recommendations for EC2, ASG, EBS, Lambda memory). "How do we know which instances are over/under-provisioned?" → Compute Optimizer, not Trusted Advisor (coarser) and not CloudWatch alone (data, not recommendations).
 - **EBS**: gp2 → **gp3** is simultaneously a performance *and* cost answer (independent IOPS/throughput provisioning, ~20% cheaper). io2 only when >16K IOPS or durability language appears.
@@ -156,9 +156,9 @@ Performance questions often hide "which layer should cache this?":
 
 ---
 
-# Task 3.4 — Improve Reliability
+## Task 3.4 — Improve Reliability
 
-## 3.4.1 The single-point-of-failure elimination pattern
+### 3.4.1 The single-point-of-failure elimination pattern
 
 Paper 01 Q20 (which you got right) is the archetype. Each fragile component has a *configuration-level* HA counterpart — the exam wants the mapping, not a redesign:
 
@@ -172,7 +172,7 @@ Paper 01 Q20 (which you got right) is the archetype. Each fragile component has 
 
 **Multi-AZ vs read replica is a deliberate confusion pair**: Multi-AZ = availability (synchronous, automatic failover, standby not readable on classic RDS); read replica = read scaling / cross-region (asynchronous, promotion is manual). Stems mixing "improve availability" with a read-replica option are testing exactly this line. (Multi-AZ *DB cluster* deployments blur it — two *readable* standbys — but only select that when the stem demands both HA and read scaling.)
 
-## 3.4.2 Recovery and failure-isolation improvements
+### 3.4.2 Recovery and failure-isolation improvements
 
 - **AWS Backup** — centralized, policy-based backup across services and accounts (backup plans + vaults, cross-region and cross-account copies, vault lock for immutability). The answer to "inconsistent, per-team backup scripts" is an AWS Backup org-level policy, not better scripts.
 - **Route 53 ARC zonal shift / zonal autoshift** — shift traffic away from an impaired AZ for ALB/NLB without changing the architecture; the modern answer to "reduce blast radius of a single-AZ impairment on an existing load-balanced app".
@@ -181,9 +181,9 @@ Paper 01 Q20 (which you got right) is the archetype. Each fragile component has 
 
 ---
 
-# Task 3.5 — Identify Cost Optimization Opportunities
+## Task 3.5 — Identify Cost Optimization Opportunities
 
-## 3.5.1 The commitment flexibility ladder (Paper 01 Q15 consolidation)
+### 3.5.1 The commitment flexibility ladder (Paper 01 Q15 consolidation)
 
 Discount depth and flexibility are inversely related; the stem tells you which end you're allowed:
 
@@ -198,11 +198,12 @@ Discount depth and flexibility are inversely related; the stem tells you which e
 
 **The deepest-discount trap:** an option offering the biggest percentage (EC2 Instance SP, Standard RI, Spot-for-everything) attached to a workload whose description forbids the lock-in. Read the workload's *certainty*, then pick the instrument — never the reverse. Spot's presence also requires the stem to concede interruptibility; "business-critical, always-on" + Spot = distractor regardless of savings.
 
-## 3.5.2 The S3 storage class decision procedure (contains the Q19 fix)
+### 3.5.2 The S3 storage class decision procedure (contains the Q19 fix)
 
 Two rules decide these questions:
 
 **Rule 1 — access-pattern knowledge picks the warm class:**
+
 - Access pattern **unknown, shifting, or unpredictable** → **Intelligent-Tiering**. This is near-mechanical: the phrase selects the class, because IT has *no retrieval fees* and moves objects automatically — you cannot be wrong about a pattern you didn't predict.
 - Access pattern **known infrequent** (predictable, e.g. "accessed once a quarter") → **Standard-IA** (or One Zone-IA *only* if the stem concedes the data is re-creatable/non-critical — One Zone under critical data is always the trap).
 - **Frequently accessed** → **Standard**. IA classes on hot data lose money twice: per-GB retrieval fees on every access + 30-day minimum storage duration. Small hot datasets (your Q19 thumbnails) stay in Standard even though it "looks" unoptimized.
@@ -219,7 +220,7 @@ The Q19 miss decomposed: paying Instant Retrieval prices for a 12-hour tolerance
 
 Supporting mechanics worth one read: lifecycle policies can transition *and* expire (expire incomplete multipart uploads — a free-money answer that appears in "reduce S3 cost, choose TWO" questions); **Storage Lens** for org-wide S3 usage visibility; minimum storage durations (30d IA / 90d GIR & GFR / 180d GDA) make short-lived objects in cold classes *more* expensive — the trap for temp/staging data.
 
-## 3.5.3 Architecture-level cost leaks (high-frequency Select TWO material)
+### 3.5.3 Architecture-level cost leaks (high-frequency Select TWO material)
 
 - **NAT gateway data processing** for traffic to S3/DynamoDB → **gateway VPC endpoints** (free, no NAT processing charge). One of the most repeated cost answers on the exam: "large S3 transfer costs from private subnets" → gateway endpoint, not a bigger NAT.
 - **Interface endpoints vs NAT** for other AWS services: endpoints win on security posture; on pure cost it depends on volume — the stem will signal which lens applies.
@@ -230,7 +231,7 @@ Supporting mechanics worth one read: lifecycle policies can transition *and* exp
 
 ---
 
-# The Domain 3 Distractor Taxonomy
+## The Domain 3 Distractor Taxonomy
 
 Name the trap and the option eliminates itself. Every Domain 3 distractor in Paper 01 falls into one of these six:
 
@@ -243,7 +244,7 @@ Name the trap and the option eliminates itself. Every Domain 3 distractor in Pap
 
 ---
 
-# Recognition Shapes — Domain 3 Quick Index
+## Recognition Shapes — Domain 3 Quick Index
 
 | Stem signal | Answer |
 |---|---|
@@ -270,7 +271,8 @@ Name the trap and the option eliminates itself. Every Domain 3 distractor in Pap
 | "Shift traffic away from an impaired AZ" | Route 53 ARC zonal shift |
 
 ---
-# Practice Questions (Domain 3 Drill — 10 Questions)
+
+## Practice Questions (Domain 3 Drill — 10 Questions)
 
 Attempt under exam conditions (~29 minutes) before reading the rationale. Questions 1, 4, and 8 deliberately re-test the Paper 01 miss patterns in new clothing.
 
@@ -369,41 +371,51 @@ A DevOps team stores database passwords, third-party API keys requiring 30-day r
 
 ---
 
-# Answer Key
+## Answer Key
 
 ### Q1 — B
+
 The dual symptom — connection exhaustion at scale-out *and* stale-connection storms after failover — is the RDS Proxy signature; both are solved by server-side pooling and proxy-managed failover, via a connection-string change only. **A** is the pay-more-treat-symptom option (churn and failover storms remain). **C** is the **Throttle Trap**: capping tasks at 50 makes month-end processing miss its window. **D** is the **Rebuild Trap** — a platform migration for a pooling problem, and Redshift is an analytics engine, not a drop-in Postgres target.
 
 ### Q2 — A and C
+
 Requirement (1) "detect… communicating with known mining domains" is GuardDuty's crypto-mining finding class verbatim (DNS/flow-log analysis). Requirement (2) "investigate the preceding activity" is Detective's behaviour graph. **B** — Inspector finds CVEs, not active threats. **D** — Macie is S3 data classification. **E** — Config tracks resource configuration, not network behaviour.
 
 ### Q3 — A and B
+
 Session Manager removes SSH/bastion and provides the demanded session logging; Patch Manager with maintenance windows automates patching in approved windows. **C** retains SSH keys (explicitly to be eliminated). **D** is the **Manual/Heroic Trap** in cron form — unmanaged, unlogged, no window governance. **E** is the **Detective-for-Preventative Swap** — detection plus email is not automation.
 
 ### Q4 — A
+
 (1) "no reliable way to predict" → Intelligent-Tiering, mechanically. (2) 48-hour tolerance, retrieval every few years → Deep Archive (bulk retrieval ~48h, standard ~12h — both inside tolerance at the lowest storage price). (3) hot, small → Standard. **B** — Standard-IA bleeds retrieval fees on the unpredictable dataset; Flexible Retrieval pays for speed the 48-hour SLA doesn't need. **C** — Instant Retrieval is the **Wrong-Temperature Trap** for a 48-hour tolerance (~4–5× Deep Archive storage). **D** — IA on files read hundreds of times daily loses money on every read.
 
 ### Q5 — B
+
 Request-path latency across services requires propagated trace context (ADOT/X-Ray); cross-account single pane is CloudWatch cross-account observability. Together they are one option. **A** — flow logs are IP metadata; no request causality. **C** — the **Control-Plane Conflation**: CloudTrail measures AWS API audit events, not inter-service request latency. **D** works and loses: self-managed stack vs "fastest path".
 
 ### Q6 — B
+
 The web tier will change *compute platform* (EC2 → Fargate) inside the term — only Compute Savings Plans span EC2 and Fargate, so any instance-locked instrument strands the discount. The farm concedes interruption → Spot. **A** — EC2 Instance SPs don't cover Fargate; the **deepest-discount trap**. **C** — Standard RIs strand on the Fargate move; On-Demand for interruptible batch leaves ~90% on the table. **D** — Spot under the customer-facing steady tier violates its availability character.
 
 ### Q7 — B
+
 Gateway endpoints for S3 are free, in-region, and remove the NAT data path entirely; a route-table change is the least-disruption bar. **A** swaps managed NAT for self-managed NAT — costs remain, toil increases. **C** is a security regression to fix a billing line. **D** — Transfer Acceleration is for long-haul client uploads and *adds* fees; same-region VPC→S3 traffic gains nothing.
 
 ### Q8 — A
+
 (a) "Which principal called `StopLogging`" is CloudTrail by definition. (b) point-in-time resource configuration is AWS Config's timeline. (c) IP-level communication records are VPC Flow Logs. Every other option misassigns at least one — note **C**'s subtlety: GuardDuty would *alert* on suspicious flows but is not the queryable record of which IPs communicated; Flow Logs are the evidence, GuardDuty is the detector.
 
 ### Q9 — A
+
 "Move traffic away from an impaired AZ, no architecture change" is the zonal shift feature description — ARC zonal shift (and zonal autoshift for automatic response) acts on the existing ALB. **B** — changing load balancer type doesn't create AZ-evacuation capability and NLB/ALB serve different layers. **C** — instance refresh replaces instances; it does not stop the LB routing into the impaired AZ. **D** — a full second region is the **Rebuild Trap** scaled up: multi-region DR to solve a single-AZ traffic-steering problem.
 
 ### Q10 — A and B
+
 Rotation requirement → Secrets Manager (A). Non-sensitive config at 200 values → Parameter Store standard tier, free (B). **C** — Secrets Manager charges per secret per month; putting 200 non-sensitive values there fails "minimize cost". **D** — hand-rolling rotation with EventBridge+Lambda rebuilds Secrets Manager's native feature (Manual/Heroic Trap in serverless clothing). **E** — DynamoDB for config is custom infrastructure where a purpose-built free tier exists.
 
 ---
 
-# Rejected Alternatives (Guide-Level)
+## Rejected Alternatives (Guide-Level)
 
 Decisions embedded in this guide, and why the alternatives lost — recorded per series discipline:
 
@@ -417,7 +429,7 @@ Decisions embedded in this guide, and why the alternatives lost — recorded per
 
 ---
 
-# Acronym Legend
+## Acronym Legend
 
 | Acronym | Expansion |
 |---|---|
