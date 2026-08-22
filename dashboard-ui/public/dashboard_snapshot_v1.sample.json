@@ -1,22 +1,22 @@
 {
   "schema_version": "dashboard_snapshot_v1",
-  "generated_at": "2026-05-07T14:45:46Z",
+  "generated_at": "2026-08-21T23:53:34Z",
   "metadata": {
     "region": "gb",
-    "latest_date": "2026-05-07",
+    "latest_date": "2026-08-21",
     "data_freshness": "Local demo evidence snapshot; not live market freshness",
     "status": "watch"
   },
   "summary_cards": [
     {
       "label": "Power Price",
-      "value": "105.17 GBP/MWh",
+      "value": "132.06 GBP/MWh",
       "trend": "From validated power evidence",
       "status": "watch"
     },
     {
       "label": "Power Demand",
-      "value": "25,118.00 MW",
+      "value": "31,687.00 MW",
       "trend": "From validated power evidence",
       "status": "ok"
     },
@@ -29,45 +29,46 @@
   ],
   "insights": [
     {
-      "id": "insight-2026-05-07-gb-001",
-      "title": "GB energy news context linked to: Scotland\u2019s economic and industrial future \u2018in the balance\u2019, OEUK chief says",
-      "summary": "Validated power evidence shows demand at 25,118 MW and power price at 105.17 GBP/MWh. Relevant curated news: David Whitehouse urges Holyrood candidates to back North Sea jobs and renewables together.",
+      "id": "gb-drought-energy-demand-20260821",
+      "title": "UK Demand Surge Amid Drought Constraints",
+      "summary": "UK electricity demand hit 31,687 MW on 2026-08-21, coinciding with severe drought conditions. Water shortages may strain cooling systems for nuclear and thermal plants, risking supply reliability despite record heat.",
       "risk_level": "watch",
       "confidence": 0.85,
       "sources": [
         {
-          "label": "elexon - system_buy_price_gbp_mwh",
-          "url": "s3://energy-market-lake-464975959576-20260405/curated/curated_dataset_electricity_e4e5001aa3d13e5189281de35cbc1cb9/date=2026-05-07/"
+          "label": "elexon - demand_mw | curated dashboard evidence for 2026-08-21",
+          "url": "dashboard-data.json"
         },
         {
-          "label": "Energy Voice",
-          "url": "https://www.energyvoice.com/oilandgas/north-sea/597118/scotlands-economic-industrial-future-in-the-balance-oeuk-chief/"
+          "label": "Energy Live News",
+          "url": "https://www.energylivenews.com/2026/08/21/government-step-up-drought-plans-as-water-shortage-intensifies/"
+        },
+        {
+          "label": "Oilprice.com",
+          "url": "https://oilprice.com/Alternative-Energy/Nuclear-Power/Low-Rivers-High-Stakes-Europes-Nuclear-Cooling-Crisis.html"
         }
       ]
     }
   ],
   "news_articles": [
     {
-      "publisher": "Energy Voice",
-      "title": "Scotland\u2019s economic and industrial future \u2018in the balance\u2019, OEUK chief says",
-      "url": "https://www.energyvoice.com/oilandgas/north-sea/597118/scotlands-economic-industrial-future-in-the-balance-oeuk-chief/",
-      "published_at": "2026-05-07T13:06:53Z",
-      "summary": "David Whitehouse urges Holyrood candidates to back North Sea jobs and renewables together.",
+      "publisher": "Energy Live News",
+      "title": "Government launches \u00a328 million funding challenge",
+      "url": "https://www.energylivenews.com/2026/08/21/government-launches-28-million-funding-challenge/",
+      "published_at": "2026-08-21T13:00:00Z",
+      "summary": "<p>The cash will develop long duration energy storage technologies</p> <p>The post <a href=\"https://www.energylivenews.com/2026/08/21/government-launches-28-million-funding-challenge/\">Government launches \u00a328 million funding challenge</a> appeared first on <a href=\"https://www...",
       "topics": [
-        "oil_gas",
-        "renewables"
+        "gas_supply",
+        "policy"
       ],
-      "regions": [
-        "eu",
-        "gb"
-      ]
+      "regions": []
     },
     {
       "publisher": "Energy Voice",
-      "title": "Centrica brings electricity generation capacity to 4GW in \u00a3370m deal",
-      "url": "https://www.energyvoice.com/renewables-energy-transition/597090/centrica-brings-electricity-generation-capacity-to-4gw-in-370m-deal/",
-      "published_at": "2026-05-07T10:40:28Z",
-      "summary": "The asset could be home to hydrogen conversion or carbon capture.",
+      "title": "Power Moves: Protium drives Cromarty hydrogen project with new CFO",
+      "url": "https://www.energyvoice.com/renewables-energy-transition/602796/power-moves-protium-new-cfo/",
+      "published_at": "2026-08-21T15:30:52Z",
+      "summary": "SMD, TESS Aberdeen, Brimmond and more have all made the cut this week.",
       "topics": [
         "power_supply"
       ],
@@ -75,119 +76,114 @@
     },
     {
       "publisher": "Energy Voice",
-      "title": "Industrial decarbonisation delay putting \u2018billions\u2019 of UK investment at risk, trade bodies warn",
-      "url": "https://www.energyvoice.com/renewables-energy-transition/ccs/uk-ccs/597128/ccsa-hydrogen-uk-urge-industrial-decarbonisation-action-miliband/",
-      "published_at": "2026-05-07T14:26:48Z",
-      "summary": "CCSA, Hydrogen UK and Electrify Industry urge action on industrial decarbonisation strategy.",
+      "title": "HyNet anchor project incinerates first residual waste before commissioning",
+      "url": "https://www.energyvoice.com/renewables-energy-transition/ccs/602780/hynet-encyclis-erf/",
+      "published_at": "2026-08-21T13:13:27Z",
+      "summary": "The plant will look to capture 370,000 tonnes of CO2 per year once its carbon capture arm becomes operational in 2029.",
       "topics": [],
+      "regions": []
+    },
+    {
+      "publisher": "Power Technology",
+      "title": "Saudi Power Procurement signs four BESS agreements worth $1.16bn",
+      "url": "https://www.power-technology.com/news/saudi-power-procurement-four-bess-agreements/",
+      "published_at": "2026-08-21T14:04:34Z",
+      "summary": "The Saudi Power Procurement Company, also known as the Principal Buyer, has signed four storage service agreements for the first group of battery energy storage system (BESS) projects.",
+      "topics": [
+        "gas_supply",
+        "power_supply"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Voice",
+      "title": "Ardersier and China\u2019s Dajin explore joint offshore wind work",
+      "url": "https://www.energyvoice.com/renewables-energy-transition/wind/602782/ardersier-dajin-joint-offshore-wind-work/",
+      "published_at": "2026-08-21T13:48:37Z",
+      "summary": "Will the turbine maker represent a less controversial choice of partner for the port than Ming Yang?",
+      "topics": [
+        "renewables"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Voice",
+      "title": "Podcast: Rosebank approval, when?",
+      "url": "https://www.energyvoice.com/podcast/602749/podcast-rosebank-approval-when/",
+      "published_at": "2026-08-21T10:51:22Z",
+      "summary": "Energy Voice Out Loud (EVOL) is the weekly news podcast featuring Energy Voice journalists tackling the latest headlines.",
+      "topics": [],
+      "regions": []
+    },
+    {
+      "publisher": "Power Technology",
+      "title": "Entergy Arkansas starts construction on 446MW Ironwood Power Station",
+      "url": "https://www.power-technology.com/news/entergy-construction-ironwood-power-station/",
+      "published_at": "2026-08-21T10:16:00Z",
+      "summary": "Entergy Arkansas has started construction on the Ironwood Power Station, a 446MW natural gas facility located at the Lake Catherine site.",
+      "topics": [
+        "gas_supply",
+        "oil_gas",
+        "power_supply"
+      ],
+      "regions": []
+    },
+    {
+      "publisher": "Energy Live News",
+      "title": "Wales revamps renewable energy targets",
+      "url": "https://www.energylivenews.com/2026/08/21/wales-revamps-renewable-energy-targets/",
+      "published_at": "2026-08-21T14:00:00Z",
+      "summary": "<p>Priorities will include community ownership and reducing energy bills</p> <p>The post <a href=\"https://www.energylivenews.com/2026/08/21/wales-revamps-renewable-energy-targets/\">Wales revamps renewable energy targets</a> appeared first on <a href=\"https://www.energylivenews...",
+      "topics": [
+        "renewables"
+      ],
       "regions": [
         "gb"
       ]
     },
     {
-      "publisher": "Energy Voice",
-      "title": "Deltic Energy backs \u00a37.2m Neo Next+ takeover bid",
-      "url": "https://www.energyvoice.com/oilandgas/north-sea/597114/deltic-energy-north-sea-neo-next-takeover-ukcs/",
-      "published_at": "2026-05-07T11:12:09Z",
-      "summary": "Neo Next+ continues North Sea consolidation with recommended cash acquisition of Deltic Energy.",
+      "publisher": "Energy Live News",
+      "title": "Extra drought planning as water shortage intensifies",
+      "url": "https://www.energylivenews.com/2026/08/21/government-step-up-drought-plans-as-water-shortage-intensifies/",
+      "published_at": "2026-08-21T12:00:00Z",
+      "summary": "<p>More than 70% of England is in drought following the driest July in 190 years</p> <p>The post <a href=\"https://www.energylivenews.com/2026/08/21/government-step-up-drought-plans-as-water-shortage-intensifies/\">Extra drought planning as water shortage intensifies</a> appeare...",
+      "topics": [
+        "policy"
+      ],
+      "regions": [
+        "gb"
+      ]
+    },
+    {
+      "publisher": "Power Technology",
+      "title": "Final caisson installed at 3.5GW Princess Elisabeth Energy Island project",
+      "url": "https://www.power-technology.com/news/final-caisson-princess-elisabeth-energy/",
+      "published_at": "2026-08-21T07:51:44Z",
+      "summary": "The installation of all 23 caissons for the Princess Elisabeth Energy Island has been completed 45km off the Belgian coast in the North Sea.",
       "topics": [
         "oil_gas"
       ],
       "regions": []
     },
     {
-      "publisher": "Energy Live News",
-      "title": "Energy Sector Joins 8-Hour Charity Challenge In Support Of Cash For Kids",
-      "url": "https://www.energylivenews.com/2026/04/21/energy-sector-joins-8-hour-charity-challenge-in-support-of-cash-for-kids/",
-      "published_at": "2026-04-21T14:25:16Z",
-      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/04/MAIN-Image-Feature-Image-Smarta-Energy-150x150.png\" width=\"150\" />Smarta Energy leads 8-hour running fundraiser on Earth Day wit...",
-      "topics": [
-        "power_supply"
-      ],
-      "regions": []
-    },
-    {
-      "publisher": "Offshore Energy",
-      "title": "NKT\u2019s German cable accessories site becomes its first zero-carbon factory",
-      "url": "https://www.offshore-energy.biz/nkts-german-cable-accessories-site-becomes-its-first-zero-carbon-factory/",
-      "published_at": "2026-05-07T10:57:31Z",
-      "summary": "<p>NKT&#8217;s medium\u2011voltage cable accessories site in Nordenham, Germany, has become its first zero-carbon factory [&#8230;]</p> <p>The post <a href=\"https://www.offshore-energy.biz/nkts-german-cable-accessories-site-becomes-its-first-zero-carbon-factory/\">NKT&#8217;s German...",
-      "topics": [],
-      "regions": [
-        "de"
-      ]
-    },
-    {
-      "publisher": "Energy Live News",
-      "title": "Europe\u2019s electricity prices remain tied to gas amid geopolitical risks",
-      "url": "https://www.energylivenews.com/2026/04/21/europes-electricity-prices-remain-tied-to-gas-amid-geopolitical-risks/",
-      "published_at": "2026-04-21T13:00:00Z",
-      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2025/12/Shutterstock_2393210151-150x150.jpg\" width=\"150\" />Gas continues to set electricity prices across Europe, exposing markets to vo...",
-      "topics": [
-        "oil_gas",
-        "power_prices",
-        "power_supply"
-      ],
-      "regions": [
-        "eu"
-      ]
-    },
-    {
-      "publisher": "Energy Live News",
-      "title": "Pacific nations unite to accelerate fossil fuel phase-out and cut emissions",
-      "url": "https://www.energylivenews.com/2026/04/21/pacific-nations-unite-to-accelerate-fossil-fuel-phase-out-and-cut-emissions/",
-      "published_at": "2026-04-21T14:00:00Z",
-      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/04/shutterstock_1732426456-150x150.jpg\" width=\"150\" />Pacific nations push global fossil fuel phase-out to cut emissions</p> <p>The...",
-      "topics": [
-        "power_supply"
-      ],
-      "regions": []
-    },
-    {
-      "publisher": "Factor This\u2122",
-      "title": "Stonepeak, Bernhard look to nab a regulated utility in latest acquisition",
-      "url": "https://www.renewableenergyworld.com/energy-business/stonepeak-bernhard-look-to-nab-a-regulated-utility-in-latest-acquisition/",
-      "published_at": "2026-05-06T17:40:31Z",
-      "summary": "Cleco, a Louisiana utility with 298,000 customers, will be acquired by Stonepeak and Bernhard Capital Partners, pending regulatory approvals.",
-      "topics": [
-        "policy"
-      ],
-      "regions": []
-    },
-    {
       "publisher": "Power Technology",
-      "title": "Scatec and NBE sign agreement for equity partnership in Obelisk project",
-      "url": "https://www.power-technology.com/news/scatec-nbe-agreement-obelisk/",
-      "published_at": "2026-05-07T07:50:45Z",
-      "summary": "Scatec and the NBE have signed an equity partnership agreement for the company\u2019s Obelisk solar and battery storage project.",
+      "title": "Hindustan Power closes financing for 435MWp solar project in India",
+      "url": "https://www.power-technology.com/news/hindustan-power-financing-435mwp-solar-india/",
+      "published_at": "2026-08-21T07:27:59Z",
+      "summary": "Hindustan Power has completed financial closure for a 435MW-peak (MWp)/300MW solar power project located in the Lalitpur district of Uttar Pradesh (UP), India.",
       "topics": [
-        "gas_supply",
+        "power_supply",
         "renewables"
       ],
       "regions": []
     },
     {
       "publisher": "Energy Live News",
-      "title": "Bugs in hot springs could clean up industry\u2026",
-      "url": "https://www.energylivenews.com/2026/04/21/bugs-in-hot-springs-could-clean-up-industry/",
-      "published_at": "2026-04-21T12:00:00Z",
-      "summary": "<p><img alt=\"\" class=\"attachment-thumbnail size-thumbnail wp-post-image\" height=\"150\" src=\"https://www.energylivenews.com/wp-content/uploads/2026/04/Shutterstock_2671495445-150x150.jpg\" width=\"150\" />Microbes in nature's hot springs can not only capture CO2 in industry but mak...",
-      "topics": [
-        "power_supply"
-      ],
-      "regions": []
-    },
-    {
-      "publisher": "Offshore Energy",
-      "title": "Excelerate Energy\u2019s FSRU finds job at Jordan\u2019s LNG terminal ahead of Iraq gig",
-      "url": "https://www.offshore-energy.biz/excelerate-energys-fsru-finds-job-at-jordans-lng-terminal-ahead-of-iraq-gig/",
-      "published_at": "2026-05-07T13:52:54Z",
-      "summary": "<p>Excelerate Energy, a U.S.-based liquefied natural gas (LNG) and power infrastructure company headquartered in Texas, has secured a new assignment for its newbuild floating storage regasification unit (FSRU) at an LNG terminal in Jordan. </p> <p>The post <a href=\"https://www...",
-      "topics": [
-        "gas_supply",
-        "oil_gas",
-        "power_supply"
-      ],
+      "title": "Music venue turns up green energy efforts",
+      "url": "https://www.energylivenews.com/2026/08/21/music-venue-turns-up-its-green-energy/",
+      "published_at": "2026-08-21T11:00:00Z",
+      "summary": "<p>Ecotricity and Future Yard in Birkenhead are collaborating to help live events use low-carbon solutions</p> <p>The post <a href=\"https://www.energylivenews.com/2026/08/21/music-venue-turns-up-its-green-energy/\">Music venue turns up green energy efforts</a> appeared first on...",
+      "topics": [],
       "regions": []
     }
   ],

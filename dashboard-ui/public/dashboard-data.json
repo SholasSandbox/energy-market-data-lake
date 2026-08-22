@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "asOf": "2026-05-07 14:31:29 UTC",
-    "latestDate": "2026-05-07",
+    "asOf": "2026-08-21 23:52:19 UTC",
+    "latestDate": "2026-08-21",
     "region": "GB",
     "scenario": "Conservative Hedge Posture",
     "table": "curated_dataset_electricity_e4e5001aa3d13e5189281de35cbc1cb9",
     "bucket": "energy-market-lake-464975959576-20260405",
-    "dataFreshness": "Daily snapshot (5/48 settlement rows)"
+    "dataFreshness": "Daily snapshot (28/48 settlement rows)"
   },
   "navItems": [
     "Overview",
@@ -24,13 +24,13 @@
       },
       {
         "label": "Loss-Making Books",
-        "value": "0",
-        "detail": "Current portfolio view shows no loss-making books.",
-        "status": "healthy"
+        "value": "1",
+        "detail": "At least one book is currently loss-making.",
+        "status": "investigate"
       },
       {
         "label": "Settlement Completeness",
-        "value": "5/48",
+        "value": "28/48",
         "detail": "One or more settlement periods are missing in the latest snapshot.",
         "status": "watch"
       },
@@ -44,8 +44,8 @@
     "summaryCards": [
       {
         "label": "Portfolio Gross Margin",
-        "value": "\u00a36.94m",
-        "trend": "5/5 books margin-positive",
+        "value": "\u00a35.50m",
+        "trend": "4/5 books margin-positive",
         "detail": "Margin is concentrated in the fixed and industrial books."
       },
       {
@@ -62,19 +62,19 @@
       },
       {
         "label": "Market Price",
-        "value": "\u00a3105.17/MWh",
+        "value": "\u00a3132.06/MWh",
         "trend": "7-day avg \u00a396.13/MWh",
-        "detail": "Current level is +9.4% versus the trailing 7-day complete-day average."
+        "detail": "Current level is +37.4% versus the trailing 7-day complete-day average."
       },
       {
         "label": "Peak Demand",
-        "value": "25,118 MW",
+        "value": "31,687 MW",
         "trend": "7-day avg 37,810 MW",
-        "detail": "Current level is -33.6% versus the trailing 7-day complete-day average."
+        "detail": "Current level is -16.2% versus the trailing 7-day complete-day average."
       },
       {
         "label": "Data Freshness",
-        "value": "2026-05-07",
+        "value": "2026-08-21",
         "trend": "Latest curated daily snapshot",
         "detail": "Dashboard values reflect the latest validated dataset date."
       }
@@ -82,28 +82,28 @@
     "pnlDrivers": [
       {
         "label": "Residential Fixed South",
-        "value": 3362386.0,
+        "value": 3071965.0,
         "tone": "default"
       },
       {
         "label": "Industrial Flex",
-        "value": 1672992.0,
-        "tone": "default"
-      },
-      {
-        "label": "SME Indexed Midlands",
-        "value": 893981.0,
+        "value": 1511647.0,
         "tone": "default"
       },
       {
         "label": "Public Sector Framework",
-        "value": 891083.0,
+        "value": 552259.0,
+        "tone": "default"
+      },
+      {
+        "label": "SME Indexed Midlands",
+        "value": 506753.0,
         "tone": "default"
       },
       {
         "label": "EV Flex Portfolio",
-        "value": 115187.0,
-        "tone": "default"
+        "value": -142965.0,
+        "tone": "loss"
       }
     ],
     "coveragePoints": [
@@ -174,8 +174,8 @@
       {
         "book": "EV Flex Portfolio",
         "segment": "EV",
-        "grossMargin": "\u00a30.12m",
-        "marginPerMwh": "\u00a32.88",
+        "grossMargin": "\u00a3-0.14m",
+        "marginPerMwh": "\u00a3-3.57",
         "hedgeCover": "76%",
         "targetBand": "75% - 90%",
         "openExposure": "24%",
@@ -186,8 +186,8 @@
       {
         "book": "SME Indexed Midlands",
         "segment": "SME",
-        "grossMargin": "\u00a30.89m",
-        "marginPerMwh": "\u00a39.93",
+        "grossMargin": "\u00a30.51m",
+        "marginPerMwh": "\u00a35.63",
         "hedgeCover": "84%",
         "targetBand": "80% - 92%",
         "openExposure": "16%",
@@ -198,8 +198,8 @@
       {
         "book": "Public Sector Framework",
         "segment": "Public Sector",
-        "grossMargin": "\u00a30.89m",
-        "marginPerMwh": "\u00a312.73",
+        "grossMargin": "\u00a30.55m",
+        "marginPerMwh": "\u00a37.89",
         "hedgeCover": "82%",
         "targetBand": "80% - 92%",
         "openExposure": "18%",
@@ -210,8 +210,8 @@
       {
         "book": "Residential Fixed South",
         "segment": "Residential",
-        "grossMargin": "\u00a33.36m",
-        "marginPerMwh": "\u00a324.91",
+        "grossMargin": "\u00a33.07m",
+        "marginPerMwh": "\u00a322.76",
         "hedgeCover": "92%",
         "targetBand": "85% - 97%",
         "openExposure": "8%",
@@ -222,8 +222,8 @@
       {
         "book": "Industrial Flex",
         "segment": "Industrial",
-        "grossMargin": "\u00a31.67m",
-        "marginPerMwh": "\u00a327.88",
+        "grossMargin": "\u00a31.51m",
+        "marginPerMwh": "\u00a325.19",
         "hedgeCover": "90%",
         "targetBand": "85% - 98%",
         "openExposure": "10%",
@@ -245,7 +245,7 @@
             "tone": "amber"
           }
         ],
-        "note": "Current GB Elexon spot is \u00a3105.17/MWh. The amber line shows the trailing 7-day average of complete days.",
+        "note": "Current GB Elexon spot is \u00a3132.06/MWh. The amber line shows the trailing 7-day average of complete days.",
         "region": "GB",
         "source": "Elexon",
         "series": [
@@ -307,20 +307,20 @@
             "label": "Demand",
             "tone": "blue",
             "values": [
-              1656366.0,
-              1544205.0,
-              1498939.0,
-              1587251.0,
-              1686315.0,
-              1689528.372,
-              1416837.0,
-              1580947.0,
               1481110.0,
               1484525.0,
               1409952.0,
               1434745.0,
               157381.0,
-              119488.0
+              142287.0,
+              142824.0,
+              166215.0,
+              150525.0,
+              119416.0,
+              25353.0,
+              762528.0,
+              896113.0,
+              790715.0
             ]
           }
         ]
@@ -337,7 +337,7 @@
             "tone": "amber"
           }
         ],
-        "note": "Latest-day GB Elexon intraday demand and system price profile for 2026-05-07.",
+        "note": "Latest-day GB Elexon intraday demand and system price profile for 2026-08-21.",
         "region": "GB",
         "source": "Elexon",
         "series": [
@@ -345,22 +345,68 @@
             "label": "Demand",
             "tone": "blue",
             "values": [
-              25118.0,
-              24240.0,
-              23415.0,
-              23527.0,
-              23188.0
+              23699.0,
+              21415.0,
+              19914.0,
+              22791.0,
+              25353.0,
+              29516.0,
+              29488.0,
+              30043.0,
+              30561.0,
+              31687.0,
+              31408.0,
+              31227.0,
+              30949.0,
+              30536.0,
+              30155.0,
+              29710.0,
+              30036.0,
+              30142.0,
+              29899.0,
+              29679.0,
+              29188.0,
+              28842.0,
+              28287.0,
+              28104.0,
+              27837.0,
+              28073.0,
+              26635.0,
+              25541.0
             ]
           },
           {
             "label": "Price",
             "tone": "amber",
             "values": [
-              93.61,
-              97.18,
-              99.05,
+              121.84765026189264,
+              124.22792031036911,
+              178.42,
+              114.69,
+              114.69,
+              149.9,
+              149.85,
+              149.55,
+              149.55,
+              127.21,
+              151.99,
+              149.85,
+              149.85,
               118.0,
-              118.0
+              100.1,
+              90.0,
+              100.1,
+              111.09,
+              114.69,
+              174.0,
+              177.48,
+              179.0,
+              114.97,
+              113.51,
+              94.66,
+              163.0,
+              114.69,
+              100.73194613582076
             ]
           }
         ]
@@ -503,29 +549,29 @@
       }
     ],
     "gasContext": {
-      "latestDate": "2026-05-05",
+      "latestDate": "2026-08-21",
       "summaryCards": [
         {
           "label": "Gas Data Date",
-          "value": "2026-05-05",
+          "value": "2026-08-21",
           "trend": "Latest curated ENTSOG gas day",
           "detail": "Gas context is sourced from the curated Athena table, not dashboard snapshot mock data."
         },
         {
           "label": "Total Flow",
-          "value": "784.0 GWh/d",
+          "value": "193.1 GWh/d",
           "trend": "4 selected pointDirections",
           "detail": "Sum of ENTSOG Physical Flow values for the selected seed set."
         },
         {
           "label": "Allocation Proxy",
-          "value": "790.1 GWh/d",
-          "trend": "+0.8% versus flow",
+          "value": "66.4 GWh/d",
+          "trend": "-65.6% versus flow",
           "detail": "Allocation is used as the current demand proxy for the selected gas points."
         },
         {
           "label": "Completeness",
-          "value": "4/4",
+          "value": "0/4",
           "trend": "flow and allocation rows",
           "detail": "Each selected pointDirection is expected to have one flow row and one allocation row."
         }
@@ -535,85 +581,52 @@
           "pointDirection": "BE-TSO-0001ITP-00061entry",
           "pointLabel": "Zeebrugge IZT",
           "direction": "entry",
-          "flowKwhD": 183137952.0,
-          "allocationKwhD": 184904242.0,
-          "deltaKwhD": 1766290.0,
-          "flow": "183.1 GWh/d",
-          "allocation": "184.9 GWh/d",
-          "delta": "+1.8 GWh/d",
-          "status": "complete"
+          "flowKwhD": 0.0,
+          "allocationKwhD": 49768659.0,
+          "deltaKwhD": 49768659.0,
+          "flow": "0.0 GWh/d",
+          "allocation": "49.8 GWh/d",
+          "delta": "+49.8 GWh/d",
+          "status": "incomplete"
         },
         {
           "pointDirection": "BE-TSO-0001ITP-00115exit",
           "pointLabel": "Blaregnies L (BE) / Taisni\u00e8res B (FR)",
           "direction": "exit",
-          "flowKwhD": 58480083.0,
-          "allocationKwhD": 58500000.0,
-          "deltaKwhD": 19917.0,
-          "flow": "58.5 GWh/d",
-          "allocation": "58.5 GWh/d",
-          "delta": "+0.0 GWh/d",
-          "status": "complete"
+          "flowKwhD": 0.0,
+          "allocationKwhD": 5576250.0,
+          "deltaKwhD": 5576250.0,
+          "flow": "0.0 GWh/d",
+          "allocation": "5.6 GWh/d",
+          "delta": "+5.6 GWh/d",
+          "status": "incomplete"
         },
         {
           "pointDirection": "BE-TSO-0001ITP-00555exit",
           "pointLabel": "VIP BENE",
           "direction": "exit",
-          "flowKwhD": 275877915.0,
-          "allocationKwhD": 282350614.0,
-          "deltaKwhD": 6472699.0,
-          "flow": "275.9 GWh/d",
-          "allocation": "282.4 GWh/d",
-          "delta": "+6.5 GWh/d",
-          "status": "complete"
+          "flowKwhD": 0.0,
+          "allocationKwhD": 11024712.0,
+          "deltaKwhD": 11024712.0,
+          "flow": "0.0 GWh/d",
+          "allocation": "11.0 GWh/d",
+          "delta": "+11.0 GWh/d",
+          "status": "incomplete"
         },
         {
           "pointDirection": "CZ-TSO-0001ITP-00537entry",
           "pointLabel": "VIP Brandov",
           "direction": "entry",
-          "flowKwhD": 266496575.0,
-          "allocationKwhD": 264362176.0,
-          "deltaKwhD": -2134399.0,
-          "flow": "266.5 GWh/d",
-          "allocation": "264.4 GWh/d",
-          "delta": "-2.1 GWh/d",
-          "status": "complete"
+          "flowKwhD": 193128521.0,
+          "allocationKwhD": 0.0,
+          "deltaKwhD": -193128521.0,
+          "flow": "193.1 GWh/d",
+          "allocation": "0.0 GWh/d",
+          "delta": "-193.1 GWh/d",
+          "status": "incomplete"
         }
       ],
       "trendPoints": [
-        {
-          "date": "2026-04-29",
-          "flowKwhD": 771909981.0,
-          "allocationKwhD": 779911147.0,
-          "deltaKwhD": 8001166.0,
-          "completenessPct": 100.0,
-          "flow": "771.9 GWh/d",
-          "allocation": "779.9 GWh/d",
-          "delta": "+8.0 GWh/d",
-          "complete": "4/4"
-        },
-        {
-          "date": "2026-04-30",
-          "flowKwhD": 825977404.0,
-          "allocationKwhD": 834389843.0,
-          "deltaKwhD": 8412439.0,
-          "completenessPct": 100.0,
-          "flow": "826.0 GWh/d",
-          "allocation": "834.4 GWh/d",
-          "delta": "+8.4 GWh/d",
-          "complete": "4/4"
-        },
-        {
-          "date": "2026-05-01",
-          "flowKwhD": 731628711.0,
-          "allocationKwhD": 743446376.0,
-          "deltaKwhD": 11817665.0,
-          "completenessPct": 100.0,
-          "flow": "731.6 GWh/d",
-          "allocation": "743.4 GWh/d",
-          "delta": "+11.8 GWh/d",
-          "complete": "4/4"
-        },
         {
           "date": "2026-05-02",
           "flowKwhD": 716978880.0,
@@ -657,9 +670,42 @@
           "allocation": "790.1 GWh/d",
           "delta": "+6.1 GWh/d",
           "complete": "4/4"
+        },
+        {
+          "date": "2026-07-07",
+          "flowKwhD": 864357349.0,
+          "allocationKwhD": 885534287.0,
+          "deltaKwhD": 21176938.0,
+          "completenessPct": 100.0,
+          "flow": "864.4 GWh/d",
+          "allocation": "885.5 GWh/d",
+          "delta": "+21.2 GWh/d",
+          "complete": "4/4"
+        },
+        {
+          "date": "2026-07-08",
+          "flowKwhD": 861611581.0,
+          "allocationKwhD": 864851748.0,
+          "deltaKwhD": 3240167.0,
+          "completenessPct": 100.0,
+          "flow": "861.6 GWh/d",
+          "allocation": "864.9 GWh/d",
+          "delta": "+3.2 GWh/d",
+          "complete": "4/4"
+        },
+        {
+          "date": "2026-08-21",
+          "flowKwhD": 193128521.0,
+          "allocationKwhD": 66369621.0,
+          "deltaKwhD": -126758900.0,
+          "completenessPct": 0.0,
+          "flow": "193.1 GWh/d",
+          "allocation": "66.4 GWh/d",
+          "delta": "-126.8 GWh/d",
+          "complete": "0/4"
         }
       ],
-      "completenessStatus": "healthy"
+      "completenessStatus": "watch"
     }
   },
   "dataQuality": {
@@ -669,19 +715,19 @@
         "source": "Elexon",
         "dataset": "Settlement periods",
         "region": "GB",
-        "latestDate": "2026-05-07",
-        "captured": 5,
+        "latestDate": "2026-08-21",
+        "captured": 28,
         "expected": 48,
         "status": "investigate",
         "detail": "Latest settlement periods intervals are materially incomplete for GB and need investigation.",
         "series": [
-          48,
-          48,
-          48,
-          48,
-          48,
           6,
-          5
+          6,
+          5,
+          1,
+          26,
+          29,
+          28
         ]
       },
       {
