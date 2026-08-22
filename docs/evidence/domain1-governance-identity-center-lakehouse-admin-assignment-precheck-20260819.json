@@ -1,0 +1,55 @@
+{
+  "captured_at_utc": "2026-08-19T07:04:40Z",
+  "status": "prechange_verified",
+  "target_account": {
+    "id": "464975959576",
+    "name": "Olusola_AWS",
+    "purpose": "lakehouse workload account"
+  },
+  "legacy_reference_principal": {
+    "name": "IAMUser1",
+    "principal_type": "IAM_USER",
+    "account_id": "464975959576",
+    "groups": [],
+    "inline_policies": [],
+    "attached_managed_policies": [
+      "AdministratorAccess",
+      "AmazonDynamoDBFullAccess",
+      "AmazonS3FullAccess",
+      "AdministratorAccess-AWSElasticBeanstalk",
+      "AWSLambda_FullAccess",
+      "AdministratorAccess-Amplify"
+    ],
+    "effective_access_finding": "AdministratorAccess already subsumes the five narrower managed policies",
+    "preservation_boundary": "Do not modify the IAM user, console password, access keys, or other legacy credentials"
+  },
+  "identity_center_target": {
+    "principal_alias": "org-admin-principal",
+    "assignment_principal_type": "GROUP",
+    "group_name": "cloud-lab-aws-admins",
+    "group_member_count": 1,
+    "breakglass_principal_in_group": false
+  },
+  "permission_set": {
+    "name": "AdministratorAccess",
+    "session_duration": "PT1H",
+    "attached_aws_managed_policies": [
+      "AdministratorAccess"
+    ],
+    "inline_policy_present": false,
+    "customer_managed_policy_references": [],
+    "permissions_boundary_present": false
+  },
+  "target_account_baseline": {
+    "provisioned_permission_sets": [],
+    "administrator_access_assignments": []
+  },
+  "scp_evaluation": {
+    "root_user_scp": "DenyRootUserActions-LakehouseWorkloads",
+    "scope": "Root principals only",
+    "identity_center_role_affected_by_root_condition": false
+  },
+  "approved_change": "Assign the existing AdministratorAccess permission set to cloud-lab-aws-admins for workload account 464975959576",
+  "rollback": "Delete only the matching workload-account assignment for cloud-lab-aws-admins and AdministratorAccess",
+  "expected_result": "The normal Identity Center user can select the workload account and AdministratorAccess role in the AWS access portal and receive one-hour temporary credentials"
+}

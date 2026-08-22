@@ -1,0 +1,98 @@
+{
+  "captured_at_utc": "2026-08-18T18:25:16Z",
+  "region": "eu-west-2",
+  "workload_account": {
+    "id": "464975959576",
+    "name": "Olusola_AWS",
+    "state": "ACTIVE",
+    "parent_id": "ou-gbyf-m6ppfmpq",
+    "parent_name": "Lakehouse Workloads OU"
+  },
+  "deleted_volumes": [
+    {
+      "id": "vol-0aca77f029e4cb5d2",
+      "size_gib": 80,
+      "type": "gp2",
+      "predelete_state": "available",
+      "predelete_attachment": null,
+      "result": "AWS console displayed successful deletion confirmation"
+    },
+    {
+      "id": "vol-02280579617081ef0",
+      "size_gib": 8,
+      "type": "gp2",
+      "predelete_state": "available after authorized detachment",
+      "former_attachment": {
+        "instance_id": "i-0ab1ed417121d828d",
+        "instance_name": "saa-lab-ssh-instance",
+        "device": "/dev/xvda",
+        "instance_state": "stopped"
+      },
+      "result": "AWS console displayed successful deletion confirmation"
+    }
+  ],
+  "owned_snapshot_inventory_before_deletion": {
+    "count": 0,
+    "result": "No snapshots owned by the workload account in eu-west-2"
+  },
+  "instance_outcome": {
+    "id": "i-0ab1ed417121d828d",
+    "name": "saa-lab-ssh-instance",
+    "instance_type": "t3.micro",
+    "terminated": true,
+    "last_verified_state": "terminated",
+    "root_volume_deleted": true,
+    "public_ipv4_address": null,
+    "elastic_ip_addresses": [],
+    "result": "AWS console displayed successful termination initiation and then Terminated state"
+  },
+  "restored_root_user_scp": {
+    "id": "p-dv2ss5us",
+    "name": "DenyRootUserActions-LakehouseWorkloads",
+    "targets": [
+      "ou-gbyf-m6ppfmpq"
+    ]
+  },
+  "final_ou_service_control_policies": [
+    "p-4stxl0u2",
+    "p-FullAWSAccess",
+    "p-dv2ss5us"
+  ],
+  "cloudtrail_events": [
+    {
+      "event_id": "6e86c11a-8334-44b0-a3d4-99bc2f7399c5",
+      "event_name": "DetachPolicy",
+      "event_time": "2026-08-18T19:05:50+01:00"
+    },
+    {
+      "event_id": "912b4edc-d6c4-4586-b0cc-99fce864def4",
+      "event_name": "AttachPolicy",
+      "event_time": "2026-08-18T19:10:56+01:00"
+    },
+    {
+      "event_id": "77d078b6-da2f-4dc0-94ec-3c4d849767ea",
+      "event_name": "DetachPolicy",
+      "event_time": "2026-08-18T19:12:00+01:00"
+    },
+    {
+      "event_id": "0e37f84f-8ddf-4f61-8f7b-69aca664ef42",
+      "event_name": "AttachPolicy",
+      "event_time": "2026-08-18T19:14:23+01:00"
+    },
+    {
+      "event_id": "376f192e-d1c3-4b42-9d59-6c6cbab94522",
+      "event_name": "DetachPolicy",
+      "event_time": "2026-08-18T19:22:05+01:00"
+    },
+    {
+      "event_id": "82305752-0e10-4c92-aa40-1207ac3febd8",
+      "event_name": "AttachPolicy",
+      "event_time": "2026-08-18T19:23:05+01:00"
+    }
+  ],
+  "final_restore_verification": {
+    "method": "Live AWS Organizations target, policy, and account inventory",
+    "verified_at_utc": "2026-08-18T18:23:48Z",
+    "cloudtrail_lookup_status": "Verified for all three detach and restore windows"
+  }
+}

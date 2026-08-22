@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-08-15
+**Last revised:** 2026-08-22
 
 This log is the durable exam-prep companion to the tracker wrong-answer table.
 It is seeded from the Lakehouse repository tracker and is not Lakehouse
@@ -34,6 +34,9 @@ exposed one genuine new AS2-versus-Amazon-MQ service-selection gap. Full Mock
 006 scored 71/75 on the complexity-calibrated paper and passed ARC and AS2
 transfer, but exposed four confident solution-composition misses. Full Mock
 007 then scored 75/75 and transferred all four Mock 006 remediation targets.
+Mock 008 scored 75/75. Mock 009 scored 73/75 and exposed two narrow themes:
+the conventional PrivateLink NLB role and S3 Batch Operations re-encryption
+completeness.
 
 The separate [AWS Skill Builder assessment review](aws-skill-builder-sap-c02-assessment-review-20260809.md)
 records official-practice attempt 2, all 30 keyed misses, eleven confident
@@ -72,12 +75,14 @@ scope needs to be rechecked.
 | Multi-AZ shared NFS semantics | [Regional EFS Versus Periodic EBS Copies](#2026-08-12-regional-efs-versus-periodic-ebs-copies) | [Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-2---question-17-shared-filesystem-versus-periodic-copies) | [EFS features](https://docs.aws.amazon.com/efs/latest/ug/features.html) · [EFS mount targets](https://docs.aws.amazon.com/efs/latest/ug/accessing-fs.html) |
 | Batch custom AMI and Spot composition | [Batch EC2 Custom AMI Plus Spot](#2026-08-12-batch-ec2-custom-ami-plus-spot) | [Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-3---question-29-batch-custom-ami-plus-spot-capacity) | [Batch managed EC2 compute environments](https://docs.aws.amazon.com/batch/latest/userguide/create-compute-environment-managed-ec2.html) · [Batch custom AMIs](https://docs.aws.amazon.com/batch/latest/userguide/create-batch-ami.html) |
 | Regional failover orchestration completeness | [Warm-Standby Routing Completeness](#2026-08-12-warm-standby-routing-completeness) | [Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-4---question-45-warm-standby-failover-completeness) | [Cross-Region failover guidance](https://docs.aws.amazon.com/solutions/cross-region-failover-and-graceful-failback-on-aws/) |
+| PrivateLink endpoint-service frontend role | [PrivateLink NLB Versus GWLB Endpoint Role](#2026-08-22-privatelink-nlb-versus-gwlb-endpoint-role) | [Mock 009 review](sap-c02-full-mock-009-review-20260822.md#question-11---privatelink-nlb-versus-gwlb-endpoint-role) | [AWS PrivateLink concepts](https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html) |
+| S3 bulk re-encryption action completeness | [S3 Batch Operations Re-Encryption Completeness](#2026-08-22-s3-batch-operations-re-encryption-completeness) | [Mock 009 review](sap-c02-full-mock-009-review-20260822.md#question-40---s3-bulk-re-encryption-action-completeness) | [S3 Batch Operations Copy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops-copy-object.html) · [S3 Select](https://docs.aws.amazon.com/AmazonS3/latest/userguide/selecting-content-from-objects.html) |
 
 ## Review Status
 
 | Item | Status |
 |---|---|
-| Current through practice block | Full Mock 007 completed 2026-08-15 at 75/75 in 142 minutes; 48/48 single-response, 27/27 exact-match multiple-response, and 7/7 uncertain. All four Mock 006 remediation targets transferred; no new wrong-answer entry or focused retest is required. Full Mock 008 is next |
+| Current through practice block | Full Mock 009 completed 2026-08-22 at 73/75: 47/48 single-response, 26/27 exact-match multiple-response, 15/16 uncertain, and 101 active minutes after a 5-minute pause. The post-Mock-009 booking-review gate is reached; review Q11 and Q40 during that explicit decision step |
 | Source-backed carry-forward review | Completed 2026-07-09; Review Cycle 1 completed 2026-07-15 and reviewed-and-corrected Review Cycle 2 completed 2026-07-18 |
 | First review cycle evidenced | Completed 2026-07-15: 4/4 blind recall |
 | Second review cycle evidenced | Completed 2026-07-18: corrected final submission scored 4/4; initial saved drafts contained material gaps, so this is not recorded as an unchanged clean blind pass |
@@ -108,6 +113,8 @@ scope needs to be rechecked.
 | Full mock 005 - 75 questions | 73 / 75 | 97.3% | Completed 2026-08-07 in 108/180 minutes; 46/48 single-response, 27/27 exact-match multiple-response, and 14/16 uncertain answers correct; Questions 47 and 56 missed. |
 | Full mock 006 - 75 questions | 71 / 75 | 94.7% | Completed 2026-08-12 in 190 wall-clock minutes with approximately 10 learner-reported interruption minutes near the end; 47/48 single-response, 24/27 exact-match multiple-response, 11/11 uncertain, and every domain above 80%; Questions 9, 17, 29, and 45 missed. |
 | Full mock 007 - 75 questions | 75 / 75 | 100% | Completed 2026-08-15 in 142/180 minutes; 48/48 single-response, 27/27 exact-match multiple-response, 7/7 uncertain, and every domain at 100%; all four Mock 006 remediation targets transferred. |
+| Full mock 008 - 75 questions | 75 / 75 | 100% | Completed 2026-08-18 in 117 active minutes within a 139-minute wall clock; 48/48 single-response, 27/27 exact-match multiple-response, 8/8 uncertain, and every domain at 100%. |
+| Full mock 009 - 75 questions | 73 / 75 | 97.3% | Completed 2026-08-22 in 101 active minutes within a 106-minute wall clock; 47/48 single-response, 26/27 exact-match multiple-response, 15/16 uncertain; Q11 and Q40 missed. |
 
 ## Artifact Evidence
 
@@ -124,6 +131,8 @@ scope needs to be rechecked.
 | `sap-c02-full-mock-005-75q-20260807.md` and `sap-c02-full-mock-005-review-20260807.md` | Full timed Mock 005 submission and answer-bearing assessment | Frozen submission scored 73/75 in 108 minutes; all 27 multiple-response questions and both Domains 1 and 2 were correct; two narrow single-response misses were recorded. |
 | `sap-c02-full-mock-006-75q-20260812.md` and `sap-c02-full-mock-006-review-20260812.md` | Complexity-calibrated full Mock 006 submission and answer-bearing assessment | Frozen submission scored 71/75; 190 wall-clock minutes included approximately 10 learner-reported interruption minutes, so pacing is qualified; all four misses were confident Domain 2 solution-composition errors. |
 | `sap-c02-full-mock-007-75q-20260815.md` and `sap-c02-full-mock-007-review-20260815.md` | Complexity-calibrated full Mock 007 submission and answer-bearing assessment | Submitted response set scored 75/75 in 142 minutes; all single-response, exact-match multiple-response, uncertain, domain, and Mock 006 transfer checks passed. |
+| `sap-c02-full-mock-008-75q-20260817.md` and `sap-c02-full-mock-008-review-20260818.md` | Complexity-calibrated full Mock 008 submission and answer-bearing assessment | Frozen response set scored 75/75 in 117 active minutes; every scoring and primary-domain category passed. |
+| `sap-c02-full-mock-009-75q-20260820.md` and `sap-c02-full-mock-009-review-20260822.md` | Complexity-calibrated full Mock 009 submission and answer-bearing assessment | Frozen response set scored 73/75 in 101 active minutes; Q11 and Q40 produced two narrow service-role and exact-match action-completeness entries. |
 
 ## Review Cycle 1 Checklist
 
@@ -1103,3 +1112,42 @@ Review status: Independent transfer passed in Full Mock 007 Question 24 on 2026-
 
 References: [local Mock 006 review](sap-c02-full-mock-006-review-20260812.md#miss-4---question-45-warm-standby-failover-completeness) ·
 [Cross-Region failover guidance](https://docs.aws.amazon.com/solutions/cross-region-failover-and-graceful-failback-on-aws/)
+
+### 2026-08-22: PrivateLink NLB Versus GWLB Endpoint Role
+
+```text
+Question theme: Conventional PrivateLink endpoint service for a private TCP application
+SAP-C02 domain: Domain 2 - Design for New Solutions
+Question number: Full Mock 009, Question 11
+My answer: C - Gateway Load Balancer endpoint role
+Correct answer: B - Network Load Balancer frontend
+Why correct: A conventional endpoint service exposes the private application through a Network Load Balancer; a Gateway Load Balancer endpoint inserts virtual network appliances transparently into a traffic path.
+Why my answer was wrong: The answer substituted the appliance-insertion endpoint type for the application-service frontend.
+Error category: Narrow service-role discrimination error.
+Confidence: Learner-marked uncertain.
+Action: Recall application service -> NLB; appliance service chain -> GWLB endpoint. Recheck during the booking review; no immediate broad retest is required because Question 32 retained the full PrivateLink composition.
+Review status: Pending review at the explicit post-Mock-009 booking decision.
+```
+
+References: [local Mock 009 review](sap-c02-full-mock-009-review-20260822.md#question-11---privatelink-nlb-versus-gwlb-endpoint-role) ·
+[AWS PrivateLink concepts](https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html)
+
+### 2026-08-22: S3 Batch Operations Re-Encryption Completeness
+
+```text
+Question theme: Re-encrypting a large existing S3 object population
+SAP-C02 domain: Domain 3 - Continuous Improvement for Existing Solutions
+Question number: Full Mock 009, Question 40
+My answer: C,D - S3 Inventory plus S3 Select
+Correct answer: C,E - S3 Inventory plus S3 Batch Operations Copy
+Why correct: Inventory provides the object manifest and Batch Operations Copy rewrites the objects at scale with the required encryption configuration.
+Why my answer was wrong: S3 Select retrieves filtered content from an individual object; it does not rewrite objects or change their encryption.
+Error category: Exact-match completeness and action-versus-query service selection error.
+Confidence: Confident miss; not learner-marked uncertain.
+Action: Recall inventory -> manifest, Batch Operations Copy -> mass rewrite, S3 Select -> query one object's content. Recheck during the booking review; do not open a broad S3 remediation cycle.
+Review status: Pending review at the explicit post-Mock-009 booking decision.
+```
+
+References: [local Mock 009 review](sap-c02-full-mock-009-review-20260822.md#question-40---s3-bulk-re-encryption-action-completeness) ·
+[S3 Batch Operations Copy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops-copy-object.html) ·
+[S3 Select](https://docs.aws.amazon.com/AmazonS3/latest/userguide/selecting-content-from-objects.html)

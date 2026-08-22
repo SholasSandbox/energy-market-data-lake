@@ -1,0 +1,39 @@
+{
+  "captured_at_utc": "2026-08-18T18:04:55Z",
+  "management_account_id": "349687196588",
+  "workload_account": {
+    "id": "464975959576",
+    "name": "Olusola_AWS",
+    "state": "ACTIVE",
+    "parent_id": "ou-gbyf-m6ppfmpq",
+    "parent_name": "Lakehouse Workloads OU"
+  },
+  "trigger": {
+    "principal": "arn:aws:iam::464975959576:root",
+    "denied_action": "ec2:DescribeInstances",
+    "region": "eu-west-2",
+    "denial_type": "explicit deny in a service control policy"
+  },
+  "root_user_scp": {
+    "id": "p-dv2ss5us",
+    "name": "DenyRootUserActions-LakehouseWorkloads",
+    "targets": [
+      "ou-gbyf-m6ppfmpq"
+    ]
+  },
+  "ou_accounts": [
+    "464975959576"
+  ],
+  "ou_service_control_policies": [
+    "p-4stxl0u2",
+    "p-FullAWSAccess",
+    "p-dv2ss5us"
+  ],
+  "approved_change": "Temporarily detach only p-dv2ss5us from ou-gbyf-m6ppfmpq so the workload root user can inspect and remove the confirmed unwanted EBS cost resource.",
+  "preserved_controls": [
+    "DenyLeavingOrganization-LakehouseWorkloads",
+    "FullAWSAccess",
+    "AWS Organizations membership and OU placement"
+  ],
+  "rollback": "aws organizations attach-policy --profile org-admin --policy-id p-dv2ss5us --target-id ou-gbyf-m6ppfmpq"
+}

@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 MD060 -->
 
-**Last revised:** 2026-08-15
+**Last revised:** 2026-08-22
 
 ## Start Here
 
@@ -26,23 +26,23 @@ in their role-specific locations.
 
 ## Current Immediately Actionable Priority
 
-[Full Mock 007](sap-c02-full-mock-007-75q-20260815.md) was submitted on
-2026-08-15 and independently scored **75/75 (100%) in 142 of 180 minutes**:
-48/48 single-response, 27/27 exact-match multiple-response, and 7/7
-learner-marked uncertain answers. No interruption was recorded, and all four
-primary domains scored 100%.
+[Full Mock 009](sap-c02-full-mock-009-75q-20260820.md) was frozen on
+2026-08-22 and independently scored **73/75 (97.3%)**: 47/48 single-response,
+26/27 exact-match multiple-response, and 15/16 learner-marked uncertain
+answers. The primary-domain scores were 20/20, 21/22, 17/18, and 15/15. The
+106-minute wall clock included a five-minute pause, giving 101 active minutes
+and 79 active minutes remaining.
 
-The [answer-bearing review](sap-c02-full-mock-007-review-20260815.md) records
-the complete key and transfer evidence. All four Mock 006 remediation targets
-passed: OAC plus Lambda@Edge dynamic-origin composition, Regional EFS shared
-filesystem semantics, Batch EC2 custom AMI plus Spot, and complete warm-standby
-traffic orchestration. There is no new wrong-answer theme or immediate focused
-retest.
+The [answer-bearing review](sap-c02-full-mock-009-review-20260822.md) records
+the complete key and the two narrow misses: the conventional PrivateLink NLB
+role and S3 Batch Operations re-encryption completeness. No broad restart or
+automatic additional full mock is justified.
 
-Full Mock 008 is the next fresh independent check. Full Mock 009 then completes
-the learner-selected evidence series before the first go/no-go booking review.
-Use only remaining capacity for the incomplete migration matrix; booking stays
-deferred until after Mock 009.
+The learner-selected evidence gate is now reached. The next tracker-ordered
+action is the explicit go/no-go booking review; this reconciliation does not
+make that decision. The review must consider the nine-mock series, these two
+narrow misses, the incomplete migration matrix, exam availability, and the
+bounded plan to the selected September date.
 
 The [AWS Skill Builder SAP-C02 assessment review](aws-skill-builder-sap-c02-assessment-review-20260809.md)
 records official-practice attempt 2 as a pass at 775 against a 750 threshold.
@@ -205,6 +205,10 @@ retest.
 | [SAP-C02 Full Mock 006 Review](sap-c02-full-mock-006-review-20260812.md) | Answer-bearing independent assessment | Four frozen Domain 2 misses; causal review completed 2026-08-14: one genuine service-boundary knowledge gap, one requirement-parsing error, and two rushed completeness errors; ARC and AS2 transfer passed |
 | [SAP-C02 Full Mock 007 - 75 Questions](sap-c02-full-mock-007-75q-20260815.md) | Submitted complexity-calibrated full simulation | Completed 2026-08-15 at 75/75 in 142 minutes; 48/48 single-response, 27/27 exact-match multiple-response, 7/7 uncertain, and every domain at 100%; no answer key in the attempt artifact |
 | [SAP-C02 Full Mock 007 Review](sap-c02-full-mock-007-review-20260815.md) | Answer-bearing independent assessment | Clean 100% result; all four Mock 006 remediation targets transferred; no new wrong-answer entry or focused retest required |
+| [SAP-C02 Full Mock 008 - 75 Questions](sap-c02-full-mock-008-75q-20260817.md) | Frozen full-simulation submission | Completed 2026-08-18 at 75/75: 48/48 single-response, 27/27 exact-match multiple-response, 8/8 uncertain, and every domain at 100%; 139 wall-clock minutes included a 22-minute pause, giving 117 active minutes |
+| [SAP-C02 Full Mock 008 Review](sap-c02-full-mock-008-review-20260818.md) | Answer-bearing independent assessment | Clean 100% result; complete exact-match, uncertain-answer, transfer, and timing-qualified evidence; no wrong-answer entry or focused retest required |
+| [SAP-C02 Full Mock 009 - 75 Questions](sap-c02-full-mock-009-75q-20260820.md) | Frozen full-simulation submission | Completed 2026-08-22 at 73/75: 47/48 single-response, 26/27 exact-match multiple-response, 15/16 uncertain, and 101 active minutes within a 106-minute wall clock |
+| [SAP-C02 Full Mock 009 Review](sap-c02-full-mock-009-review-20260822.md) | Answer-bearing independent assessment | Two narrow misses: conventional PrivateLink NLB role and S3 Inventory plus Batch Operations Copy for bulk re-encryption; the post-Mock-009 booking-review gate is reached but no decision is made here |
 | [AWS Skill Builder SAP-C02 Assessment Review](aws-skill-builder-sap-c02-assessment-review-20260809.md) | Official-practice export audit and source-backed remediation | Attempt 2 passed at scaled score 775/750 threshold; 45 correct, 30 incorrect, 0 skipped; 12h29 recorded duration means calibration only, not timed booking evidence; dated Object Lock and KMS keys are explicitly corrected |
 | [AWS Skill Builder Answer-Difference Audit](aws-skill-builder-sap-c02-answer-difference-audit-20260809.md) | Answer-bearing mismatch audit | All 30 selection/key differences checked: 28 keys stand, Question 7 is now learner-correct under current AWS behaviour, and Question 10 has a dated key while the learner's policy-edit answer remains wrong |
 | [SAP-C02 Domain 3 Mental-Model Diagnostic](sap-c02-domain-3-mental-model-diagnostic-25q-20260812.md) | Frozen timed focused diagnostic | Completed 2026-08-12 at 25/25 in 47 of 60 minutes; 20/20 Domain 3, 5/5 cross-domain controls, 16/16 single-response, 9/9 exact-match multiple-response, and no uncertainty recorded |

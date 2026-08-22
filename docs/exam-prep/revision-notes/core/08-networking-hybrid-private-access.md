@@ -1,6 +1,7 @@
 # 08 - Networking, Hybrid Connectivity, and Private Access
 
-**Last revised:** 2026-08-09
+**Last revised:** 2026-08-20<br>
+**Latest revision scope:** Added the Direct Connect acronym and VIF recall legend.
 
 Networking questions in SAP-C02 are usually about scale, isolation, transitivity, routing, hybrid connectivity, and cost.
 
@@ -198,6 +199,20 @@ Choose PrivateLink when:
 Trap: PrivateLink is not transitive network routing. It exposes a service endpoint, not full VPC connectivity.
 
 ## Direct Connect and VPN
+
+### Direct Connect recall legend
+
+| Acronym or term | Meaning | Fast recall cue |
+|---|---|---|
+| DX | AWS Direct Connect | Dedicated private network connection into AWS; not encrypted by default |
+| VIF | Virtual interface | Logical interface carried over a DX connection |
+| Private VIF | Private virtual interface | Private VPC addressing through a VGW directly or a DXGW associated with VGWs |
+| Public VIF | Public virtual interface | AWS public service endpoints using public IP addressing; not general internet transit |
+| Transit VIF | Transit virtual interface | DXGW-to-TGW path for centralized access to many VPCs |
+| DXGW | Direct Connect gateway | Global gateway linking eligible VIFs to VGWs or TGWs |
+| VGW | Virtual private gateway | VPC-level termination for the private-VIF path |
+| TGW | Transit Gateway | Regional routing hub reached through a transit VIF and DXGW |
+| BGP | Border Gateway Protocol | Exchanges prefixes and path attributes across the hybrid connection |
 
 | Requirement | Choice |
 |---|---|

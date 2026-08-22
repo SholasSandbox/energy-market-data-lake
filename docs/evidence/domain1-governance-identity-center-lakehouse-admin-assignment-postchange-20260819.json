@@ -1,0 +1,47 @@
+{
+  "captured_at_utc": "2026-08-19T07:07:02Z",
+  "status": "completed_and_verified",
+  "target_account": {
+    "id": "464975959576",
+    "name": "Olusola_AWS"
+  },
+  "account_assignment": {
+    "principal_type": "GROUP",
+    "group_name": "cloud-lab-aws-admins",
+    "permission_set_name": "AdministratorAccess",
+    "session_duration": "PT1H",
+    "request_id": "3eb971e5-2714-4ef9-865c-142bee9ce5d3",
+    "status": "SUCCEEDED",
+    "assignment_count": 1
+  },
+  "provisioning_verification": {
+    "permission_set_provisioned_to_target_account": true,
+    "portal_role_listed": "AdministratorAccess"
+  },
+  "temporary_session_verification": {
+    "account_id": "464975959576",
+    "principal_type": "ASSUMED_ROLE",
+    "role_name_prefix": "AWSReservedSSO_AdministratorAccess_",
+    "ec2_read_succeeded": true,
+    "s3_read_succeeded": true,
+    "temporary_credentials_persisted": false
+  },
+  "legacy_iam_user_preservation": {
+    "user_name": "IAMUser1",
+    "user_still_present": true,
+    "attached_managed_policy_count": 6,
+    "active_access_key_still_present": true,
+    "console_login_profile_still_present": true,
+    "legacy_credentials_modified": false
+  },
+  "breakglass_preservation": {
+    "breakglass_user_assigned_to_workload_administrator_access": false,
+    "emergency_assignment_modified": false
+  },
+  "cloudtrail": {
+    "event_name": "CreateAccountAssignment",
+    "event_id": "2402fa12-971c-469b-941c-f87795057402",
+    "event_time": "2026-08-19T08:05:31+01:00"
+  },
+  "rollback": "Delete only the cloud-lab-aws-admins AdministratorAccess assignment for workload account 464975959576"
+}

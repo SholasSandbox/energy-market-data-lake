@@ -5,6 +5,9 @@
 *Companion to the Organizations / Identity Center / IAM guide.*
 *Prepared for: AWS Infrastructure Solution Architect (Beginner) with 20+ years in Financial Services and Energy*
 
+**Last revised:** 2026-08-20<br>
+**Latest revision scope:** Expanded the Direct Connect VIF entries in the acronym legend.
+
 ---
 
 ## Legend — Acronyms and Terms Used in This Document
@@ -22,7 +25,10 @@
 | **IGW** | Internet Gateway | VPC component that enables internet access. |
 | **NAT GW** | Network Address Translation Gateway | Managed outbound-only internet egress for private subnets. |
 | **NLB** | Network Load Balancer | Layer-4 load balancer (TCP/UDP/TLS). |
+| **Private VIF** | Private virtual interface | Private VPC addressing through a VGW directly or a DXGW associated with VGWs. |
+| **Public VIF** | Public virtual interface | AWS public service endpoints using public IP addressing; not general internet transit. |
 | **TGW** | Transit Gateway | Regional hub-and-spoke router for VPCs, VPNs, and DX. |
+| **Transit VIF** | Transit virtual interface | DXGW-to-TGW path for centralised access to many VPCs. |
 | **VGW** | Virtual Private Gateway | Legacy single-VPC VPN/DX termination point. |
 | **VIF** | Virtual Interface | Logical interface on a DX connection. Three kinds: Private, Public, Transit. |
 | **VPC** | Virtual Private Cloud | Logically isolated network in AWS. |
