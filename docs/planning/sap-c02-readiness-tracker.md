@@ -4,15 +4,15 @@
 
 **Owner:** [redacted-owner]  
 **Created:** 2026-06-12  
-**Last revised:** 2026-08-22<br>
+**Last revised:** 2026-08-30<br>
 **Target exam:** AWS Certified Solutions Architect – Professional, SAP-C02  
-**Scheduled exam:** 2026-08-29 at 13:00 Europe/London (BST), in person at a Pearson VUE test centre<br>
+**Exam outcome:** Passed on 2026-08-29 after an in-person Pearson VUE attempt<br>
 **Earliest booking decision gate:** completed 2026-08-22 after full mock 009; **recommendation:** GO; **booking:** completed 2026-08-22
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-08-22
-**Last practice evidence update:** 2026-08-22
-**Last readiness-state publication:** 2026-08-22 (Mocks 008-009, exact-match reviews, GO recommendation, bounded final-review plan, and 7 Rs strategy matrix; see Git history)
+**Last repository reconciliation:** 2026-08-30
+**Last practice evidence update:** 2026-08-23
+**Last readiness-state publication:** 2026-08-30 (final-freshness evidence, passed-attempt closure, and AWS Solutions Architect interview transition; see Git history)
 **Last tutorial evidence update:** 2026-07-01
 **Last governance study evidence reconciliation:** 2026-07-19 (published evidence through 2026-07-13; later legend edits remain local)
 
@@ -170,7 +170,7 @@ sequence. Before promoting a tutorial pattern into the lakehouse:
 |---|---|
 | Earliest evidence-led booking decision | Completed 2026-08-22 after full mock 009 and seven further mocks after full mock 002 |
 | Formal readiness-review backstop | Retired: the GO decision is complete and the exam should precede the 2026-09-14 final interview |
-| Scheduled exam attempt | 2026-08-29 at 13:00 Europe/London (BST) |
+| SAP-C02 attempt | Completed in person on 2026-08-29; learner-provided score report confirms Pass |
 | Delivery | In person at a Pearson VUE test centre |
 | Earlier preference and hard limit | 2026-08-28 was unavailable at the selected centre; the booked 2026-08-29 appointment is earlier than the 2026-09-04 hard limit |
 | Exam booking rule | Satisfied on 2026-08-22: post-Mock-009 review found the quantitative gate, stable domains, exact-match performance, remediation transfer, and no recurring unresolved trap; the separately authorized purchase then completed successfully |
@@ -223,9 +223,10 @@ recorded below and recommends GO. This is a recommendation to book, not an
 external booking or authorization to incur the exam charge.
 
 The learner subsequently authorized the Pearson VUE scheduling and payment
-flow. The exam is now scheduled in person for Saturday, 2026-08-29 at 13:00
-Europe/London (BST). Private order, registration, payment-card, contact, and
-address details are deliberately excluded from this public tracker.
+flow. The in-person exam was completed on Saturday, 2026-08-29, and the
+learner-provided score report confirms Pass. Private order, registration,
+payment-card, contact, and address details are deliberately excluded from this
+public tracker.
 
 ### Post-Mock-009 go/no-go review and scheduling update - 2026-08-22
 
@@ -256,16 +257,20 @@ Optional third-party reference: [Tutorials Dojo SAP-C02 practice exams](https://
 
 ### Bounded final-review plan
 
-| Period | Maximum scope | Required outcome |
+| Date | Maximum scope | Required outcome |
 |---|---|---|
-| 2026-08-22 to 2026-08-25 | 3-4 focused hours | Recall NLB/GWLB endpoint roles and Inventory/Batch Operations/S3 Select; verify the 7 Rs including Relocate; confirm the registered name matches both required hard-copy IDs. |
-| 2026-08-26 to 2026-08-28 | No more than 2 light hours | Use flash recall only; add no new provider or broad content. Confirm the test-centre route and arrival plan, then stop heavy study by the evening of 2026-08-28. |
-| 2026-08-29 | Scheduled exam, 13:00 BST | Arrive at least 15 minutes early with the two required original, valid hard-copy IDs; sit SAP-C02 at the booked test centre. |
+| 2026-08-23 | Completed: one answer-free 45-question closed-book mixed freshness assessment; 90-minute limit | Scored 44/45 in 55 minutes: 28/29 single-response, 16/16 exact-match multiple-response, and 3/3 uncertain. S3 re-encryption transferred at 4/4; conventional PrivateLink NLB frontend recurred once. This remains final-freshness evidence, not a tenth full mock or new booking gate. |
+| 2026-08-24 | Review only the genuine PrivateLink miss; 30-45 minutes | From memory, contrast conventional application service -> provider NLB -> endpoint service -> consumer interface endpoint; appliance insertion -> provider GWLB -> consumer GWLB endpoint plus route steering; broad routed connectivity -> Transit Gateway. Add a deliberate final answer-review pass and confirm the registered name matches both required hard-copy IDs. |
+| 2026-08-25 | One 15-question closed-book exact-match check; 30 minutes | Confirm retention with one changed-scenario NLB/GWLB/TGW transfer item; S3 needs ordinary maintenance only after its 4/4 transfer result. |
+| 2026-08-26 | Ten light closed-book recall questions; 20 minutes | Maintain retrieval fluency without adding new material. |
+| 2026-08-27 | Eight light closed-book recall questions; 15-20 minutes | Retain confidence and stop if the bounded material is clean. |
+| 2026-08-28 | Four to six verbal recall prompts; 10-15 minutes | Confirm the test-centre route and arrival plan, then stop study by the evening. |
+| 2026-08-29 | Completed: in-person SAP-C02 attempt; Pass confirmed | The learner-provided score report confirms Pass. Both required-ID and route checks passed before the attempt. Do not record private registration data or exam-question content. |
 | After the exam to 2026-09-13 | Interview preparation | Stop SAP-C02 exam preparation and focus on the AWS Solutions Architect assessment and final interview on 2026-09-14. |
 
 Another full mock is not required by the current evidence and should not consume
-the short runway to the booked 2026-08-29 attempt. A material new weakness
-would justify targeted review, not automatic postponement.
+the completed preparation programme retrospectively. The bounded taper and
+confirmed pass close the exam-assessment sequence.
 
 ---
 
@@ -300,9 +305,9 @@ the current week and leave future planned weeks blank.
 | 2026-08-03 | 10–12 | 14 | 0 | 6 | 8 | Full Mock 003 scored 75/75, Full Mock 004 scored 70/75, and its focused retest scored 7/8. Full Mock 005 then scored 73/75 in 108 minutes with 27/27 exact-match multiple-response, every domain above 93%, and successful Lambda@Edge transfer. Its two misses were ARC single-response over-selection and Transfer Family AS2 service selection. AWS Skill Builder official-practice attempt 2 also passed at scaled score 775 against 750, but its recorded 12h29 duration keeps it outside timed booking evidence. Continue to Mock 006 and use only remaining capacity for the migration matrix. No total hours are inferred from artifact timestamps. |
 | 2026-08-10 | 10–12 | 15 | 0 | 6 | 9 | The focused Domain 3 diagnostic scored 25/25 in 47 minutes, including 20/20 on Domain 3. Full Mock 006 then scored 71/75 (94.7%): 190 wall-clock minutes with approximately 10 minutes of learner-reported short interruptions near the end, giving an estimated 180 active minutes; 24/27 exact-match multiple-response, 11/11 uncertain answers, Domains 1, 3, and 4 at 100%, and Domain 2 at 18/22. The learner completed the miss review on 2026-08-14. Full Mock 007 then scored 75/75 in 142 minutes on 2026-08-15: 48/48 single-response, 27/27 exact-match multiple-response, 7/7 uncertain, every domain at 100%, and all four Mock 006 remediation targets transferred. No total hours are inferred from artifact timestamps. |
 | 2026-08-17 | 10–12 |  |  |  |  | Full Mocks 008 and 009 preserved the two-mock cadence. Mock 008 scored 75/75 in 117 active minutes. Mock 009 scored 73/75 on 2026-08-22 in 101 active minutes within a 106-minute wall clock: 47/48 single-response, 26/27 exact-match multiple-response, 15/16 uncertain, and primary-domain scores of 20/20, 21/22, 17/18, and 15/15. The post-Mock-009 gate is reached; run the explicit go/no-go booking review next. No total hours are inferred from artifact timestamps. |
-| 2026-08-24 | 10–12 |  |  |  |  | SAP-C02 is booked in person for 2026-08-29 at 13:00 BST. Complete only narrow Mock 009 recall, ID checks, and test-centre logistics; no full mock or new provider gate. |
-| 2026-08-31 | 10–12 |  |  |  |  | SAP-C02 should be complete. Redirect capacity to the AWS Solutions Architect assessment and final-interview preparation. |
-| 2026-09-07 | 10–12 |  |  |  |  | SAP-C02 should be complete. Redirect capacity to the AWS Solutions Architect assessment and final-interview preparation. |
+| 2026-08-24 | 10–12 |  |  |  |  | SAP-C02 final taper completed without another full mock or provider gate. Required-ID and route checks passed, the in-person attempt was completed on 2026-08-29, and the learner-provided score report confirms Pass. Redirect capacity to the AWS Solutions Architect assessment and final-interview preparation. |
+| 2026-08-31 | 10–12 |  |  |  |  | SAP-C02 is passed and preparation is closed. Redirect capacity to the AWS Solutions Architect assessment and final-interview preparation. |
+| 2026-09-07 | 10–12 |  |  |  |  | Keep SAP-C02 preparation closed. Continue the AWS Solutions Architect assessment and final-interview preparation. |
 | 2026-09-14 | 10–12 |  |  |  |  | AWS Solutions Architect final interview: assessment plus an under-five-hour video interview. Do not divide attention with SAP-C02 preparation. |
 | 2026-09-21 | 10–12 |  |  |  |  | Post-interview recovery and evidence reconciliation only; no deferred work resumes automatically. |
 | 2026-09-28 | 10–12 |  |  |  |  | Re-plan post-exam and post-interview priorities from explicit evidence and authorization. |
@@ -343,8 +348,8 @@ Official SAP-C02 domains:
 | Domain | Weight | Status | Evidence required |
 |---|---:|---|---|
 | Domain 1: Design Solutions for Organizational Complexity | 26% | Partial | Workload IAM, logging, tagging, budget evidence, Organizations membership, selected Cost Allocation Tag activation, governance preflight evidence, Security Tooling vs Log Archive separation, external governance study diagrams, the first two Lakehouse Workloads OU SCP guardrails, live Security Tooling account placement, Security Tooling alternate-contact readiness, AWS Config delegated-admin migration, Security Tooling AWS Config recorder onboarding, the `so-aws-admin` decommission-path decision, final closure package, and account-closure evidence, GuardDuty delegated-admin planning, GuardDuty live-readiness evidence, and live GuardDuty delegated administration with foundational coverage in `eu-west-2` exist. Full Mock 009 scored 20/20 in this primary-domain mapping; Security Hub/OAM adoption, broader Identity Center model, and enterprise networking remain open |
-| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, two 20-question practice blocks, separate tutorial evidence through Lesson 34A with conceptual/design evidence through Lesson 37, later practice blocks 003-006, the Networking comparison package, the DR pattern matrix, the RTO/RPO decision table, the Lakehouse recovery mapping, the source-backed DR scenario review, a focused 12/12 Resilience/DR submission, the fresh 12/12 structurally isolated DR retest, and a 29/30 timed mixed diagnostic are complete repository evidence. Full Mock 009 scored 21/22, with one narrow NLB-versus-GWLB endpoint-role miss; Question 32 retained the broader PrivateLink composition. Later migration decisions remain open |
-| Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, cost guardrails, separate tutorial implementation evidence through Lesson 34A with conceptual/design evidence through Lesson 37, the 218-test tutorial baseline, and OAM vs CloudTrail vs Config study evidence exist. A timed focused diagnostic scored 20/20 on Domain 3, with 4/4 in each current task area, and Full Mock 009 scored 17/18; its one miss was S3 Batch Operations re-encryption exact-match completeness. Systematic repository improvement notes and remaining hardening are still open |
+| Domain 2: Design for New Solutions | 29% | In progress | Lakehouse readiness closure, repository-side Domain 2 consolidation, two 20-question practice blocks, separate tutorial evidence through Lesson 34A with conceptual/design evidence through Lesson 37, later practice blocks 003-006, the Networking comparison package, the DR pattern matrix, the RTO/RPO decision table, the Lakehouse recovery mapping, the source-backed DR scenario review, a focused 12/12 Resilience/DR submission, the fresh 12/12 structurally isolated DR retest, and a 29/30 timed mixed diagnostic are complete repository evidence. Full Mock 009 scored 21/22. The final-freshness assessment scored 12/13 in Domain 2, with a second narrow conventional PrivateLink NLB-frontend miss while GWLB appliance insertion and TGW inspection routing held. The bounded recall was completed before the passed exam; later repository migration decisions remain open and deferred until post-interview re-planning. |
+| Domain 3: Continuous Improvement for Existing Solutions | 25% | Partial | Parquet, lifecycle, validation, observability, public-access controls, alerting, cost guardrails, separate tutorial implementation evidence through Lesson 34A with conceptual/design evidence through Lesson 37, the 218-test tutorial baseline, and OAM vs CloudTrail vs Config study evidence exist. A timed focused diagnostic scored 20/20 on Domain 3, with 4/4 in each current task area, and Full Mock 009 scored 17/18. The final-freshness assessment scored 12/12 in Domain 3 and passed all four S3 re-encryption transfer checks, including both exact-match items. Systematic repository improvement notes and remaining hardening are still open. |
 | Domain 4: Accelerate Workload Migration and Modernization | 20% | Partial | Exercise 002 exposed a rehost-vs-refactor/MGN weak area; later practice blocks show stronger mixed-domain performance, the Domain 3 diagnostic cross-domain controls scored 5/5, and Full Mock 009 scored 15/15 in this primary-domain mapping with complex migration composition retained. The 7 Rs strategy matrix is complete, including Relocate; the migration playbook and separate database/data-transfer comparisons remain open |
 
 Full Mocks 001-009 now provide repeated evidence across all four domains, with
@@ -365,7 +370,7 @@ post-Mock-009 booking gate.
 | 2026-07-19 to 2026-07-26 | Domain 2 Resilience/DR | Domain 3 recovery validation |
 | 2026-07-27 to 2026-08-16 | Domain 4 Migration | Domain 2 Resilience/DR retention and Domain 3 cost foundations |
 | 2026-08-17 to 2026-08-27 | All domains | Full-mock evidence closure followed by narrow final recall |
-| 2026-08-28 to 2026-08-29 | Narrow confirmed weak areas | Light final recall followed by the booked in-person SAP-C02 attempt on 2026-08-29 at 13:00 BST |
+| 2026-08-28 to 2026-08-29 | Narrow confirmed weak areas | Light final recall followed by the completed, passed in-person SAP-C02 attempt on 2026-08-29 |
 | 2026-09-05 to 2026-09-14 | Near-term cloud architect positioning | AWS Solutions Architect assessment and final-interview preparation |
 
 ---
@@ -773,6 +778,7 @@ of unresolved errors remain controlling.
 | 2026-08-15 | `docs/exam-prep/sap-c02-full-mock-007-75q-20260815.md` and `docs/exam-prep/sap-c02-full-mock-007-review-20260815.md` | Full 75-question mock; 142 of 180 minutes; no interruption recorded | 75/75 (100%) | None identified | Submitted response set independently scored: 48/48 single-response, 27/27 exact-match multiple-response, 7/7 uncertain, and every domain at 100%. OAC plus Lambda@Edge, Regional EFS, Batch EC2 custom AMI plus Spot, and complete warm-standby orchestration all transferred from Mock 006; no new wrong-answer entry or focused retest is required |
 | 2026-08-18 | `docs/exam-prep/sap-c02-full-mock-008-75q-20260817.md` and `docs/exam-prep/sap-c02-full-mock-008-review-20260818.md` | Full 75-question mock; 139 wall-clock minutes with an explicit 22-minute pause; 117 active minutes and 63 active minutes remaining | 75/75 (100%) | None identified | Frozen response set independently scored: 48/48 single-response, 27/27 exact-match multiple-response, 8/8 uncertain, and every domain at 100%. Prior organization-control, DynamoDB, CloudFront/write-continuity, Batch, warm-standby, AS2, and migration service-selection boundaries all held; no new wrong-answer entry or focused retest is required |
 | 2026-08-22 | `docs/exam-prep/sap-c02-full-mock-009-75q-20260820.md` and `docs/exam-prep/sap-c02-full-mock-009-review-20260822.md` | Full 75-question mock; 106 wall-clock minutes with an explicit five-minute pause; 101 active minutes and 79 active minutes remaining | 73/75 (97.3%) | PrivateLink NLB versus GWLB endpoint role; S3 Inventory plus Batch Operations Copy for bulk re-encryption | Frozen response set independently scored: 47/48 single-response, 26/27 exact-match multiple-response, 15/16 uncertain, and primary-domain scores of 20/20, 21/22, 17/18, and 15/15. The two-mock weekly cadence and learner-selected evidence gate are complete; perform the explicit booking review next without treating this row as the decision |
+| 2026-08-23 | `docs/exam-prep/sap-c02-final-freshness-assessment-45q-20260823.md` and `docs/exam-prep/sap-c02-final-freshness-assessment-45q-review-20260823.md` | Closed-book final-freshness assessment; 55 of 90 minutes | 44/45 (97.8%) | Conventional PrivateLink endpoint-service frontend: NLB versus Transit Gateway | Frozen response set independently scored: 28/29 single-response, 16/16 exact-match multiple-response, 3/3 uncertain, and domain scores of 12/12, 12/13, 12/12, and 8/8. S3 re-encryption transferred at 4/4. Q4 was a confident recurrence with 35 minutes available, so the 2026-08-24 action is a three-way NLB/GWLB/TGW recall plus deliberate final answer review, not broad remediation or a new gate. |
 
 Artifact manifest for completed exercise archive Blocks 003 through 006:
 `docs/exam-prep/artifacts/sap-c02-completed-exercises-003-to-006-manifest.md`.
@@ -1172,13 +1178,13 @@ one coherent current revision route.
   items correct and both uncertain answers correct. Focused remediation is
   complete; monitor transfer in independent mocks.
 
-**Next tracked priority:** the GO recommendation, completed 7 Rs strategy
-matrix, and in-person 2026-08-29 13:00 BST appointment are recorded. Perform
-only the short recall, ID, and test-centre logistics plan above. Defer the
-non-blocking database/data-transfer consolidation until after the exam and
-2026-09-14 interview unless a narrow lookup directly supports final recall.
-The external booking transition has occurred; the next state transition is the
-exam result and post-attempt reconciliation.
+**Next tracked priority:** the in-person SAP-C02 attempt is complete and the
+learner-provided score report confirms Pass. Keep SAP-C02 preparation closed
+and focus on the AWS Solutions Architect assessment and final interview on
+2026-09-14. Defer the non-blocking database/data-transfer consolidation and
+parked repository work until after the interview and a separate tracker-led
+re-planning decision. The exam-result and post-attempt state transition has
+occurred.
 
 ### Revision-maintenance register
 
@@ -1211,30 +1217,30 @@ booking-blocking only when it represents a material or recurring exam unknown.
 | Two timed practice exams at 80%+ OR one 80%+ and one 75–79% with narrow weak areas | Met: all nine timed mocks scored 93.3%-100%; aggregate 656/675 (97.2%) | Met; strongly exceeds the quantitative rule |
 | Domain 1 governance notes complete | Partially met as a repository programme: the governance ADR, Organizations/OU evidence, SCPs, Identity Center matrix, break-glass procedure, logging/security design, Config, GuardDuty, and closure evidence exist; Security Hub/OAM and broader enterprise implementation remain deliberate gaps | Non-blocking for booking: Domain 1 evidence is broad and Mock 009 scored 20/20; open implementation breadth is not an exam unknown |
 | Networking comparison matrix complete | Met: verified decision matrix, source-backed review, tracked diagrams, and an 8/8 focused blind attempt | Met |
-| Migration matrix complete | Met: the 7 Rs strategy matrix includes Relocate and is recorded at `docs/planning/domain-4-migration-decision-matrix-20260823.md` | Met; the separately tracked database and data-transfer comparisons remain bounded final-review work, not booking gates |
+| Migration matrix complete | Met: the 7 Rs strategy matrix includes Relocate and is recorded at `docs/planning/domain-4-migration-decision-matrix-20260823.md` | Met; the separately tracked database and data-transfer comparisons remain post-interview consolidation work, not exam-readiness gaps |
 | Lakehouse readiness closure complete and documented | Met: core path, encryption, versioning, lifecycle, tags, IAM, current end-to-end evidence, and stale Phase 1 reconciliation are complete | Met |
 | IAM/Organizations/SCP design complete | Partially met as a live programme: target structure, catalogue, examples, break-glass path, and two OU-targeted SCPs exist; wider exception testing and assignments remain open | Non-blocking for booking: design knowledge and applied evidence are sufficient; remaining live breadth requires separate approval and is not an exam-prep dependency |
 | Wrong-answer log reviewed twice | Met with evidence caveat: Cycle 1 was a blind 4/4; Cycle 2 ended 4/4 after material corrections and is not represented as an unchanged clean pass | Met |
-| No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Met for exam readiness: no recurring unresolved trap remains across nine mocks; the Q11 PrivateLink role miss is narrowed by correct broader composition, and migration performance is 98.5% | Met; continue bounded recall only |
-| Exam availability and booking | Met: the authorized Pearson VUE flow verified the selected centre's inventory and booked an in-person 2026-08-29 13:00 BST appointment, earlier than the 2026-09-04 hard limit | Met; preserve the appointment and complete only bounded logistics and recall |
-| Bounded plan through exam date | Met: the revised plan limits work to narrow recall, ID checks, and test-centre logistics through the booked 2026-08-29 attempt, then protects preparation time for the 2026-09-14 final interview | Met |
+| No major unknowns in VPC, TGW, PrivateLink, DX/VPN, DR, migration | Met for exam readiness with one bounded recurrence: final-freshness Q4 repeated the conventional PrivateLink NLB frontend, while GWLB appliance insertion, TGW inspection routing, broader PrivateLink composition, and migration performance remained strong | Met; the bounded recall was completed before the passed exam and no post-result remediation is required |
+| Exam availability and booking | Met: the authorized Pearson VUE flow verified the selected centre's inventory and booked an in-person 2026-08-29 13:00 BST appointment, earlier than the 2026-09-04 hard limit | Met; the appointment was completed and the learner-provided score report confirms Pass |
+| Bounded plan through exam date | Met: the revised plan limited work to narrow recall, ID checks, and test-centre logistics through the 2026-08-29 attempt, then protected preparation time for the 2026-09-14 final interview | Met; the taper and passed attempt are complete |
 
-### Current readiness assessment - 2026-08-22
+### Current readiness assessment - 2026-08-29
 
 | Item | Status |
 |---|---|
-| Readiness status | GO: strong and repeatable across nine full mocks, ranging from 93.3% to 100%, with a 97.2% aggregate, no domain below 75%, 96.3% exact-match multiple-response, and successful transfer of earlier remediation |
-| Recommendation | GO accepted and acted on: sit the booked in-person exam on 2026-08-29 at 13:00 BST |
-| Booking status | Booked and paid through the separately authorized Pearson VUE flow; status Scheduled. Private transaction and registration identifiers are not recorded in the repository |
-| Primary residual risk | ID/profile match, punctual test-centre arrival, and the two narrow Mock 009 recall points. No additional full mock is required; the remaining database/data-transfer comparisons are non-blocking |
+| Readiness status | Complete: the learner-provided score report confirms Pass for the in-person SAP-C02 attempt completed on 2026-08-29 |
+| Recommendation | Keep SAP-C02 preparation closed and redirect attention to the 2026-09-14 AWS Solutions Architect assessment and final interview. Do not reconstruct or record exam questions. |
+| Attempt status | Completed and passed in person. Private registration, testing-centre, identity, and transaction details remain outside repository evidence. |
+| Primary residual risk | Dividing attention by reopening completed SAP-C02 study or resuming deferred repository work before the interview. Interview preparation remains the controlling near-term priority. |
 
 Full mocks 001-009 demonstrate strong endurance, broad domain coverage, stable
 scores above every quantitative threshold, and recovery after narrow misses.
 Mock 009's 73/75 result retained strong exact-match, domain-floor, and timing
-performance. No immediate focused retest or broad domain restart is justified.
-The post-Mock-009 review recommends GO. Tutorials Dojo remains optional
-corroboration, and a tenth full mock is not required unless new evidence
-reveals a broad or recurring weakness.
+performance. The later 44/45 final-freshness assessment closed the S3 boundary
+but repeated one narrow PrivateLink frontend distinction. The bounded taper,
+ID check, route check, and exam attempt are now complete. No SAP-C02 study
+continues after the confirmed pass.
 
 ### Final booking decision
 
@@ -1256,6 +1262,7 @@ reveals a broad or recurring weakness.
 | 2026-08-22 | 7 Rs strategy matrix complete; GO unchanged | The learner submitted `docs/planning/domain-4-migration-decision-matrix-20260823.md` with Rehost, Replatform, Refactor, Repurchase, Retain, Retire, and Relocate. This closes the strategy-matrix criterion; the separately tracked database and data-transfer comparisons remain bounded, non-blocking final-review work |
 | 2026-08-22 | Scheduling recommendation accelerated; GO unchanged | The learner identified a 2026-09-14 AWS Solutions Architect final interview requiring an assessment and an under-five-hour video interview. Prefer 2026-08-28, use 2026-09-01 second, and complete SAP-C02 no later than 2026-09-04 to avoid divided attention. No booking was performed |
 | 2026-08-22 | **Booked: in-person exam on 2026-08-29 at 13:00 BST** | The learner explicitly authorized policy acceptance, voucher application, and the final payment. Pearson VUE confirmed status Scheduled at the selected test centre. The repository records the appointment outcome but excludes private order, registration, payment-card, contact, and address details |
+| 2026-08-29 | **Passed: in-person attempt complete** | The learner-provided score report confirms Pass. Required-ID and route checks had passed. Keep SAP-C02 preparation closed and shift to the 2026-09-14 AWS Solutions Architect assessment and final interview without recording private registration data or exam-question content. |
 
 ---
 
@@ -1302,8 +1309,8 @@ tracker is explicitly revised from new evidence.
 |---|---|---|
 | June–July | Lakehouse closure, governance evidence, Networking, and Resilience/DR transition | Lakehouse closure and bounded Domain 1 governance are evidenced; Networking package is complete; DR pattern, RTO/RPO, Lakehouse recovery-mapping, source-review, focused 12/12 submission, and fresh structurally isolated 12/12 spaced-retest artifacts are complete repository evidence |
 | August | Resilience/DR closure, repeated full-mock validation, and explicit booking review | Fresh DR retest complete; Mocks 003–009 and remediation evidence recorded; post-Mock-009 review completed with a GO recommendation; the 7 Rs strategy matrix is complete, including Relocate |
-| September | AWS Solutions Architect final-interview preparation | SAP-C02 is scheduled for 2026-08-29; protect the post-exam runway for the 2026-09-14 assessment and under-five-hour video interview |
-| Post-exam | Resume or re-plan deferred portfolio work | Begin only after the SAP-C02 attempt and a tracker/handover state transition |
+| September | AWS Solutions Architect final-interview preparation | SAP-C02 was passed on 2026-08-29; protect the post-exam runway for the 2026-09-14 assessment and under-five-hour video interview |
+| Post-exam | Resume or re-plan deferred portfolio work | The pass transition is complete, but interview preparation controls through 2026-09-14; re-plan deferred work only afterward through a separate tracker/handover transition |
 
 ---
 
