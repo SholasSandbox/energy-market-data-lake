@@ -4,7 +4,7 @@
 **Controlling plan:** `docs/planning/sap-c02-readiness-tracker.md`<br>
 **Transition:** SAP-C02 passed on 2026-08-29; focus remains on the 2026-09-14 AWS Solutions Architect final interview<br>
 **AWS changes:** One explicitly authorized in-place update to `energy-market-news-ai-orchestration` added bounded Bedrock client timeouts and attempts; no resources were added or destroyed<br>
-**Publication status:** SAP-C02 closure is published to `origin/main`; the interview architecture package, including ADRs 0006 and 0007, remains local and uncommitted
+**Publication status:** SAP-C02 closure, the interview architecture package, and the managed-AI timeout fix are published to `origin/main`
 
 ## Objective
 
@@ -220,34 +220,28 @@ The 2026-09-01 runtime-architecture reconciliation completed locally:
   target architecture regenerated successfully;
 - targeted `markdownlint-cli2`, `git diff --check`, and the public-evidence
   redaction check passed; and
-- no AWS API, deployment, runtime invocation, resource mutation, commit, push,
-  reset, discard, or broad staging action occurred.
+- no AWS API, deployment, runtime invocation, or resource mutation occurred as
+  part of the architecture-only reconciliation.
 
-No AWS API, deployment, reset, discard, or live tutorial-workspace command was
-run. The bounded documentation and tutorial packages were validated, committed,
-and pushed only after explicit authorization.
+Separately, the explicitly authorized timeout-maintenance boundary performed
+one in-place Lambda update and one controlled smoke. No reset, discard, or live
+tutorial-workspace command was run. The bounded architecture and maintenance
+package was validated, committed, and pushed only after explicit authorization.
 
 ## Git State
 
-- Branch: `main`; the two remote-only GitHub Pages workflow commits were
-  fast-forwarded before publication, and the SAP-C02 package was then pushed
-  to `origin/main`.
+- Branch: `main`; commit `cbbab8b` published the interview architecture package
+  and managed-AI runtime hardening to `origin/main` on 2026-09-01.
 - Mock 008, Mock 009, the GO review, governance evidence, and the 7 Rs matrix
   are tracked and published; the booking-state reconciliation records only
   public-safe date, time, delivery, and status evidence.
-- Pre-existing editor/Copilot configuration and managed-AI code changes were
-  deliberately excluded from the SAP-C02 publication and remain local. The
-  tracker release does not automatically adopt, stage, deploy, or validate
-  those changes as interview evidence.
 - ADRs 0006 and 0007, the AI architecture decision register, interview plans,
-  runtime-document reconciliation, regenerated diagrams, and the narrow
-  deterministic-fallback wording change remain local and uncommitted.
-- The current task touched only the OpenClaw/Bedrock/LangGraph architecture
-  boundary and its supporting documents. Pre-existing changes in
-  `.github/copilot-instructions.md`, `.vscode/settings.json`,
-  `energy_market/managed_ai.py`, `lambda/news_ai_orchestration.py`,
-  `scripts/check_phase17a_managed_ai_adapter.py`, and `.github/instructions/`
-  remain mixed in the worktree and must not be broadly staged.
+  runtime-document reconciliation, regenerated diagrams, managed-AI reference
+  normalization, timeout hardening, tests, and evidence are tracked and
+  published.
+- Pre-existing local Mermaid/editor configuration remains deliberately outside
+  the publication: `.github/copilot-instructions.md`, `.vscode/settings.json`,
+  and `.github/instructions/`. Do not stage it without a separate decision.
 - The zero-byte duplicate non-relational-database note remains untracked; its
   canonical lesson is already under `docs/exam-prep/revision-notes/`.
 - The final-freshness submission and review, exam-prep index, wrong-answer log,
@@ -268,10 +262,10 @@ and pushed only after explicit authorization.
   interview loops, truthful business evidence, and rehearsable architecture
   decisions. Do not add ADR 0007 to the assignment story unless the assignment
   scope is explicitly changed.
-- The worktree contains mixed prior and current changes; do not discard or
-  broadly stage it.
-- The timeout source, Terraform, test, planning, evidence, tracker, README, and
-  handover changes are local and uncommitted. No commit or push was requested.
+- The worktree retains only the excluded local Mermaid/editor configuration and
+  the zero-byte duplicate exam note. Do not discard or broadly stage them.
+- The timeout source, Terraform, tests, planning, evidence, tracker, README,
+  diagrams, and architecture package are published to `origin/main`.
 - A full post-apply Terraform plan found no resource changes. It reported only
   an unrelated state-only addition of the empty
   `energy_specific_crawler_names = {}` output; that output change was not
