@@ -64,7 +64,7 @@ with Diagram(
         with Cluster("AI Insight Orchestration"):
             sfn = StepFunctions("Step Functions\nrun orchestration")
             ai_lambda = Lambda("Lambda\nAI assembly")
-            bedrock = Bedrock("Bedrock or\nOpenClaw target")
+            bedrock = Bedrock("Bedrock Runtime\nmanaged inference")
             validation = Lambda("Schema\nvalidation gate")
 
         audit = S3("S3 audit + failed\nrun evidence")

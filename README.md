@@ -230,23 +230,34 @@ override tracker deferrals.
   dashboard snapshots publish, failed-artifact evidence stays empty, budget
   notifications remain `OK`, and Terraform remains no-change.
 
-### Deferred AWS Extension
+### Managed AI Current State And Remaining Extensions
 
-- Use the implemented Bedrock adapter and managed AI handler as the proof
-  boundary before live model invocation.
-- Run the first live Bedrock invocation only behind an explicit token budget,
-  IAM delta review, and rollback path.
-- Prefer a Mistral compatibility proof before live invocation if cost control
-  is the priority.
-- Run the first live Mistral invocation only as a single approved proof with a
-  hard one-run budget cap.
-- Harden Mistral prompt and response-shape handling locally before any second
-  live invocation.
-- Run OpenClaw in a clear runtime only after the managed cloud AI boundary is
-  proven.
-- Enable the Phase 8 EventBridge schedule after another operating decision.
-- Add CloudWatch alarms after the manual workflow has settled.
-- Add DNS, ACM certificate, and custom domain for the public dashboard.
+- Amazon Bedrock `InvokeModel` through the Lambda adapter is the verified
+  managed inference boundary. Scheduled Step Functions runs, schema and
+  sanitization gates, failed-path handling, SNS notification, public-safe
+  publication, and the AWS Budget guardrail have evidence through Phase 17AU.
+- The managed Lambda now bounds the Bedrock client to a 5-second connect
+  timeout, 60-second read timeout, and one total attempt. The 2026-09-01
+  targeted update and controlled smoke are recorded in
+  `docs/evidence/ai-orchestration-managed-timeout-fix-20260901.md`.
+- Step Functions plus Lambda remains the current workflow-orchestration
+  boundary. A direct Step Functions-to-Bedrock integration is an optional
+  later optimization, not a current gap.
+- OpenClaw on ECS/Fargate has been rejected and removed from the target because
+  the current use case does not justify a self-hosted general agent runtime.
+- LangGraph remains deferred until a measured need exists for cyclic,
+  stateful, resumable, streaming, or human-in-the-loop agent execution.
+- Multi-agent orchestration and fine-tuning remain deferred. Raw model text
+  publication remains rejected rather than deferred.
+- The proposed read-only evidence-grounded analyst path remains design-only
+  under ADR 0006; its P1 evaluation contract precedes retrieval, model, or AWS
+  topology selection.
+- DNS, ACM certificate, and a custom domain remain optional dashboard
+  extensions.
+
+See
+`docs/adr/0007-bedrock-runtime-and-orchestration-framework-boundary.md` for the
+runtime decision, alternatives, and reconsideration triggers.
 
 ## Current Data Scope
 
@@ -623,8 +634,8 @@ python3 scripts/validate_athena_schema.py \
 - `PLANS.md`: active SAP-C02 execution sequence plus historical delivery record.
 - `docs/exam-prep/wrong-answers.md`: durable SAP-C02 wrong-answer log seeded
   from the tracker.
-- `docs/adrs/`: current ADR template and issue-driven ADR drafts; accepted
-  historical ADRs remain under `docs/adr/`.
+- `docs/adrs/`: ADR template and issue-driven drafts; accepted ADRs remain
+  under `docs/adr/`.
 - `docs/setup.md`: setup guide for the serverless energy lakehouse path.
 - `docs/phase-1-stabilize-ingestion-lakehouse.md`: reconciled historical Phase 1 checklist.
 - `docs/entsoe-operationalization-checklist.md`: ENTSO-E reliability checklist.
@@ -733,35 +744,25 @@ These are historical references, not the current delivery path.
 ## Current Delivery Priorities
 
 1. Use the SAP-C02 readiness tracker as the delivery control document.
-2. Treat the June-July lakehouse closure as complete: architecture, live
-   posture, encryption, versioning, lifecycle, bucket tagging, Billing Cost
-   Allocation Tag activation, Glue/Athena IAM, Phase 1 reconciliation, and one
-   current end-to-end validation chain are documented.
+2. Keep SAP-C02 preparation closed after the confirmed 2026-08-29 pass and use
+   the Energy Data Lakehouse for the AWS Startup Solutions Architect interview
+   assignment and technical discussion.
 3. Preserve the existing scheduled managed workflow, hosted dashboard, SNS
-   alerting, and AWS Budget as a maintained baseline rather than a feature
-   roadmap.
-4. Freeze new AI orchestration, dashboard expansion, DNS/ACM, and unrelated
-   portfolio polish unless the tracker explicitly approves the work.
-5. Produce weekly study/build artifacts, practice-question results, and
-   wrong-answer entries alongside tracker updates and repository changes.
-6. Treat the bounded Domain 1 governance baseline and the Networking comparison
-   package as complete. Preserve their deliberate deferrals and local-versus-
-   published evidence boundaries rather than reopening them as active backlogs.
-7. Continue the active Resilience/DR sequence. The pattern matrix, RTO/RPO
-   decision table, Lakehouse recovery mapping, and source-backed scenario review
-   are complete repository artifacts. A focused submission scored 12/12 with untimed and
-   answer-bearing-source isolation caveats; the next Resilience/DR gate is a
-   fresh question-only spaced retest no earlier than 2026-07-27. A separate
-   timed 30-question mixed diagnostic scored 29/30 in 67 minutes; the ECS
-   blue/green deployment versus Patch Manager miss is recorded for spaced
-   remediation.
-8. Begin migration decision artifacts only after the Resilience/DR evidence
-   gates permit the transition, and complete them by 2026-08-10. Complete full
-   timed exams in the weeks of 2026-08-17 and 2026-08-24, hold the formal
-   readiness and booking review on Monday, 2026-09-07, and attempt SAP-C02 no
-   later than 2026-09-30. Do not make live IAM, Organizations, SCP, backup,
-   replication, networking, or multi-Region changes without explicit
-   task-specific approval.
+   alerting, schema/fallback boundaries, and AWS Budget as the verified current
+   baseline.
+4. Govern the active interview-linked AI orchestration work through ADRs 0006
+   and 0007 plus
+   `docs/planning/ai-orchestration-architecture-decision-register-20260830.md`.
+   Architecture and evaluation precede implementation.
+5. Create the P1 evaluation contract before selecting a corpus, retrieval
+   engine, embedding model, generation model, managed knowledge-base service,
+   or deployment topology.
+6. Advance only when the preceding evidence gate passes, and stop once the
+   smallest design or local proof materially strengthens the interview case.
+7. Keep dashboard expansion, DNS/ACM, containers, deep EKS, complex REMIT,
+   unrelated portfolio polish, and open-ended AI platform work deferred.
+8. Do not make live AWS changes without explicit task-specific approval,
+   prechange evidence, validation, cost, blast-radius, and rollback boundaries.
 
 ## Historical Phase 17 Operating Constraints
 
@@ -855,16 +856,19 @@ The numbered constraints below preserve the decisions that governed the Phase
 41. Treat Phase 17AE as Lambda package refresh preflight only; it proves the
     rebuilt package and safe plan but does not authorize automatic apply,
     workflow smoke, schedule enablement, or dashboard publish.
-42. Defer DNS, ACM, alarms, schedules, repeated live model invocation, and
-    OpenClaw runtime until a phase explicitly targets those operating
-    boundaries.
+42. Historical Phase 17 boundary: defer DNS, ACM, alarms, schedules, repeated
+    live model invocation, and OpenClaw until a phase explicitly targets those
+    operating boundaries. Later phases verified scheduled Bedrock operation;
+    ADR 0007 rejects OpenClaw/ECS for the current target.
 
 ## Notes
 
 - Elexon base URL: `https://data.elexon.co.uk/bmrs/api/v1` (no API key).
 - ENTSO-E requires registration and an API token stored in SSM or Secrets Manager.
 - ENTSOG is public; the current gas proof uses a four-point seed and the `Physical Flow` plus `Allocation` indicators.
-- OpenClaw/local model execution is outside AWS unless moved into Bedrock or managed compute.
+- ADR 0007 selects Bedrock as the managed model boundary, retains Step
+  Functions/Lambda orchestration, rejects OpenClaw/ECS, and keeps LangGraph
+  conditional on a proven stateful-agent requirement.
 - Phase 8 still proves orchestration, validation, and publish controls through
   deterministic workflow logic; the live dashboard snapshot has separately
   published a managed Bedrock/Mistral evidence payload.

@@ -12,6 +12,9 @@ import sys
 from pathlib import Path
 from typing import Any, Callable
 
+from botocore.config import Config
+from botocore.exceptions import ConnectTimeoutError, ReadTimeoutError
+
 
 MODULE_DIR = Path(__file__).resolve().parent
 ROOT = MODULE_DIR if (MODULE_DIR / "energy_market").exists() else MODULE_DIR.parent
@@ -32,6 +35,7 @@ from energy_market.ai_orchestration import (  # noqa: E402
 from energy_market.managed_ai import (  # noqa: E402
     DEFAULT_MAX_TOKENS,
     invoke_bedrock_ai_insight,
+    normalize_ai_insight_reference_objects,
 )
 from energy_market.news_ai import (  # noqa: E402
     DEFAULT_FEEDS,
@@ -45,6 +49,16 @@ from energy_market.news_ai import (  # noqa: E402
 
 
 ActionHandler = Callable[[dict[str, Any], Any], dict[str, Any]]
+DEFAULT_BEDROCK_CONNECT_TIMEOUT_SECONDS = 5
+DEFAULT_BEDROCK_READ_TIMEOUT_SECONDS = 60
+DEFAULT_BEDROCK_MAX_ATTEMPTS = 1
+
+
+class ManagedAITimeoutError(TimeoutError):
+    """Raised early enough to preserve the managed-AI failed-record path."""
+
+    component = "merge_ai_insight_managed"
+    contract = "ai_insight"
 
 
 def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
@@ -227,24 +241,32 @@ def merge_ai_insight_managed(
     if not model_id:
         raise ValueError("bedrock_model_id or BEDROCK_MODEL_ID is required")
 
-    payload = invoke_bedrock_ai_insight(
-        bedrock_client or _bedrock_client(),
-        model_id=model_id,
-        bundle=bundle,
-        provider=event.get("bedrock_provider") or _env("BEDROCK_PROVIDER"),
-        max_tokens=int(
-            event.get(
-                "bedrock_max_tokens",
-                _env("BEDROCK_MAX_TOKENS", str(DEFAULT_MAX_TOKENS)),
+    try:
+        payload = normalize_ai_insight_reference_objects(
+            invoke_bedrock_ai_insight(
+                bedrock_client or _bedrock_client(),
+                model_id=model_id,
+                bundle=bundle,
+                provider=event.get("bedrock_provider") or _env("BEDROCK_PROVIDER"),
+                max_tokens=int(
+                    event.get(
+                        "bedrock_max_tokens",
+                        _env("BEDROCK_MAX_TOKENS", str(DEFAULT_MAX_TOKENS)),
+                    ),
+                ),
+                temperature=float(
+                    event.get(
+                        "bedrock_temperature",
+                        _env("BEDROCK_TEMPERATURE", "0.2"),
+                    ),
+                ),
             ),
-        ),
-        temperature=float(
-            event.get(
-                "bedrock_temperature",
-                _env("BEDROCK_TEMPERATURE", "0.2"),
-            ),
-        ),
-    )
+        )
+    except (ConnectTimeoutError, ReadTimeoutError) as exc:
+        raise ManagedAITimeoutError(
+            "Bedrock invocation exceeded the configured client timeout; "
+            "the candidate insight was not written or published",
+        ) from exc
     _validate_or_raise(payload, "ai_insight", "merge_ai_insight_managed")
 
     key = artifact_key("ai_insight", state["run_id"])
@@ -450,4 +472,36 @@ def _s3_client() -> Any:
 def _bedrock_client() -> Any:
     import boto3  # noqa: WPS433
 
-    return boto3.client("bedrock-runtime")
+    return boto3.client("bedrock-runtime", config=_bedrock_client_config())
+
+
+def _bedrock_client_config() -> Config:
+    """Return a fail-fast Bedrock client configuration with no SDK retry."""
+    return Config(
+        connect_timeout=_positive_int_env(
+            "BEDROCK_CONNECT_TIMEOUT_SECONDS",
+            DEFAULT_BEDROCK_CONNECT_TIMEOUT_SECONDS,
+        ),
+        read_timeout=_positive_int_env(
+            "BEDROCK_READ_TIMEOUT_SECONDS",
+            DEFAULT_BEDROCK_READ_TIMEOUT_SECONDS,
+        ),
+        retries={
+            "mode": "standard",
+            "total_max_attempts": _positive_int_env(
+                "BEDROCK_MAX_ATTEMPTS",
+                DEFAULT_BEDROCK_MAX_ATTEMPTS,
+            ),
+        },
+    )
+
+
+def _positive_int_env(name: str, default: int) -> int:
+    raw_value = _env(name, str(default))
+    try:
+        value = int(raw_value)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a positive integer") from exc
+    if value < 1:
+        raise ValueError(f"{name} must be a positive integer")
+    return value

@@ -106,12 +106,22 @@ resource "aws_lambda_function" "ai_orchestration" {
         NEWS_MAX_ARTICLES      = tostring(var.ai_orchestration_news_max_articles)
       },
       var.ai_orchestration_managed_ai_enabled ? {
-        BEDROCK_MAX_TOKENS  = tostring(var.ai_orchestration_bedrock_max_tokens)
-        BEDROCK_MODEL_ID    = var.ai_orchestration_bedrock_model_id
-        BEDROCK_PROVIDER    = var.ai_orchestration_bedrock_provider
-        BEDROCK_TEMPERATURE = tostring(var.ai_orchestration_bedrock_temperature)
+        BEDROCK_CONNECT_TIMEOUT_SECONDS = tostring(var.ai_orchestration_bedrock_connect_timeout_seconds)
+        BEDROCK_MAX_ATTEMPTS            = tostring(var.ai_orchestration_bedrock_max_attempts)
+        BEDROCK_MAX_TOKENS              = tostring(var.ai_orchestration_bedrock_max_tokens)
+        BEDROCK_MODEL_ID                = var.ai_orchestration_bedrock_model_id
+        BEDROCK_PROVIDER                = var.ai_orchestration_bedrock_provider
+        BEDROCK_READ_TIMEOUT_SECONDS    = tostring(var.ai_orchestration_bedrock_read_timeout_seconds)
+        BEDROCK_TEMPERATURE             = tostring(var.ai_orchestration_bedrock_temperature)
       } : {},
     )
+  }
+
+  lifecycle {
+    precondition {
+      condition     = !var.ai_orchestration_managed_ai_enabled || var.ai_orchestration_bedrock_read_timeout_seconds <= var.ai_orchestration_lambda_timeout_seconds - 30
+      error_message = "The Bedrock read timeout must leave at least 30 seconds for Lambda failed-record persistence."
+    }
   }
 
   depends_on = [

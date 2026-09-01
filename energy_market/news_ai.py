@@ -371,7 +371,7 @@ def build_ai_insight(bundle: dict) -> dict:
                 ],
                 "validation_notes": [
                     "Deterministic local merge output for Week 3 validation.",
-                    "Replace with local OpenClaw/manual-reviewed output after schema gate is stable.",
+                    "Retain as the deterministic fallback for the validated Bedrock path.",
                 ],
             }
         ],

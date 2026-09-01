@@ -43,8 +43,9 @@ Key points:
 - Raw, curated, failed, and audit data stay private.
 - The public dashboard reads only approved snapshot JSON.
 - AI output must pass `ai_insight_v1.schema.json` before publishing.
-- OpenClaw or Bedrock is a later cloud/runtime extension; this demo uses
-  deterministic merge logic to prove orchestration and control boundaries first.
+- Bedrock is the verified managed inference boundary; deterministic merge logic
+  remains the fallback behind the same contracts. ADR 0007 rejects
+  OpenClaw/ECS and defers LangGraph until a graph-shaped workflow is proven.
 
 ## 3. Run Local Pipeline
 

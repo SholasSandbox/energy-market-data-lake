@@ -152,7 +152,15 @@ ai_orchestration_bedrock_model_id    = "mistral.ministral-3-8b-instruct"
 ai_orchestration_bedrock_provider    = "mistral"
 ai_orchestration_bedrock_max_tokens  = 1600
 ai_orchestration_bedrock_temperature = 0.2
+ai_orchestration_bedrock_connect_timeout_seconds = 5
+ai_orchestration_bedrock_read_timeout_seconds    = 60
+ai_orchestration_bedrock_max_attempts             = 1
 ```
+
+Keep the Bedrock read timeout at least 30 seconds below the Lambda timeout so
+the handler has time to persist its structured failure record. Total attempts
+includes the initial request; a value of one prevents an automatic repeated
+model invocation inside the same Lambda execution.
 
 Set `ai_orchestration_enabled = true` only after the Lambda zip exists and the
 dashboard input JSON has been uploaded to the data lake bucket at

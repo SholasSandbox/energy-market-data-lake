@@ -11,8 +11,8 @@ flowchart TD
 
         subgraph Private["Private processing boundary"]
             EnergySchedule["EventBridge energy schedule\nDISABLED"]
-            AISchedule["EventBridge AI schedule\nDISABLED"]
-            ManualRun["Manual Step Functions execution\nPhase 8 proof path"]
+            AISchedule["EventBridge AI schedule\nENABLED daily"]
+            Workflow["Step Functions execution\nscheduled managed path"]
 
             EnergyLambda["Energy ingest Lambda\nElexon / ENTSO-E / ENTSOG"]
             OrchestrationLambda["news_ai_orchestration Lambda\nworkflow action dispatcher"]
@@ -32,7 +32,9 @@ flowchart TD
             EnergyInput["Build energy_input_v1"]
             NewsSummary["Build news_summary_v1"]
             Bundle["Build ai_input_bundle_v1"]
-            DeterministicMerge["Deterministic AI insight merge\nmodel invocation deferred"]
+            ManagedMerge["Managed insight action\nBedrock adapter"]
+            Bedrock["Amazon Bedrock Runtime\nMistral model invocation"]
+            DeterministicMerge["Deterministic merge\nfallback and baseline"]
             AIValidate["Validate ai_insight_v1"]
             DashboardValidate["Validate dashboard_snapshot_v1"]
             Publish["Publish approved dashboard snapshot"]
@@ -50,14 +52,13 @@ flowchart TD
 
     ReactDashboard["React dashboard\nPhase 10 Overview"]
     Viewer["Dashboard user"]
-    CloudModel["Bedrock/OpenClaw cloud model\ndeferred"]
-    StaticHosting["CloudFront/static website hosting\ndeferred"]
+    StaticHosting["CloudFront + S3\npublic static delivery"]
 
     Elexon --> EnergyLambda
     Entsoe --> EnergyLambda
     Entsog --> EnergyLambda
     Secrets --> EnergyLambda
-    EnergySchedule -. "not auto-running" .-> EnergyLambda
+    EnergySchedule --> EnergyLambda
     EnergyLambda --> Raw
 
     Raw --> GlueCrawler
@@ -70,18 +71,21 @@ flowchart TD
     Athena --> EnergyInput
 
     RSS --> OrchestrationLambda
-    AISchedule -. "not auto-running" .-> ManualRun
-    ManualRun --> OrchestrationLambda
+    AISchedule --> Workflow
+    Workflow --> OrchestrationLambda
     OrchestrationLambda --> EnergyInput
     OrchestrationLambda --> NewsSummary
     OrchestrationLambda --> Bundle
-    OrchestrationLambda --> DeterministicMerge
-    CloudModel -. "future model path" .-> DeterministicMerge
+    OrchestrationLambda --> ManagedMerge
+    OrchestrationLambda -. "fallback" .-> DeterministicMerge
+    ManagedMerge --> Bedrock
+    Bedrock --> ManagedMerge
+    DeterministicMerge -. "fallback" .-> AIValidate
 
     EnergyInput --> Bundle
     NewsSummary --> Bundle
-    Bundle --> DeterministicMerge
-    DeterministicMerge --> AIValidate
+    Bundle --> ManagedMerge
+    ManagedMerge --> AIValidate
     AIValidate -->|valid| DashboardValidate
     AIValidate -->|invalid| Failed
     DashboardValidate -->|valid| Publish
@@ -97,4 +101,4 @@ flowchart TD
 
     Viewer --> ReactDashboard
     ReactDashboard --> DashboardData
-    StaticHosting -. "future delivery path" .-> ReactDashboard
+    StaticHosting --> ReactDashboard

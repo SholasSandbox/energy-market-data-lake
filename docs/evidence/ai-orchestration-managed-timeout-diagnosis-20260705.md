@@ -2,6 +2,18 @@
 
 Date: 2026-07-05
 
+## 2026-09-01 Outcome
+
+The historical diagnosis below was revalidated. The July failures remained the
+only Lambda sandbox timeouts, so this was no longer an active outage, but the
+deployed client still lacked a deadline below the Lambda timeout. Under an
+explicit maintenance authorization, the parked fix was revised, deployed as
+one in-place Lambda update, and verified with one successful controlled smoke.
+
+Current evidence and the exact boundary are recorded in
+`docs/evidence/ai-orchestration-managed-timeout-fix-20260901.md`. The remainder
+of this document is retained as the historical incident diagnosis.
+
 ## Scope
 
 Read-only diagnosis of the scheduled Energy Market AI insight orchestration

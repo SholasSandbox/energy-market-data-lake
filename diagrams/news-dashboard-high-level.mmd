@@ -6,15 +6,16 @@ flowchart LR
 
     subgraph AWS["AWS account boundary"]
         subgraph Private["Private processing boundary"]
-            DisabledSchedules["EventBridge schedules\ncreated but disabled"]
+            Schedules["EventBridge schedules\nAI daily; other states vary"]
             EnergyIngest["Energy ingestion Lambda"]
-            StateMachine["Step Functions\nmanual AI insight run"]
+            StateMachine["Step Functions\nAI insight orchestration"]
             OrchestrationLambda["news_ai_orchestration Lambda\nworkflow dispatcher"]
             DataLake["S3 data bucket\nraw / curated / audit / failed"]
             Transform["Glue + Athena\ncurated power and gas outputs"]
             ContractGates["Schema validation gates\ninput, AI insight, dashboard snapshot"]
             SNS["SNS failure notification"]
             Logs["CloudWatch logs"]
+            Bedrock["Amazon Bedrock Runtime\nmanaged model invocation"]
         end
 
         subgraph Public["Public dashboard boundary"]
@@ -24,19 +25,19 @@ flowchart LR
 
     ReactDashboard["React dashboard\nPhase 10 Overview"]
     Viewer["Dashboard user"]
-    DeferredHosting["CloudFront/static hosting\ndeferred follow-up"]
-    DeferredModel["Bedrock/OpenClaw cloud model\ndeferred follow-up"]
+    CloudFront["CloudFront + S3\npublic static delivery"]
 
     EnergyAPI --> EnergyIngest
-    DisabledSchedules -. "not running automatically" .-> EnergyIngest
+    Schedules --> EnergyIngest
     EnergyIngest --> DataLake
     DataLake --> Transform
     Transform --> ContractGates
 
     NewsRSS --> OrchestrationLambda
     StateMachine --> OrchestrationLambda
+    OrchestrationLambda --> Bedrock
+    Bedrock --> ContractGates
     OrchestrationLambda --> ContractGates
-    DeferredModel -. "future model path" .-> ContractGates
 
     ContractGates -->|valid publish| DashboardJSON
     ContractGates -->|audit trail| DataLake
@@ -46,4 +47,4 @@ flowchart LR
 
     Viewer --> ReactDashboard
     ReactDashboard --> DashboardJSON
-    DeferredHosting -. "future delivery path" .-> ReactDashboard
+    CloudFront --> ReactDashboard

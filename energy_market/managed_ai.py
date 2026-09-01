@@ -8,6 +8,7 @@ gate outside this module.
 
 from __future__ import annotations
 
+import copy
 import json
 import re
 from typing import Any
@@ -17,6 +18,10 @@ DEFAULT_MAX_TOKENS = 1600
 DEFAULT_TEMPERATURE = 0.2
 PROVIDER_ANTHROPIC = "anthropic"
 PROVIDER_MISTRAL = "mistral"
+REFERENCE_FIELD_ALLOWLISTS = {
+    "energy_references": frozenset({"source", "metric", "reference"}),
+    "news_references": frozenset({"publisher", "title", "url"}),
+}
 
 
 class ManagedAIResponseError(ValueError):
@@ -161,6 +166,40 @@ def invoke_bedrock_ai_insight(
         accept="application/json",
     )
     return parse_bedrock_response(response)
+
+
+def normalize_ai_insight_reference_objects(
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    """Remove model-added reference metadata before strict schema validation.
+
+    Managed models can add descriptive fields such as ``value`` even when the
+    prompt forbids them. Reference objects have a locked, lossless identity
+    shape, so prune only fields outside those explicit allowlists. All other
+    payload content remains untouched for the schema validator to accept or
+    reject.
+    """
+    normalized = copy.deepcopy(payload)
+    insights = normalized.get("insights")
+    if not isinstance(insights, list):
+        return normalized
+
+    for insight in insights:
+        if not isinstance(insight, dict):
+            continue
+        for field_name, allowed_fields in REFERENCE_FIELD_ALLOWLISTS.items():
+            references = insight.get(field_name)
+            if not isinstance(references, list):
+                continue
+            for index, reference in enumerate(references):
+                if isinstance(reference, dict):
+                    references[index] = {
+                        key: value
+                        for key, value in reference.items()
+                        if key in allowed_fields
+                    }
+
+    return normalized
 
 
 def parse_bedrock_response(response: dict[str, Any]) -> dict[str, Any]:

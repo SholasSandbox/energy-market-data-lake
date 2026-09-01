@@ -24,19 +24,22 @@ dashboard_bucket_name   = "energy-market-dashboard-public-464975959576-20260405"
 dashboard_cloudfront_enabled     = false
 dashboard_cloudfront_price_class = "PriceClass_100"
 
-ai_orchestration_enabled               = false
-ai_orchestration_lambda_package_path   = ".terraform/build/news_ai_orchestration.zip"
-ai_orchestration_schedule_enabled      = false
-ai_orchestration_schedule_expression   = "cron(30 7 * * ? *)"
-ai_orchestration_dashboard_data_key    = "dashboard/dashboard-data.json"
-ai_orchestration_news_limit_per_feed   = 4
-ai_orchestration_news_max_articles     = 18
-ai_orchestration_sns_email             = ""
-ai_orchestration_managed_ai_enabled    = false
-ai_orchestration_bedrock_model_id      = "mistral.ministral-3-8b-instruct"
-ai_orchestration_bedrock_provider      = "mistral"
-ai_orchestration_bedrock_max_tokens    = 1600
-ai_orchestration_bedrock_temperature   = 0.2
+ai_orchestration_enabled                         = false
+ai_orchestration_lambda_package_path             = ".terraform/build/news_ai_orchestration.zip"
+ai_orchestration_schedule_enabled                = false
+ai_orchestration_schedule_expression             = "cron(30 7 * * ? *)"
+ai_orchestration_dashboard_data_key              = "dashboard/dashboard-data.json"
+ai_orchestration_news_limit_per_feed             = 4
+ai_orchestration_news_max_articles               = 18
+ai_orchestration_sns_email                       = ""
+ai_orchestration_managed_ai_enabled              = false
+ai_orchestration_bedrock_model_id                = "mistral.ministral-3-8b-instruct"
+ai_orchestration_bedrock_provider                = "mistral"
+ai_orchestration_bedrock_max_tokens              = 1600
+ai_orchestration_bedrock_temperature             = 0.2
+ai_orchestration_bedrock_connect_timeout_seconds = 5
+ai_orchestration_bedrock_read_timeout_seconds    = 60
+ai_orchestration_bedrock_max_attempts            = 1
 
 # Optional managed workflow monthly cost budget. Keep disabled until a budget
 # alarm execution boundary explicitly approves the guardrail.

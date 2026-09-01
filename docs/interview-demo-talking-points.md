@@ -17,10 +17,11 @@ operational runbooks.
 
 - Serverless ingestion pattern using EventBridge, Lambda, S3, Glue, and Athena.
 - Electricity and ENTSOG gas evidence from raw landing through curated outputs.
-- News evidence and deterministic AI-style insight generation with strict JSON
-  contracts.
-- AWS Step Functions orchestration for the AI insight path, with S3 artifacts,
-  validation gates, failed-run quarantine, and manual execution proof.
+- News evidence and managed Bedrock/Mistral insight generation with strict JSON
+  contracts and deterministic fallback.
+- Scheduled AWS Step Functions orchestration for the AI insight path, with S3
+  artifacts, validation gates, failed-run quarantine, notification, budget,
+  and scheduled execution evidence.
 - Terraform ownership of the core lakehouse and Phase 8 orchestration
   resources, with known drift documented instead of hidden.
 - React + TypeScript operator dashboard with Phase 10 executive overview and
@@ -47,15 +48,20 @@ operational runbooks.
 - Outputs are validated against schemas and can fail into a quarantine path.
 - The dashboard consumes only public-safe AI insight snapshots, not private
   lake paths or uncontrolled model output.
-- The next production step is to replace the deterministic local merge with a
-  managed invocation path such as Bedrock or a clearly bounded OpenClaw runtime.
+- Amazon Bedrock is the verified managed inference boundary; Step Functions and
+  Lambda retain explicit workflow, adapter, validation, and publication
+  responsibilities.
+- ADR 0007 rejects OpenClaw/ECS for this use case and defers LangGraph until a
+  stateful, cyclic, resumable, streaming, or human-in-the-loop requirement is
+  proven.
 
 ## What Remains
 
-- CloudFront/S3 hosting for the public dashboard.
-- CloudWatch alarms, budgets, and operating alerts.
-- Carefully enabling schedules after the manual orchestration path is accepted.
-- Managed model invocation through Bedrock or an approved runtime.
+- Additional operational alarms where a signal and response are defined.
+- DNS, ACM, and custom-domain work if the public demonstration needs them.
+- The ADR 0006 P1 evaluation contract for a proposed read-only,
+  evidence-grounded analyst path.
+- Retrieval, model, and optional agent-framework choices only after evaluation.
 - Further hardening around IAM least privilege, observability, and production
   runbooks.
 
@@ -79,5 +85,6 @@ and model-control concerns stay inside the governed AWS boundary.
 4. Open the React dashboard and show alerts, KPIs, risk coverage, market
    context, AI insight, and data quality.
 5. Apply Phase 11 filters, reload the URL, and export the filtered snapshot.
-6. Close by explaining what remains before production: hosting, alarms,
-   schedules, managed AI invocation, and operating hardening.
+6. Close by explaining what remains before a production analyst experience:
+   evaluation, retrieval, identity/tenancy, responsible-AI controls, SLOs, and
+   operating hardening.

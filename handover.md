@@ -1,22 +1,69 @@
 # Energy Market Data Lakehouse Handover
 
-**Prepared:** 2026-08-30<br>
+**Prepared:** 2026-09-01<br>
 **Controlling plan:** `docs/planning/sap-c02-readiness-tracker.md`<br>
 **Transition:** SAP-C02 passed on 2026-08-29; focus remains on the 2026-09-14 AWS Solutions Architect final interview<br>
-**AWS changes:** None<br>
-**Publication status:** Mock 008-009 evidence, the GO review, the 7 Rs matrix, final-freshness evidence, booking and post-attempt reconciliation, and the public-safe pass result are published to `origin/main`
+**AWS changes:** One explicitly authorized in-place update to `energy-market-news-ai-orchestration` added bounded Bedrock client timeouts and attempts; no resources were added or destroyed<br>
+**Publication status:** SAP-C02 closure is published to `origin/main`; the interview architecture package, including ADRs 0006 and 0007, remains local and uncommitted
 
 ## Objective
 
-Record the public-safe SAP-C02 pass result without private registration data or
-exam-question content, close the exam workstream, and redirect near-term
-capacity to the AWS Solutions Architect assessment and final interview on
-2026-09-14.
+Complete the bounded architecture-first package for the AWS Solutions
+Architect interview: preserve the verified managed-AI baseline, define the
+read-only evidence-grounded evolution, and select the proportionate model and
+orchestration runtime boundaries without deploying or starting an open-ended
+platform build.
 
 Read `AGENTS.md`, this handover, and the controlling tracker before making
 further changes.
 
 ## Current State
+
+### Managed-AI timeout maintenance
+
+- The parked July timeout diagnosis was revalidated on 2026-09-01. It was no
+  longer an active outage: recent scheduled executions were healthy, and the
+  only sandbox timeouts remained the 2026-07-04 and 2026-07-05 failures.
+- The reliability gap was still present because the deployed Bedrock Runtime
+  client had no explicit deadline below the 120-second Lambda timeout.
+- The authorized fix is deployed with a 5-second connect timeout, 60-second
+  read timeout, one total request attempt, and a Terraform precondition that
+  preserves at least 30 seconds for structured failure handling.
+- A controlled post-apply execution succeeded in approximately nine seconds,
+  wrote the expected artifacts, and passed all repository JSON contracts.
+  Schedule, model, prompt, Lambda timeout/memory, IAM, SNS, budget, and
+  CloudFront configuration were unchanged.
+- CloudFront latest still served the preceding cached snapshot immediately
+  after the smoke, as expected without an invalidation. The immutable
+  CloudFront object matched S3; no cache change was authorized or made.
+- Implementation evidence is in
+  `docs/evidence/ai-orchestration-managed-timeout-fix-20260901.md`.
+
+### Interview-linked AI orchestration
+
+- ADR 0006 accepts a read-only evidence-grounded architecture combining
+  deterministic structured evidence with document retrieval.
+- ADR 0007 selects Amazon Bedrock as the managed inference boundary and
+  retains Step Functions/Lambda for the current workflow. Bedrock invocation
+  is verified current, not deferred.
+- OpenClaw on ECS/Fargate is rejected and removed from the target because the
+  use case does not justify a self-hosted general agent runtime. LangGraph is
+  deferred until a stateful, cyclic, resumable, streaming, or
+  human-in-the-loop requirement is proven.
+- Multi-agent orchestration and fine-tuning remain deferred. Publishing raw
+  model text is rejected rather than deferred.
+- Curated S3 contracts remain authoritative; any retrieval index is a derived,
+  rebuildable projection.
+- Asynchronous evidence preparation is separated from the latency-bounded
+  answer path, and the verified scheduled dashboard-insight workflow remains
+  unchanged.
+- Autonomous agents, write-capable tools, polished UI, production tenancy,
+  fine-tuning, LangGraph implementation, and AWS deployment of the proposed
+  path remain outside the current slice.
+- The architecture decision register marks P0 complete and P1 evaluation
+  contract as the next artifact.
+- ADR 0007 is supporting GenAI STAR material, not part of the presentation
+  assignment.
 
 ### SAP-C02 readiness
 
@@ -87,8 +134,10 @@ further changes.
   weaknesses.
 - The AWS Skill Builder assessment remains calibration evidence, not timed
   booking evidence, because its recorded duration was 12h29.
-- Parked tutorial, container, managed-AI, UI, and deeper implementation work
-  remains parked unless explicitly authorized.
+- Tutorial, container, UI, and unrelated deeper implementation work remains
+  parked. Further AI orchestration was explicitly released on 2026-08-30 only
+  within the tracker-defined interview-linked design, evaluation, local-
+  prototype, and communication scope.
 
 ## Decisions and Rationale
 
@@ -117,8 +166,8 @@ further changes.
 - The confirmed pass ends SAP-C02 preparation and is not a reason to
   reconstruct exam items or add retrospective remediation.
 - The 2026-09-14 assessment and final interview are now the controlling
-  near-term priority; parked implementation and tutorial work do not resume
-  automatically.
+  near-term priority. Bounded interview-linked AI orchestration is active;
+  other parked implementation and tutorial work does not resume automatically.
 
 ## Validation
 
@@ -158,6 +207,22 @@ The 2026-08-30 pass-result reconciliation validation completed successfully:
 - the public-evidence redaction check passed; and
 - the targeted stale-state scan found no remaining pending-result language.
 
+The 2026-09-01 runtime-architecture reconciliation completed locally:
+
+- ADR 0007 records the selected, rejected, deferred, retained-baseline, and
+  reconsideration decisions without authorizing AWS changes;
+- the Phase 8 runtime and handler self-checks passed;
+- the Phase 17 managed-AI adapter self-check and targeted Python compilation
+  passed;
+- contract validation accepted every good example and evidence sample and
+  rejected both known-bad samples as expected;
+- four changed Mermaid sources rendered successfully to SVG, and the AWS-icon
+  target architecture regenerated successfully;
+- targeted `markdownlint-cli2`, `git diff --check`, and the public-evidence
+  redaction check passed; and
+- no AWS API, deployment, runtime invocation, resource mutation, commit, push,
+  reset, discard, or broad staging action occurred.
+
 No AWS API, deployment, reset, discard, or live tutorial-workspace command was
 run. The bounded documentation and tutorial packages were validated, committed,
 and pushed only after explicit authorization.
@@ -170,8 +235,19 @@ and pushed only after explicit authorization.
 - Mock 008, Mock 009, the GO review, governance evidence, and the 7 Rs matrix
   are tracked and published; the booking-state reconciliation records only
   public-safe date, time, delivery, and status evidence.
-- Pre-existing editor/Copilot configuration and parked managed-AI changes were
-  deliberately excluded and remain local.
+- Pre-existing editor/Copilot configuration and managed-AI code changes were
+  deliberately excluded from the SAP-C02 publication and remain local. The
+  tracker release does not automatically adopt, stage, deploy, or validate
+  those changes as interview evidence.
+- ADRs 0006 and 0007, the AI architecture decision register, interview plans,
+  runtime-document reconciliation, regenerated diagrams, and the narrow
+  deterministic-fallback wording change remain local and uncommitted.
+- The current task touched only the OpenClaw/Bedrock/LangGraph architecture
+  boundary and its supporting documents. Pre-existing changes in
+  `.github/copilot-instructions.md`, `.vscode/settings.json`,
+  `energy_market/managed_ai.py`, `lambda/news_ai_orchestration.py`,
+  `scripts/check_phase17a_managed_ai_adapter.py`, and `.github/instructions/`
+  remain mixed in the worktree and must not be broadly staged.
 - The zero-byte duplicate non-relational-database note remains untracked; its
   canonical lesson is already under `docs/exam-prep/revision-notes/`.
 - The final-freshness submission and review, exam-prep index, wrong-answer log,
@@ -188,24 +264,38 @@ and pushed only after explicit authorization.
 - SAP-C02 is passed. Do not reconstruct exam questions or restart completed
   preparation.
 - The immediate risk is divided attention before the 2026-09-14 assessment and
-  final interview. Begin with the actual role description and interview
-  instructions rather than a generic interview programme.
+  final interview. Keep the released AI orchestration work anchored to the
+  interview loops, truthful business evidence, and rehearsable architecture
+  decisions. Do not add ADR 0007 to the assignment story unless the assignment
+  scope is explicitly changed.
 - The worktree contains mixed prior and current changes; do not discard or
   broadly stage it.
+- The timeout source, Terraform, test, planning, evidence, tracker, README, and
+  handover changes are local and uncommitted. No commit or push was requested.
+- A full post-apply Terraform plan found no resource changes. It reported only
+  an unrelated state-only addition of the empty
+  `energy_specific_crawler_names = {}` output; that output change was not
+  applied.
 
 ## Next Tracker-Ordered Priority
 
-Stop SAP-C02 preparation and redirect attention to the AWS Solutions Architect
-assessment and final interview on 2026-09-14. First inspect the redacted role
-description, assessment instructions, interview format, and any stated
-competencies; then create a bounded preparation plan through 2026-09-13.
+Keep SAP-C02 preparation closed and execute the AWS Solutions Architect
+interview plan and five-slide Lakehouse assignment blueprint. The decision-
+first architecture package is complete, including the runtime decision in ADR
+0007. Confirm the truthful stakeholder and
+measurable business outcome, then create the P1 AI evaluation contract before
+selecting a corpus, retrieval implementation, model, managed service, or local
+vertical slice.
 
 State transition status: **the SAP-C02 attempt and pass-result reconciliation
-are complete. The preparation transition to the 2026-09-14 AWS Solutions
-Architect assessment and final interview has occurred.**
+are complete. The bounded timeout-maintenance implementation is also complete,
+and focus returns to the 2026-09-14 AWS Solutions Architect assessment and
+final interview.**
 
-Because the exam attempt closes the SAP-C02 workstream and interview preparation
-is materially different, start a fresh session for that unit.
+The fresh-session transition from exam preparation to interview preparation
+has occurred. Because the live maintenance boundary is now complete and the P1
+evaluation contract is a materially different design artifact, start it in a
+fresh session.
 
 ## Suggested New-Session Prompt
 
@@ -218,10 +308,18 @@ docs/planning/sap-c02-readiness-tracker.md before changing anything.
 The learner passed the in-person SAP-C02 attempt on 2026-08-29. Keep SAP-C02
 preparation closed and do not reconstruct or record exam questions. The current
 tracker priority is the AWS Solutions Architect assessment and final interview
-on 2026-09-14. Inspect the redacted role description, assessment instructions,
-interview format, and stated competencies, then create a bounded preparation
-plan through 2026-09-13.
+on 2026-09-14. Read the interview plan and five-slide Lakehouse assignment
+blueprint, confirm the truthful stakeholder and measurable business outcome,
+then create the P1 AI evaluation contract defined by ADR 0006 and the
+architecture decision register. Treat ADR 0007 as supporting GenAI STAR
+material, not assignment scope. It selects Bedrock plus Step Functions/Lambda,
+rejects OpenClaw/ECS, and defers LangGraph. Do not select a corpus, retrieval
+implementation, model, managed service, or local vertical slice before that
+contract. The 2026-09-01 managed-AI timeout maintenance is complete and
+verified; do not repeat its smoke or make further AWS changes. Further AI
+orchestration is active only within the tracker-defined interview scope.
 Keep the dirty worktree intact. Do not deploy or modify AWS, commit, push,
-discard, reset, broadly stage files, or resume parked tutorial, container, UI,
-or managed-AI work without explicit authorization.
+discard, reset, broadly stage files, or resume other parked tutorial,
+container, UI, or unrelated implementation work without explicit
+authorization.
 ```

@@ -80,8 +80,9 @@ Current proven state:
 
 - lakehouse ingestion and curated data path
 - ENTSOG gas proof
-- manual Phase 8 Step Functions orchestration
-- deterministic AI insight boundary
+- scheduled Step Functions AI insight orchestration
+- managed Bedrock/Mistral inference through a Lambda adapter, with deterministic
+  fallback
 - schema validation and failed-run quarantine
 - public-safe dashboard snapshot
 - Phase 10 operator-focused dashboard Overview
@@ -93,18 +94,22 @@ Current proven state:
 - Phase 14F live CloudFront/S3 public dashboard apply and asset publishing
 - Phase 16 live AI dashboard snapshot restore from successful Phase 8
   artifacts
-- Phase 17 managed AI refresh preflight with a Bedrock-first decision and
-  deterministic fallback
+- Phase 17AU scheduled managed-AI and budget-guardrail evidence
 - refreshed architecture diagrams
 
 Target follow-up state:
 
 - DNS, ACM certificate, and custom domain for dashboard delivery
-- CloudWatch alarms and budget controls
-- managed AI invocation through a Bedrock adapter, followed later by OpenClaw
-  runtime only if explicit model-runtime ownership is needed
-- carefully enabled schedules after manual proof and operating controls are
-  accepted
+- additional CloudWatch alarms where an operational signal and response are
+  defined; the managed-workflow AWS Budget is already verified
+- the ADR 0006 read-only, evidence-grounded analyst path only after its P1
+  evaluation contract and local gates justify implementation
+- LangGraph only if a later stateful, cyclic, resumable, streaming, or
+  human-in-the-loop workflow requirement justifies another orchestration layer
+
+ADR 0007 selects Bedrock for managed inference, retains Step Functions/Lambda
+for the current workflow, rejects OpenClaw/ECS, and keeps raw model text behind
+the existing validation and publication boundary.
 
 ## Interview Use
 

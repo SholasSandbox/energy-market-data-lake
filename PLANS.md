@@ -38,7 +38,39 @@ Historical planning references:
   plan. It is archived and no longer a source of truth for current phase
   status.
 
-## Active SAP-C02 Delivery Sequence
+## Active AWS Solutions Architect Interview Sequence
+
+Status as of 2026-09-01: SAP-C02 is passed and preparation is closed. The
+Startup Solutions Architect interview and five-slide Lakehouse assignment are
+the controlling near-term workstream. Further AI orchestration is active only
+inside the tracker's bounded interview-linked scope.
+
+1. Use `docs/adr/0006-read-only-evidence-grounded-ai-orchestration.md` as the
+   accepted architecture boundary: read-only decision support, controlled
+   structured evidence plus document retrieval, cited output, explicit
+   abstention, and no autonomous action.
+2. Use
+   `docs/planning/ai-orchestration-architecture-decision-register-20260830.md`
+   as the implementation sequence. P0 architecture is complete.
+3. Use
+   `docs/adr/0007-bedrock-runtime-and-orchestration-framework-boundary.md` as
+   the runtime decision: Bedrock inference and Step Functions/Lambda current;
+   OpenClaw/ECS rejected; LangGraph conditional and deferred.
+4. Create P1, the evaluation contract, before selecting corpus, chunking,
+   retrieval, embeddings, model, managed service, or AWS topology.
+5. Advance through corpus contracts, local retrieval benchmark, and at most one
+   locally tested read-only vertical slice only when each preceding gate passes.
+6. Stop when the interview evidence gap is closed. A managed AWS deployment is
+   optional and remains unauthorized without a separate explicit request.
+7. Preserve the current scheduled managed-AI workflow as verified baseline
+   evidence; do not replace it to build the proposed query experience.
+8. Keep truthful stakeholder evidence, STAR preparation, final slides, and
+   timed rehearsal ahead of non-essential implementation depth.
+
+The older SAP-C02 and Phase 1-17 sequences below are historical delivery
+evidence. They do not override this active interview sequence.
+
+## Historical SAP-C02 Delivery Sequence
 
 Status as of 2026-07-21: lakehouse closure and the bounded Domain 1 governance
 baseline are complete. The Networking comparison and revision package was
@@ -85,8 +117,10 @@ attempt no later than 2026-09-30.
    validation, cost, blast-radius, and rollback boundary.
 
 The detailed Phase 1-17 material below is a historical delivery record and
-implementation reference. It no longer authorizes continuation of deferred AI
-or dashboard work.
+implementation reference. It does not authorize dashboard expansion or an
+open-ended AI platform build. The bounded interview-linked AI workstream is
+governed only by the current tracker, ADRs 0006 and 0007, and the architecture
+decision register.
 
 ## Current Baseline
 

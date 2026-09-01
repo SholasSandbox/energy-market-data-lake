@@ -54,8 +54,9 @@ Why this path:
 - The current deterministic merge remains useful as a rollback and comparison
   path.
 
-OpenClaw remains a valid later option if the project needs explicit open model
-runtime ownership, but it should not be the first managed-AI refresh slice.
+ADR 0007 later rejects and removes OpenClaw/ECS from the current target. A new
+ADR could reopen self-hosted model runtime only if a hard requirement cannot be
+met by the managed boundary and a funded operating model exists.
 
 ## Target Architecture
 
@@ -200,8 +201,9 @@ Scope:
 - keep EventBridge schedules, DNS, ACM, alarms, OpenClaw runtime, and repeated
   model invocation out of scope
 
-OpenClaw/local model comparison remains a later cost-control and creativity
-slice after the AWS-managed boundary is proven.
+Historical next-step note: the AWS-managed boundary was later proven. ADR 0007
+rejects OpenClaw/ECS for the current target and makes the P1 evidence-grounded
+evaluation contract the next architecture artifact.
 
 ## Phase 17B Result
 

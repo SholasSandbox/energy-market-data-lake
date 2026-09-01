@@ -30,6 +30,14 @@ Deferred by design:
 - EventBridge scheduled automation
 - public website hosting or CloudFront
 
+Historical note: this was the Phase 8 operating boundary. Bedrock invocation,
+the EventBridge schedule, CloudFront delivery, and an AWS Budget were later
+implemented and verified. ADR 0007 rejects OpenClaw/ECS for the current target,
+defers LangGraph and multi-agent orchestration, and continues to reject raw
+model text publication. Use the Phase 17AU evidence and current README for
+present-state claims; do not execute this historical runbook as if it were the
+current operating procedure.
+
 ## Environment
 
 ```bash

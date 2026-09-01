@@ -4,13 +4,13 @@
 
 **Owner:** [redacted-owner]  
 **Created:** 2026-06-12  
-**Last revised:** 2026-08-30<br>
+**Last revised:** 2026-09-01<br>
 **Target exam:** AWS Certified Solutions Architect – Professional, SAP-C02  
 **Exam outcome:** Passed on 2026-08-29 after an in-person Pearson VUE attempt<br>
 **Earliest booking decision gate:** completed 2026-08-22 after full mock 009; **recommendation:** GO; **booking:** completed 2026-08-22
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-08-30
+**Last repository reconciliation:** 2026-09-01
 **Last practice evidence update:** 2026-08-23
 **Last readiness-state publication:** 2026-08-30 (final-freshness evidence, passed-attempt closure, and AWS Solutions Architect interview transition; see Git history)
 **Last tutorial evidence update:** 2026-07-01
@@ -44,16 +44,25 @@ Before adding any new topic, answer:
 
 If the answer is **no**, defer it.
 
-### Hard deferrals until after SAP-C02 attempt
+### Post-exam deferral status
+
+The SAP-C02 attempt is complete and passed. Deferred work does not resume
+automatically. The following work remains deferred during the interview-
+preparation window:
 
 - Deep Kubernetes / EKS
-- AI orchestration beyond light conceptual notes
 - Polished UI/dashboard
 - Full Control Tower deployment unless cheap and quick
 - Complex microservices platform
 - Deep REMIT workflow build-out
 - Excessive Python refinement beyond reliable AWS automation
 - Non-essential portfolio polish
+
+Further AI orchestration expansion is no longer deferred. On 2026-08-30, the
+learner explicitly moved it into the active interview-preparation workstream
+because it strengthens the Lakehouse assignment, System Architecture evidence,
+and GenAI domain depth. The bounded scope and safety limits are recorded under
+**Active interview-linked AI orchestration workstream** below.
 
 ### Status and evidence rules
 
@@ -68,8 +77,10 @@ If the answer is **no**, defer it.
 
 Status must follow evidence, not intention. A Terraform resource proves an
 implemented configuration path; it does not by itself prove that a live
-resource exists. Existing dashboard and AI capabilities may be maintained, but
-new expansion remains deferred unless the tracker is explicitly changed.
+resource exists. Existing dashboard and AI capabilities may be maintained.
+The newly active AI orchestration workstream must continue to distinguish
+planned design, local prototypes, implemented configuration, and verified live
+behaviour.
 
 This vocabulary applies to readiness and deliverable status fields. Booking
 criteria use `Met`, `Partially met`, or `Not met`; checklist items use their
@@ -126,12 +137,62 @@ implementation backlog.
 #### Parked work
 
 - Docker and containers
-- new AI orchestration expansion
 
-Do not start parked work unless the task directly supports a current
-SAP-C02 milestone and is explicitly approved as a short exception. Maintenance,
-observation, cost control, and rollback work for the already-proven lakehouse AI
-workflow are allowed when required by this tracker.
+Do not start parked work unless the task directly supports the active interview
+milestone and is explicitly approved as a short exception.
+
+#### Active interview-linked AI orchestration workstream
+
+Further AI orchestration expansion is active from 2026-08-30 because it
+directly supports near-term cloud architect positioning, the Lakehouse
+assignment, and the interview's GenAI Fluency and Think Big dimensions.
+
+The authorized repository scope is:
+
+- architecture diagrams and ADR-quality trade-off decisions;
+- a retrieval-grounded, citation-bearing analyst flow over approved curated
+  evidence and documentation;
+- local prototypes and tests for ingestion, chunking, metadata, embeddings,
+  retrieval, reranking, prompt assembly, schema validation, grounding checks,
+  fallback, and evaluation;
+- representative offline evaluation data and measures for retrieval,
+  groundedness, citation correctness, task success, safety, latency, and cost;
+- responsible-AI threat modelling, least-privilege and tenant-boundary design,
+  observability, quotas, token budgets, caching, and human-approval boundaries;
+  and
+- interview slides, demonstrations, and technical communication artifacts that
+  accurately separate the proven managed-AI baseline from planned or locally
+  tested enhancements.
+
+This tracker change does not authorize AWS deployment, resource mutation,
+production tenant onboarding, an autonomous action-taking agent, UI expansion,
+or an open-ended platform build. Any AWS-changing slice still requires a
+separate explicit request with cost, rollback, IAM, validation, and blast-
+radius boundaries. Prefer the smallest artifact or local vertical slice that
+materially improves the interview case study.
+
+The decision-first sequence is now controlled by:
+
+- `docs/adr/0006-read-only-evidence-grounded-ai-orchestration.md`, which
+  accepts a bounded read-only pattern combining structured evidence and
+  document retrieval while rejecting autonomous-agent and platform-first
+  expansion; and
+- `docs/planning/ai-orchestration-architecture-decision-register-20260830.md`,
+  which orders evaluation, corpus, retrieval, model, local-orchestration, AWS-
+  topology, and deployment decisions by evidence dependency; and
+- `docs/adr/0007-bedrock-runtime-and-orchestration-framework-boundary.md`,
+  which selects the verified Bedrock inference plus Step Functions/Lambda
+  workflow boundary, rejects OpenClaw/ECS, and defers LangGraph until a proven
+  graph-shaped workflow justifies it.
+
+Architecture package P0 is complete, including the runtime-layer correction in
+ADR 0007. Bedrock `InvokeModel` is verified current rather than deferred;
+OpenClaw/ECS and raw model publication are rejected rather than deferred;
+LangGraph, multi-agent orchestration, and fine-tuning remain evidence-gated.
+P1, the evaluation contract, is next.
+Do not select a vector database, managed knowledge-base service, embedding
+model, or deployment topology before that contract defines the user decision,
+baseline, expected evidence, failure cases, and promotion gates.
 
 #### Cross-workspace evidence rule
 
@@ -306,8 +367,8 @@ the current week and leave future planned weeks blank.
 | 2026-08-10 | 10–12 | 15 | 0 | 6 | 9 | The focused Domain 3 diagnostic scored 25/25 in 47 minutes, including 20/20 on Domain 3. Full Mock 006 then scored 71/75 (94.7%): 190 wall-clock minutes with approximately 10 minutes of learner-reported short interruptions near the end, giving an estimated 180 active minutes; 24/27 exact-match multiple-response, 11/11 uncertain answers, Domains 1, 3, and 4 at 100%, and Domain 2 at 18/22. The learner completed the miss review on 2026-08-14. Full Mock 007 then scored 75/75 in 142 minutes on 2026-08-15: 48/48 single-response, 27/27 exact-match multiple-response, 7/7 uncertain, every domain at 100%, and all four Mock 006 remediation targets transferred. No total hours are inferred from artifact timestamps. |
 | 2026-08-17 | 10–12 |  |  |  |  | Full Mocks 008 and 009 preserved the two-mock cadence. Mock 008 scored 75/75 in 117 active minutes. Mock 009 scored 73/75 on 2026-08-22 in 101 active minutes within a 106-minute wall clock: 47/48 single-response, 26/27 exact-match multiple-response, 15/16 uncertain, and primary-domain scores of 20/20, 21/22, 17/18, and 15/15. The post-Mock-009 gate is reached; run the explicit go/no-go booking review next. No total hours are inferred from artifact timestamps. |
 | 2026-08-24 | 10–12 |  |  |  |  | SAP-C02 final taper completed without another full mock or provider gate. Required-ID and route checks passed, the in-person attempt was completed on 2026-08-29, and the learner-provided score report confirms Pass. Redirect capacity to the AWS Solutions Architect assessment and final-interview preparation. |
-| 2026-08-31 | 10–12 |  |  |  |  | SAP-C02 is passed and preparation is closed. Redirect capacity to the AWS Solutions Architect assessment and final-interview preparation. |
-| 2026-09-07 | 10–12 |  |  |  |  | Keep SAP-C02 preparation closed. Continue the AWS Solutions Architect assessment and final-interview preparation. |
+| 2026-08-31 | 10–12 |  |  |  |  | SAP-C02 is passed and preparation is closed. The Startup Solutions Architect role, five-loop structure, and presentation assignment have been inspected. Use `docs/planning/aws-startups-solutions-architect-interview-preparation-20260830.md` for the bounded preparation plan and `docs/planning/aws-startups-sa-assignment-deck-outline-20260830.md` for the five-slide Lakehouse assignment. Further AI orchestration is active only within the interview-linked scope. ADRs 0006 and 0007 plus the architecture decision register complete P0: Bedrock is the verified inference boundary, Step Functions/Lambda remains the current orchestration boundary, OpenClaw/ECS is rejected, and LangGraph is deferred. The explicitly authorized managed-AI timeout maintenance was revalidated, implemented as one in-place Lambda update, and verified by one successful controlled smoke on 2026-09-01; it did not expand orchestration scope. Use ADR 0007 only as a supporting GenAI STAR scenario, not the assignment. Confirm the truthful stakeholder, business outcome, schedule, submission mechanics, and confidentiality boundary, then create the P1 evaluation contract. |
+| 2026-09-07 | 10–12 |  |  |  |  | Keep SAP-C02 preparation closed. Continue the AWS Solutions Architect assessment and final-interview preparation. Advance beyond the P1 AI evaluation contract only when its evidence gates justify a bounded corpus, retrieval benchmark, model comparison, or locally tested vertical slice. |
 | 2026-09-14 | 10–12 |  |  |  |  | AWS Solutions Architect final interview: assessment plus an under-five-hour video interview. Do not divide attention with SAP-C02 preparation. |
 | 2026-09-21 | 10–12 |  |  |  |  | Post-interview recovery and evidence reconciliation only; no deferred work resumes automatically. |
 | 2026-09-28 | 10–12 |  |  |  |  | Re-plan post-exam and post-interview priorities from explicit evidence and authorization. |
@@ -466,10 +527,14 @@ complete with evidence links:
 
 ### Lakehouse scope boundaries
 
-| Must have before exam | Existing optional baseline | Defer new expansion |
+This table records the pre-exam boundary. The 2026-08-30 post-exam tracker
+update releases further AI orchestration into the bounded interview-linked
+workstream defined above; the other deferrals remain unchanged.
+
+| Must have before exam | Existing optional baseline | Deferred during exam preparation |
 |---|---|---|
 | S3 raw/curated | Lake Formation | New UI/dashboard expansion |
-| Glue ETL | Existing EventBridge schedules, maintenance only | New AI orchestration expansion |
+| Glue ETL | Existing EventBridge schedules, maintenance only | AI orchestration expansion; released into bounded interview preparation on 2026-08-30 |
 | Parquet | Step Functions orchestration | Deep REMIT workflow |
 | Athena | DynamoDB metadata | Complex API |
 | IAM | Basic data quality checks | Multi-region deployment |
@@ -1180,11 +1245,24 @@ one coherent current revision route.
 
 **Next tracked priority:** the in-person SAP-C02 attempt is complete and the
 learner-provided score report confirms Pass. Keep SAP-C02 preparation closed
-and focus on the AWS Solutions Architect assessment and final interview on
-2026-09-14. Defer the non-blocking database/data-transfer consolidation and
-parked repository work until after the interview and a separate tracker-led
-re-planning decision. The exam-result and post-attempt state transition has
-occurred.
+and execute the bounded Startup Solutions Architect plan in
+`docs/planning/aws-startups-solutions-architect-interview-preparation-20260830.md`.
+The supplied presentation assignment is translated into the five-slide
+storyboard at
+`docs/planning/aws-startups-sa-assignment-deck-outline-20260830.md`. Confirm the
+truthful stakeholder and measurable business-outcome evidence, definitive
+interview schedule, submission mechanics, and confidentiality boundary before
+locking final slides. ADRs 0006 and 0007 plus the AI orchestration decision
+register now complete the architecture-first package. ADR 0007 is supporting
+GenAI STAR material, not assignment scope. Create the P1 evaluation contract
+next, while building the truthful STAR story bank. Only after the evaluation
+contract should a corpus, retrieval benchmark, model, or local vertical slice
+be selected.
+Defer the non-blocking database/data-transfer consolidation and all other
+parked repository work until after the interview
+and a separate tracker-led re-planning decision. The exam-result and post-
+attempt state transition has occurred; the interview-preparation plan is now
+active.
 
 ### Revision-maintenance register
 
@@ -1232,7 +1310,7 @@ booking-blocking only when it represents a material or recurring exam unknown.
 | Readiness status | Complete: the learner-provided score report confirms Pass for the in-person SAP-C02 attempt completed on 2026-08-29 |
 | Recommendation | Keep SAP-C02 preparation closed and redirect attention to the 2026-09-14 AWS Solutions Architect assessment and final interview. Do not reconstruct or record exam questions. |
 | Attempt status | Completed and passed in person. Private registration, testing-centre, identity, and transaction details remain outside repository evidence. |
-| Primary residual risk | Dividing attention by reopening completed SAP-C02 study or resuming deferred repository work before the interview. Interview preparation remains the controlling near-term priority. |
+| Primary residual risk | Dividing attention by reopening completed SAP-C02 study or treating the released AI orchestration workstream as an open-ended product build. Interview preparation remains the controlling near-term priority. |
 
 Full mocks 001-009 demonstrate strong endurance, broad domain coverage, stable
 scores above every quantitative threshold, and recovery after narrow misses.
@@ -1309,8 +1387,8 @@ tracker is explicitly revised from new evidence.
 |---|---|---|
 | June–July | Lakehouse closure, governance evidence, Networking, and Resilience/DR transition | Lakehouse closure and bounded Domain 1 governance are evidenced; Networking package is complete; DR pattern, RTO/RPO, Lakehouse recovery-mapping, source-review, focused 12/12 submission, and fresh structurally isolated 12/12 spaced-retest artifacts are complete repository evidence |
 | August | Resilience/DR closure, repeated full-mock validation, and explicit booking review | Fresh DR retest complete; Mocks 003–009 and remediation evidence recorded; post-Mock-009 review completed with a GO recommendation; the 7 Rs strategy matrix is complete, including Relocate |
-| September | AWS Solutions Architect final-interview preparation | SAP-C02 was passed on 2026-08-29; protect the post-exam runway for the 2026-09-14 assessment and under-five-hour video interview |
-| Post-exam | Resume or re-plan deferred portfolio work | The pass transition is complete, but interview preparation controls through 2026-09-14; re-plan deferred work only afterward through a separate tracker/handover transition |
+| September | AWS Solutions Architect final-interview preparation | SAP-C02 was passed on 2026-08-29; execute `docs/planning/aws-startups-solutions-architect-interview-preparation-20260830.md`, use the Lakehouse assignment with verified-versus-proposed boundaries, complete the decision-first AI evaluation gates in order, and stop once the smallest evidence set strengthens System Architecture and GenAI Fluency before the definitively confirmed interview date |
+| Post-exam | Resume or re-plan deferred portfolio work | The pass transition is complete. Bounded interview-linked AI orchestration resumed by explicit tracker update on 2026-08-30; all other deferred work remains parked through the interview and requires a separate tracker/handover transition afterward |
 
 ---
 
@@ -1320,11 +1398,13 @@ Use this to capture attractive distractions without acting on them.
 
 | Idea | Why attractive | Decision | Revisit date |
 |---|---|---|---|
-| Further AI orchestration expansion | Existing managed path is already proven and scheduled | Freeze at current baseline; maintenance and cost control only | After SAP-C02 |
 | Deep EKS | Interesting but not critical | Defer | After SAP-C02 |
 | Docker/container implementation | Useful skill, but not required for the current readiness path | Defer unless a short milestone-linked exception is approved | After SAP-C02 |
 | Further UI/dashboard expansion | Existing hosted dashboard is already proven | Freeze at current baseline; maintenance only | After SAP-C02 |
 | Complex REMIT workflow | Domain-relevant but large | Defer | After SAP-C02 |
+
+Further AI orchestration expansion was removed from this parking lot on
+2026-08-30 and is governed by the active interview-linked workstream above.
 
 ---
 

@@ -2,9 +2,14 @@
 
 <!-- markdownlint-disable MD013 -->
 
-## Short Answer
+## Current Architecture Decision
 
-The ChatGPT 5.5 review is directionally right. The original concept is useful, but the stronger portfolio/SAP-C02 version needs clearer trust boundaries, explicit failure handling, least-privilege IAM, observability, cost controls, and a clean split between MVP, target architecture, and optional stretch features.
+The original four-week plan is retained as delivery history. The current
+runtime decision is now Bedrock `InvokeModel` through the existing Lambda
+adapter, orchestrated by Step Functions and protected by the existing schema,
+failure, publication, notification, and budget controls. OpenClaw on
+ECS/Fargate is removed from the target. LangGraph is deferred until a proven
+stateful or cyclic agent workflow requires it. See ADR 0007.
 
 This plan fits the serverless energy data lake repo because it extends the existing Lambda/EventBridge/S3/Glue/Athena/dashboard path rather than the Fargate ingestion variant.
 
@@ -21,7 +26,8 @@ This plan fits the serverless energy data lake repo because it extends the exist
 
 - Add trust boundaries so public delivery cannot read raw, curated, audit, or failed data directly.
 - Separate the private processing path from the public static dashboard path.
-- Treat OpenClaw/local model execution as an MVP/manual-reviewed path outside AWS unless it is deployed into a real AWS runtime such as Lambda, ECS Fargate, or Bedrock.
+- Treat model output as untrusted candidate data regardless of provider or
+  framework; Bedrock is the selected managed inference boundary.
 - Add data contracts for each boundary: energy input, news summary, AI insight, and dashboard snapshot.
 - Add observability, budget controls, and IAM roles as first-class architecture elements.
 - Keep DynamoDB Streams as a V1.1 extension, not a critical MVP dependency.
@@ -34,7 +40,8 @@ This plan fits the serverless energy data lake repo because it extends the exist
 - Malformed AI output is quarantined and never published.
 - Static dashboard hosting reads only app assets and public dashboard JSON.
 - No NAT Gateway, RDS, or always-on EC2 for the MVP.
-- Local OpenClaw is outside AWS unless replaced by Bedrock or a managed compute runtime.
+- OpenClaw/ECS is not part of the current or target architecture; LangGraph is
+  a separately deferred orchestration-framework choice.
 
 ## High-Level Architecture Diagram
 
@@ -57,9 +64,8 @@ Mermaid source: `diagrams/news-dashboard-detailed.mmd`
 ![Detailed news dashboard architecture](../diagrams/news-dashboard-detailed.svg)
 
 The rendered SVG is generated from `diagrams/news-dashboard-detailed.mmd`.
-The current source shows the implemented manual Step Functions proof path,
-disabled schedules, deterministic merge boundary, and deferred model/hosting
-extensions.
+The current source shows the scheduled Step Functions path, managed Bedrock
+boundary, deterministic fallback, validation gates, and public-safe delivery.
 
 ## Data Contracts
 
@@ -67,7 +73,7 @@ extensions.
 | --- | --- | --- | --- |
 | `energy_input_v1.json` | Energy ingest / Athena export | Normalizer / AI merge | Stable energy market facts with timestamps, units, source, and region |
 | `news_summary_v1.json` | News ingest | AI merge | Normalized article summaries with URL, publisher, timestamp, topic, and extracted entities |
-| `ai_insight_v1.json` | OpenClaw, Bedrock, or managed AI task | Validator / publisher | Structured insight with confidence, risk level, source references, and reasoning summary |
+| `ai_insight_v1.json` | Bedrock adapter or deterministic fallback | Validator / publisher | Structured insight with confidence, risk level, source references, and reasoning summary |
 | `dashboard_snapshot_v1.json` | Publisher | React dashboard | Public-safe dashboard payload with only approved fields |
 
 ## IAM Model
@@ -98,7 +104,8 @@ extensions.
 - Set CloudWatch log retention.
 - Keep Lambda runs short-lived.
 - Add AWS Budget alert before any live demo period.
-- Prefer local OpenClaw for Week 3 MVP; move to Bedrock or managed compute only after the schema gate works.
+- Retain the verified Bedrock path and deterministic fallback; add no second
+  runtime until evaluation proves a requirement.
 
 ## Detailed 4-Week Project Plan
 
@@ -161,7 +168,8 @@ Goal: merge energy and news data into validated, traceable insights.
 
 Deliverables:
 
-- Local OpenClaw/manual-reviewed MVP path reads curated inputs.
+- The managed Bedrock adapter reads the validated input bundle; the
+  deterministic merge remains the fallback and comparison baseline.
 - AI prompt or merge workflow outputs `ai_insight_v1.json`.
 - JSON schema validation rejects malformed AI output.
 - Insights include confidence, source references, timestamp, and risk level.
@@ -175,11 +183,12 @@ Acceptance criteria:
 - Every dashboard insight has source references.
 - A previous good dashboard snapshot remains available if the current AI run fails.
 
-Optional cloud AI path:
+Current cloud AI path:
 
-- EventBridge or a manual run invokes Bedrock `InvokeModel` and validates the response.
-- Or a managed compute task runs OpenClaw.
-- Do this only if the local path and schema gate are already working.
+- EventBridge schedules Step Functions, the Lambda adapter invokes Bedrock,
+  and the existing response and publication contracts validate the candidate.
+- Phase 17AU is the evidence boundary for scheduled operation and budget
+  controls.
 
 Do not spend time on:
 
@@ -214,10 +223,13 @@ Do not spend time on:
 - Building a production-grade multi-user app.
 - Adding accounts, auth, or admin panels unless required for the demo.
 
-## Stretch Features After MVP
+## Later Evidence-Led Options
 
 - DynamoDB Streams for high-risk insight alerts and audit fan-out.
-- Bedrock cloud AI path once local OpenClaw output schema is stable.
+- ADR 0006 read-only evidence-grounded analyst path after its P1 evaluation
+  contract.
+- LangGraph only if a graph-shaped stateful workflow is proven and compares
+  favourably with explicit Step Functions/Lambda orchestration.
 - Athena query layer for historical AI insight analysis.
 - API service for richer dashboard queries.
 - CI/CD deployment pipeline with preview environments.

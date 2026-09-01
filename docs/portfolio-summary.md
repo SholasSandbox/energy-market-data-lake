@@ -54,11 +54,13 @@ News + AI extension:
 - S3 curated, failed, audit, and dashboard snapshot artifact paths
 - SNS and CloudWatch failure observability
 
-Deferred AWS extension:
+Managed AWS state:
 
-- OpenClaw in managed compute or Bedrock `InvokeModel`
-- EventBridge schedule enablement
+- Bedrock `InvokeModel` through the Lambda adapter, with Step Functions
+  orchestration and deterministic fallback
+- controlled EventBridge scheduling
 - CloudFront/S3 static dashboard delivery
+- SNS failure notification and an AWS Budget guardrail
 
 ## Security And Control Design
 
@@ -147,9 +149,10 @@ http://127.0.0.1:5173/
 
 ## Known Limitations
 
-- The current AI merge is deterministic logic, not live OpenClaw or Bedrock.
-- Phase 8 scheduling is intentionally disabled; manual Step Functions execution
-  is the current operating mode.
+- The current managed path invokes Bedrock/Mistral through a Lambda adapter;
+  deterministic logic remains the fallback and comparison baseline.
+- The AI workflow schedule is enabled and has verified scheduled-run evidence
+  through Phase 17AU.
 - Demo energy evidence may be stale and is labelled as local demo evidence.
 - ENTSOG gas is rendered in the React dashboard context, but not added to the public AI snapshot contract.
 - Terraform has been scaffolded and locally validated, but existing AWS resources still need to be imported into Terraform state before Terraform should manage them.
@@ -159,8 +162,9 @@ http://127.0.0.1:5173/
 1. Import the existing AWS resources into Terraform state, then review `terraform plan`.
 2. Refresh live electricity and gas evidence before any public demo.
 3. Decide whether gas should later be included in the public AI snapshot contract.
-4. Decide whether to enable the Phase 8 EventBridge schedule.
-5. Add Bedrock or managed OpenClaw only after the deterministic orchestration
-   boundary remains stable.
-6. Publish the dashboard through CloudFront/S3 if a public hosted demo is
-   required.
+4. Create the ADR 0006 P1 evaluation contract before selecting retrieval,
+   models, or an optional orchestration framework.
+5. Keep OpenClaw/ECS rejected and LangGraph deferred under ADR 0007 unless a
+   measured requirement triggers a new decision.
+6. Define any additional production identity, tenancy, SLO, or alarm needs
+   from real usage rather than portfolio scope.

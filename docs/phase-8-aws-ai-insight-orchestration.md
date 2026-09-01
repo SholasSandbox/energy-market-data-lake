@@ -50,6 +50,31 @@ Deferred until after Phase 8:
 - Fine-tuning.
 - Publishing raw model text directly to the dashboard.
 
+### Post-Phase-8 Disposition - 2026-09-01
+
+This list records the original Phase 8 sequencing boundary, not the current
+target. Later evidence and ADR 0007 reconcile it as follows:
+
+- Bedrock `InvokeModel`: **verified current** through the managed Lambda
+  adapter and scheduled Step Functions workflow evidence in Phase 17AU.
+- OpenClaw on ECS/Fargate or another managed runtime: **rejected and removed
+  from the target** because no requirement justifies a self-hosted general
+  agent runtime.
+- Multi-agent orchestration: **deferred** pending a proven multi-role workflow
+  and comparative evaluation.
+- Fine-tuning: **deferred for a stable behaviour gap** and rejected as a store
+  for changing Lakehouse knowledge.
+- Publishing raw model text: **rejected**; candidate output must pass the
+  validation and publication gates.
+
+LangGraph is also deferred. It is an orchestration framework rather than a
+Bedrock substitute and is considered only if explicit workflows become
+insufficient for a cyclic, stateful, resumable, streaming, or
+human-in-the-loop requirement.
+
+See
+`docs/adr/0007-bedrock-runtime-and-orchestration-framework-boundary.md`.
+
 ## Design Lock Decisions
 
 These decisions are accepted for Phase 8 and should guide implementation.

@@ -3,13 +3,18 @@
 
 from __future__ import annotations
 
+import copy
 import datetime as dt
 import importlib.util
 import io
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
+from unittest.mock import patch
+
+from botocore.exceptions import ReadTimeoutError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +32,7 @@ from energy_market.managed_ai import (  # noqa: E402
     ManagedAIResponseError,
     build_bedrock_request,
     build_mistral_request,
+    normalize_ai_insight_reference_objects,
     parse_bedrock_response,
     provider_from_model_id,
 )
@@ -99,6 +105,13 @@ class FakeBedrock:
         }
 
 
+class TimeoutBedrock:
+    """Fake Bedrock client that proves the SDK-timeout failure path."""
+
+    def invoke_model(self, **_: Any) -> dict[str, Any]:
+        raise ReadTimeoutError(endpoint_url="https://bedrock-runtime.test")
+
+
 def load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as file:
         return json.load(file)
@@ -122,6 +135,53 @@ def main() -> int:
         "No live model invocation was made in Phase 17A.",
     ]
     raise_for_validation_errors(managed_payload, "ai_insight", "phase17a_fake_payload")
+
+    managed_payload_with_reference_extras = copy.deepcopy(managed_payload)
+    energy_reference = managed_payload_with_reference_extras["insights"][0][
+        "energy_references"
+    ][0]
+    energy_reference["value"] = "25118 MW"
+    energy_reference["timestamp"] = "2026-08-08T07:30:10Z"
+    news_reference = managed_payload_with_reference_extras["insights"][0][
+        "news_references"
+    ][0]
+    news_reference["date"] = "2026-08-08"
+    normalized_payload = normalize_ai_insight_reference_objects(
+        managed_payload_with_reference_extras,
+    )
+    if "value" not in energy_reference or "date" not in news_reference:
+        raise AssertionError("reference normalization mutated the raw model payload")
+    if set(normalized_payload["insights"][0]["energy_references"][0]) != {
+        "source",
+        "metric",
+        "reference",
+    }:
+        raise AssertionError("energy reference normalization drifted")
+    if set(normalized_payload["insights"][0]["news_references"][0]) != {
+        "publisher",
+        "title",
+        "url",
+    }:
+        raise AssertionError("news reference normalization drifted")
+    raise_for_validation_errors(
+        normalized_payload,
+        "ai_insight",
+        "phase17_reference_normalization",
+    )
+    invalid_outside_reference = copy.deepcopy(managed_payload_with_reference_extras)
+    invalid_outside_reference["insights"][0]["unexpected"] = "must remain invalid"
+    try:
+        raise_for_validation_errors(
+            normalize_ai_insight_reference_objects(invalid_outside_reference),
+            "ai_insight",
+            "phase17_reference_normalization_boundary",
+        )
+    except ValueError as exc:
+        errors = "\n".join(getattr(exc, "errors", [str(exc)]))
+        if "'unexpected' was unexpected" not in errors:
+            raise AssertionError("non-reference schema failure changed") from exc
+    else:
+        raise AssertionError("reference normalization hid an unrelated schema failure")
 
     request = build_bedrock_request(bundle, max_tokens=700, temperature=0.1)
     prompt = request["messages"][0]["content"][0]["text"]
@@ -489,6 +549,7 @@ def main() -> int:
         raise AssertionError("truncated Mistral response unexpectedly parsed")
 
     handlers = load_handler_module()
+    assert_bedrock_client_timeout_config(handlers)
     run_id = generate_run_id(
         now=dt.datetime(2026, 5, 22, 10, 30, 0, tzinfo=dt.UTC),
         suffix="17a00001",
@@ -511,7 +572,17 @@ def main() -> int:
         expected_provider="mistral",
         response_shape="mistral",
     )
+    run_managed_success_path(
+        handlers,
+        run_id,
+        bundle,
+        managed_payload_with_reference_extras,
+        model_id="mistral.ministral-3-8b-instruct",
+        expected_provider="mistral",
+        response_shape="mistral",
+    )
     run_managed_failure_path(handlers, run_id, bundle)
+    run_managed_timeout_path(handlers, run_id, bundle)
 
     print(f"Phase 17 managed AI adapter self-check passed for {run_id}")
     return 0
@@ -566,6 +637,18 @@ def run_managed_success_path(
     ai_key = artifact_key("ai_insight", run_id)
     payload = json.loads(s3.objects[(lake_bucket, ai_key)].decode("utf-8"))
     raise_for_validation_errors(payload, "ai_insight", "phase17a_written_payload")
+    if set(payload["insights"][0]["energy_references"][0]) != {
+        "source",
+        "metric",
+        "reference",
+    }:
+        raise AssertionError("managed merge wrote an invalid energy reference shape")
+    if set(payload["insights"][0]["news_references"][0]) != {
+        "publisher",
+        "title",
+        "url",
+    }:
+        raise AssertionError("managed merge wrote an invalid news reference shape")
 
 
 def run_managed_failure_path(
@@ -600,6 +683,70 @@ def run_managed_failure_path(
     failed_key = failed_payload_key("merge_ai_insight_managed", run_id)
     if (lake_bucket, failed_key) not in s3.objects:
         raise AssertionError("managed AI validation failure was not quarantined")
+
+
+def assert_bedrock_client_timeout_config(handlers: Any) -> None:
+    config = handlers._bedrock_client_config()
+    if config.connect_timeout != 5 or config.read_timeout != 60:
+        raise AssertionError("default Bedrock client timeouts drifted")
+    if config.retries != {"mode": "standard", "total_max_attempts": 1}:
+        raise AssertionError("default Bedrock retry boundary drifted")
+
+    with patch.dict(
+        os.environ,
+        {
+            "BEDROCK_CONNECT_TIMEOUT_SECONDS": "7",
+            "BEDROCK_READ_TIMEOUT_SECONDS": "70",
+            "BEDROCK_MAX_ATTEMPTS": "2",
+        },
+    ):
+        configured = handlers._bedrock_client_config()
+    if configured.connect_timeout != 7 or configured.read_timeout != 70:
+        raise AssertionError("configured Bedrock client timeouts were ignored")
+    if configured.retries != {"mode": "standard", "total_max_attempts": 2}:
+        raise AssertionError("configured Bedrock attempts were ignored")
+
+
+def run_managed_timeout_path(
+    handlers: Any,
+    run_id: str,
+    bundle: dict[str, Any],
+) -> None:
+    s3 = MemoryS3()
+    lake_bucket = "energy-market-lake-test"
+    dashboard_bucket = "energy-market-dashboard-test"
+    bundle_key = artifact_key("ai_input_bundle", run_id)
+    write_s3_json(s3, lake_bucket, bundle_key, bundle)
+
+    handlers._bedrock_client = TimeoutBedrock
+    try:
+        handlers.handle_event(
+            {
+                "action": "MergeAiInsightManaged",
+                "run_id": run_id,
+                "lake_bucket": lake_bucket,
+                "dashboard_bucket": dashboard_bucket,
+                "artifacts": {"ai_input_bundle": bundle_key},
+                "bedrock_model_id": "test.bedrock-model-v1",
+            },
+            s3,
+        )
+    except handlers.ManagedAITimeoutError as exc:
+        if "not written or published" not in str(exc):
+            raise AssertionError("managed timeout error lost the safety outcome") from exc
+    else:
+        raise AssertionError("Bedrock read timeout unexpectedly passed")
+
+    failed_key = failed_payload_key("merge_ai_insight_managed", run_id)
+    if (lake_bucket, failed_key) not in s3.objects:
+        raise AssertionError("managed timeout did not write a failed record")
+    failed_record = json.loads(s3.objects[(lake_bucket, failed_key)].decode("utf-8"))
+    if failed_record["schema_name"] != "ai_insight_v1":
+        raise AssertionError("managed timeout failed record lost its schema boundary")
+    if (lake_bucket, artifact_key("ai_insight", run_id)) in s3.objects:
+        raise AssertionError("managed timeout wrote an ai_insight artifact")
+    if any(bucket == dashboard_bucket for bucket, _ in s3.objects):
+        raise AssertionError("managed timeout wrote a dashboard artifact")
 
 
 if __name__ == "__main__":

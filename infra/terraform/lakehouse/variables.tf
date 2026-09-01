@@ -227,6 +227,39 @@ variable "ai_orchestration_bedrock_temperature" {
   }
 }
 
+variable "ai_orchestration_bedrock_connect_timeout_seconds" {
+  description = "Bedrock Runtime client connection timeout in seconds."
+  type        = number
+  default     = 5
+
+  validation {
+    condition     = var.ai_orchestration_bedrock_connect_timeout_seconds >= 1 && var.ai_orchestration_bedrock_connect_timeout_seconds <= 30 && floor(var.ai_orchestration_bedrock_connect_timeout_seconds) == var.ai_orchestration_bedrock_connect_timeout_seconds
+    error_message = "ai_orchestration_bedrock_connect_timeout_seconds must be an integer between 1 and 30."
+  }
+}
+
+variable "ai_orchestration_bedrock_read_timeout_seconds" {
+  description = "Bedrock Runtime client read timeout in seconds; keep enough Lambda time for failed-record persistence."
+  type        = number
+  default     = 60
+
+  validation {
+    condition     = var.ai_orchestration_bedrock_read_timeout_seconds >= 1 && var.ai_orchestration_bedrock_read_timeout_seconds <= 900 && floor(var.ai_orchestration_bedrock_read_timeout_seconds) == var.ai_orchestration_bedrock_read_timeout_seconds
+    error_message = "ai_orchestration_bedrock_read_timeout_seconds must be an integer between 1 and 900."
+  }
+}
+
+variable "ai_orchestration_bedrock_max_attempts" {
+  description = "Total Bedrock Runtime request attempts, including the initial request."
+  type        = number
+  default     = 1
+
+  validation {
+    condition     = var.ai_orchestration_bedrock_max_attempts >= 1 && var.ai_orchestration_bedrock_max_attempts <= 3 && floor(var.ai_orchestration_bedrock_max_attempts) == var.ai_orchestration_bedrock_max_attempts
+    error_message = "ai_orchestration_bedrock_max_attempts must be an integer between 1 and 3."
+  }
+}
+
 variable "managed_workflow_cost_budget_enabled" {
   description = "When true, create a monthly cost budget for the managed workflow's project-service cost guardrail."
   type        = bool

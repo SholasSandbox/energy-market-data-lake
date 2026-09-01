@@ -11,7 +11,7 @@ flowchart TB
         IAM["AWS IAM\nleast privilege execution roles"]
         SSM["AWS Systems Manager Parameter Store\nruntime configuration"]
         Secrets["AWS Secrets Manager\nAPI credentials where needed"]
-        EventBridge["Amazon EventBridge Scheduler\ndisabled until operating controls pass"]
+        EventBridge["Amazon EventBridge Scheduler\ncontrolled scheduled execution"]
         CloudWatch["Amazon CloudWatch\nlogs, metrics, alarms"]
         SNS["Amazon SNS\noperator notification path"]
         Budgets["AWS Budgets\ncost and anomaly guardrails"]
@@ -22,7 +22,7 @@ flowchart TB
         Glue["AWS Glue\ncrawlers, catalog, ETL"]
         Athena["Amazon Athena\nquery and proof surface"]
         StepFunctions["AWS Step Functions\nrun-level orchestration"]
-        AI["Amazon Bedrock or OpenClaw\nmanaged AI target boundary"]
+        AI["Amazon Bedrock Runtime\nmanaged inference boundary"]
         S3Lake["Amazon S3 lakehouse\nraw, curated, audit, failed, dashboard"]
         CloudFront["Amazon CloudFront and S3\npublic dashboard delivery"]
     end

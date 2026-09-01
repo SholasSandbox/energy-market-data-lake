@@ -1,0 +1,69 @@
+flowchart TB
+    subgraph CURRENT["Verified current baseline"]
+        direction LR
+        CURATED["Validated curated S3 artifacts"]
+        BATCH["Scheduled Step Functions workflow"]
+        MODEL["Managed model adapter"]
+        GATE["Schema, sanitisation and fallback gates"]
+        PUBLIC["Public-safe dashboard snapshot"]
+        CURATED --> BATCH --> MODEL --> GATE --> PUBLIC
+    end
+
+    subgraph PREP["Proposed asynchronous evidence preparation"]
+        direction LR
+        SELECT["Allowlisted corpus selection"]
+        NORMALIZE["Normalize, version and attach metadata"]
+        FACTS["Structured fact projection"]
+        INDEX["Rebuildable document retrieval index"]
+        CURATED -. "approved evidence only" .-> SELECT
+        SELECT --> NORMALIZE
+        NORMALIZE --> FACTS
+        NORMALIZE --> INDEX
+    end
+
+    subgraph ANSWER["Proposed read-only answer path"]
+        direction LR
+        QUESTION["Analyst question"]
+        POLICY["Input, access and intent contract"]
+        ROUTE{"Controlled route"}
+        STRUCTURED["Allowlisted structured lookup"]
+        RETRIEVE["Metadata-filtered document retrieval"]
+        EVIDENCE["Evidence assembly with freshness and provenance"]
+        COMPOSE["Provider-neutral answer composer"]
+        VERIFY["Answer schema, citation, grounding and safety checks"]
+        RESULT{"Validated outcome"}
+        ANSWERED["Cited read-only answer"]
+        ABSTAIN["Deterministic fallback or explicit abstention"]
+
+        QUESTION --> POLICY --> ROUTE
+        ROUTE --> STRUCTURED
+        ROUTE --> RETRIEVE
+        FACTS --> STRUCTURED
+        INDEX --> RETRIEVE
+        STRUCTURED --> EVIDENCE
+        RETRIEVE --> EVIDENCE
+        EVIDENCE --> COMPOSE --> VERIFY --> RESULT
+        RESULT --> ANSWERED
+        RESULT --> ABSTAIN
+    end
+
+    subgraph DEFERRED["Explicitly deferred"]
+        direction LR
+        AGENTS["Autonomous or write-capable agents"]
+        UI["Polished chat UI"]
+        TENANT["Production multi-tenancy"]
+        FINETUNE["Fine-tuning and custom hosting"]
+        AGENTS ~~~ UI ~~~ TENANT ~~~ FINETUNE
+    end
+
+    classDef current fill:#e8f1fb,stroke:#1769aa,color:#102a43,stroke-width:2px;
+    classDef proposed fill:#f5f7fa,stroke:#52606d,color:#102a43,stroke-width:1.5px;
+    classDef gate fill:#fff4d6,stroke:#b7791f,color:#5f370e,stroke-width:2px;
+    classDef safe fill:#e6f6ed,stroke:#2f855a,color:#1c4532,stroke-width:2px;
+    classDef deferred fill:#f7f7f7,stroke:#a0aec0,color:#718096,stroke-dasharray: 5 5;
+
+    class CURATED,BATCH,MODEL,GATE,PUBLIC current;
+    class SELECT,NORMALIZE,FACTS,INDEX,QUESTION,POLICY,STRUCTURED,RETRIEVE,EVIDENCE,COMPOSE,VERIFY proposed;
+    class ROUTE,RESULT gate;
+    class ANSWERED,ABSTAIN safe;
+    class AGENTS,UI,TENANT,FINETUNE deferred;
