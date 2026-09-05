@@ -3,6 +3,7 @@
 <!-- markdownlint-disable MD013 MD060 -->
 
 **Prepared:** 2026-08-30<br>
+**Last revised:** 2026-09-05<br>
 **Controlling decisions:**
 `docs/adr/0006-read-only-evidence-grounded-ai-orchestration.md` and
 `docs/adr/0007-bedrock-runtime-and-orchestration-framework-boundary.md`<br>
@@ -34,13 +35,13 @@ evidence gap. Stop when the interview-relevant gap is closed.
 | AD-11 | Keep LangGraph conditional on a proven graph-shaped workflow | Deferred | Bedrock and LangGraph solve different layers; the current acyclic explicit workflow does not need another orchestrator. |
 | AD-12 | Never publish raw model text directly | Rejected option | Model output remains untrusted candidate data until validation and public/private gates pass. |
 
-## Pending Decisions In Dependency Order
+## Decisions In Dependency Order
 
 | Order | Decision | Evidence required before deciding | Candidate outcomes |
 |---:|---|---|---|
-| 1 | User decision and evaluation contract | Truthful stakeholder context, question categories, expected evidence, answer constraints, unanswerable cases, and baseline timing | Approve a bounded evaluation set or stop because the use case is not specific enough |
-| 2 | Corpus and metadata contract | Approved curated prefixes/documents, exclusion list, versioning, freshness, classification, and citation fields | One small corpus contract; no raw or unrestricted repository ingestion |
-| 3 | Structured evidence contract | Representative exact questions and safe parameter boundaries | Precomputed curated facts, allowlisted query templates, or both |
+| 1 | User decision and evaluation contract | Complete in `docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md`: one truthful internal stakeholder, a matched manual baseline, 28-case minimum, expected outcomes, numeric gates, red lines, and stop rules | Approved; advance only to P2 corpus and evidence contracts |
+| 2 | Corpus and metadata contract | Complete through `docs/planning/ai-orchestration-p2-wp8-validation-decision-20260905.md`: bounded evidence, exclusions, versions, freshness, classification, citations and final validation | Approved; advance only to the bounded P3 local benchmark |
+| 3 | Structured evidence contract | Complete through WP4 and WP8: one active direct fact, bounded query templates and seven aggregate facts blocked pending exact operands | Approved with the blocked-evidence constraint preserved |
 | 4 | Chunking and retrieval strategy | Retrieval results across document types, chunk sizes, metadata filters, lexical/vector combinations, and optional reranking | Select the simplest strategy that meets retrieval gates |
 | 5 | Model and prompt contract | Representative grounded answers measured across quality, latency, context, data policy, Region, quota, and cost | Retain the current Bedrock model, select another Bedrock candidate, approve an evaluated external candidate through a new governance review, or use deterministic output for a category |
 | 6 | Local orchestration shape | Traceable local run, route decision, evidence references, validated answer, abstention, and failure result | Accept a minimal vertical slice or revise the architecture |
@@ -66,9 +67,15 @@ embedding, reranking, retrieval, or optional agent-framework choice.
 - The assignment blueprint uses structured facts plus document retrieval rather
   than treating all Lakehouse data as document RAG.
 
-### P1 - Evaluation Contract - Next
+### P1 - Evaluation Contract - Complete
 
-Produce one small evaluation specification before writing orchestration code:
+`docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md` confirms
+the repository owner as the single internal decision-support user and sets the
+prospective business target: reduce median time to a trusted answer by at least
+30% against a matched manual baseline without losing factual accuracy,
+citation correctness, freshness discipline, safety, or correct abstention.
+
+The accepted contract:
 
 - identify the real user decision and non-GenAI baseline;
 - define representative structured, document, combined, stale, conflicting,
@@ -78,10 +85,45 @@ Produce one small evaluation specification before writing orchestration code:
   latency, and cost; and
 - define a stop threshold if GenAI does not improve the baseline.
 
-This is the highest-value next artifact because every technology decision
-depends on it.
+The contract defines a 28-case minimum, calibration/development/holdout split,
+numeric promotion gates, red-line failures, required traces, and stop rules.
+No baseline or candidate run has occurred, and no historical business result
+is claimed.
 
-### P2 - Corpus And Evidence Contracts
+### P2 - Corpus And Evidence Contracts - Complete
+
+The bounded execution plan is complete in
+`docs/planning/ai-orchestration-p2-corpus-evidence-contract-plan-20260901.md`.
+It defines candidate-inventory, selection/exclusion, authority,
+classification, freshness, citation, schema, manifest, 28-case fixture,
+validation and stop gates. WP1 is complete: the 8-plus-8 evidence set and its
+selection/exclusion register are accepted in
+`docs/planning/ai-orchestration-p2-wp1-selection-decision-20260905.md`. WP2 is
+complete in
+`docs/planning/ai-orchestration-p2-wp2-authority-classification-access-rules-20260905.md`:
+the authority, classification, read-only scope, item-level route, citation,
+revocation and deny-by-default rules are defined. P2 WP3 is complete in
+`docs/planning/ai-orchestration-p2-wp3-freshness-version-conflict-rules-20260905.md`:
+question-relative historical/current freshness, immutable version, timezone,
+manifest fallback and material-conflict rules are defined. P2 WP4 is complete
+in
+`docs/planning/ai-orchestration-p2-wp4-structured-evidence-contract-20260905.md`:
+the strict structured schema, field dictionary and reason-checked examples are
+validated. P2 WP5 is complete in
+`docs/planning/ai-orchestration-p2-wp5-document-evidence-contract-20260905.md`:
+the strict document schema, field dictionary and reason-checked examples are
+validated. P2 WP6 is complete in
+`docs/planning/ai-orchestration-p2-wp6-corpus-manifest-exclusion-contract-20260905.md`:
+the strict manifest/exclusion schemas, immutable local active manifest,
+deterministic hashes, lifecycle/fallback rules and reason-checked negative
+examples are validated. P2 WP7 is complete in
+`docs/planning/ai-orchestration-p2-wp7-evaluation-case-contract-20260905.md`:
+exactly 28 cases, a 7/7/14 split, separate holdout gold and isolated synthetic
+policy fixtures are instantiated. P2 WP8 is complete in
+`docs/planning/ai-orchestration-p2-wp8-validation-decision-20260905.md`: durable
+schema and semantic validation passes, nine known-bad semantic mutations fail
+for their intended codes, and the decision is to advance to P3 after explicit
+continuation.
 
 Define the smallest approved corpus and two adapter contracts:
 
@@ -193,5 +235,10 @@ Stop the workstream when any of these is true:
 
 ## Next Tracker-Ordered Artifact
 
-Create the P1 evaluation contract. Do not select a vector database, managed
-knowledge-base service, embedding model, or deployment topology first.
+P2 is complete and its decision is advance. After explicit continuation,
+execute P3's bounded local retrieval benchmark: compare deterministic
+structured lookup and lexical document retrieval, and add only the minimum
+candidate justified by the 28-case contract. Preserve WP6's blocked
+structured-evidence boundary and WP7's holdout/adversarial isolation. Do not
+ingest all Lakehouse or repository content or select a generation model,
+managed knowledge-base service or deployment topology first.

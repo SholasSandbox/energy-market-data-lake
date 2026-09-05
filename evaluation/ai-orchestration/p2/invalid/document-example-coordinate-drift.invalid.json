@@ -1,0 +1,12 @@
+{
+  "fixture_version": "ai_invalid_contract_mutation_v1",
+  "base_record": "schemas/examples/ai_document_evidence_v1.example.json",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/content/coordinates/section_heading",
+      "value": "Unrelated section"
+    }
+  ],
+  "expected_error_fragment": "DOCUMENT_COORDINATES"
+}

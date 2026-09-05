@@ -250,7 +250,24 @@ override tracker deferrals.
 - Multi-agent orchestration and fine-tuning remain deferred. Raw model text
   publication remains rejected rather than deferred.
 - The proposed read-only evidence-grounded analyst path remains design-only
-  under ADR 0006; its P1 evaluation contract precedes retrieval, model, or AWS
+  under ADR 0006. Its P1 evaluation contract is complete at
+  `docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md`; P2 WP1
+  selected the bounded 8-plus-8 evidence set, WP2 defines its authority,
+  classification, access, citation and revocation rules, and WP3 defines
+  question-relative freshness, immutable version, manifest-fallback and
+  material-conflict rules. WP4 now defines the strict versioned structured-
+  evidence schema, closed query parameters, value-state semantics, provenance/
+  citation split and reason-checked examples. WP5 now defines the strict
+  versioned document-evidence schema, bounded passage and metadata-only modes,
+  lifecycle gate, provenance/citation split and reason-checked examples. WP6
+  now defines the strict immutable local corpus manifest, exclusion register,
+  deterministic hashes, lifecycle/fallback boundary and visibly partial
+  evaluation coverage. WP7 now instantiates the exact 28-case set with the
+  7/7/14 split, separate holdout gold, isolated adversarial fixtures and pinned
+  scoring assertions. WP8 now provides durable schema and semantic validation,
+  including nine reason-checked negative mutations, and records the P2 decision
+  to advance. A bounded P3 local retrieval benchmark may begin only after
+  explicit continuation and still precedes model, managed-service or AWS
   topology selection.
 - DNS, ACM certificate, and a custom domain remain optional dashboard
   extensions.
@@ -754,9 +771,20 @@ These are historical references, not the current delivery path.
    and 0007 plus
    `docs/planning/ai-orchestration-architecture-decision-register-20260830.md`.
    Architecture and evaluation precede implementation.
-5. Create the P1 evaluation contract before selecting a corpus, retrieval
-   engine, embedding model, generation model, managed knowledge-base service,
-   or deployment topology.
+5. Use the completed P1 evaluation contract, then create the smallest P2 corpus
+   and evidence contracts through
+   `docs/planning/ai-orchestration-p2-corpus-evidence-contract-plan-20260901.md`.
+   WP1's inventory and selection/exclusion decision, WP2's authority/access
+   matrix, WP3's freshness/version/conflict rules and WP4's structured-evidence
+   contract and WP5's document-evidence contract are complete. WP6's strict
+   corpus-manifest and exclusion-contract package is also complete. WP7's exact
+   28-case set, 7/7/14 split, separate holdout gold and explicit evidence,
+   freshness, conflict, safety and scoring assertions are complete. WP8's
+   schema/cross-file semantic validators and nine reason-checked negative
+   mutations pass, and the P2 decision is advance. Begin the bounded P3 local
+   retrieval benchmark only after explicit continuation; do not select a
+   generation model, managed knowledge-base service or deployment topology
+   first.
 6. Advance only when the preceding evidence gate passes, and stop once the
    smallest design or local proof materially strengthens the interview case.
 7. Keep dashboard expansion, DNS/ACM, containers, deep EKS, complex REMIT,

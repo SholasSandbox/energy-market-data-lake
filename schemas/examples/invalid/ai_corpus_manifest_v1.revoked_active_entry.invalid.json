@@ -1,0 +1,12 @@
+{
+  "fixture_version": "ai_invalid_contract_mutation_v1",
+  "base_record": "evaluation/ai-orchestration/p2/corpus-manifest-v1.json",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/active_document_evidence/0/lifecycle_status",
+      "value": "revoked"
+    }
+  ],
+  "expected_error_fragment": "'active_selected' was expected"
+}

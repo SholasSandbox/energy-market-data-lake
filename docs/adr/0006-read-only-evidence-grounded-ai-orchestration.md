@@ -1118,9 +1118,13 @@ Revisit this ADR if:
   records scheduled managed operation and the budget-guarded baseline.
 - `docs/phase-8-aws-ai-insight-orchestration.md` records the S3 artifact,
   run-ID, private/public, audit, and failed-path decisions.
+- `docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md` confirms
+  the truthful internal stakeholder and prospective measurable outcome and
+  defines the matched baseline, question families, scoring, promotion gates,
+  red-line failures, trace record, and stop rules.
 
 ## Next Decision
 
-Define the evaluation contract and representative question set before choosing
-chunking, embeddings, retrieval infrastructure, generation model, or AWS
-deployment topology.
+P1 is complete. Define P2, the smallest approved corpus and
+structured/document evidence contracts, before choosing chunking, embeddings,
+retrieval infrastructure, a generation model, or AWS deployment topology.

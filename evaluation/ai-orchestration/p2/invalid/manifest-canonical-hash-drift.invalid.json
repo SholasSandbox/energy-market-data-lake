@@ -1,0 +1,12 @@
+{
+  "fixture_version": "ai_invalid_contract_mutation_v1",
+  "base_record": "evaluation/ai-orchestration/p2/corpus-manifest-v1.json",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/inventory_summary/active_document_count",
+      "value": 7
+    }
+  ],
+  "expected_error_fragment": "MANIFEST_HASH"
+}

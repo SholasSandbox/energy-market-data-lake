@@ -1,0 +1,942 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai_document_evidence_v1.schema.json",
+  "title": "AI Document Evidence v1",
+  "description": "Strict, public-safe document and bounded-passage contract for the P2 evaluation corpus.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "document_id",
+    "document_version",
+    "document_content_sha256",
+    "canonicalization_rule_id",
+    "evidence_pack",
+    "policy",
+    "route_eligibility",
+    "lifecycle",
+    "source",
+    "metadata",
+    "content",
+    "processing",
+    "freshness_assessment",
+    "internal_provenance",
+    "public_citation"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "ai_document_evidence_v1"
+    },
+    "document_id": {
+      "type": "string",
+      "pattern": "^DOC-[0-9]{2}$"
+    },
+    "document_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_content_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "canonicalization_rule_id": {
+      "type": "string",
+      "const": "ai-document-bounded-canonical-json-v1"
+    },
+    "evidence_pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ai-p2-[a-z0-9-]+$"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "selection_status",
+        "authority_class",
+        "classification",
+        "access_scope"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "const": "ai-evidence-access-policy-v1"
+        },
+        "selection_status": {
+          "type": "string",
+          "const": "selected"
+        },
+        "authority_class": {
+          "type": "string",
+          "const": "approved_document"
+        },
+        "classification": {
+          "type": "string",
+          "const": "public"
+        },
+        "access_scope": {
+          "type": "string",
+          "const": "read_only_evaluation"
+        }
+      }
+    },
+    "route_eligibility": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["route", "p1_case_ids"],
+          "properties": {
+            "route": {
+              "type": "string",
+              "const": "document"
+            },
+            "p1_case_ids": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^DO-0[1-4]$"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["route", "p1_case_ids"],
+          "properties": {
+            "route": {
+              "type": "string",
+              "const": "combined"
+            },
+            "p1_case_ids": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^CO-0[1-4]$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document_status",
+        "deletion_status",
+        "revocation_status",
+        "version_status"
+      ],
+      "properties": {
+        "document_status": {
+          "type": "string",
+          "enum": ["selected_bounded_passage", "selected_metadata_only"]
+        },
+        "deletion_status": {
+          "type": "string",
+          "const": "source_available"
+        },
+        "revocation_status": {
+          "type": "string",
+          "const": "not_revoked"
+        },
+        "version_status": {
+          "type": "string",
+          "const": "current_selected_version"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "publisher_id",
+        "publisher_label",
+        "title",
+        "canonical_url",
+        "publication_time",
+        "update_time",
+        "licence"
+      ],
+      "properties": {
+        "publisher_id": {
+          "type": "string",
+          "enum": ["ofgem", "desnz"]
+        },
+        "publisher_label": {
+          "type": "string",
+          "enum": [
+            "Ofgem",
+            "Department for Energy Security and Net Zero"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 250
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "publication_time": {
+          "$ref": "#/$defs/sourceTime"
+        },
+        "update_time": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "time"],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "known"
+                },
+                "time": {
+                  "$ref": "#/$defs/sourceTime"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "reason"],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "not_declared"
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 300
+                }
+              }
+            }
+          ]
+        },
+        "licence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "url", "attribution"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "const": "open-government-licence-v3.0"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "const": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+            },
+            "attribution": {
+              "type": "string",
+              "const": "Contains public sector information licensed under the Open Government Licence v3.0."
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["regions", "topics", "entities"],
+      "properties": {
+        "regions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "const": "GB"
+          }
+        },
+        "topics": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "energy_prices",
+              "wholesale_energy",
+              "electricity_generation",
+              "generation_mix",
+              "strategic_energy_planning",
+              "electricity_demand",
+              "energy_price_cap",
+              "tracker_tariffs",
+              "tariff_options"
+            ]
+          }
+        },
+        "entities": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "GB electricity market",
+              "Major Power Producers",
+              "Middle East",
+              "Ofgem price cap",
+              "electricity",
+              "energy consumers",
+              "gas",
+              "nuclear",
+              "renewables",
+              "tracker tariffs"
+            ]
+          }
+        }
+      }
+    },
+    "content": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "passage_id",
+            "passage_version",
+            "chunk_id",
+            "ordinal",
+            "coordinates",
+            "text",
+            "passage_sha256"
+          ],
+          "properties": {
+            "mode": {
+              "type": "string",
+              "const": "bounded_passage"
+            },
+            "passage_id": {
+              "type": "string",
+              "pattern": "^DP-[0-9]{2}$"
+            },
+            "passage_version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "chunk_id": {
+              "type": "string",
+              "pattern": "^DP-[0-9]{2}-C[0-9]{3}$"
+            },
+            "ordinal": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 40
+            },
+            "coordinates": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "section_heading",
+                    "section_heading_occurrence",
+                    "passage_ordinal_in_section"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "section"
+                    },
+                    "section_heading": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 250
+                    },
+                    "section_heading_occurrence": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "passage_ordinal_in_section": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["kind", "start_character", "end_character"],
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "character_range"
+                    },
+                    "start_character": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "end_character": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  }
+                }
+              ]
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "passage_sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "reason", "allowed_metadata_fields"],
+          "properties": {
+            "mode": {
+              "type": "string",
+              "const": "metadata_only"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            "allowed_metadata_fields": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "publisher",
+                  "title",
+                  "canonical_url",
+                  "publication_time",
+                  "update_time",
+                  "regions",
+                  "topics",
+                  "entities"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "claim_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "proposition_key",
+        "normalized_proposition",
+        "claim_type",
+        "causal_scope",
+        "precision",
+        "geographic_scope",
+        "applicable_time"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "pattern": "^CLAIM-DP-[0-9]{2}-[0-9]{2}$"
+        },
+        "proposition_key": {
+          "type": "string",
+          "enum": [
+            "wholesale-cost-volatility-middle-east-context",
+            "mpp-generation-mix-change-2026-04-02",
+            "decarbonisation-increases-electricity-demand",
+            "price-cap-increase-wholesale-gas-conflict",
+            "gas-electricity-price-setting-share",
+            "tracker-tariff-daily-wholesale-link",
+            "mpp-generation-mix-change-2026-05-28",
+            "price-cap-cost-components"
+          ]
+        },
+        "normalized_proposition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "claim_type": {
+          "type": "string",
+          "enum": [
+            "descriptive_context",
+            "quantitative_statement",
+            "policy_statement",
+            "definition"
+          ]
+        },
+        "causal_scope": {
+          "type": "string",
+          "enum": [
+            "causal",
+            "association_only",
+            "descriptive_only",
+            "component_relationship"
+          ]
+        },
+        "precision": {
+          "type": "string",
+          "enum": ["exact", "approximate", "qualitative"]
+        },
+        "geographic_scope": {
+          "type": "string",
+          "const": "GB"
+        },
+        "applicable_time": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "date", "timezone", "precision"],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "publication_date_context"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "timezone": {
+                  "type": "string",
+                  "const": "Europe/London"
+                },
+                "precision": {
+                  "type": "string",
+                  "const": "date"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "description", "anchor_date", "precision"],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "source_relative_period"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 150
+                },
+                "anchor_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "precision": {
+                  "type": "string",
+                  "enum": ["approximate", "qualitative"]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "processing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ingested_at", "validated_at"],
+      "properties": {
+        "ingested_at": {
+          "$ref": "#/$defs/offsetDateTime"
+        },
+        "validated_at": {
+          "$ref": "#/$defs/offsetDateTime"
+        }
+      }
+    },
+    "freshness_assessment": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rule_version",
+            "request_mode",
+            "status",
+            "as_of",
+            "controlling_source_time",
+            "maximum_age_hours",
+            "age_seconds"
+          ],
+          "properties": {
+            "rule_version": {
+              "type": "string",
+              "const": "ai-evidence-freshness-conflict-policy-v1"
+            },
+            "request_mode": {
+              "type": "string",
+              "const": "exact_historical"
+            },
+            "status": {
+              "type": "string",
+              "const": "valid_for_requested_window"
+            },
+            "as_of": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "controlling_source_time": {
+              "$ref": "#/$defs/sourceTime"
+            },
+            "maximum_age_hours": {
+              "type": "null"
+            },
+            "age_seconds": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rule_version",
+            "request_mode",
+            "status",
+            "as_of",
+            "controlling_source_time",
+            "maximum_age_hours",
+            "age_seconds"
+          ],
+          "properties": {
+            "rule_version": {
+              "type": "string",
+              "const": "ai-evidence-freshness-conflict-policy-v1"
+            },
+            "request_mode": {
+              "type": "string",
+              "const": "current_latest"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["current", "stale", "future"]
+            },
+            "as_of": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "controlling_source_time": {
+              "$ref": "#/$defs/sourceTime"
+            },
+            "maximum_age_hours": {
+              "type": "integer",
+              "const": 168
+            },
+            "age_seconds": {
+              "type": "number"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rule_version",
+            "request_mode",
+            "status",
+            "as_of",
+            "controlling_source_time",
+            "maximum_age_hours",
+            "age_seconds",
+            "reason"
+          ],
+          "properties": {
+            "rule_version": {
+              "type": "string",
+              "const": "ai-evidence-freshness-conflict-policy-v1"
+            },
+            "request_mode": {
+              "type": "string",
+              "enum": ["exact_historical", "current_latest"]
+            },
+            "status": {
+              "type": "string",
+              "const": "time_unknown"
+            },
+            "as_of": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "controlling_source_time": {
+              "type": "null"
+            },
+            "maximum_age_hours": {
+              "type": ["integer", "null"],
+              "enum": [168, null]
+            },
+            "age_seconds": {
+              "type": "null"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            }
+          }
+        }
+      ]
+    },
+    "internal_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection_record",
+        "selected_passage_id",
+        "document_content_sha256",
+        "passage_sha256",
+        "source_section"
+      ],
+      "properties": {
+        "selection_record": {
+          "type": "string",
+          "const": "docs/evidence/ai-orchestration-p2-wp1-selected-evidence-20260905.json"
+        },
+        "selected_passage_id": {
+          "type": "string",
+          "pattern": "^DP-[0-9]{2}$"
+        },
+        "document_content_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "passage_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 250
+        }
+      }
+    },
+    "public_citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citation_label",
+        "publisher",
+        "title",
+        "publication_date",
+        "section_locator",
+        "canonical_url",
+        "attribution"
+      ],
+      "properties": {
+        "citation_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "publisher": {
+          "type": "string",
+          "enum": [
+            "Ofgem",
+            "Department for Energy Security and Net Zero"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 250
+        },
+        "publication_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "section_locator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 250
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "attribution": {
+          "type": "string",
+          "const": "Contains public sector information licensed under the Open Government Licence v3.0."
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "publisher_id": {"const": "ofgem"}
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "publisher_label": {"const": "Ofgem"},
+              "canonical_url": {"pattern": "^https://www\\.ofgem\\.gov\\.uk/"}
+            }
+          },
+          "public_citation": {
+            "properties": {
+              "publisher": {"const": "Ofgem"},
+              "canonical_url": {"pattern": "^https://www\\.ofgem\\.gov\\.uk/"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "publisher_id": {"const": "desnz"}
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "publisher_label": {
+                "const": "Department for Energy Security and Net Zero"
+              },
+              "canonical_url": {"pattern": "^https://www\\.gov\\.uk/"}
+            }
+          },
+          "public_citation": {
+            "properties": {
+              "publisher": {
+                "const": "Department for Energy Security and Net Zero"
+              },
+              "canonical_url": {"pattern": "^https://www\\.gov\\.uk/"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lifecycle": {
+            "properties": {
+              "document_status": {"const": "selected_bounded_passage"}
+            }
+          }
+        }
+      },
+      "then": {
+        "required": ["claim_identity"],
+        "properties": {
+          "content": {
+            "properties": {
+              "mode": {"const": "bounded_passage"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lifecycle": {
+            "properties": {
+              "document_status": {"const": "selected_metadata_only"}
+            }
+          }
+        }
+      },
+      "then": {
+        "not": {"required": ["claim_identity"]},
+        "properties": {
+          "content": {
+            "properties": {
+              "mode": {"const": "metadata_only"}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "offsetDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "sourceTime": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "precision", "timezone"],
+          "properties": {
+            "value": {
+              "type": "string",
+              "format": "date"
+            },
+            "precision": {
+              "type": "string",
+              "const": "date"
+            },
+            "timezone": {
+              "type": "string",
+              "const": "Europe/London"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "precision"],
+          "properties": {
+            "value": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "precision": {
+              "type": "string",
+              "enum": ["second", "millisecond"]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

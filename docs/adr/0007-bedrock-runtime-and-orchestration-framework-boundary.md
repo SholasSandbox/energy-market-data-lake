@@ -466,6 +466,9 @@ Any later LangGraph adoption requires a new or amended ADR containing:
 
 ## Next Tracker-Ordered Step
 
-Create P1, the evaluation contract for ADR 0006. Do not add LangGraph, select a
-vector database or managed knowledge base, fine-tune a model, or deploy an
-interactive path before the evaluation contract supplies the evidence.
+P1 is complete in
+`docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md`. Create P2,
+the smallest approved corpus and structured/document evidence contracts. Do
+not add LangGraph, select a vector database or managed knowledge base,
+fine-tune a model, or deploy an interactive path before the remaining evidence
+gates supply the need.

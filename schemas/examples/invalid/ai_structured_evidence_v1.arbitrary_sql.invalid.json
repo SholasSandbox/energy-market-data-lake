@@ -1,0 +1,110 @@
+{
+  "contract_version": "ai_structured_evidence_v1",
+  "evidence_id": "SF-08",
+  "evidence_version": 1,
+  "evidence_pack": {
+    "id": "ai-p2-wp1-selected-evidence-20260905",
+    "version": 1
+  },
+  "policy": {
+    "policy_id": "ai-evidence-access-policy-v1",
+    "selection_status": "selected",
+    "authority_class": "authoritative_structured",
+    "classification": "public",
+    "access_scope": "read_only_evaluation",
+    "lifecycle_status": "selected"
+  },
+  "route_eligibility": {
+    "route": "structured",
+    "p1_case_ids": ["ST-04"]
+  },
+  "metric": {
+    "name": "indo_dataset_last_updated_at",
+    "definition": "Source-declared lastUpdated timestamp for the selected BMRS INDO dataset metadata record.",
+    "definition_version": "1"
+  },
+  "observation": {
+    "status": "present",
+    "value_type": "rfc3339_timestamp",
+    "value": "2026-09-05T08:00:00Z"
+  },
+  "unit": "RFC3339 UTC timestamp",
+  "precision": {
+    "kind": "timestamp",
+    "resolution": "second"
+  },
+  "region": "GB",
+  "dimensions": {
+    "aggregation": "exact_value",
+    "source_field": "lastUpdated",
+    "dataset_code": "INDO"
+  },
+  "effective_time": {
+    "kind": "instant",
+    "effective_at": "2026-09-05T08:00:00Z",
+    "precision": "second"
+  },
+  "source": {
+    "provider_id": "elexon-bmrs",
+    "provider_label": "Elexon BMRS Insights API",
+    "dataset_id": "bmrs-api-v1-dataset-metadata-latest",
+    "canonical_url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/metadata/latest?format=json",
+    "source_content_sha256": "2b1d79fcd7c31e30166706e7ff2bfd577690f9cec15505e86a0fc6d7063d1c18",
+    "source_record_count": 100,
+    "source_created_time": {
+      "status": "known",
+      "value": "2026-09-05T08:00:00Z",
+      "equivalent_to_effective_time": true,
+      "equivalence_basis": "The selected source fact is the source-declared lastUpdated field itself."
+    },
+    "licence": {
+      "id": "elexon-bmrs-open-data-licence",
+      "url": "https://www.elexon.co.uk/bsc/operations-settlement/bsc-central-services/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "attribution": "Contains BMRS data © Elexon Limited copyright and database right 2026."
+    }
+  },
+  "query": {
+    "template_id": "bmrs-dataset-latest-metadata-v1",
+    "template_version": 1,
+    "execution_mode": "public_api_precomputed_fact",
+    "athena_query_executed": false,
+    "sql": "SELECT * FROM unrestricted_table",
+    "parameters": {
+      "dataset_code": "INDO",
+      "region": "GB"
+    }
+  },
+  "derivation": {
+    "kind": "direct",
+    "calculation_rule_id": "identity-v1",
+    "description": "Preserve the selected INDO lastUpdated value without numeric transformation."
+  },
+  "processing": {
+    "acquired_at": "2026-09-05T08:12:00Z",
+    "generated_at": "2026-09-05T08:13:00Z",
+    "validated_at": "2026-09-05T08:13:20Z"
+  },
+  "freshness_assessment": {
+    "rule_version": "ai-evidence-freshness-conflict-policy-v1",
+    "request_mode": "current_latest",
+    "status": "current",
+    "as_of": "2026-09-05T08:13:20Z",
+    "controlling_time": "2026-09-05T08:00:00Z",
+    "maximum_age_hours": 36,
+    "age_seconds": 800
+  },
+  "internal_provenance": {
+    "selection_record": "docs/evidence/ai-orchestration-p2-wp1-selected-evidence-20260905.json",
+    "source_response_sha256": "2b1d79fcd7c31e30166706e7ff2bfd577690f9cec15505e86a0fc6d7063d1c18",
+    "source_record_count": 100
+  },
+  "public_citation": {
+    "citation_label": "Elexon BMRS INDO dataset metadata, last updated 5 September 2026 at 08:00 UTC",
+    "source_name": "Elexon BMRS",
+    "metric_label": "INDO dataset last-updated time",
+    "value_label": "2026-09-05T08:00:00Z",
+    "effective_time_label": "5 September 2026 at 08:00 UTC",
+    "canonical_url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/metadata/latest?format=json",
+    "attribution": "Contains BMRS data © Elexon Limited copyright and database right 2026."
+  }
+}

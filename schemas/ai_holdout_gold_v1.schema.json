@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai_holdout_gold_v1.schema.json",
+  "title": "AI P2 Holdout Gold v1",
+  "description": "Physically separate gold assertions for the fourteen P1 holdout cases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "gold_set_id",
+    "gold_set_version",
+    "gold_set_hash",
+    "canonicalization_rule_id",
+    "created_at",
+    "evaluation_set_id",
+    "evaluation_set_version",
+    "access_boundary",
+    "records"
+  ],
+  "properties": {
+    "contract_version": {"const": "ai_holdout_gold_v1"},
+    "gold_set_id": {"const": "ai-p2-holdout-gold-v1"},
+    "gold_set_version": {"const": 1},
+    "gold_set_hash": {"$ref": "#/$defs/sha256"},
+    "canonicalization_rule_id": {"const": "ai-holdout-gold-canonical-json-v1"},
+    "created_at": {"$ref": "#/$defs/offsetDateTime"},
+    "evaluation_set_id": {"const": "ai-p2-evaluation-set-v1"},
+    "evaluation_set_version": {"const": 1},
+    "access_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "candidate_access",
+        "prompt_input_eligible",
+        "retrieval_input_eligible",
+        "tuning_input_eligible",
+        "release_condition"
+      ],
+      "properties": {
+        "classification": {"const": "holdout_gold"},
+        "candidate_access": {"const": false},
+        "prompt_input_eligible": {"const": false},
+        "retrieval_input_eligible": {"const": false},
+        "tuning_input_eligible": {"const": false},
+        "release_condition": {"const": "candidate_configuration_frozen_for_holdout_run"}
+      }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {"$ref": "#/$defs/goldAssertions"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "offsetDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "outcomeCode": {
+      "enum": [
+        "answered",
+        "partial_evidence",
+        "insufficient_evidence",
+        "stale_evidence",
+        "conflicting_evidence",
+        "not_authorized",
+        "unsafe_request",
+        "invalid_request",
+        "rate_limited",
+        "system_error"
+      ]
+    },
+    "evidenceId": {
+      "type": "string",
+      "pattern": "^(SF|DOC|DP)-[0-9]{2}$"
+    },
+    "fixtureId": {
+      "type": "string",
+      "pattern": "^FIX-(SA|CF|UN|NA)-0[1-4]$"
+    },
+    "assertions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "freshness",
+        "conflict",
+        "safety",
+        "citation_mode",
+        "grounding_no_unsupported_claims",
+        "trace_requires_versions",
+        "trace_requires_cost"
+      ],
+      "properties": {
+        "freshness": {
+          "enum": [
+            "valid_for_requested_window",
+            "current",
+            "stale",
+            "mixed_freshness",
+            "manifest_incomplete",
+            "not_applicable",
+            "reject_before_freshness"
+          ]
+        },
+        "conflict": {"enum": ["no_material_conflict", "material_conflict", "not_applicable"]},
+        "safety": {"enum": ["permitted", "unsafe_request", "not_authorized"]},
+        "citation_mode": {"enum": ["exact_required", "available_component_only", "none_allowed"]},
+        "grounding_no_unsupported_claims": {"const": true},
+        "trace_requires_versions": {"const": true},
+        "trace_requires_cost": {"const": true}
+      }
+    },
+    "goldAssertions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gold_id",
+        "case_id",
+        "scoring_rule_version",
+        "expected_route",
+        "allowed_outcome_codes",
+        "primary_outcome_code",
+        "required_available_evidence_ids",
+        "required_unavailable_evidence_ids",
+        "required_fixture_ids",
+        "forbidden_evidence_ids",
+        "mandatory_facts",
+        "mandatory_qualifications",
+        "prohibited_claims",
+        "assertions"
+      ],
+      "properties": {
+        "gold_id": {"type": "string", "pattern": "^HG-(ST|DO|CO|SA|CF|UN|NA)-0[34]$"},
+        "case_id": {"type": "string", "pattern": "^(ST|DO|CO|SA|CF|UN|NA)-0[34]$"},
+        "scoring_rule_version": {"const": "p1-deterministic-task-success-v1"},
+        "expected_route": {"enum": ["structured", "document", "combined", "policy_guard", "none"]},
+        "allowed_outcome_codes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/outcomeCode"}
+        },
+        "primary_outcome_code": {"$ref": "#/$defs/outcomeCode"},
+        "required_available_evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/evidenceId"}
+        },
+        "required_unavailable_evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/evidenceId"}
+        },
+        "required_fixture_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/fixtureId"}
+        },
+        "forbidden_evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1, "maxLength": 120}
+        },
+        "mandatory_facts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1, "maxLength": 500}
+        },
+        "mandatory_qualifications": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1, "maxLength": 500}
+        },
+        "prohibited_claims": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1, "maxLength": 500}
+        },
+        "assertions": {"$ref": "#/$defs/assertions"}
+      }
+    }
+  }
+}

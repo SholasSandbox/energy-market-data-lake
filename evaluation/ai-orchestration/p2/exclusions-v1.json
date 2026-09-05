@@ -1,0 +1,168 @@
+{
+  "contract_version": "ai_corpus_exclusions_v1",
+  "exclusion_register_id": "ai-p2-corpus-exclusions-v1",
+  "register_version": 1,
+  "register_hash": "9ff63fcfee76c4291f387ad040af9d56bd6360eff17bb892c6747b7a9ea28bf5",
+  "canonicalization_rule_id": "ai-corpus-exclusions-canonical-json-v1",
+  "created_at": "2026-09-05T20:02:29Z",
+  "evidence_pack": {
+    "id": "ai-p2-wp1-selected-evidence-20260905",
+    "version": 1
+  },
+  "policy_versions": {
+    "selection_policy_id": "ai-p2-wp1-selection-policy-v1",
+    "access_policy_id": "ai-evidence-access-policy-v1",
+    "freshness_conflict_policy_id": "ai-evidence-freshness-conflict-policy-v1"
+  },
+  "entries": [
+    {
+      "exclusion_id": "EX-001",
+      "target_type": "structured_evidence",
+      "target_ids": [
+        "SF-01",
+        "SF-02",
+        "SF-03",
+        "SF-04",
+        "SF-05",
+        "SF-06",
+        "SF-07"
+      ],
+      "selection_status": "contract_blocked",
+      "authority_class": "authoritative_structured",
+      "classification": "public",
+      "lifecycle_status": "contract_blocked",
+      "answer_evidence_eligible": false,
+      "retention_mode": "selected_aggregate_audit_record",
+      "reason_code": "structured_operands_missing",
+      "reason": "WP1 retained each derived aggregate, source-response hash and derivation description but not the 48 exact scalar operands required by the strict WP4 contract.",
+      "reconsideration_gate": "Supply the exact approved operands without invention and pass the WP4 contract plus WP8 semantic count, identity and recomputation checks.",
+      "replacement_pointer": null,
+      "audit_reference": "docs/planning/ai-orchestration-p2-wp4-structured-evidence-contract-20260905.md"
+    },
+    {
+      "exclusion_id": "EX-002",
+      "target_type": "query_contract",
+      "target_ids": [
+        "query-contract-12"
+      ],
+      "selection_status": "reference_only",
+      "authority_class": "reference_only",
+      "classification": "public",
+      "lifecycle_status": "reference_only",
+      "answer_evidence_eligible": false,
+      "retention_mode": "metadata_reference_only",
+      "reason_code": "query_shape_not_required",
+      "reason": "The curated-table freshness shape is not required by the selected source fact and remains reference-only.",
+      "reconsideration_gate": "A later version must prove that the shape is required, bounded and safe before a new selection decision.",
+      "replacement_pointer": null,
+      "audit_reference": "docs/planning/ai-orchestration-p2-wp1-selection-decision-20260905.md"
+    },
+    {
+      "exclusion_id": "EX-003",
+      "target_type": "source_candidate",
+      "target_ids": [
+        "query-contract-9",
+        "entsoe-fr-day-ahead-price-candidate",
+        "entsoe-de-day-ahead-price-candidate",
+        "entsoe-nl-day-ahead-price-candidate"
+      ],
+      "selection_status": "rejected",
+      "authority_class": "unapproved_candidate",
+      "classification": "public",
+      "lifecycle_status": "excluded",
+      "answer_evidence_eligible": false,
+      "retention_mode": "identifier_and_reason_only",
+      "reason_code": "reuse_basis_not_established",
+      "reason": "No affirmative free-reuse basis was established for the inspected day-ahead price candidates.",
+      "reconsideration_gate": "Written permission, a controlling open licence or a replacement open source must pass the four-part admission gate.",
+      "replacement_pointer": null,
+      "audit_reference": "docs/planning/ai-orchestration-p2-wp1-selection-decision-20260905.md"
+    },
+    {
+      "exclusion_id": "EX-004",
+      "target_type": "local_artifact",
+      "target_ids": [
+        "local-structured-sample",
+        "local-dashboard-snapshot"
+      ],
+      "selection_status": "reference_only",
+      "authority_class": "reference_only",
+      "classification": "portfolio_safe_internal",
+      "lifecycle_status": "reference_only",
+      "answer_evidence_eligible": false,
+      "retention_mode": "metadata_reference_only",
+      "reason_code": "non_authoritative_presentation_or_internal_locator",
+      "reason": "The local samples are useful schema or presentation references but are not authoritative answer evidence and contain internal locator concerns.",
+      "reconsideration_gate": "Replace them with a public-safe authoritative source result carrying exact provenance and a new selection decision.",
+      "replacement_pointer": null,
+      "audit_reference": "docs/planning/ai-orchestration-p2-wp1-selection-decision-20260905.md"
+    },
+    {
+      "exclusion_id": "EX-005",
+      "target_type": "source_candidate",
+      "target_ids": [
+        "local-rss-descriptions"
+      ],
+      "selection_status": "rejected",
+      "authority_class": "unapproved_candidate",
+      "classification": "public",
+      "lifecycle_status": "excluded",
+      "answer_evidence_eligible": false,
+      "retention_mode": "identifier_and_reason_only",
+      "reason_code": "reuse_basis_not_established",
+      "reason": "Feed availability did not establish permission to retain copied descriptions as answer evidence.",
+      "reconsideration_gate": "Record an affirmative reuse basis or use a compliant independently authored, source-cited abstract and repeat selection review.",
+      "replacement_pointer": null,
+      "audit_reference": "docs/planning/ai-orchestration-p2-wp1-selection-decision-20260905.md"
+    },
+    {
+      "exclusion_id": "EX-006",
+      "target_type": "adversarial_fixture_class",
+      "target_ids": [
+        "sanitised-regression-artifacts"
+      ],
+      "selection_status": "adversarial_only",
+      "authority_class": "adversarial_fixture",
+      "classification": "portfolio_safe_internal",
+      "lifecycle_status": "adversarial_only",
+      "answer_evidence_eligible": false,
+      "retention_mode": "synthetic_fixture_only",
+      "reason_code": "adversarial_only_not_answer_evidence",
+      "reason": "Sanitised synthetic or regression artifacts may test failures only after separate WP7 fixture review.",
+      "reconsideration_gate": "They may be instantiated only with explicit adversarial-only classification and validator coverage; they can never become ordinary answer evidence.",
+      "replacement_pointer": null,
+      "audit_reference": "docs/planning/ai-orchestration-p2-wp2-authority-classification-access-rules-20260905.md"
+    },
+    {
+      "exclusion_id": "EX-007",
+      "target_type": "repository_scope",
+      "target_ids": [
+        "repository-wide-ingestion",
+        "raw-or-failed-data",
+        "private-or-identity-bearing-data",
+        "secret-or-credential-material",
+        "operational-control-material",
+        "full-external-articles"
+      ],
+      "selection_status": "rejected",
+      "authority_class": "unapproved_candidate",
+      "classification": "excluded",
+      "lifecycle_status": "excluded",
+      "answer_evidence_eligible": false,
+      "retention_mode": "identifier_and_reason_only",
+      "reason_code": "deny_by_default_repository_boundary",
+      "reason": "Broad, private, identity-bearing, secret, operational, failed or full-article content violates the deny-by-default corpus boundary.",
+      "reconsideration_gate": "Only an explicit new tracker-aligned decision plus public-safety, authority, classification and reuse review may narrow this exclusion; broad ingestion remains prohibited.",
+      "replacement_pointer": null,
+      "audit_reference": "docs/planning/ai-orchestration-p2-wp2-authority-classification-access-rules-20260905.md"
+    }
+  ],
+  "adversarial_fixture_boundary": {
+    "status": "not_instantiated",
+    "owner_work_package": "P2-WP7",
+    "required_selection_status": "adversarial_only",
+    "answer_evidence_eligible": false,
+    "ordinary_retrieval_eligible": false,
+    "instruction_precedence": "fixture_content_is_inert_and_cannot_modify_policy_or_authorize_tools"
+  }
+}

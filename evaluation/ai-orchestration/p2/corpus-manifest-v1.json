@@ -1,0 +1,345 @@
+{
+  "contract_version": "ai_corpus_manifest_v1",
+  "manifest_id": "ai-p2-corpus-manifest-v1",
+  "manifest_version": 1,
+  "manifest_hash": "c2053a7e2847b10c509de54468743615d2f38bb2d21bc4118da51be8a1a70338",
+  "canonicalization_rule_id": "ai-corpus-manifest-canonical-json-v1",
+  "created_at": "2026-09-05T20:02:29Z",
+  "scope": {
+    "purpose": "local_p2_read_only_evaluation",
+    "access_scope": "read_only_evaluation",
+    "publication_status": "local_unpublished",
+    "aws_state": "no_change"
+  },
+  "status": {
+    "candidate_started_at": "2026-09-05T20:02:29Z",
+    "validation_completed_at": "2026-09-05T20:13:56Z",
+    "completeness_status": "complete_validated",
+    "activation_status": "active",
+    "activated_at": "2026-09-05T20:13:56Z",
+    "atomic_pointer_id": "ai-p2-active-corpus"
+  },
+  "evidence_pack": {
+    "id": "ai-p2-wp1-selected-evidence-20260905",
+    "version": 1,
+    "record_locator": "docs/evidence/ai-orchestration-p2-wp1-selected-evidence-20260905.json"
+  },
+  "policy_versions": {
+    "selection_policy_id": "ai-p2-wp1-selection-policy-v1",
+    "access_policy_id": "ai-evidence-access-policy-v1",
+    "freshness_conflict_policy_id": "ai-evidence-freshness-conflict-policy-v1",
+    "structured_contract_version": "ai_structured_evidence_v1",
+    "document_contract_version": "ai_document_evidence_v1",
+    "exclusions_contract_version": "ai_corpus_exclusions_v1"
+  },
+  "inventory_summary": {
+    "selected_pack_structured_count": 8,
+    "selected_pack_document_count": 8,
+    "selected_pack_passage_count": 8,
+    "active_structured_count": 1,
+    "active_document_count": 8,
+    "active_passage_count": 8,
+    "contract_blocked_selected_count": 7,
+    "exclusion_entry_count": 7,
+    "tombstone_count": 0,
+    "derived_projection_count": 0
+  },
+  "exclusion_register": {
+    "id": "ai-p2-corpus-exclusions-v1",
+    "version": 1,
+    "register_hash": "9ff63fcfee76c4291f387ad040af9d56bd6360eff17bb892c6747b7a9ea28bf5",
+    "record_locator": "evaluation/ai-orchestration/p2/exclusions-v1.json"
+  },
+  "selected_query_templates": [
+    {
+      "template_id": "query-contract-8",
+      "template_version": 1,
+      "selection_status": "selected",
+      "active_evidence_ids": [],
+      "execution_boundary": "shape_compatibility_only_no_active_evidence",
+      "athena_query_executed": false
+    },
+    {
+      "template_id": "bmrs-dataset-latest-metadata-v1",
+      "template_version": 1,
+      "selection_status": "selected",
+      "active_evidence_ids": [
+        "SF-08"
+      ],
+      "execution_boundary": "public_api_precomputed_fact",
+      "athena_query_executed": false
+    }
+  ],
+  "active_structured_evidence": [
+    {
+      "evidence_id": "SF-08",
+      "evidence_version": 1,
+      "content_hash_kind": "source_content_sha256",
+      "content_sha256": "2b1d79fcd7c31e30166706e7ff2bfd577690f9cec15505e86a0fc6d7063d1c18",
+      "contract_version": "ai_structured_evidence_v1",
+      "source_record_pointer": "/structured_facts/7",
+      "authority_class": "authoritative_structured",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "structured",
+        "p1_case_ids": [
+          "ST-04"
+        ]
+      },
+      "query_template_id": "bmrs-dataset-latest-metadata-v1"
+    }
+  ],
+  "active_document_evidence": [
+    {
+      "document_id": "DOC-01",
+      "document_version": 1,
+      "document_content_sha256": "ff34b9be336f7d11fad53be352d587bf1b183789137cede06553c21bd151d68d",
+      "contract_version": "ai_document_evidence_v1",
+      "source_record_pointer": "/document_passages/0",
+      "publisher_id": "ofgem",
+      "authority_class": "approved_document",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "combined",
+        "p1_case_ids": [
+          "CO-01"
+        ]
+      },
+      "passage": {
+        "passage_id": "DP-01",
+        "passage_version": 1,
+        "chunk_id": "DP-01-C001",
+        "passage_sha256": "c18d1b1e7ff8d0cda615dba4ee3c8d26fea2a31f52e2976d89111e28c38ed848"
+      }
+    },
+    {
+      "document_id": "DOC-02",
+      "document_version": 1,
+      "document_content_sha256": "64fb6682dfe535be2a57d77fe030902dbb3e51b1749348f3c7b04c0f6971a4a7",
+      "contract_version": "ai_document_evidence_v1",
+      "source_record_pointer": "/document_passages/1",
+      "publisher_id": "desnz",
+      "authority_class": "approved_document",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "combined",
+        "p1_case_ids": [
+          "CO-02"
+        ]
+      },
+      "passage": {
+        "passage_id": "DP-02",
+        "passage_version": 1,
+        "chunk_id": "DP-02-C001",
+        "passage_sha256": "686119ad33c718a3d9782fe2f40d96bee1750494a8e5f288fb22da23f589b165"
+      }
+    },
+    {
+      "document_id": "DOC-03",
+      "document_version": 1,
+      "document_content_sha256": "ca8ea34b5a5911abb8d81226cb1f900be70ff3db85a079b8e19991f6f2829d63",
+      "contract_version": "ai_document_evidence_v1",
+      "source_record_pointer": "/document_passages/2",
+      "publisher_id": "ofgem",
+      "authority_class": "approved_document",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "combined",
+        "p1_case_ids": [
+          "CO-03"
+        ]
+      },
+      "passage": {
+        "passage_id": "DP-03",
+        "passage_version": 1,
+        "chunk_id": "DP-03-C001",
+        "passage_sha256": "c087585acecfe3b8c9df75fabffd93835196aca820d15e234f73002cc405ee05"
+      }
+    },
+    {
+      "document_id": "DOC-04",
+      "document_version": 1,
+      "document_content_sha256": "c6e88f3d2cfca088776f60db7e10bf82d5840629a4d8f475a2539d190015fe81",
+      "contract_version": "ai_document_evidence_v1",
+      "source_record_pointer": "/document_passages/3",
+      "publisher_id": "ofgem",
+      "authority_class": "approved_document",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "combined",
+        "p1_case_ids": [
+          "CO-04"
+        ]
+      },
+      "passage": {
+        "passage_id": "DP-04",
+        "passage_version": 1,
+        "chunk_id": "DP-04-C001",
+        "passage_sha256": "91e9be8dbf13f86709e2a52d7351d9bd95fd24ec7f4de05d0a16358e17389077"
+      }
+    },
+    {
+      "document_id": "DOC-05",
+      "document_version": 1,
+      "document_content_sha256": "88e5d33fc0b98cdabf2b760d6a674891dfa2d7d17a91f0d3d358f7cd68a9cadb",
+      "contract_version": "ai_document_evidence_v1",
+      "source_record_pointer": "/document_passages/4",
+      "publisher_id": "desnz",
+      "authority_class": "approved_document",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "document",
+        "p1_case_ids": [
+          "DO-01"
+        ]
+      },
+      "passage": {
+        "passage_id": "DP-05",
+        "passage_version": 1,
+        "chunk_id": "DP-05-C001",
+        "passage_sha256": "9971561cc27ae9cc949d7c34d18729a7eb181722528b721a78c77346857325e8"
+      }
+    },
+    {
+      "document_id": "DOC-06",
+      "document_version": 1,
+      "document_content_sha256": "ed54ca5f0f88ad2c62e6bcf552c8c22029782fa423370d304bccdd84003fcdd1",
+      "contract_version": "ai_document_evidence_v1",
+      "source_record_pointer": "/document_passages/5",
+      "publisher_id": "desnz",
+      "authority_class": "approved_document",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "document",
+        "p1_case_ids": [
+          "DO-02"
+        ]
+      },
+      "passage": {
+        "passage_id": "DP-06",
+        "passage_version": 1,
+        "chunk_id": "DP-06-C001",
+        "passage_sha256": "cdec9451a35b443fafe39db52064f9c606ab4cfacce9a64aba7eacd5fcecb7be"
+      }
+    },
+    {
+      "document_id": "DOC-07",
+      "document_version": 1,
+      "document_content_sha256": "669b798edd16fec6080a6914c2251d0709994c1a0ab470c1e1ca29accc805bea",
+      "contract_version": "ai_document_evidence_v1",
+      "source_record_pointer": "/document_passages/6",
+      "publisher_id": "desnz",
+      "authority_class": "approved_document",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "document",
+        "p1_case_ids": [
+          "DO-03"
+        ]
+      },
+      "passage": {
+        "passage_id": "DP-07",
+        "passage_version": 1,
+        "chunk_id": "DP-07-C001",
+        "passage_sha256": "c6e9b83b31bbb589c6ec63fa9eb3cf38cc4e78552971eb53332008800366973d"
+      }
+    },
+    {
+      "document_id": "DOC-08",
+      "document_version": 1,
+      "document_content_sha256": "8a73aeccc2c764b7a116481e6be3326eaafcfc664ea92e1c3735d1a727c21599",
+      "contract_version": "ai_document_evidence_v1",
+      "source_record_pointer": "/document_passages/7",
+      "publisher_id": "ofgem",
+      "authority_class": "approved_document",
+      "classification": "public",
+      "access_scope": "read_only_evaluation",
+      "lifecycle_status": "active_selected",
+      "route_eligibility": {
+        "route": "document",
+        "p1_case_ids": [
+          "DO-04"
+        ]
+      },
+      "passage": {
+        "passage_id": "DP-08",
+        "passage_version": 1,
+        "chunk_id": "DP-08-C001",
+        "passage_sha256": "08d23ee149326db7637e765397fafaead29ba2e27452f5d56b739ebab6f6d58d"
+      }
+    }
+  ],
+  "approved_passage_ids": [
+    "DP-01",
+    "DP-02",
+    "DP-03",
+    "DP-04",
+    "DP-05",
+    "DP-06",
+    "DP-07",
+    "DP-08"
+  ],
+  "tombstones": [],
+  "derived_projection_boundary": {
+    "required_for_manifest": false,
+    "expected_count": 0,
+    "actual_count": 0,
+    "authority_status": "no_index_or_retrieval_projection_created"
+  },
+  "evaluation_coverage": {
+    "status": "partial_blocked",
+    "ready_case_ids": [
+      "ST-04",
+      "DO-01",
+      "DO-02",
+      "DO-03",
+      "DO-04"
+    ],
+    "blocked_required_case_ids": [
+      "ST-01",
+      "ST-02",
+      "ST-03",
+      "CO-01",
+      "CO-02",
+      "CO-03",
+      "CO-04"
+    ],
+    "blocked_evidence_ids": [
+      "SF-01",
+      "SF-02",
+      "SF-03",
+      "SF-04",
+      "SF-05",
+      "SF-06",
+      "SF-07"
+    ],
+    "remaining_case_families_status": "WP7_not_instantiated"
+  },
+  "prior_complete_manifest": {
+    "status": "none",
+    "reason": "This is the initial complete local manifest; no prior complete manifest exists."
+  },
+  "fallback_policy": {
+    "fallback_available": false,
+    "eligibility_recheck_required": true,
+    "revocation_bypass": "prohibited",
+    "cross_manifest_assembly": "prohibited",
+    "no_eligible_manifest_outcome": "bounded_non_answer"
+  }
+}

@@ -4,15 +4,15 @@
 
 **Owner:** [redacted-owner]  
 **Created:** 2026-06-12  
-**Last revised:** 2026-09-01<br>
+**Last revised:** 2026-09-05<br>
 **Target exam:** AWS Certified Solutions Architect – Professional, SAP-C02  
 **Exam outcome:** Passed on 2026-08-29 after an in-person Pearson VUE attempt<br>
 **Earliest booking decision gate:** completed 2026-08-22 after full mock 009; **recommendation:** GO; **booking:** completed 2026-08-22
 **Weekly capacity assumption:** 10–12 focused hours while not working  
 **Controlling principle:** SAP-C02 is the steering architecture. The Energy Data Lakehouse is the practical case study. Everything else must support exam readiness, lakehouse credibility, or job-market positioning.
-**Last repository reconciliation:** 2026-09-01
+**Last repository reconciliation:** 2026-09-05
 **Last practice evidence update:** 2026-08-23
-**Last readiness-state publication:** 2026-08-30 (final-freshness evidence, passed-attempt closure, and AWS Solutions Architect interview transition; see Git history)
+**Last readiness-state publication:** 2026-09-05 (P1/P2-through-WP8 evidence-contract package and AWS Solutions Architect interview transition; see Git history)
 **Last tutorial evidence update:** 2026-07-01
 **Last governance study evidence reconciliation:** 2026-07-19 (published evidence through 2026-07-13; later legend edits remain local)
 
@@ -189,10 +189,57 @@ Architecture package P0 is complete, including the runtime-layer correction in
 ADR 0007. Bedrock `InvokeModel` is verified current rather than deferred;
 OpenClaw/ECS and raw model publication are rejected rather than deferred;
 LangGraph, multi-agent orchestration, and fine-tuning remain evidence-gated.
-P1, the evaluation contract, is next.
-Do not select a vector database, managed knowledge-base service, embedding
-model, or deployment topology before that contract defines the user decision,
-baseline, expected evidence, failure cases, and promotion gates.
+P1, the evaluation contract, is complete in
+`docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md`. It confirms
+the repository owner as the single internal decision-support user and sets a
+prospective target of at least 30% lower median time to a trusted answer than a
+matched manual baseline, subject to explicit accuracy, citation, grounding,
+freshness, safety, latency, cost, and abstention gates. No realized business
+result is claimed. P2, the smallest approved corpus and structured/document
+evidence contracts, is in progress through
+`docs/planning/ai-orchestration-p2-corpus-evidence-contract-plan-20260901.md`.
+WP1 is complete: eight public Elexon BMRS facts and eight bounded official
+Ofgem/GOV.UK passages passed the public-safety, alignment, reuse-basis and
+selection-stage holdout-independence gates. The accepted evidence pack and
+selection/exclusion decision are recorded in
+`docs/evidence/ai-orchestration-p2-wp1-selected-evidence-20260905.json` and
+`docs/planning/ai-orchestration-p2-wp1-selection-decision-20260905.md`.
+ENTSO-E day-ahead price candidates and unlicensed RSS descriptions remain
+excluded. WP2 is complete in
+`docs/planning/ai-orchestration-p2-wp2-authority-classification-access-rules-20260905.md`:
+authority, classification, read-only scope, item-level route eligibility,
+public-citation separation, revocation and deny-by-default rules are defined.
+WP3 is complete in
+`docs/planning/ai-orchestration-p2-wp3-freshness-version-conflict-rules-20260905.md`:
+question-relative historical/current freshness, 36-hour structured and 168-hour
+document thresholds, timezone/precision, immutable version, last-known-good
+manifest and material-conflict rules are defined. WP4 is complete in
+`docs/planning/ai-orchestration-p2-wp4-structured-evidence-contract-20260905.md`:
+the strict structured schema closes metric/query parameters, distinguishes
+null, absent, zero and not-applicable, requires derived operands, separates
+internal provenance from public citation, and passes reason-checked valid/
+invalid examples. WP5 is complete in
+`docs/planning/ai-orchestration-p2-wp5-document-evidence-contract-20260905.md`:
+the strict document schema pins source, version, bounded passage, claim,
+freshness, lifecycle, provenance and public-citation fields and passes one valid
+plus three reason-checked invalid examples. WP6 is complete in
+`docs/planning/ai-orchestration-p2-wp6-corpus-manifest-exclusion-contract-20260905.md`:
+one immutable local active manifest pins nine eligible records and eight
+passages; seven selected structured aggregates remain explicitly blocked by
+WP4's missing-operand rule; seven exclusion decisions, lifecycle tombstone
+shape, deterministic hashes and fail-safe no-prior-manifest state are defined.
+WP7 is complete in
+`docs/planning/ai-orchestration-p2-wp7-evaluation-case-contract-20260905.md`:
+exactly 28 cases use the 7/7/14 split, fourteen holdout labels are separate and
+candidate-ineligible, sixteen synthetic policy fixtures remain adversarial-only,
+and blocked structured dependencies stay explicit. WP8 is complete in
+`docs/planning/ai-orchestration-p2-wp8-validation-decision-20260905.md`: the
+schema and cross-file semantic validators pass; nine known-bad semantic
+mutations fail for their intended codes; and P2 advances to P3 only after an
+explicit continuation instruction. `SF-01` through `SF-07` remain blocked,
+holdout gold remains candidate-ineligible and policy fixtures remain
+adversarial-only. Do not select a generation model, managed knowledge-base
+service or deployment topology before the P3 local retrieval evidence exists.
 
 #### Cross-workspace evidence rule
 
@@ -367,8 +414,8 @@ the current week and leave future planned weeks blank.
 | 2026-08-10 | 10–12 | 15 | 0 | 6 | 9 | The focused Domain 3 diagnostic scored 25/25 in 47 minutes, including 20/20 on Domain 3. Full Mock 006 then scored 71/75 (94.7%): 190 wall-clock minutes with approximately 10 minutes of learner-reported short interruptions near the end, giving an estimated 180 active minutes; 24/27 exact-match multiple-response, 11/11 uncertain answers, Domains 1, 3, and 4 at 100%, and Domain 2 at 18/22. The learner completed the miss review on 2026-08-14. Full Mock 007 then scored 75/75 in 142 minutes on 2026-08-15: 48/48 single-response, 27/27 exact-match multiple-response, 7/7 uncertain, every domain at 100%, and all four Mock 006 remediation targets transferred. No total hours are inferred from artifact timestamps. |
 | 2026-08-17 | 10–12 |  |  |  |  | Full Mocks 008 and 009 preserved the two-mock cadence. Mock 008 scored 75/75 in 117 active minutes. Mock 009 scored 73/75 on 2026-08-22 in 101 active minutes within a 106-minute wall clock: 47/48 single-response, 26/27 exact-match multiple-response, 15/16 uncertain, and primary-domain scores of 20/20, 21/22, 17/18, and 15/15. The post-Mock-009 gate is reached; run the explicit go/no-go booking review next. No total hours are inferred from artifact timestamps. |
 | 2026-08-24 | 10–12 |  |  |  |  | SAP-C02 final taper completed without another full mock or provider gate. Required-ID and route checks passed, the in-person attempt was completed on 2026-08-29, and the learner-provided score report confirms Pass. Redirect capacity to the AWS Solutions Architect assessment and final-interview preparation. |
-| 2026-08-31 | 10–12 |  |  |  |  | SAP-C02 is passed and preparation is closed. The Startup Solutions Architect role, five-loop structure, and presentation assignment have been inspected. Use `docs/planning/aws-startups-solutions-architect-interview-preparation-20260830.md` for the bounded preparation plan and `docs/planning/aws-startups-sa-assignment-deck-outline-20260830.md` for the five-slide Lakehouse assignment. Further AI orchestration is active only within the interview-linked scope. ADRs 0006 and 0007 plus the architecture decision register complete P0: Bedrock is the verified inference boundary, Step Functions/Lambda remains the current orchestration boundary, OpenClaw/ECS is rejected, and LangGraph is deferred. The explicitly authorized managed-AI timeout maintenance was revalidated, implemented as one in-place Lambda update, and verified by one successful controlled smoke on 2026-09-01; it did not expand orchestration scope. Use ADR 0007 only as a supporting GenAI STAR scenario, not the assignment. Confirm the truthful stakeholder, business outcome, schedule, submission mechanics, and confidentiality boundary, then create the P1 evaluation contract. |
-| 2026-09-07 | 10–12 |  |  |  |  | Keep SAP-C02 preparation closed. Continue the AWS Solutions Architect assessment and final-interview preparation. Advance beyond the P1 AI evaluation contract only when its evidence gates justify a bounded corpus, retrieval benchmark, model comparison, or locally tested vertical slice. |
+| 2026-08-31 | 10–12 |  |  |  |  | SAP-C02 is passed and preparation is closed. The Startup Solutions Architect role, five-loop structure, and presentation assignment have been inspected. Use `docs/planning/aws-startups-solutions-architect-interview-preparation-20260830.md` for the bounded preparation plan and `docs/planning/aws-startups-sa-assignment-deck-outline-20260830.md` for the five-slide Lakehouse assignment. Further AI orchestration is active only within the interview-linked scope. ADRs 0006 and 0007 plus the architecture decision register complete P0: Bedrock is the verified inference boundary, Step Functions/Lambda remains the current orchestration boundary, OpenClaw/ECS is rejected, and LangGraph is deferred. The explicitly authorized managed-AI timeout maintenance was revalidated, implemented as one in-place Lambda update, and verified by one successful controlled smoke on 2026-09-01; it did not expand orchestration scope. Use ADR 0007 only as a supporting GenAI STAR scenario, not the assignment. P1 now confirms the truthful internal stakeholder, matched manual baseline, prospective 30% time-to-trusted-answer target, 28-case minimum, numeric gates, red lines, and stop rules. Confirm the schedule, submission mechanics, and confidentiality boundary, then create P2 corpus and evidence contracts. |
+| 2026-09-07 | 10–12 |  |  |  |  | Keep SAP-C02 preparation closed. Continue the AWS Solutions Architect assessment and final-interview preparation. P1 and P2 are complete: the bounded evidence set has authority/access, freshness/version/conflict rules, strict evidence schemas, one immutable local active manifest with explicit exclusions, exactly 28 evaluation cases with a 7/7/14 split, separate holdout gold, isolated adversarial fixtures and durable schema/semantic validation. WP8 rejected nine known-bad semantic mutations for their intended codes and recorded an advance decision. Begin only the bounded P3 local retrieval benchmark after explicit continuation; do not select a generation model, managed service, deployment topology or AWS change first. |
 | 2026-09-14 | 10–12 |  |  |  |  | AWS Solutions Architect final interview: assessment plus an under-five-hour video interview. Do not divide attention with SAP-C02 preparation. |
 | 2026-09-21 | 10–12 |  |  |  |  | Post-interview recovery and evidence reconciliation only; no deferred work resumes automatically. |
 | 2026-09-28 | 10–12 |  |  |  |  | Re-plan post-exam and post-interview priorities from explicit evidence and authorization. |
@@ -1249,15 +1296,28 @@ and execute the bounded Startup Solutions Architect plan in
 `docs/planning/aws-startups-solutions-architect-interview-preparation-20260830.md`.
 The supplied presentation assignment is translated into the five-slide
 storyboard at
-`docs/planning/aws-startups-sa-assignment-deck-outline-20260830.md`. Confirm the
-truthful stakeholder and measurable business-outcome evidence, definitive
-interview schedule, submission mechanics, and confidentiality boundary before
-locking final slides. ADRs 0006 and 0007 plus the AI orchestration decision
+`docs/planning/aws-startups-sa-assignment-deck-outline-20260830.md`. The
+truthful internal stakeholder and prospective measurable business outcome are
+confirmed in P1; confirm the definitive interview schedule, submission
+mechanics, and confidentiality boundary before locking final slides. ADRs 0006
+and 0007 plus the AI orchestration decision
 register now complete the architecture-first package. ADR 0007 is supporting
-GenAI STAR material, not assignment scope. Create the P1 evaluation contract
-next, while building the truthful STAR story bank. Only after the evaluation
-contract should a corpus, retrieval benchmark, model, or local vertical slice
-be selected.
+GenAI STAR material, not assignment scope. P1 is complete in
+`docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md`; it confirms
+the truthful internal stakeholder and prospective measurable outcome without
+claiming an external customer result. P2 corpus and evidence contracts are
+complete under
+`docs/planning/ai-orchestration-p2-corpus-evidence-contract-plan-20260901.md`,
+while the truthful STAR story bank remains active. The plan, WP1 inventory and
+selection/exclusion decision, WP2 authority/access rules, WP3 freshness/version/
+conflict rules, WP4 and WP5 evidence contracts, WP6 manifest/exclusion package
+and WP7 28-case evaluation set are complete. WP8's durable schema and semantic
+validators now pass, including canonical hashes, exact references/counts,
+freshness, citation, blocked-evidence, holdout and adversarial boundaries; nine
+known-bad semantic mutations fail for their intended codes. The P2 decision is
+advance. Begin the bounded P3 local retrieval benchmark only after explicit
+continuation, and select a model or local vertical slice only after that
+evidence exists.
 Defer the non-blocking database/data-transfer consolidation and all other
 parked repository work until after the interview
 and a separate tracker-led re-planning decision. The exam-result and post-

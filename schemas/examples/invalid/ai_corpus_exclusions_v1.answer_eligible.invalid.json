@@ -1,0 +1,12 @@
+{
+  "fixture_version": "ai_invalid_contract_mutation_v1",
+  "base_record": "evaluation/ai-orchestration/p2/exclusions-v1.json",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/entries/0/answer_evidence_eligible",
+      "value": true
+    }
+  ],
+  "expected_error_fragment": "False was expected"
+}

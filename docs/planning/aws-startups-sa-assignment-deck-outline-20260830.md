@@ -3,6 +3,7 @@
 <!-- markdownlint-disable MD013 MD036 MD060 -->
 
 **Prepared:** 2026-08-30<br>
+**Last revised:** 2026-09-01<br>
 **Assignment:** Explain a business problem solved with a technical solution<br>
 **Format:** Five slides; 20-minute presentation; approximately 10 minutes of
 interspersed questions and answers<br>
@@ -15,11 +16,11 @@ interspersed questions and answers<br>
 
 The presentation must make one decision easy to understand:
 
-> A resource-constrained energy team needed trustworthy, decision-ready market
-> intelligence from fragmented public data. I built the smallest credible
-> serverless data and AI platform that made the evidence usable, protected the
-> public boundary, and preserved a trigger-based route to a richer GenAI
-> product.
+> As the project's single internal decision-support user, I needed trustworthy,
+> decision-ready intelligence from fragmented public energy data. I built the
+> smallest credible serverless data and AI platform that made the evidence
+> usable, protected the public boundary, and preserved a trigger-based route to
+> a richer GenAI product.
 
 This is a technical project with a business framing. Do not describe a real
 customer, employer, adoption result, or financial result unless the learner can
@@ -100,8 +101,9 @@ validation and adoption remain separate tests.
 
 - Proven now: scheduled refresh, queryable curation, validation, fallback, and
   bounded managed-AI cost.
-- Measure next: time to trusted answer, freshness-SLO attainment, adoption,
-  decision usefulness, and cost per successful insight.
+- Measure next: at least 30% lower median time to a trusted answer than the
+  matched manual baseline, subject to the P1 accuracy, citation, grounding,
+  freshness, safety, latency, and cost gates. Adoption remains unmeasured.
 
 **Visual**
 
@@ -211,6 +213,9 @@ Use every answer pattern: requirement -> decision -> alternative -> trade-off
 **Question:** Can an evidence-grounded assistant shorten time to a trusted
 answer while preserving accuracy, safety, and unit economics?
 
+**Target:** At least 30% lower median time to a trusted answer than the matched
+manual baseline, with no P1 red-line failure.
+
 **Proposed read-only flow**
 
 `Approved curated facts and documents`
@@ -319,18 +324,25 @@ evidence of Solutions Architect judgment.
 11. What was the hardest trade-off and what would you do differently?
 12. What is the largest current limitation?
 
-## Facts Required Before Final Slides
+## Confirmed Facts And Remaining Inputs
 
-The learner must supply these truthfully before the narrative is locked:
+Confirmed from the repository evidence boundary and P1 contract:
 
-1. the actual customer, stakeholder, or user context;
-2. the decision or workflow that motivated the build;
-3. the previous manual or technical process and its observable pain;
-4. at least one measured business result, or explicit confirmation that only
-   technical outcomes can be claimed;
-5. the learner's individual actions and hardest decision;
-6. the definitive interview date and submission mechanics; and
-7. whether confidential assignment material may be stored in this repository.
+1. the current stakeholder is the repository owner as one internal decision-
+   support user, not an evidenced external customer;
+2. the decision is whether approved evidence supports a bounded market
+   observation with sufficient provenance, freshness, and qualification;
+3. the current manual workflow requires structured lookup, document search,
+   timestamp/provenance reconciliation, and a qualified written answer; and
+4. no realized adoption, revenue, external-customer, or analyst-time result is
+   evidenced. The prospective target is at least 30% lower median time to a
+   trusted answer than a matched manual baseline.
+
+The learner must still confirm before final slides:
+
+1. the individual actions and hardest decision to emphasize;
+2. the definitive interview date and submission mechanics; and
+3. whether confidential assignment material may be stored in this repository.
 
 ## One-To-Two-Hour Preparation Budget
 

@@ -1,0 +1,12 @@
+{
+  "fixture_version": "ai_invalid_contract_mutation_v1",
+  "base_record": "evaluation/ai-orchestration/p2/holdout/holdout-gold-v1.json",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/0/case_id",
+      "value": "ST-04"
+    }
+  ],
+  "expected_error_fragment": "HOLDOUT_CASE_MAPPING"
+}

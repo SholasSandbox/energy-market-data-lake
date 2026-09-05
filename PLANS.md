@@ -40,7 +40,7 @@ Historical planning references:
 
 ## Active AWS Solutions Architect Interview Sequence
 
-Status as of 2026-09-01: SAP-C02 is passed and preparation is closed. The
+Status as of 2026-09-05: SAP-C02 is passed and preparation is closed. The
 Startup Solutions Architect interview and five-slide Lakehouse assignment are
 the controlling near-term workstream. Further AI orchestration is active only
 inside the tracker's bounded interview-linked scope.
@@ -56,9 +56,21 @@ inside the tracker's bounded interview-linked scope.
    `docs/adr/0007-bedrock-runtime-and-orchestration-framework-boundary.md` as
    the runtime decision: Bedrock inference and Step Functions/Lambda current;
    OpenClaw/ECS rejected; LangGraph conditional and deferred.
-4. Create P1, the evaluation contract, before selecting corpus, chunking,
-   retrieval, embeddings, model, managed service, or AWS topology.
-5. Advance through corpus contracts, local retrieval benchmark, and at most one
+4. Use the completed P1 evaluation contract at
+   `docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md` and the
+   completed P2 corpus and evidence contract package through
+   `docs/planning/ai-orchestration-p2-corpus-evidence-contract-plan-20260901.md`.
+   WP1's read-only inventory and selection/exclusion decision, WP2's
+   authority/access matrix, WP3's freshness/version/conflict rules and WP4's
+   structured-evidence contract and WP5's document-evidence contract are
+   complete. WP6's strict corpus-manifest and exclusion-contract package is
+   also complete. WP7's exact 28-case set, 7/7/14 split, separate holdout gold
+   and explicit evidence, freshness, conflict, safety and scoring assertions
+   are complete. WP8's durable schema/semantic validators and nine
+   reason-checked mutations pass; the recorded P2 decision is advance.
+5. After explicit continuation, execute the bounded P3 local retrieval
+   benchmark before selecting embeddings, a generation model, managed service,
+   or AWS topology. Advance to at most one
    locally tested read-only vertical slice only when each preceding gate passes.
 6. Stop when the interview evidence gap is closed. A managed AWS deployment is
    optional and remains unauthorized without a separate explicit request.

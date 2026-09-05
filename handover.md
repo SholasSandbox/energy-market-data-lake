@@ -1,10 +1,10 @@
 # Energy Market Data Lakehouse Handover
 
-**Prepared:** 2026-09-01<br>
+**Prepared:** 2026-09-05<br>
 **Controlling plan:** `docs/planning/sap-c02-readiness-tracker.md`<br>
 **Transition:** SAP-C02 passed on 2026-08-29; focus remains on the 2026-09-14 AWS Solutions Architect final interview<br>
 **AWS changes:** One explicitly authorized in-place update to `energy-market-news-ai-orchestration` added bounded Bedrock client timeouts and attempts; no resources were added or destroyed<br>
-**Publication status:** SAP-C02 closure, the interview architecture package, and the managed-AI timeout fix are published to `origin/main`
+**Publication status:** SAP-C02 closure, the interview architecture package, the managed-AI timeout fix, and the P1/P2-through-WP8 evidence-contract package are published to `origin/main`
 
 ## Objective
 
@@ -60,8 +60,143 @@ further changes.
 - Autonomous agents, write-capable tools, polished UI, production tenancy,
   fine-tuning, LangGraph implementation, and AWS deployment of the proposed
   path remain outside the current slice.
-- The architecture decision register marks P0 complete and P1 evaluation
-  contract as the next artifact.
+- The architecture decision register marks P0 and P1 complete. P1 confirms the
+  repository owner as the single internal decision-support user and defines a
+  prospective target of at least 30% lower median time to a trusted answer
+  than a matched manual baseline, with no accuracy, citation, grounding,
+  freshness, safety, abstention, latency, or cost-gate regression.
+- P1 defines a 28-case minimum, calibration/development/holdout split, required
+  outcome codes, numeric promotion gates, red-line failures, trace records,
+  and stop rules. No baseline or candidate run, realized business-result claim,
+  corpus selection, implementation, or AWS change occurred.
+- The P2 execution plan is complete in
+  `docs/planning/ai-orchestration-p2-corpus-evidence-contract-plan-20260901.md`.
+  It bounds the candidate inventory, corpus size, selection/exclusion decision,
+  authority, classification, freshness, citation, schemas, manifest, 28-case
+  fixtures, validation, and stop rules.
+- P2 WP1 is complete. Eight public Elexon BMRS facts and eight bounded official
+  Ofgem/GOV.UK passages passed the public-safety, alignment, reuse-basis and
+  selection-stage holdout-independence gates. The selected evidence pack is
+  `docs/evidence/ai-orchestration-p2-wp1-selected-evidence-20260905.json`; the
+  decision and exclusion register is
+  `docs/planning/ai-orchestration-p2-wp1-selection-decision-20260905.md`.
+- The selected structured boundary is query-contract shape 8 plus one bounded
+  BMRS dataset-metadata fact. Query-contract shape 12 remains reference-only.
+  ENTSO-E day-ahead prices, copied RSS descriptions and internal/presentation
+  sources remain excluded from approved answer evidence.
+- The discovery used public read-only requests and read-only inspection of
+  existing curated objects. It made no AWS resource change, ran no Athena
+  query or model, and retained no internal S3 locator in the selected pack.
+- P2 WP2 is complete in
+  `docs/planning/ai-orchestration-p2-wp2-authority-classification-access-rules-20260905.md`.
+  It defines four authority classes, three information classifications,
+  logical read-only scopes, consumer boundaries and deny-by-default rules.
+- All 16 selected WP1 IDs are mapped to their exact `structured`, `document`
+  or `combined` case route. Public classification alone does not grant use;
+  selection, authority, classification, scope, lifecycle and route must all
+  permit the item.
+- Internal provenance remains separate from the public-safe Elexon/OGL
+  citation projection. Revoked, source-deleted, rights-uncertain, changed or
+  newly private evidence fails closed, and derived chunks, indexes and caches
+  remain non-authoritative and rebuildable.
+- WP2 made no schema, manifest, fixture, retrieval, model, publication or AWS
+  change.
+- P2 WP3 is complete in
+  `docs/planning/ai-orchestration-p2-wp3-freshness-version-conflict-rules-20260905.md`.
+  It separates exact historical evidence from current/latest evidence, pins an
+  evaluation `as_of`, and accepts a 36-hour structured threshold plus a
+  168-hour document threshold as explicit portfolio engineering assumptions.
+- WP3 defines RFC 3339 UTC instants, `Europe/London` GB civil dates, immutable
+  evidence/pack/policy/manifest versions, atomic manifest activation and a
+  last-known-good fallback that cannot bypass freshness or revocation.
+- Material structured, document or combined conflicts preserve every eligible
+  reference and never use recency, retrieval score or model confidence as an
+  implicit tie-break. The current WP1 pack contains no conflict fixture or
+  active/last-known-good manifest.
+- At the frozen WP1 assessment instant, only `SF-08` passes a current-source
+  check; `SF-01` through `SF-07` and `DP-01` through `DP-08` are approved for
+  their exact historical cases but not unqualified current/latest answers.
+- WP3 made no schema, manifest, fixture, retrieval, model, publication or AWS
+  change.
+- P2 WP4 is complete in
+  `docs/planning/ai-orchestration-p2-wp4-structured-evidence-contract-20260905.md`.
+  Its Draft 2020-12 schema admits only the three selected GB BMRS metric
+  identities, two bounded template shapes, exact parameters and closed fields.
+- The WP4 tagged value union distinguishes null, absent, present zero and not-
+  applicable. Derived facts require every included scalar operand, counts and
+  a fixed calculation rule; arbitrary SQL, table, column and output-location
+  fields have no admitted representation.
+- Internal source hash/count provenance is separate from the public-safe
+  Elexon citation projection. One valid `SF-08` example passes, and three
+  invalid examples fail for the intended SQL, value-state and operand reasons.
+- WP4 did not invent the 48 scalar operands omitted from the WP1 daily
+  aggregates. `SF-01` through `SF-07` cannot enter a future manifest under the
+  new schema until approved exact operands pass the later semantic validator.
+- P2 WP5 is complete in
+  `docs/planning/ai-orchestration-p2-wp5-document-evidence-contract-20260905.md`.
+  Its closed Draft 2020-12 schema represents one selected document version and
+  either one exact bounded passage capped at 500 characters or a text-free
+  metadata-only record.
+- The WP5 contract pins the WP2 authority/access boundary and WP3 freshness,
+  immutable-version and lifecycle rules. Each bounded passage has stable
+  document, passage, chunk and claim identities, deterministic hashes and
+  section or character coordinates.
+- Internal repository provenance is separate from the closed public OGL
+  citation object. One valid `DP-08` example passes, and three invalid examples
+  fail for the intended oversized-text, provenance-leakage and metadata-only-
+  with-text reasons.
+- Deleted, revoked and superseded records are not valid active document
+  evidence. WP6 now represents their permitted audit shape as minimal
+  content-free tombstones and atomically selects only a complete manifest.
+- P2 WP6 is complete in
+  `docs/planning/ai-orchestration-p2-wp6-corpus-manifest-exclusion-contract-20260905.md`.
+  It defines closed manifest and exclusion schemas, one immutable locally
+  active v1 manifest, seven explicit exclusion decisions, lifecycle tombstones,
+  deterministic hashes and fail-safe no-prior-manifest semantics.
+- Manifest completeness is separate from P1 evaluation coverage. `SF-08` and
+  all eight `DOC-*`/`DP-*` records are active; `SF-01` through `SF-07` remain
+  explicitly contract-blocked because their exact scalar operands are absent.
+  The affected `ST-01..03` and `CO-01..04` cases are not answer-ready.
+- Three compact manifest mutations fail for incomplete-active state, a revoked
+  active entry and a missing exclusion hash. One exclusion mutation proves an
+  excluded record cannot be answer-eligible.
+- The v1 tombstone and derived-projection arrays are explicit empty/zero states;
+  no revocation event, prior complete manifest, index or retrieval projection
+  is invented.
+- WP6 made no evaluation fixture, retrieval, model, network, Athena,
+  publication or AWS change.
+- P2 WP7 is complete in
+  `docs/planning/ai-orchestration-p2-wp7-evaluation-case-contract-20260905.md`.
+  It instantiates exactly 28 P1 cases, with four per family and the exact seven
+  calibration, seven development and fourteen holdout split.
+- Case `01` is calibration, `02` development and `03`/`04` holdout in every
+  family. Each calibration/development case carries inline gold; each holdout
+  carries only an opaque pointer to one separately stored gold record.
+- `evaluation/ai-orchestration/p2/holdout/holdout-gold-v1.json` contains the
+  fourteen holdout labels and is contractually ineligible for candidate,
+  prompt, retrieval or tuning input until the candidate configuration is
+  frozen. This is a repository artifact/input boundary, not an OS ACL claim.
+- Sixteen `FIX-SA-*`, `FIX-CF-*`, `FIX-UN-*` and `FIX-NA-*` records are visibly
+  synthetic, adversarial-only, non-production and ineligible for answers,
+  ordinary retrieval or tuning. They contain conditions but no gold outcomes.
+- WP7 preserves `SF-01` through `SF-07` as unavailable dependencies. The
+  affected `ST-01..03` and `CO-01..04` cases remain abstention or qualified-
+  partial tests rather than being made answer-ready from aggregate-only data.
+- The immutable WP6 manifest/exclusion snapshots still truthfully record the
+  pre-WP7 `not_instantiated` state; WP7 records the subsequent state in new,
+  separately hashed artifacts instead of rewriting the activated snapshots.
+- P2 WP8 is complete in
+  `docs/planning/ai-orchestration-p2-wp8-validation-decision-20260905.md`.
+  `scripts/validate_ai_orchestration_p2.py` now performs the durable schema,
+  canonical-hash, identity, pointer, evidence/gold/fixture resolution,
+  freshness, citation, coordinate, link and redaction checks.
+- Nine compact semantic mutations prove that duplicate cases, split drift,
+  blocked-evidence leakage, reference-hash drift, duplicate fixture mappings,
+  answer-eligible fixtures, holdout mismatches, unhashed manifest changes and
+  coordinate drift fail for their intended error codes.
+- All P2 exit criteria pass. The recorded decision is **advance to P3 only
+  after explicit continuation**. P3 has not started, and no retrieval, model,
+  managed-service, deployment-topology or AWS choice was made.
 - ADR 0007 is supporting GenAI STAR material, not part of the presentation
   assignment.
 
@@ -223,6 +358,195 @@ The 2026-09-01 runtime-architecture reconciliation completed locally:
 - no AWS API, deployment, runtime invocation, or resource mutation occurred as
   part of the architecture-only reconciliation.
 
+The 2026-09-01 P1 evaluation-contract reconciliation also completed locally:
+
+- the contract confirms only the evidenced internal stakeholder and labels the
+  30% time-to-trusted-answer outcome as a prospective target;
+- the 28-case minimum, matched baseline, deterministic scoring, numeric gates,
+  red-line failures, traces, and stop rules reconcile with ADR 0006 and the
+  architecture decision register;
+- targeted `markdownlint-cli2` linted all ten changed documentation files with
+  zero issues;
+- `git diff --check`, the public-evidence redaction check, and the stale P1
+  status scan passed; and
+- no baseline/candidate evaluation, corpus selection, code change, AWS API,
+  deployment, or resource mutation occurred.
+
+The follow-on P2 plan validation completed locally:
+
+- all repository-local candidate paths named by the plan exist;
+- targeted `markdownlint-cli2` linted the eleven-file P1/P2 planning package
+  with zero issues;
+- `git diff --check` and the public-evidence redaction check passed; and
+- no corpus item was approved, no contract/schema/fixture was implemented, and
+  no AWS API, network fetch, model call, retrieval test, deployment, or resource
+  mutation occurred.
+
+The 2026-09-05 P2 WP1 selection then completed under the repository owner's
+explicit continuation instruction:
+
+- eight structured facts and eight document passages resolved with unique
+  stable IDs and SHA-256 evidence hashes;
+- the four combined pairs aligned on GB energy topic and exact structured-
+  effective/document-publication date;
+- the Elexon BMRS open-data licence and the OGL v3.0 basis for the selected
+  Crown content were verified, while ENTSO-E price candidates and copied RSS
+  descriptions were excluded;
+- no case prompt, split assignment, expected outcome or holdout gold was added;
+  and
+- no AWS resource mutation, Athena query, model invocation, retrieval test or
+  deployment occurred.
+
+The 2026-09-05 P2 WP2 authority and access contract then completed locally:
+
+- the four required authority classes and three information classifications
+  are defined independently, so public reachability cannot imply authority;
+- the 8-plus-8 evidence set is mapped to exact case-family route eligibility
+  under the existing `read_only_evaluation` scope;
+- logical consumer boundaries prevent direct model access to repository, S3,
+  Athena, internet, credentials, publication or external actions;
+- internal provenance and public-safe citation projections are separate, with
+  Elexon and OGL attribution preserved;
+- deletion, revocation, quarantine, source-deletion, replacement and derived-
+  projection behaviour fails closed; and
+- no WP3 freshness threshold, schema, manifest, fixture, retrieval, model,
+  publication or AWS action occurred.
+
+The 2026-09-05 P2 WP3 freshness, version and conflict contract then completed
+locally:
+
+- exact historical cases use their requested time window without relative-age
+  expiry, while explicit current/latest cases use the 36-hour structured and
+  168-hour document thresholds recorded by the WP1 decision;
+- required timestamp meanings, ordering, RFC 3339 UTC normalization,
+  `Europe/London` date precision and fail-closed missing-time behaviour are
+  defined;
+- stable IDs, immutable hashes, evidence/pack/policy/manifest versions and
+  explicit supersession replace silent in-place updates;
+- incomplete manifests remain inactive and last-known-good use is allowed only
+  while every required item still passes access, lifecycle and freshness;
+- structured, document and combined conflict identity, materiality, precedence
+  and permitted terminal outcomes are deterministic; and
+- no WP4 schema, manifest, fixture, retrieval, model, publication or AWS action
+  occurred.
+
+The 2026-09-05 P2 WP4 structured-evidence contract then completed locally:
+
+- `schemas/ai_structured_evidence_v1.schema.json` passed Draft 2020-12 schema
+  validation and its valid `SF-08` example passed with format checking;
+- closed metric, source, query and parameter allowlists reject arbitrary SQL,
+  table, column, output-location and cross-route expansion;
+- tagged observation branches keep present zero, null, absent and not-
+  applicable distinct;
+- the derived branch requires every included scalar operand, counts and fixed
+  arithmetic/rounding parameters, while later semantic reconciliation remains
+  explicitly assigned to WP8;
+- three known-bad examples were rejected for their exact expected nested error:
+  unexpected `sql`, absent-with-`value`, and missing `operands`;
+- the existing full contract suite still passed through
+  `scripts/validate_contracts.py --check-failures`; and
+- the full optional-evidence contract run, JSON parsing, closed-object audit and
+  a semantic spot check of `SF-08` identity/hash/count, provenance equality and
+  exact 800-second freshness age passed;
+- targeted `markdownlint-cli2` reported zero issues across the ten WP4/status
+  Markdown files, and `git diff --check`, trailing-whitespace, stale-status and
+  public-evidence redaction checks passed; and
+- no document schema, manifest, fixture, retrieval, model, network, Athena,
+  publication or AWS action occurred.
+
+The 2026-09-05 P2 WP5 document-evidence contract then completed locally:
+
+- `schemas/ai_document_evidence_v1.schema.json` passed Draft 2020-12 schema
+  validation and its valid `DP-08` example passed with format checking;
+- the valid example's publisher, title, URL, date, source section, exact passage
+  and passage hash reconcile with the frozen WP1 evidence pack;
+- the exact passage SHA-256 and bounded canonical document SHA-256 were
+  independently recomputed and match the content, top-level and internal-
+  provenance fields;
+- the passage is within the 500-character limit, all schema object branches are
+  closed, processing order is valid and the public citation contains none of
+  the checked internal fields;
+- three known-bad examples were rejected for their intended nested errors:
+  oversized passage text, unexpected internal provenance in `public_citation`,
+  and unexpected text in metadata-only mode;
+- the full optional-evidence and expected-failure contract suite, JSON parsing,
+  validator byte-compilation and semantic spot check passed;
+- targeted `markdownlint-cli2` reported zero issues across the eleven WP5/status
+  Markdown files;
+- `git diff --check`, the new-artifact trailing-whitespace scan, stale-status
+  scan and public-evidence redaction check passed; and
+- no manifest, fixture, retrieval, model, network, Athena, publication or AWS
+  action occurred.
+
+The 2026-09-05 P2 WP6 corpus-manifest and exclusion contract then completed
+locally:
+
+- `schemas/ai_corpus_manifest_v1.schema.json` and
+  `schemas/ai_corpus_exclusions_v1.schema.json` passed Draft 2020-12 schema and
+  format validation against the active manifest and exclusion register;
+- the exclusion-register and manifest canonical SHA-256 values were
+  independently recomputed, and the manifest's pinned exclusion hash matches;
+- all eight-plus-eight WP1 selected identities reconcile to one active
+  structured record, eight active documents/passages and seven explicitly
+  blocked structured records;
+- all eight document and passage IDs, pointers, publishers, routes, exact
+  passage hashes and recomputed bounded-document hashes match the WP1/WP5
+  records;
+- counts reconcile to nine active records, eight passages, seven exclusions,
+  zero tombstones and zero derived projections;
+- candidate/validation/activation ordering, no-prior fallback, revocation
+  prohibition, adversarial ineligibility and no cross-manifest assembly pass;
+- the contract loader now rejects duplicate JSON object members, protecting
+  deterministic hash interpretation;
+- three manifest mutation fixtures and one exclusion mutation fixture were
+  materialized in memory and rejected for their declared reason;
+- the full optional-evidence contract suite, JSON parsing, validator byte-
+  compilation, targeted 12-file Markdown lint, `git diff --check`, new-artifact
+  whitespace scan and public-evidence redaction check passed; and
+- no WP7 case/gold, WP8 final validator, retrieval, model, network, Athena,
+  publication or AWS action occurred during WP6.
+
+The 2026-09-05 P2 WP7 evaluation-case package then completed locally:
+
+- `ai_evaluation_case_v1`, `ai_policy_fixture_v1` and `ai_holdout_gold_v1`
+  passed Draft 2020-12 schema and format validation against their records;
+- 28 unique ordered case IDs reconcile to four cases per family, with exactly
+  7 calibration, 7 development and 14 holdout cases and a 1/1/2 split in each
+  family;
+- fourteen non-holdout cases contain inline gold, while fourteen holdouts
+  contain only opaque pointers that resolve one-to-one to the separate gold
+  file;
+- sixteen unique adversarial fixtures resolve one-to-one to the stale,
+  conflict, unsafe/unauthorized and unanswerable/invalid cases, remain
+  non-evidence and contain no gold fields;
+- every required active evidence ID resolves to the WP6 manifest, and every
+  required unavailable evidence ID resolves to the WP6 contract-blocked set;
+- evaluation, fixture and gold canonical hashes recompute and all cross-file
+  hash references match;
+- all primary outcomes in inline and holdout gold belong to their declared
+  allowed outcome set; and
+- no retrieval, model, embedding, managed-service selection, network, Athena,
+  publication or AWS action occurred.
+
+The WP8 final validation then passed locally:
+
+- the existing JSON Schema suite accepted every valid P2 record and rejected
+  the WP4-WP6 known-bad records for their intended diagnostic fragments;
+- the WP8 semantic validator recomputed the manifest, exclusion, evaluation,
+  policy-fixture and holdout hashes and reconciled all local references;
+- all active manifest pointers resolved exactly to the frozen WP1 pack, and
+  document/passage hashes, structured provenance, citation projections and
+  the selected section coordinate matched;
+- exact case/family/split, holdout, fixture and evidence-resolution counts
+  passed, while blocked evidence, adversarial fixtures and holdout gold stayed
+  ineligible for ordinary candidate answers;
+- nine semantic mutations were rejected for their required error codes;
+- the P1 contract remained pinned at SHA-256
+  `85972e3edc6a33deb0d13c79248264ef5f28e3ea2561e8737cd56dedf5bae62c`;
+  and
+- no retrieval, model, embedding, managed-service selection, network, Athena,
+  publication or AWS action occurred.
+
 Separately, the explicitly authorized timeout-maintenance boundary performed
 one in-place Lambda update and one controlled smoke. No reset, discard, or live
 tutorial-workspace command was run. The bounded architecture and maintenance
@@ -232,6 +556,13 @@ package was validated, committed, and pushed only after explicit authorization.
 
 - Branch: `main`; commit `cbbab8b` published the interview architecture package
   and managed-AI runtime hardening to `origin/main` on 2026-09-01.
+- The P1 contract, P2 execution plan, WP1 evidence pack, WP1 selection decision,
+  WP2 authority/access contract, WP3 freshness/version/conflict contract, WP4
+  structured-evidence contract, WP5 document-evidence contract, WP6 manifest/
+  exclusion schemas and records, WP7 case/policy-fixture/holdout-gold schemas
+  and records, WP8 semantic validator, negative mutations, validation/decision
+  record and all documentation/status reconciliations are tracked and published
+  to `origin/main` in the P1/P2-through-WP8 package.
 - Mock 008, Mock 009, the GO review, governance evidence, and the 7 Rs matrix
   are tracked and published; the booking-state reconciliation records only
   public-safe date, time, delivery, and status evidence.
@@ -244,8 +575,9 @@ package was validated, committed, and pushed only after explicit authorization.
   and `.github/instructions/`. Do not stage it without a separate decision.
 - The zero-byte duplicate non-relational-database note remains untracked; its
   canonical lesson is already under `docs/exam-prep/revision-notes/`.
-- The final-freshness submission and review, exam-prep index, wrong-answer log,
-  tracker, and this handover are tracked and published.
+- The final-freshness submission and review, exam-prep index, and wrong-answer
+  log are tracked and published. The tracker and handover P1/P2 status updates
+  are also tracked and published.
 - The separate governance-study repository's destructive local deletions and
   untracked assessment-recall file were not committed. Its `main` and
   `origin/main` remain aligned at their previously published state.
@@ -262,8 +594,36 @@ package was validated, committed, and pushed only after explicit authorization.
   interview loops, truthful business evidence, and rehearsable architecture
   decisions. Do not add ADR 0007 to the assignment story unless the assignment
   scope is explicitly changed.
-- The worktree retains only the excluded local Mermaid/editor configuration and
-  the zero-byte duplicate exam note. Do not discard or broadly stage them.
+- The WP1 pack does not retain the exact scalar operands behind `SF-01` through
+  `SF-07`. The strict WP4 contract therefore blocks those daily aggregates from
+  a future active manifest until an approved representation supplies the
+  operands and a new manifest version passes the WP8 semantic count and
+  recomputation checks. Do not invent operands or treat the aggregate-only WP1
+  record as schema-complete.
+- JSON Schema cannot prove cross-field equality or recompute hashes. The WP8
+  semantic validator now covers those v1 checks, while WP6 pins the exact
+  document/passages and hashes, keeps incomplete manifests inactive, and
+  permits revoked/deleted/superseded identities only as non-answer tombstones.
+- The WP6 manifest is complete for its declared active set but explicitly
+  `partial_blocked` for P1 coverage. WP7 preserves `ST-01..03` and
+  `CO-01..04` as blocked or qualified-partial cases while `SF-01..07` lack the
+  exact WP4 operands; WP8 now asserts that this boundary cannot drift.
+- Holdout gold is physically separate and has explicit candidate-ineligible
+  flags, but it remains a local repository file rather than an OS- or service-
+  enforced secret. Any future harness must exclude that path from prompt,
+  retrieval and tuning assembly until the candidate configuration is frozen.
+- The WP6 manifest and exclusion register are immutable snapshots and retain
+  their pre-WP7 `WP7_not_instantiated`/`not_instantiated` status fields. Do not
+  rewrite them in place; use the WP7 evaluation and fixture artifacts as the
+  later state. WP8 validates the separate transition explicitly.
+- The compact invalid-manifest files are mutation descriptors. The validator
+  materializes each from the immutable valid base, applies one closed JSON-
+  Pointer mutation and validates the resulting payload; they are not standalone
+  manifests. The WP8 semantic mutations use the same bounded descriptor shape
+  and must fail for their named semantic error codes.
+- The worktree retains excluded local Mermaid/editor configuration, unrelated
+  governance/billing work and the zero-byte duplicate exam note. Do not discard
+  or broadly stage them.
 - The timeout source, Terraform, tests, planning, evidence, tracker, README,
   diagrams, and architecture package are published to `origin/main`.
 - A full post-apply Terraform plan found no resource changes. It reported only
@@ -275,11 +635,16 @@ package was validated, committed, and pushed only after explicit authorization.
 
 Keep SAP-C02 preparation closed and execute the AWS Solutions Architect
 interview plan and five-slide Lakehouse assignment blueprint. The decision-
-first architecture package is complete, including the runtime decision in ADR
-0007. Confirm the truthful stakeholder and
-measurable business outcome, then create the P1 AI evaluation contract before
-selecting a corpus, retrieval implementation, model, managed service, or local
-vertical slice.
+first architecture package and P1 evaluation contract are complete, including
+the runtime decision in ADR 0007 and the truthful internal stakeholder/outcome
+boundary. P2 is complete through
+`docs/planning/ai-orchestration-p2-wp8-validation-decision-20260905.md`; its
+decision is advance. After explicit continuation, execute P3's bounded local
+retrieval benchmark comparing deterministic structured lookup, lexical
+document retrieval and only the minimum additional candidate justified by the
+28-case contract. Preserve WP6's blocked structured-evidence boundary and
+WP7's holdout/adversarial isolation. Do not select a generation model, managed
+service, deployment topology or AWS change first.
 
 State transition status: **the SAP-C02 attempt and pass-result reconciliation
 are complete. The bounded timeout-maintenance implementation is also complete,
@@ -287,9 +652,10 @@ and focus returns to the 2026-09-14 AWS Solutions Architect assessment and
 final interview.**
 
 The fresh-session transition from exam preparation to interview preparation
-has occurred. Because the live maintenance boundary is now complete and the P1
-evaluation contract is a materially different design artifact, start it in a
-fresh session.
+has occurred. P1 and P2 are complete, and the P2 decision gate has advanced.
+The transition to P3 is pending an explicit continuation instruction. Because
+P3 is a materially different retrieval-benchmark workstream and the P2 package
+is now a coherent validated unit, start P3 in a fresh session.
 
 ## Suggested New-Session Prompt
 
@@ -302,16 +668,26 @@ docs/planning/sap-c02-readiness-tracker.md before changing anything.
 The learner passed the in-person SAP-C02 attempt on 2026-08-29. Keep SAP-C02
 preparation closed and do not reconstruct or record exam questions. The current
 tracker priority is the AWS Solutions Architect assessment and final interview
-on 2026-09-14. Read the interview plan and five-slide Lakehouse assignment
-blueprint, confirm the truthful stakeholder and measurable business outcome,
-then create the P1 AI evaluation contract defined by ADR 0006 and the
-architecture decision register. Treat ADR 0007 as supporting GenAI STAR
-material, not assignment scope. It selects Bedrock plus Step Functions/Lambda,
-rejects OpenClaw/ECS, and defers LangGraph. Do not select a corpus, retrieval
-implementation, model, managed service, or local vertical slice before that
-contract. The 2026-09-01 managed-AI timeout maintenance is complete and
-verified; do not repeat its smoke or make further AWS changes. Further AI
-orchestration is active only within the tracker-defined interview scope.
+on 2026-09-14. P1 and P2 are complete. Read
+docs/planning/ai-orchestration-p2-wp8-validation-decision-20260905.md and run
+the two local validators before changing the evidence boundary. WP8 records an
+advance decision, but P3 has not started.
+
+Execute only P3's bounded local retrieval benchmark from
+docs/planning/ai-orchestration-architecture-decision-register-20260830.md.
+Compare deterministic structured lookup, lexical document retrieval and only
+the minimum additional candidate justified by the 28-case contract. Preserve
+the immutable P2 manifest and exclusions. SF-01 through SF-07 remain
+contract-blocked; do not invent their missing scalar operands. Keep fourteen
+holdout gold records out of candidate, prompt, retrieval and tuning inputs
+until candidate freeze, and keep all sixteen policy fixtures adversarial-only
+and ineligible for ordinary answers.
+
+Do not select a generation model, managed knowledge-base service, deployment
+topology or AWS change during the benchmark. Do not claim a production analyst
+path or realized customer outcome. ADR 0007 remains supporting GenAI STAR
+material, not assignment scope. The managed-AI timeout maintenance is complete;
+do not repeat its smoke or make further AWS changes.
 Keep the dirty worktree intact. Do not deploy or modify AWS, commit, push,
 discard, reset, broadly stage files, or resume other parked tutorial,
 container, UI, or unrelated implementation work without explicit

@@ -1,0 +1,12 @@
+{
+  "fixture_version": "ai_invalid_contract_mutation_v1",
+  "base_record": "evaluation/ai-orchestration/p2/evaluation-set-v1.json",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/cases/1/case_id",
+      "value": "ST-01"
+    }
+  ],
+  "expected_error_fragment": "EVAL_CASE_ID_UNIQUE"
+}

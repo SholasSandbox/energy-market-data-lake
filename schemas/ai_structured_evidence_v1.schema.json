@@ -1,0 +1,1146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai_structured_evidence_v1.schema.json",
+  "title": "AI Structured Evidence v1",
+  "description": "Strict, public-safe structured evidence contract for the bounded P2 evaluation corpus.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "evidence_id",
+    "evidence_version",
+    "evidence_pack",
+    "policy",
+    "route_eligibility",
+    "metric",
+    "observation",
+    "unit",
+    "precision",
+    "region",
+    "dimensions",
+    "effective_time",
+    "source",
+    "query",
+    "derivation",
+    "processing",
+    "freshness_assessment",
+    "internal_provenance",
+    "public_citation"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "ai_structured_evidence_v1"
+    },
+    "evidence_id": {
+      "type": "string",
+      "pattern": "^SF-[0-9]{2}$"
+    },
+    "evidence_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "evidence_pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ai-p2-[a-z0-9-]+$"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "selection_status",
+        "authority_class",
+        "classification",
+        "access_scope",
+        "lifecycle_status"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "const": "ai-evidence-access-policy-v1"
+        },
+        "selection_status": {
+          "type": "string",
+          "const": "selected"
+        },
+        "authority_class": {
+          "type": "string",
+          "const": "authoritative_structured"
+        },
+        "classification": {
+          "type": "string",
+          "const": "public"
+        },
+        "access_scope": {
+          "type": "string",
+          "const": "read_only_evaluation"
+        },
+        "lifecycle_status": {
+          "type": "string",
+          "enum": [
+            "selected",
+            "quarantined",
+            "revoked",
+            "source_deleted",
+            "superseded"
+          ]
+        }
+      }
+    },
+    "route_eligibility": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["route", "p1_case_ids"],
+          "properties": {
+            "route": {
+              "type": "string",
+              "const": "structured"
+            },
+            "p1_case_ids": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^ST-0[1-4]$"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["route", "p1_case_ids"],
+          "properties": {
+            "route": {
+              "type": "string",
+              "const": "combined"
+            },
+            "p1_case_ids": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^CO-0[1-4]$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "definition", "definition_version"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": [
+            "daily_average_system_buy_price",
+            "daily_average_net_imbalance_volume",
+            "indo_dataset_last_updated_at"
+          ]
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition_version": {
+          "type": "string",
+          "const": "1"
+        }
+      }
+    },
+    "observation": {
+      "$ref": "#/$defs/semanticValue"
+    },
+    "unit": {
+      "type": "string",
+      "enum": ["GBP/MWh", "MWh", "RFC3339 UTC timestamp"]
+    },
+    "precision": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "decimal_places"],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "decimal_places"
+            },
+            "decimal_places": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "resolution"],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "timestamp"
+            },
+            "resolution": {
+              "type": "string",
+              "enum": ["second", "millisecond"]
+            }
+          }
+        }
+      ]
+    },
+    "region": {
+      "type": "string",
+      "const": "GB"
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["aggregation", "source_field"],
+      "properties": {
+        "aggregation": {
+          "type": "string",
+          "enum": ["arithmetic_mean", "exact_value"]
+        },
+        "source_field": {
+          "type": "string",
+          "enum": ["systemBuyPrice", "netImbalanceVolume", "lastUpdated"]
+        },
+        "dataset_code": {
+          "type": "string",
+          "const": "INDO"
+        }
+      }
+    },
+    "effective_time": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "civil_date",
+            "timezone",
+            "precision",
+            "window_start",
+            "window_end"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "civil_date"
+            },
+            "civil_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "timezone": {
+              "type": "string",
+              "const": "Europe/London"
+            },
+            "precision": {
+              "type": "string",
+              "const": "date"
+            },
+            "window_start": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "window_end": {
+              "$ref": "#/$defs/offsetDateTime"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "effective_at", "precision"],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "instant"
+            },
+            "effective_at": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "precision": {
+              "type": "string",
+              "enum": ["second", "millisecond"]
+            }
+          }
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider_id",
+        "provider_label",
+        "dataset_id",
+        "canonical_url",
+        "source_content_sha256",
+        "source_record_count",
+        "source_created_time",
+        "licence"
+      ],
+      "properties": {
+        "provider_id": {
+          "type": "string",
+          "const": "elexon-bmrs"
+        },
+        "provider_label": {
+          "type": "string",
+          "const": "Elexon BMRS Insights API"
+        },
+        "dataset_id": {
+          "type": "string",
+          "enum": [
+            "bmrs-api-v1-system-prices",
+            "bmrs-api-v1-dataset-metadata-latest"
+          ]
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "source_content_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_record_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "source_created_time": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "value",
+                "equivalent_to_effective_time"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "known"
+                },
+                "value": {
+                  "$ref": "#/$defs/offsetDateTime"
+                },
+                "equivalent_to_effective_time": {
+                  "type": "boolean"
+                },
+                "equivalence_basis": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "equivalent_to_effective_time": {"const": true}
+                    }
+                  },
+                  "then": {
+                    "required": ["equivalence_basis"]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "reason"],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "not_exposed"
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          ]
+        },
+        "licence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "url", "attribution"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "const": "elexon-bmrs-open-data-licence"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://"
+            },
+            "attribution": {
+              "type": "string",
+              "const": "Contains BMRS data © Elexon Limited copyright and database right 2026."
+            }
+          }
+        }
+      }
+    },
+    "query": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "template_id",
+            "template_version",
+            "execution_mode",
+            "athena_query_executed",
+            "parameters"
+          ],
+          "properties": {
+            "template_id": {
+              "type": "string",
+              "const": "query-contract-8"
+            },
+            "template_version": {
+              "type": "integer",
+              "const": 1
+            },
+            "execution_mode": {
+              "type": "string",
+              "const": "shape_compatibility_only"
+            },
+            "athena_query_executed": {
+              "type": "boolean",
+              "const": false
+            },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["effective_date", "region"],
+              "properties": {
+                "effective_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "region": {
+                  "type": "string",
+                  "const": "GB"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "template_id",
+            "template_version",
+            "execution_mode",
+            "athena_query_executed",
+            "parameters"
+          ],
+          "properties": {
+            "template_id": {
+              "type": "string",
+              "const": "bmrs-dataset-latest-metadata-v1"
+            },
+            "template_version": {
+              "type": "integer",
+              "const": 1
+            },
+            "execution_mode": {
+              "type": "string",
+              "const": "public_api_precomputed_fact"
+            },
+            "athena_query_executed": {
+              "type": "boolean",
+              "const": false
+            },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["dataset_code", "region"],
+              "properties": {
+                "dataset_code": {
+                  "type": "string",
+                  "const": "INDO"
+                },
+                "region": {
+                  "type": "string",
+                  "const": "GB"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "derivation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "calculation_rule_id", "description"],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "direct"
+            },
+            "calculation_rule_id": {
+              "type": "string",
+              "const": "identity-v1"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "calculation_rule_id",
+            "description",
+            "declared_operand_count",
+            "excluded_null_count",
+            "operands",
+            "calculation_parameters"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "derived"
+            },
+            "calculation_rule_id": {
+              "type": "string",
+              "const": "arithmetic-mean-non-null-round-6dp-v1"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            },
+            "declared_operand_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "excluded_null_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 50
+            },
+            "operands": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 50,
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "operand_id",
+                  "settlement_period",
+                  "source_field",
+                  "value",
+                  "unit"
+                ],
+                "properties": {
+                  "operand_id": {
+                    "type": "string",
+                    "pattern": "^SP-[0-9]{2}$"
+                  },
+                  "settlement_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 50
+                  },
+                  "source_field": {
+                    "type": "string",
+                    "enum": ["systemBuyPrice", "netImbalanceVolume"]
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": ["GBP/MWh", "MWh"]
+                  }
+                }
+              }
+            },
+            "calculation_parameters": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["ignore_nulls", "decimal_places", "rounding_mode"],
+              "properties": {
+                "ignore_nulls": {
+                  "type": "boolean",
+                  "const": true
+                },
+                "decimal_places": {
+                  "type": "integer",
+                  "const": 6
+                },
+                "rounding_mode": {
+                  "type": "string",
+                  "const": "half_even"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "processing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["acquired_at", "generated_at", "validated_at"],
+      "properties": {
+        "acquired_at": {
+          "$ref": "#/$defs/offsetDateTime"
+        },
+        "generated_at": {
+          "$ref": "#/$defs/offsetDateTime"
+        },
+        "validated_at": {
+          "$ref": "#/$defs/offsetDateTime"
+        }
+      }
+    },
+    "freshness_assessment": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rule_version",
+            "request_mode",
+            "status",
+            "as_of",
+            "controlling_time",
+            "maximum_age_hours",
+            "age_seconds"
+          ],
+          "properties": {
+            "rule_version": {
+              "type": "string",
+              "const": "ai-evidence-freshness-conflict-policy-v1"
+            },
+            "request_mode": {
+              "type": "string",
+              "const": "exact_historical"
+            },
+            "status": {
+              "type": "string",
+              "const": "valid_for_requested_window"
+            },
+            "as_of": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "controlling_time": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "maximum_age_hours": {
+              "type": "null"
+            },
+            "age_seconds": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rule_version",
+            "request_mode",
+            "status",
+            "as_of",
+            "controlling_time",
+            "maximum_age_hours",
+            "age_seconds"
+          ],
+          "properties": {
+            "rule_version": {
+              "type": "string",
+              "const": "ai-evidence-freshness-conflict-policy-v1"
+            },
+            "request_mode": {
+              "type": "string",
+              "const": "current_latest"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["current", "stale", "future"]
+            },
+            "as_of": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "controlling_time": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "maximum_age_hours": {
+              "type": "integer",
+              "const": 36
+            },
+            "age_seconds": {
+              "type": "number"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rule_version",
+            "request_mode",
+            "status",
+            "as_of",
+            "controlling_time",
+            "maximum_age_hours",
+            "age_seconds",
+            "reason"
+          ],
+          "properties": {
+            "rule_version": {
+              "type": "string",
+              "const": "ai-evidence-freshness-conflict-policy-v1"
+            },
+            "request_mode": {
+              "type": "string",
+              "enum": ["exact_historical", "current_latest"]
+            },
+            "status": {
+              "type": "string",
+              "const": "time_unknown"
+            },
+            "as_of": {
+              "$ref": "#/$defs/offsetDateTime"
+            },
+            "controlling_time": {
+              "type": "null"
+            },
+            "maximum_age_hours": {
+              "type": ["integer", "null"],
+              "enum": [36, null]
+            },
+            "age_seconds": {
+              "type": "null"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "internal_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection_record",
+        "source_response_sha256",
+        "source_record_count"
+      ],
+      "properties": {
+        "selection_record": {
+          "type": "string",
+          "const": "docs/evidence/ai-orchestration-p2-wp1-selected-evidence-20260905.json"
+        },
+        "source_response_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_record_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        }
+      }
+    },
+    "public_citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citation_label",
+        "source_name",
+        "metric_label",
+        "effective_time_label",
+        "canonical_url",
+        "attribution"
+      ],
+      "properties": {
+        "citation_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_name": {
+          "type": "string",
+          "const": "Elexon BMRS"
+        },
+        "metric_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "effective_time_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "attribution": {
+          "type": "string",
+          "const": "Contains BMRS data © Elexon Limited copyright and database right 2026."
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "metric": {
+            "properties": {
+              "name": {"const": "daily_average_system_buy_price"}
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "metric": {
+            "properties": {
+              "definition": {
+                "const": "Arithmetic mean of all non-null BMRS systemBuyPrice values in the selected GB civil-day response."
+              }
+            }
+          },
+          "observation": {
+            "properties": {
+              "value_type": {"const": "decimal"}
+            }
+          },
+          "unit": {"const": "GBP/MWh"},
+          "precision": {
+            "properties": {
+              "kind": {"const": "decimal_places"},
+              "decimal_places": {"const": 6}
+            }
+          },
+          "dimensions": {
+            "properties": {
+              "aggregation": {"const": "arithmetic_mean"},
+              "source_field": {"const": "systemBuyPrice"}
+            },
+            "not": {"required": ["dataset_code"]}
+          },
+          "effective_time": {
+            "properties": {
+              "kind": {"const": "civil_date"}
+            }
+          },
+          "source": {
+            "properties": {
+              "dataset_id": {"const": "bmrs-api-v1-system-prices"}
+            }
+          },
+          "query": {
+            "properties": {
+              "template_id": {"const": "query-contract-8"}
+            }
+          },
+          "derivation": {
+            "properties": {
+              "kind": {"const": "derived"}
+            }
+          },
+          "route_eligibility": {
+            "properties": {
+              "route": {"const": "combined"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "metric": {
+            "properties": {
+              "name": {"const": "daily_average_net_imbalance_volume"}
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "metric": {
+            "properties": {
+              "definition": {
+                "const": "Arithmetic mean of all non-null BMRS netImbalanceVolume values in the selected GB civil-day response."
+              }
+            }
+          },
+          "observation": {
+            "properties": {
+              "value_type": {"const": "decimal"}
+            }
+          },
+          "unit": {"const": "MWh"},
+          "precision": {
+            "properties": {
+              "kind": {"const": "decimal_places"},
+              "decimal_places": {"const": 6}
+            }
+          },
+          "dimensions": {
+            "properties": {
+              "aggregation": {"const": "arithmetic_mean"},
+              "source_field": {"const": "netImbalanceVolume"}
+            },
+            "not": {"required": ["dataset_code"]}
+          },
+          "effective_time": {
+            "properties": {
+              "kind": {"const": "civil_date"}
+            }
+          },
+          "source": {
+            "properties": {
+              "dataset_id": {"const": "bmrs-api-v1-system-prices"}
+            }
+          },
+          "query": {
+            "properties": {
+              "template_id": {"const": "query-contract-8"}
+            }
+          },
+          "derivation": {
+            "properties": {
+              "kind": {"const": "derived"}
+            }
+          },
+          "route_eligibility": {
+            "properties": {
+              "route": {"const": "structured"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "metric": {
+            "properties": {
+              "name": {"const": "indo_dataset_last_updated_at"}
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "metric": {
+            "properties": {
+              "definition": {
+                "const": "Source-declared lastUpdated timestamp for the selected BMRS INDO dataset metadata record."
+              }
+            }
+          },
+          "observation": {
+            "properties": {
+              "value_type": {"const": "rfc3339_timestamp"}
+            }
+          },
+          "unit": {"const": "RFC3339 UTC timestamp"},
+          "precision": {
+            "properties": {
+              "kind": {"const": "timestamp"},
+              "resolution": {"const": "second"}
+            }
+          },
+          "dimensions": {
+            "required": ["dataset_code"],
+            "properties": {
+              "aggregation": {"const": "exact_value"},
+              "source_field": {"const": "lastUpdated"},
+              "dataset_code": {"const": "INDO"}
+            }
+          },
+          "effective_time": {
+            "properties": {
+              "kind": {"const": "instant"}
+            }
+          },
+          "source": {
+            "properties": {
+              "dataset_id": {"const": "bmrs-api-v1-dataset-metadata-latest"}
+            }
+          },
+          "query": {
+            "properties": {
+              "template_id": {"const": "bmrs-dataset-latest-metadata-v1"}
+            }
+          },
+          "derivation": {
+            "properties": {
+              "kind": {"const": "direct"}
+            }
+          },
+          "route_eligibility": {
+            "properties": {
+              "route": {"const": "structured"},
+              "p1_case_ids": {
+                "prefixItems": [{"const": "ST-04"}],
+                "minItems": 1,
+                "maxItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "offsetDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "semanticValue": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value_type", "value"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "const": "present"
+            },
+            "value_type": {
+              "type": "string",
+              "const": "decimal"
+            },
+            "value": {
+              "type": "number"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value_type", "value"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "const": "present"
+            },
+            "value_type": {
+              "type": "string",
+              "const": "rfc3339_timestamp"
+            },
+            "value": {
+              "$ref": "#/$defs/offsetDateTime"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value_type", "value", "reason"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "const": "null"
+            },
+            "value_type": {
+              "type": "string",
+              "enum": ["decimal", "rfc3339_timestamp"]
+            },
+            "value": {
+              "type": "null"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value_type", "reason"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "const": "absent"
+            },
+            "value_type": {
+              "type": "string",
+              "enum": ["decimal", "rfc3339_timestamp"]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "reason"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "const": "not_applicable"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "contract_version": "ai_document_evidence_v1",
+  "document_id": "DOC-08",
+  "document_version": 1,
+  "document_content_sha256": "8a73aeccc2c764b7a116481e6be3326eaafcfc664ea92e1c3735d1a727c21599",
+  "canonicalization_rule_id": "ai-document-bounded-canonical-json-v1",
+  "evidence_pack": {
+    "id": "ai-p2-wp1-selected-evidence-20260905",
+    "version": 1
+  },
+  "policy": {
+    "policy_id": "ai-evidence-access-policy-v1",
+    "selection_status": "selected",
+    "authority_class": "approved_document",
+    "classification": "public",
+    "access_scope": "read_only_evaluation"
+  },
+  "route_eligibility": {
+    "route": "document",
+    "p1_case_ids": [
+      "DO-04"
+    ]
+  },
+  "lifecycle": {
+    "document_status": "selected_bounded_passage",
+    "deletion_status": "source_available",
+    "revocation_status": "not_revoked",
+    "version_status": "current_selected_version"
+  },
+  "source": {
+    "publisher_id": "ofgem",
+    "publisher_label": "Ofgem",
+    "title": "Changes to energy price cap between 1 April and 30 June 2026",
+    "canonical_url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-april-and-30-june-2026",
+    "publication_time": {
+      "value": "2026-02-25",
+      "precision": "date",
+      "timezone": "Europe/London"
+    },
+    "update_time": {
+      "status": "not_declared",
+      "reason": "The frozen WP1 selection records no source-declared update time for this version."
+    },
+    "licence": {
+      "id": "open-government-licence-v3.0",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "attribution": "Contains public sector information licensed under the Open Government Licence v3.0."
+    }
+  },
+  "metadata": {
+    "regions": [
+      "GB"
+    ],
+    "topics": [
+      "energy_price_cap",
+      "wholesale_energy"
+    ],
+    "entities": [
+      "Ofgem price cap",
+      "gas",
+      "electricity"
+    ]
+  },
+  "content": {
+    "mode": "bounded_passage",
+    "passage_id": "DP-08",
+    "passage_version": 1,
+    "chunk_id": "DP-08-C001",
+    "ordinal": 1,
+    "coordinates": {
+      "kind": "section",
+      "section_heading": "How the price cap is calculated",
+      "section_heading_occurrence": 1,
+      "passage_ordinal_in_section": 1
+    },
+    "text": "The level of the energy price cap is made up of different costs, for example the wholesale cost of gas and electricity.",
+    "passage_sha256": "08d23ee149326db7637e765397fafaead29ba2e27452f5d56b739ebab6f6d58d"
+  },
+  "claim_identity": {
+    "claim_id": "CLAIM-DP-08-01",
+    "proposition_key": "price-cap-cost-components",
+    "normalized_proposition": "The GB energy price cap includes wholesale gas and electricity costs among its components.",
+    "claim_type": "definition",
+    "causal_scope": "component_relationship",
+    "precision": "qualitative",
+    "geographic_scope": "GB",
+    "applicable_time": {
+      "kind": "publication_date_context",
+      "date": "2026-02-25",
+      "timezone": "Europe/London",
+      "precision": "date"
+    }
+  },
+  "processing": {
+    "ingested_at": "2026-09-05T08:12:10Z",
+    "validated_at": "2026-09-05T08:13:20Z"
+  },
+  "freshness_assessment": {
+    "rule_version": "ai-evidence-freshness-conflict-policy-v1",
+    "request_mode": "exact_historical",
+    "status": "valid_for_requested_window",
+    "as_of": "2026-09-05T08:13:20Z",
+    "controlling_source_time": {
+      "value": "2026-02-25",
+      "precision": "date",
+      "timezone": "Europe/London"
+    },
+    "maximum_age_hours": null,
+    "age_seconds": null
+  },
+  "internal_provenance": {
+    "selection_record": "docs/evidence/ai-orchestration-p2-wp1-selected-evidence-20260905.json",
+    "selected_passage_id": "DP-08",
+    "document_content_sha256": "8a73aeccc2c764b7a116481e6be3326eaafcfc664ea92e1c3735d1a727c21599",
+    "passage_sha256": "08d23ee149326db7637e765397fafaead29ba2e27452f5d56b739ebab6f6d58d",
+    "source_section": "How the price cap is calculated"
+  },
+  "public_citation": {
+    "citation_label": "Ofgem, Changes to energy price cap between 1 April and 30 June 2026, published 25 February 2026",
+    "publisher": "Ofgem",
+    "title": "Changes to energy price cap between 1 April and 30 June 2026",
+    "publication_date": "2026-02-25",
+    "section_locator": "How the price cap is calculated",
+    "canonical_url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-april-and-30-june-2026",
+    "attribution": "Contains public sector information licensed under the Open Government Licence v3.0."
+  }
+}

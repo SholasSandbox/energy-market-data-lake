@@ -3,6 +3,7 @@
 <!-- markdownlint-disable MD013 MD060 -->
 
 **Prepared:** 2026-08-30<br>
+**Last revised:** 2026-09-01<br>
 **Role:** Startup Solutions Architect, AWS Startups, Job ID 10461029<br>
 **Current tracker date:** 2026-09-14; confirm the definitive interview date and time before date-specific rehearsal<br>
 **Preparation window:** 2026-08-30 through 2026-09-13, re-anchored relative to the interview if its date changes<br>
@@ -59,12 +60,19 @@ The role requires more than AWS service recall. Preparation should prioritize:
 
 ### One-Sentence Customer Narrative
 
-Use this as a provisional framing until the assignment prompt defines the
-customer and audience:
+Use this truthful framing unless the learner later supplies a genuine external
+stakeholder and measured result:
 
-> A resource-constrained energy startup needs trustworthy, decision-ready
-> market intelligence; propose the smallest credible AWS architecture now and
-> a trigger-based path to a secure, scalable, GenAI-enabled product.
+> As the project's single internal decision-support user, the repository owner
+> needed trustworthy, decision-ready intelligence from fragmented public
+> energy evidence. The next experiment tests whether a read-only grounded
+> assistant can reduce time to a trusted answer by at least 30% against the
+> matched manual baseline without weakening trust or unit economics.
+
+The stakeholder and outcome contract is recorded in
+`docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md`. This is a
+prospective target, not a claim that analyst time saving, adoption, revenue, or
+external customer value has already been measured.
 
 Do not turn the assignment into a repository tour. Start with the customer
 decision and business constraint, then introduce only the parts of the
@@ -102,13 +110,16 @@ Prioritize these outputs in order:
    `docs/planning/ai-orchestration-architecture-decision-register-20260830.md`,
    and `diagrams/ai-orchestration-evidence-grounded-target.svg`; this is
    complete;
-2. a small representative evaluation contract and scorecard covering
-   structured evidence, document retrieval,
-   groundedness, citations, safety, latency, and cost;
-3. if it materially improves interview depth, one locally tested read-only
+2. the P1 evaluation contract in
+   `docs/planning/ai-orchestration-p1-evaluation-contract-20260901.md`, covering
+   the truthful stakeholder, matched baseline, structured evidence, document
+   retrieval, groundedness, citations, safety, latency, and cost; this is
+   complete;
+3. the P2 corpus/evidence contracts and P3 local retrieval benchmark, but only
+   in that order and only while they improve interview depth; and
+4. if those gates pass and it materially improves interview depth, one locally tested read-only
    vertical slice from approved evidence retrieval to a cited, validated answer;
-   and
-4. concise demo and Q&A cues that explain promotion gates, limitations, and
+5. concise demo and Q&A cues that explain promotion gates, limitations, and
    what would change for confidential or multi-tenant data.
 
 Stop after the smallest evidence set that makes the architectural reasoning
@@ -289,6 +300,8 @@ Before locking the assignment design:
    is safe to retain in the repository;
 3. identify two genuine customer/stakeholder stories and two difficult
    ownership/delivery stories; and
-4. confirm the truthful customer or stakeholder context and any measurable
-   business outcome; the technical storyline uses reliability as the current
-   foundation and retrieval-grounded GenAI as the next gated experiment.
+4. **Completed 2026-09-01:** the truthful stakeholder is the repository owner
+   as one internal decision-support user. The measurable target is at least
+   30% lower median time to a trusted answer than the matched manual baseline,
+   subject to the P1 quality and safety gates. No realized business result is
+   claimed.

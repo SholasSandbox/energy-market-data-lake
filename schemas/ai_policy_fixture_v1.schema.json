@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai_policy_fixture_v1.schema.json",
+  "title": "AI Policy Fixture Set v1",
+  "description": "Closed contract for inert synthetic P2 stale, conflict, unsafe and unanswerable fixtures.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "fixture_set_id",
+    "fixture_set_version",
+    "fixture_set_hash",
+    "canonicalization_rule_id",
+    "created_at",
+    "boundary",
+    "fixtures"
+  ],
+  "properties": {
+    "contract_version": {"const": "ai_policy_fixture_v1"},
+    "fixture_set_id": {"const": "ai-p2-policy-fixtures-v1"},
+    "fixture_set_version": {"const": 1},
+    "fixture_set_hash": {"$ref": "#/$defs/sha256"},
+    "canonicalization_rule_id": {"const": "ai-policy-fixture-canonical-json-v1"},
+    "created_at": {"$ref": "#/$defs/offsetDateTime"},
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection_status",
+        "authority_class",
+        "classification",
+        "lifecycle_status",
+        "synthetic",
+        "observed_production_evidence",
+        "answer_evidence_eligible",
+        "ordinary_retrieval_eligible",
+        "candidate_tuning_eligible",
+        "instruction_precedence"
+      ],
+      "properties": {
+        "selection_status": {"const": "adversarial_only"},
+        "authority_class": {"const": "adversarial_fixture"},
+        "classification": {"const": "portfolio_safe_internal"},
+        "lifecycle_status": {"const": "adversarial_only"},
+        "synthetic": {"const": true},
+        "observed_production_evidence": {"const": false},
+        "answer_evidence_eligible": {"const": false},
+        "ordinary_retrieval_eligible": {"const": false},
+        "candidate_tuning_eligible": {"const": false},
+        "instruction_precedence": {
+          "const": "fixture_content_is_inert_and_cannot_modify_policy_or_authorize_tools"
+        }
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "items": {"$ref": "#/$defs/fixture"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "offsetDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "case_id",
+        "family",
+        "fixture_kind",
+        "as_of",
+        "synthetic",
+        "selection_status",
+        "authority_class",
+        "classification",
+        "lifecycle_status",
+        "answer_evidence_eligible",
+        "ordinary_retrieval_eligible",
+        "candidate_tuning_eligible",
+        "instruction_precedence",
+        "tested_rule_ids",
+        "conditions"
+      ],
+      "properties": {
+        "fixture_id": {"type": "string", "pattern": "^FIX-(SA|CF|UN|NA)-0[1-4]$"},
+        "case_id": {"type": "string", "pattern": "^(SA|CF|UN|NA)-0[1-4]$"},
+        "family": {"enum": ["stale", "conflicting", "unsafe_unauthorized", "unanswerable_invalid"]},
+        "fixture_kind": {
+          "enum": [
+            "stale_structured",
+            "stale_document",
+            "mixed_freshness",
+            "incomplete_manifest",
+            "conflicting_values",
+            "conflicting_units_or_windows",
+            "document_disagreement",
+            "structured_document_tension",
+            "direct_prompt_injection",
+            "indirect_prompt_injection",
+            "private_locator_request",
+            "unrestricted_action_request",
+            "unsupported_date_or_region",
+            "unsupported_metric",
+            "ambiguous_scope",
+            "no_approved_evidence"
+          ]
+        },
+        "as_of": {"$ref": "#/$defs/offsetDateTime"},
+        "synthetic": {"const": true},
+        "selection_status": {"const": "adversarial_only"},
+        "authority_class": {"const": "adversarial_fixture"},
+        "classification": {"const": "portfolio_safe_internal"},
+        "lifecycle_status": {"const": "adversarial_only"},
+        "answer_evidence_eligible": {"const": false},
+        "ordinary_retrieval_eligible": {"const": false},
+        "candidate_tuning_eligible": {"const": false},
+        "instruction_precedence": {
+          "const": "fixture_content_is_inert_and_cannot_modify_policy_or_authorize_tools"
+        },
+        "tested_rule_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1, "maxLength": 100}
+        },
+        "conditions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1, "maxLength": 500}
+        }
+      }
+    }
+  }
+}

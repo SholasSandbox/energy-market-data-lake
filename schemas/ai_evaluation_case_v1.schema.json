@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai_evaluation_case_v1.schema.json",
+  "title": "AI P2 Evaluation Set v1",
+  "description": "Candidate-visible metadata and non-holdout gold for exactly twenty-eight P1 evaluation cases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "evaluation_set_id",
+    "evaluation_set_version",
+    "evaluation_set_hash",
+    "canonicalization_rule_id",
+    "created_at",
+    "manifest_reference",
+    "policy_versions",
+    "split_policy",
+    "policy_fixture_register",
+    "holdout_gold_boundary",
+    "cases"
+  ],
+  "properties": {
+    "contract_version": {"const": "ai_evaluation_case_v1"},
+    "evaluation_set_id": {"const": "ai-p2-evaluation-set-v1"},
+    "evaluation_set_version": {"const": 1},
+    "evaluation_set_hash": {"$ref": "#/$defs/sha256"},
+    "canonicalization_rule_id": {"const": "ai-evaluation-set-canonical-json-v1"},
+    "created_at": {"$ref": "#/$defs/offsetDateTime"},
+    "manifest_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_id", "manifest_version", "manifest_hash", "record_locator"],
+      "properties": {
+        "manifest_id": {"const": "ai-p2-corpus-manifest-v1"},
+        "manifest_version": {"const": 1},
+        "manifest_hash": {"$ref": "#/$defs/sha256"},
+        "record_locator": {"const": "evaluation/ai-orchestration/p2/corpus-manifest-v1.json"}
+      }
+    },
+    "policy_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["access_policy_id", "freshness_conflict_policy_id", "scoring_rule_version"],
+      "properties": {
+        "access_policy_id": {"const": "ai-evidence-access-policy-v1"},
+        "freshness_conflict_policy_id": {"const": "ai-evidence-freshness-conflict-policy-v1"},
+        "scoring_rule_version": {"const": "p1-deterministic-task-success-v1"}
+      }
+    },
+    "split_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_cases",
+        "family_count",
+        "cases_per_family",
+        "calibration_count",
+        "development_count",
+        "holdout_count",
+        "assignment_rule"
+      ],
+      "properties": {
+        "total_cases": {"const": 28},
+        "family_count": {"const": 7},
+        "cases_per_family": {"const": 4},
+        "calibration_count": {"const": 7},
+        "development_count": {"const": 7},
+        "holdout_count": {"const": 14},
+        "assignment_rule": {"const": "01_calibration_02_development_03_and_04_holdout_per_family"}
+      }
+    },
+    "policy_fixture_register": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixture_set_id", "fixture_set_version", "fixture_set_hash", "record_locator"],
+      "properties": {
+        "fixture_set_id": {"const": "ai-p2-policy-fixtures-v1"},
+        "fixture_set_version": {"const": 1},
+        "fixture_set_hash": {"$ref": "#/$defs/sha256"},
+        "record_locator": {"const": "evaluation/ai-orchestration/p2/policy-fixtures-v1.json"}
+      }
+    },
+    "holdout_gold_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gold_set_id",
+        "gold_set_version",
+        "gold_set_hash",
+        "record_locator",
+        "candidate_access",
+        "prompt_input_eligible",
+        "retrieval_input_eligible",
+        "tuning_input_eligible",
+        "release_condition"
+      ],
+      "properties": {
+        "gold_set_id": {"const": "ai-p2-holdout-gold-v1"},
+        "gold_set_version": {"const": 1},
+        "gold_set_hash": {"$ref": "#/$defs/sha256"},
+        "record_locator": {"const": "evaluation/ai-orchestration/p2/holdout/holdout-gold-v1.json"},
+        "candidate_access": {"const": false},
+        "prompt_input_eligible": {"const": false},
+        "retrieval_input_eligible": {"const": false},
+        "tuning_input_eligible": {"const": false},
+        "release_condition": {"const": "candidate_configuration_frozen_for_holdout_run"}
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 28,
+      "maxItems": 28,
+      "items": {"$ref": "#/$defs/evaluationCase"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "offsetDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "evidenceId": {"type": "string", "pattern": "^(SF|DOC|DP)-[0-9]{2}$"},
+    "fixtureId": {"type": "string", "pattern": "^FIX-(SA|CF|UN|NA)-0[1-4]$"},
+    "outcomeCode": {
+      "enum": [
+        "answered",
+        "partial_evidence",
+        "insufficient_evidence",
+        "stale_evidence",
+        "conflicting_evidence",
+        "not_authorized",
+        "unsafe_request",
+        "invalid_request",
+        "rate_limited",
+        "system_error"
+      ]
+    },
+    "assertions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "freshness",
+        "conflict",
+        "safety",
+        "citation_mode",
+        "grounding_no_unsupported_claims",
+        "trace_requires_versions",
+        "trace_requires_cost"
+      ],
+      "properties": {
+        "freshness": {"enum": ["valid_for_requested_window", "current", "stale", "mixed_freshness", "manifest_incomplete", "not_applicable", "reject_before_freshness"]},
+        "conflict": {"enum": ["no_material_conflict", "material_conflict", "not_applicable"]},
+        "safety": {"enum": ["permitted", "unsafe_request", "not_authorized"]},
+        "citation_mode": {"enum": ["exact_required", "available_component_only", "none_allowed"]},
+        "grounding_no_unsupported_claims": {"const": true},
+        "trace_requires_versions": {"const": true},
+        "trace_requires_cost": {"const": true}
+      }
+    },
+    "goldAssertions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gold_id",
+        "case_id",
+        "scoring_rule_version",
+        "expected_route",
+        "allowed_outcome_codes",
+        "primary_outcome_code",
+        "required_available_evidence_ids",
+        "required_unavailable_evidence_ids",
+        "required_fixture_ids",
+        "forbidden_evidence_ids",
+        "mandatory_facts",
+        "mandatory_qualifications",
+        "prohibited_claims",
+        "assertions"
+      ],
+      "properties": {
+        "gold_id": {"type": "string", "pattern": "^IG-(ST|DO|CO|SA|CF|UN|NA)-0[12]$"},
+        "case_id": {"type": "string", "pattern": "^(ST|DO|CO|SA|CF|UN|NA)-0[12]$"},
+        "scoring_rule_version": {"const": "p1-deterministic-task-success-v1"},
+        "expected_route": {"enum": ["structured", "document", "combined", "policy_guard", "none"]},
+        "allowed_outcome_codes": {"type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true, "items": {"$ref": "#/$defs/outcomeCode"}},
+        "primary_outcome_code": {"$ref": "#/$defs/outcomeCode"},
+        "required_available_evidence_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/evidenceId"}},
+        "required_unavailable_evidence_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/evidenceId"}},
+        "required_fixture_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/fixtureId"}},
+        "forbidden_evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 120}},
+        "mandatory_facts": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 500}},
+        "mandatory_qualifications": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 500}},
+        "prohibited_claims": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 500}},
+        "assertions": {"$ref": "#/$defs/assertions"}
+      }
+    },
+    "goldBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gold_id", "gold_set_id", "gold_set_version", "candidate_visible"],
+      "properties": {
+        "gold_id": {"type": "string", "pattern": "^HG-(ST|DO|CO|SA|CF|UN|NA)-0[34]$"},
+        "gold_set_id": {"const": "ai-p2-holdout-gold-v1"},
+        "gold_set_version": {"const": 1},
+        "candidate_visible": {"const": false}
+      }
+    },
+    "candidateInputScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_id", "manifest_version", "manifest_hash", "approved_evidence_ids", "blocked_reference_ids", "policy_fixture_ids"],
+      "properties": {
+        "manifest_id": {"const": "ai-p2-corpus-manifest-v1"},
+        "manifest_version": {"const": 1},
+        "manifest_hash": {"$ref": "#/$defs/sha256"},
+        "approved_evidence_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/evidenceId"}},
+        "blocked_reference_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^SF-0[1-7]$"}},
+        "policy_fixture_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/fixtureId"}}
+      }
+    },
+    "evaluationCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "family",
+        "split",
+        "case_shape",
+        "prompt",
+        "as_of",
+        "request_mode",
+        "candidate_visible",
+        "evidence_resolution_status",
+        "candidate_input_scope"
+      ],
+      "properties": {
+        "case_id": {"type": "string", "pattern": "^(ST|DO|CO|SA|CF|UN|NA)-0[1-4]$"},
+        "family": {"enum": ["structured", "document", "combined", "stale", "conflicting", "unsafe_unauthorized", "unanswerable_invalid"]},
+        "split": {"enum": ["calibration", "development", "holdout"]},
+        "case_shape": {
+          "enum": [
+            "exact_value", "derived_comparison", "time_unit_discrimination", "present_record_missing_metric",
+            "known_passage", "metadata_provenance", "paraphrased_lookup", "association_vs_causation",
+            "exact_fact_plus_context", "calculated_fact_plus_context", "timestamp_alignment", "qualified_synthesis",
+            "stale_structured", "stale_document", "fresh_fact_stale_context", "incomplete_manifest",
+            "conflicting_values", "conflicting_units_or_windows", "document_disagreement", "structured_document_tension",
+            "direct_prompt_injection", "indirect_retrieved_instruction", "private_failed_locator_request", "unrestricted_query_publication_action",
+            "unsupported_date_region", "unsupported_metric", "ambiguous_scope", "plausible_no_approved_evidence"
+          ]
+        },
+        "prompt": {"type": "string", "minLength": 10, "maxLength": 1000},
+        "as_of": {"$ref": "#/$defs/offsetDateTime"},
+        "request_mode": {"enum": ["exact_historical", "current_latest", "temporally_ambiguous", "policy_precheck"]},
+        "candidate_visible": {"const": true},
+        "evidence_resolution_status": {"enum": ["ready", "contract_blocked", "policy_fixture"]},
+        "candidate_input_scope": {"$ref": "#/$defs/candidateInputScope"},
+        "gold": {"$ref": "#/$defs/goldAssertions"},
+        "gold_boundary": {"$ref": "#/$defs/goldBoundary"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"split": {"const": "holdout"}}, "required": ["split"]},
+          "then": {"required": ["gold_boundary"], "not": {"required": ["gold"]}},
+          "else": {"required": ["gold"], "not": {"required": ["gold_boundary"]}}
+        }
+      ]
+    }
+  }
+}

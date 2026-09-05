@@ -1,0 +1,11 @@
+{
+  "fixture_version": "ai_invalid_contract_mutation_v1",
+  "base_record": "evaluation/ai-orchestration/p2/corpus-manifest-v1.json",
+  "mutations": [
+    {
+      "op": "remove",
+      "path": "/exclusion_register/register_hash"
+    }
+  ],
+  "expected_error_fragment": "'register_hash' is a required property"
+}

@@ -1,0 +1,14 @@
+{
+  "fixture_version": "ai_invalid_contract_mutation_v1",
+  "base_record": "evaluation/ai-orchestration/p2/evaluation-set-v1.json",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/cases/0/candidate_input_scope/approved_evidence_ids",
+      "value": [
+        "SF-05"
+      ]
+    }
+  ],
+  "expected_error_fragment": "CASE_APPROVED_EVIDENCE_RESOLUTION"
+}

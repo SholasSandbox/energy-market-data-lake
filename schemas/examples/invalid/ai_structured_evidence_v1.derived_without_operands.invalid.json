@@ -1,0 +1,117 @@
+{
+  "contract_version": "ai_structured_evidence_v1",
+  "evidence_id": "SF-05",
+  "evidence_version": 1,
+  "evidence_pack": {
+    "id": "ai-p2-wp1-selected-evidence-20260905",
+    "version": 1
+  },
+  "policy": {
+    "policy_id": "ai-evidence-access-policy-v1",
+    "selection_status": "selected",
+    "authority_class": "authoritative_structured",
+    "classification": "public",
+    "access_scope": "read_only_evaluation",
+    "lifecycle_status": "selected"
+  },
+  "route_eligibility": {
+    "route": "structured",
+    "p1_case_ids": ["ST-01"]
+  },
+  "metric": {
+    "name": "daily_average_net_imbalance_volume",
+    "definition": "Arithmetic mean of all non-null BMRS netImbalanceVolume values in the selected GB civil-day response.",
+    "definition_version": "1"
+  },
+  "observation": {
+    "status": "present",
+    "value_type": "decimal",
+    "value": -30.357954
+  },
+  "unit": "MWh",
+  "precision": {
+    "kind": "decimal_places",
+    "decimal_places": 6
+  },
+  "region": "GB",
+  "dimensions": {
+    "aggregation": "arithmetic_mean",
+    "source_field": "netImbalanceVolume"
+  },
+  "effective_time": {
+    "kind": "civil_date",
+    "civil_date": "2026-02-25",
+    "timezone": "Europe/London",
+    "precision": "date",
+    "window_start": "2026-02-25T00:00:00Z",
+    "window_end": "2026-02-26T00:00:00Z"
+  },
+  "source": {
+    "provider_id": "elexon-bmrs",
+    "provider_label": "Elexon BMRS Insights API",
+    "dataset_id": "bmrs-api-v1-system-prices",
+    "canonical_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/system-prices/2026-02-25",
+    "source_content_sha256": "e68f3b7ad8d7430fd16b334345b5983a62881a9727010f5077e9e0608b43703a",
+    "source_record_count": 48,
+    "source_created_time": {
+      "status": "known",
+      "value": "2026-02-27T00:14:41Z",
+      "equivalent_to_effective_time": false
+    },
+    "licence": {
+      "id": "elexon-bmrs-open-data-licence",
+      "url": "https://www.elexon.co.uk/bsc/operations-settlement/bsc-central-services/balancing-mechanism-reporting-agent/copyright-licence-bmrs-data/",
+      "attribution": "Contains BMRS data © Elexon Limited copyright and database right 2026."
+    }
+  },
+  "query": {
+    "template_id": "query-contract-8",
+    "template_version": 1,
+    "execution_mode": "shape_compatibility_only",
+    "athena_query_executed": false,
+    "parameters": {
+      "effective_date": "2026-02-25",
+      "region": "GB"
+    }
+  },
+  "derivation": {
+    "kind": "derived",
+    "calculation_rule_id": "arithmetic-mean-non-null-round-6dp-v1",
+    "description": "Arithmetic mean of the selected non-null netImbalanceVolume operands.",
+    "declared_operand_count": 48,
+    "excluded_null_count": 0,
+    "calculation_parameters": {
+      "ignore_nulls": true,
+      "decimal_places": 6,
+      "rounding_mode": "half_even"
+    }
+  },
+  "processing": {
+    "acquired_at": "2026-09-05T08:12:00Z",
+    "generated_at": "2026-09-05T08:13:00Z",
+    "validated_at": "2026-09-05T08:13:20Z"
+  },
+  "freshness_assessment": {
+    "rule_version": "ai-evidence-freshness-conflict-policy-v1",
+    "request_mode": "exact_historical",
+    "status": "valid_for_requested_window",
+    "as_of": "2026-09-05T08:13:20Z",
+    "controlling_time": "2026-02-26T00:00:00Z",
+    "maximum_age_hours": null,
+    "age_seconds": null
+  },
+  "internal_provenance": {
+    "selection_record": "docs/evidence/ai-orchestration-p2-wp1-selected-evidence-20260905.json",
+    "source_response_sha256": "e68f3b7ad8d7430fd16b334345b5983a62881a9727010f5077e9e0608b43703a",
+    "source_record_count": 48
+  },
+  "public_citation": {
+    "citation_label": "Elexon BMRS GB daily average net imbalance volume for 25 February 2026",
+    "source_name": "Elexon BMRS",
+    "metric_label": "Daily average net imbalance volume",
+    "value_label": "-30.357954 MWh",
+    "effective_time_label": "25 February 2026",
+    "canonical_url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/settlement/system-prices/2026-02-25",
+    "attribution": "Contains BMRS data © Elexon Limited copyright and database right 2026."
+  }
+}
