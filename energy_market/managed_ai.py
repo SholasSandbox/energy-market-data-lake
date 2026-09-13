@@ -170,14 +170,17 @@ def invoke_bedrock_ai_insight(
 
 def normalize_ai_insight_reference_objects(
     payload: dict[str, Any],
+    *,
+    bundle: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Remove model-added reference metadata before strict schema validation.
+    """Normalize model-added reference metadata before schema validation.
 
     Managed models can add descriptive fields such as ``value`` even when the
     prompt forbids them. Reference objects have a locked, lossless identity
-    shape, so prune only fields outside those explicit allowlists. All other
-    payload content remains untouched for the schema validator to accept or
-    reject.
+    shape, so prune only fields outside those explicit allowlists. A missing
+    energy ``reference`` is restored only from one unambiguous, matching input
+    record; otherwise the strict schema validator remains responsible for
+    rejecting it. All other payload content remains untouched.
     """
     normalized = copy.deepcopy(payload)
     insights = normalized.get("insights")
@@ -193,13 +196,57 @@ def normalize_ai_insight_reference_objects(
                 continue
             for index, reference in enumerate(references):
                 if isinstance(reference, dict):
-                    references[index] = {
+                    normalized_reference = {
                         key: value
                         for key, value in reference.items()
                         if key in allowed_fields
                     }
+                    if (
+                        field_name == "energy_references"
+                        and "reference" not in normalized_reference
+                    ):
+                        trusted_reference = _single_energy_source_reference(
+                            bundle,
+                            normalized_reference,
+                        )
+                        if trusted_reference is not None:
+                            normalized_reference["reference"] = trusted_reference
+                    references[index] = normalized_reference
 
     return normalized
+
+
+def _single_energy_source_reference(
+    bundle: dict[str, Any] | None,
+    reference: dict[str, Any],
+) -> str | None:
+    """Return trusted provenance only for one matching energy input record."""
+    if not isinstance(bundle, dict):
+        return None
+    energy_input = bundle.get("energy_input")
+    if not isinstance(energy_input, dict):
+        return None
+    records = energy_input.get("records")
+    if not isinstance(records, list) or len(records) != 1:
+        return None
+
+    record = records[0]
+    if not isinstance(record, dict):
+        return None
+    source = reference.get("source")
+    record_source = record.get("source")
+    if not isinstance(source, str) or not isinstance(record_source, str):
+        return None
+    if source.strip().casefold() != record_source.strip().casefold():
+        return None
+
+    metric = reference.get("metric")
+    if not isinstance(metric, str) or metric not in record or record[metric] is None:
+        return None
+    source_reference = record.get("source_reference")
+    if not isinstance(source_reference, str) or not source_reference.strip():
+        return None
+    return source_reference.strip()
 
 
 def parse_bedrock_response(response: dict[str, Any]) -> dict[str, Any]:

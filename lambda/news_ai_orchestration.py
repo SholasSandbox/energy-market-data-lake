@@ -261,6 +261,7 @@ def merge_ai_insight_managed(
                     ),
                 ),
             ),
+            bundle=bundle,
         )
     except (ConnectTimeoutError, ReadTimeoutError) as exc:
         raise ManagedAITimeoutError(

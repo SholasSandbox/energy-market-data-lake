@@ -136,20 +136,26 @@ def main() -> int:
     ]
     raise_for_validation_errors(managed_payload, "ai_insight", "phase17a_fake_payload")
 
-    managed_payload_with_reference_extras = copy.deepcopy(managed_payload)
-    energy_reference = managed_payload_with_reference_extras["insights"][0][
+    managed_payload_with_reference_drift = copy.deepcopy(managed_payload)
+    energy_reference = managed_payload_with_reference_drift["insights"][0][
         "energy_references"
     ][0]
+    expected_energy_reference = energy_reference.pop("reference")
     energy_reference["value"] = "25118 MW"
     energy_reference["timestamp"] = "2026-08-08T07:30:10Z"
-    news_reference = managed_payload_with_reference_extras["insights"][0][
+    news_reference = managed_payload_with_reference_drift["insights"][0][
         "news_references"
     ][0]
     news_reference["date"] = "2026-08-08"
     normalized_payload = normalize_ai_insight_reference_objects(
-        managed_payload_with_reference_extras,
+        managed_payload_with_reference_drift,
+        bundle=bundle,
     )
-    if "value" not in energy_reference or "date" not in news_reference:
+    if (
+        "value" not in energy_reference
+        or "reference" in energy_reference
+        or "date" not in news_reference
+    ):
         raise AssertionError("reference normalization mutated the raw model payload")
     if set(normalized_payload["insights"][0]["energy_references"][0]) != {
         "source",
@@ -157,6 +163,11 @@ def main() -> int:
         "reference",
     }:
         raise AssertionError("energy reference normalization drifted")
+    if (
+        normalized_payload["insights"][0]["energy_references"][0]["reference"]
+        != expected_energy_reference
+    ):
+        raise AssertionError("trusted energy reference was not restored")
     if set(normalized_payload["insights"][0]["news_references"][0]) != {
         "publisher",
         "title",
@@ -168,11 +179,14 @@ def main() -> int:
         "ai_insight",
         "phase17_reference_normalization",
     )
-    invalid_outside_reference = copy.deepcopy(managed_payload_with_reference_extras)
+    invalid_outside_reference = copy.deepcopy(managed_payload_with_reference_drift)
     invalid_outside_reference["insights"][0]["unexpected"] = "must remain invalid"
     try:
         raise_for_validation_errors(
-            normalize_ai_insight_reference_objects(invalid_outside_reference),
+            normalize_ai_insight_reference_objects(
+                invalid_outside_reference,
+                bundle=bundle,
+            ),
             "ai_insight",
             "phase17_reference_normalization_boundary",
         )
@@ -576,7 +590,7 @@ def main() -> int:
         handlers,
         run_id,
         bundle,
-        managed_payload_with_reference_extras,
+        managed_payload_with_reference_drift,
         model_id="mistral.ministral-3-8b-instruct",
         expected_provider="mistral",
         response_shape="mistral",
