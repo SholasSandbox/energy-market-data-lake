@@ -292,7 +292,7 @@ External Energy APIs
   `-- ENTSOG
         |
         v
-EventBridge schedules
+Energy ingestion EventBridge schedules
 created but disabled
         |
         v
@@ -321,10 +321,11 @@ Energy dashboard input + RSS Feeds
         |
         v
 Private AWS Processing Boundary
-  Manual Step Functions execution
+  Managed AI EventBridge schedule (verified 2026-09-01)
+  cron(30 7 * * ? *) -> Step Functions
         |
         v
-  Lambda deterministic orchestration
+  Lambda orchestration + Bedrock managed inference
         |
         v
   validate + write run-scoped S3 artifacts
@@ -342,8 +343,15 @@ Private AWS Processing Boundary
 
 The public dashboard must never read directly from raw, curated, audit, or failed lake data.
 
-EventBridge scheduling is deployed but intentionally disabled. Manual Step
-Functions execution is the current safe operating mode.
+The documented managed AI operating baseline uses scheduled Step Functions
+execution. [September 1, 2026 evidence](docs/evidence/ai-orchestration-managed-timeout-fix-20260901.md)
+verified the AI EventBridge schedule enabled at `cron(30 7 * * ? *)` (daily at
+07:30 UTC) and successful scheduled executions, including that day's run.
+This dated verification does not independently confirm today's live AWS state.
+The separate energy ingestion schedules are documented above as created but
+disabled; the AI schedule evidence does not establish their status. Earlier
+Phase 8 and Phase 17 manual execution and schedule-disabled descriptions below
+remain historical rollout evidence.
 
 ## Local MVP Flow
 
@@ -715,9 +723,9 @@ python3 scripts/validate_athena_schema.py \
   operations control-plane view.
 - `diagrams/architecture.mmd`: compact current architecture.
 - `diagrams/architecture.svg`: rendered compact current architecture.
-- `diagrams/architecture_overview.png`: rendered lakehouse overview diagram;
-  updated to include disabled schedules, Phase 8 orchestration, private
-  audit/failed paths, and public dashboard JSON.
+- `diagrams/architecture_overview.png`: historical lakehouse overview diagram
+  showing disabled schedules and Phase 8 orchestration, private audit/failed
+  paths, and public dashboard JSON; predates managed AI schedule enablement.
 - `diagrams/flow_diagram.png`: rendered current data-flow diagram with Elexon,
   ENTSO-E, and ENTSOG raw-to-curated paths.
 - `diagrams/news-dashboard-high-level.mmd`: high-level current-state diagram
@@ -725,7 +733,8 @@ python3 scripts/validate_athena_schema.py \
 - `diagrams/news-dashboard-high-level.svg`: rendered high-level current-state
   diagram.
 - `diagrams/news-dashboard-detailed.mmd`: detailed current-state diagram with
-  trust boundaries, disabled schedules, validation gates, and failure paths.
+  trust boundaries, enabled managed AI scheduling, separate disabled energy
+  ingestion scheduling, validation gates, and failure paths.
 - `diagrams/news-dashboard-detailed.svg`: rendered detailed current-state
   diagram.
 
